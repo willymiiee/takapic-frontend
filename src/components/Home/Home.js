@@ -134,9 +134,6 @@ class Home extends Component {
                     <button className="button" onClick={this.handleSubmit}><i className="fa fa-search"></i><span>Search</span></button>
                 </div>
             </div>
-            <input type="text" name="destination" placeholder="Destination"
-                            value={this.state.search.destination}
-                            onChange={this.onSearchChange.bind(this, 'destination')} />
             <h1 className="title margin-bottom-40">Featured Destination</h1>
             <div className="text-right margin-bottom-10">
                 <Link to="">See All</Link>
