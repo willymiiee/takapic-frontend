@@ -49,10 +49,10 @@ class RegisterForm extends FormWithConstraints{
             updateUserId(this.state.register.email, user.uid);
           })
           .then(() => {
-            //set user redux
-            // setTimeout
-            this.props.setUser(user, 'dari register');
-            this.props.onSuccess();
+            setTimeout(() => {
+              this.props.setUser(user, 'dari register');
+              this.props.onSuccess();
+            }, 1000)
           })
           .catch((error) => this.props.onError(error.message));
       }).catch((error) => this.props.onError(error.message));

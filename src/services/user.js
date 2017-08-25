@@ -91,7 +91,7 @@ export const updateUserId = function(email, uid){
   })
 }
 
-export const registerUser = function(name, email, password, username, phone='') {
+export const registerUser = function(name, email, password, username, phone, uid='') {
   return new Promise(function(resolve, reject){
     checkUserByEmail(email)
     .then((user) => reject(new Error('Email already used')))
@@ -99,7 +99,7 @@ export const registerUser = function(name, email, password, username, phone='') 
       checkUserByUsername(username)
       .then((user) => reject(new Error('Username already used')))
       .catch((error) => {
-        sendRegisterForm(name, email, password, username, phone)
+        sendRegisterForm(name, email, password, username, phone, uid)
         .then((response) => {
           return resolve(response)
         })
@@ -111,7 +111,7 @@ export const registerUser = function(name, email, password, username, phone='') 
   });
 }
 
-export const sendRegisterForm = function(name, email, password, username, phone){
+export const sendRegisterForm = function(name, email, password, username, phone, uid){
   let body = new FormData();
 
   let date = new Date();
@@ -132,7 +132,7 @@ export const sendRegisterForm = function(name, email, password, username, phone)
   body.append('email', email);
   body.append('phone', phone);
   body.append('password', password);
-  body.append('user_id', '');
+  body.append('user_id', uid);
   body.append('date_signup', `${year}-${month}-${day}`);
   body.append('time_signup', `${hour}:${minutes}:${seconds}`);
 

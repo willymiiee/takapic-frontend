@@ -1,26 +1,65 @@
 import React, {Component} from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { setUser } from '../../store/actions';
+
 import {
   googleProvider, facebookProvider, firebase
 } from '../../services/firebase';
+import {
+  checkUserByEmail,
+  registerUser
+} from '../../services/user'
 
 class Sosmed extends Component{
   constructor(props){
     super(props);
 
-    this.loginGoogle.bind(this);
-    this.loginFacebook.bind(this);
+    this.authLoginSucces = this.authLoginSucces.bind(this);
+    this.loginGoogle = this.loginGoogle.bind(this);
+    this.loginFacebook = this.loginFacebook.bind(this);
   }
 
   loginFacebook(){
     firebase.auth().signInWithPopup(facebookProvider).then((result) => {
-      console.log(result)
-    }).catch((error) => console.log(error));
+      this.authLoginSucces(result);
+    }).catch((error) => console.log(error, 'error'));
   }
 
   loginGoogle(){
     firebase.auth().signInWithPopup(googleProvider).then((result) => {
-      console.log(result)
+      this.authLoginSucces(result);
     }).catch((error) => console.log(error));
+  }
+
+  authLoginSucces(loginResult){
+    let user = loginResult.user;
+    checkUserByEmail(user.email)
+    .then((takapicUser) => {
+      setTimeout(() => {
+        this.props.setUser(takapicUser, 'register sosmed');
+        this.props.onSuccess();
+      }, 1000)
+    })
+    .catch((error) => {
+        registerUser(
+          user.displayName,
+          user.email,
+          '',
+          '',
+          '',
+          user.uid
+        ).then((takapicUser) => {
+          setTimeout(() => {
+            this.props.setUser(takapicUser, 'register sosmed');
+            this.props.onSuccess();
+          }, 1000)
+        }).catch((error) => this.props.onError(error))
+      }
+    );
+    //cek by email
+    //if oke login
+    //if no register
   }
 
   render(){
@@ -41,4 +80,8 @@ class Sosmed extends Component{
   }
 }
 
-export default Sosmed;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ setUser }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(Sosmed);

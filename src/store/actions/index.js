@@ -18,7 +18,6 @@ export function getUser() {
           return dispatch(setUser(user, 'dari firebase'))
         })
         .catch((error) => {
-          console.log(error)
           return dispatch(setUser(false, 'error cek id'));
         });  
       } else {

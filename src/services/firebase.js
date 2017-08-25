@@ -13,9 +13,7 @@ Firebase.initializeApp(config);
 let googleAuthProvider = new Firebase.auth.GoogleAuthProvider();
 
 let facebookAuthProvider = new Firebase.auth.FacebookAuthProvider();
-facebookAuthProvider.addScope('name');
 facebookAuthProvider.addScope('email');
-facebookAuthProvider.addScope('picture');
 
 export const firebase = Firebase;
 export const googleProvider = googleAuthProvider;

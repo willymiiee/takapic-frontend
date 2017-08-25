@@ -15,8 +15,9 @@ import RegisterForm from './RegisterForm';
 // TODO: Pembuatan Auth Route (oke)
 
 class SigninContainer extends Component{
+
   handleSuccessAuth(){
-    this.props.hitory.push({
+    this.props.history.push({
       pathname: '/'
     })
   }
@@ -35,7 +36,10 @@ class SigninContainer extends Component{
           <h3>Sign In</h3>
         </div>
 
-        <Sosmed />
+        <Sosmed
+          onSuccess={this.handleSuccessAuth.bind(this)}
+          onError={this.handleErrorAuth.bind(this)}
+         />
         <Tabs defaultActiveKey={1} id="sigin-tab">
           <Tab eventKey={1} title="Login">
             <LoginForm
