@@ -1,47 +1,47 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 
-import {
-  checkUserByEmail, sendRegisterForm
-} from '../../services/user';
+import { checkUserByEmail, sendRegisterForm } from '../../services/user';
 
-class Sosmed extends Component{
-  constructor(props){
+class Sosmed extends Component {
+  constructor(props) {
     super(props);
-    this.state = {name:'as'}
+    this.state = { name: 'as' };
     this.responseFacebook = this.responseFacebook.bind(this);
     this.responseGoogle = this.responseGoogle.bind(this);
   }
 
   signinUserSosmed(user) {
     checkUserByEmail(user.email)
-    .then((user) =>{
-      this.props.onSucces(user);
-    }).catch((error) => {
-      sendRegisterForm(user.name, user.email, '', '', '')
-      .then((user) => {
+      .then(user => {
         this.props.onSucces(user);
-      }).catch((error) => this.props.onError(error.message))
-    })
+      })
+      .catch(error => {
+        sendRegisterForm(user.name, user.email, '', '', '')
+          .then(user => {
+            this.props.onSucces(user);
+          })
+          .catch(error => this.props.onError(error.message));
+      });
   }
 
   responseFacebook(response) {
     let user = {
       name: response.name,
       email: response.email,
-      picture: response.picture.data.url
-    }
+      picture: response.picture.data.url,
+    };
     this.signinUserSosmed(user);
   }
 
   responseGoogle(response) {
-    let profile = response.profileObj; 
+    let profile = response.profileObj;
     let user = {
       name: profile.name,
       email: profile.email,
-      image: profile.imageUrl
-    }
+      image: profile.imageUrl,
+    };
     this.signinUserSosmed(user);
   }
 
@@ -60,10 +60,11 @@ class Sosmed extends Component{
           isSignIn={true}
           style={{
             background: 'rgb(209, 72, 54)',
-            border: '1px solid transparent'}}
+            border: '1px solid transparent',
+          }}
         />
       </div>
-    )
+    );
   }
 }
 

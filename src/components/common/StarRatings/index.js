@@ -2,8 +2,6 @@
 import React from 'react';
 import Star from './Star';
 
-class StarRatings extends React.Component {
-  
-}
+class StarRatings extends React.Component {}
 
 export default StarRatings;

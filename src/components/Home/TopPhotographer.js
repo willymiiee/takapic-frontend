@@ -7,27 +7,31 @@ class TopPhotographer extends Component {
       dots: true,
       slidesToShow: 4,
       slidesToScroll: 4,
-      responsive: [{
-        breakpoint: 481,
-        settings: {
-          dots: false,
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        }
-      }, {
-        breakpoint: 768,
-        settings: {
-          dots: false,
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        }
-      }, {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        }
-      }]
+      responsive: [
+        {
+          breakpoint: 481,
+          settings: {
+            dots: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            dots: false,
+            slidesToShow: 2,
+            slidesToScroll: 2,
+          },
+        },
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+          },
+        },
+      ],
     });
   }
   render() {
@@ -38,7 +42,7 @@ class TopPhotographer extends Component {
           rating={3.5}
           tags={['Wedding', 'Snap']}
           id={1}
-          city="London"  
+          city="London"
         />
         <TopPhotographerSingle
           name="Photographer 2"
@@ -53,7 +57,7 @@ class TopPhotographer extends Component {
           rating={3.5}
           tags={['Wedding', 'Snap']}
           id={3}
-          city="London"  
+          city="London"
         />
         <TopPhotographerSingle
           name="Photographer 4"
@@ -68,7 +72,7 @@ class TopPhotographer extends Component {
           rating={3.5}
           tags={['Wedding', 'Snap']}
           id={1}
-          city="London"  
+          city="London"
         />
         <TopPhotographerSingle
           name="Photographer 6"
@@ -83,7 +87,7 @@ class TopPhotographer extends Component {
           rating={3.5}
           tags={['Wedding', 'Snap']}
           id={1}
-          city="London"  
+          city="London"
         />
         <TopPhotographerSingle
           name="Photographer 8"
@@ -94,7 +98,7 @@ class TopPhotographer extends Component {
           img="images/photographer/outlook-photography-jobs-2.jpg"
         />
       </div>
-    )
+    );
   }
 }
 

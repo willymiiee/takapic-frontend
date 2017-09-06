@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {
-  Route,
-  Redirect
-} from 'react-router-dom'
+import { connect } from 'react-redux';
+import { Route, Redirect } from 'react-router-dom';
 
 // const PrivateRoute = ({ component: Component, ...rest }) => (
 //   <Route {...rest} render={props => (
@@ -18,29 +15,35 @@ import {
 //   )}/>
 // )
 
-class PrivateRoute extends Component{
+class PrivateRoute extends Component {
   render() {
-    let {component: Component, ...rest} = this.props;
-    return(
-      rest.user !== null && <Route {...rest} render={props => (
-        rest.user ? (
-          <Component {...props}/>
-        ) : (
-          <Redirect to={{
-            pathname: '/signin',
-            search: 'redirect='+this.props.path,
-            state: { from: props.location }
-          }}/>
-        )
-      )}/>
-    )
+    let { component: Component, ...rest } = this.props;
+    return (
+      rest.user !== null && (
+        <Route
+          {...rest}
+          render={props =>
+            rest.user ? (
+              <Component {...props} />
+            ) : (
+              <Redirect
+                to={{
+                  pathname: '/signin',
+                  search: 'redirect=' + this.props.path,
+                  state: { from: props.location },
+                }}
+              />
+            )}
+        />
+      )
+    );
   }
 }
 
 function mapStateToProps(state) {
-  return{
-    user: state.user
-  }
+  return {
+    user: state.user,
+  };
 }
 
 export default connect(mapStateToProps)(PrivateRoute);

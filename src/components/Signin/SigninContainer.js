@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setUser } from '../../store/actions';
-import {Notification} from 'element-react';
-import {Tabs, Tab} from 'react-bootstrap';
-import {withRouter} from 'react-router';
+import { Notification } from 'element-react';
+import { Tabs, Tab } from 'react-bootstrap';
+import { withRouter } from 'react-router';
 
 import Sosmed from './Sosmed';
 import LoginForm from './LoginForm';
@@ -14,23 +14,22 @@ import RegisterForm from './RegisterForm';
 // TODO: Review alur signin
 // TODO: Pembuatan Auth Route (oke)
 
-class SigninContainer extends Component{
-
-  handleSuccessAuth(){
+class SigninContainer extends Component {
+  handleSuccessAuth() {
     this.props.history.push({
-      pathname: '/'
-    })
+      pathname: '/',
+    });
   }
 
-  handleErrorAuth(message){
+  handleErrorAuth(message) {
     Notification.error({
       title: 'Error',
-      message: message
-    })
+      message: message,
+    });
   }
 
   render() {
-    return(
+    return (
       <div>
         <div className="small-dialog-header">
           <h3>Sign In</h3>
@@ -39,22 +38,23 @@ class SigninContainer extends Component{
         <Sosmed
           onSuccess={this.handleSuccessAuth.bind(this)}
           onError={this.handleErrorAuth.bind(this)}
-         />
+        />
         <Tabs defaultActiveKey={1} id="sigin-tab">
           <Tab eventKey={1} title="Login">
             <LoginForm
               onSuccess={this.handleSuccessAuth.bind(this)}
-              onError={this.handleErrorAuth.bind(this)} />
+              onError={this.handleErrorAuth.bind(this)}
+            />
           </Tab>
           <Tab eventKey={2} title="Register">
             <RegisterForm
               onSuccess={this.handleSuccessAuth.bind(this)}
-              onError={this.handleErrorAuth.bind(this)} />
+              onError={this.handleErrorAuth.bind(this)}
+            />
           </Tab>
         </Tabs>
-
       </div>
-    )
+    );
   }
 }
 
