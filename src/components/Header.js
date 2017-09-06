@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import SigninContainer from './Signin/SigninContainer';
+import SigninContainer from 'components/Signin/SigninContainer';
 import { logOutUser } from '../services/user';
 import { Modal } from 'react-bootstrap';
 

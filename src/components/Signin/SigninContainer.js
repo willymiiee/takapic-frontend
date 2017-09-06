@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setUser } from '../../store/actions';
+import { setUser } from 'store/actions';
 import { Notification } from 'element-react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { withRouter } from 'react-router';

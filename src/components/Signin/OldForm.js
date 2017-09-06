@@ -99,7 +99,7 @@ import { firebase } from '../../services/firebase';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setUser } from '../../store/actions';
+import { setUser } from 'store/actions';
 
 class RegisterForm extends Component {
   constructor(props) {
