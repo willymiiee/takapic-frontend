@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from 'store/actions';
-import Animator from 'components/common/Animator';
 import _ from 'lodash';
 import intl from 'react-intl-universal';
 import axios from 'axios';
-
 
 const locales = [
   {
@@ -18,63 +16,61 @@ const locales = [
   },
 ];
 
+let savedLocale = null;
+
+try {
+  savedLocale = JSON.parse(localStorage.getItem('locale'));
+} catch (ignored) {
+  //ignored
+}
+
 const withLocale = WrappedComponent =>
-  connect(null, { getUser })(
-    class Initiliazed extends Component {
-      state = { initDone: false, locale: 'en-US' };
-
-      constructor(props) {
-        super(props);
-        this.props.getUser();
-        this.onLanguageChange = this.onLanguageChange.bind(this);
-      }
-
-      componentDidMount() {
-        this.loadLocales();
-      }
-
-      loadLocales() {
-        let currentLocale = localStorage.getItem('locale')
-          ? localStorage.getItem('locale')
-          : 'en-US';
-        if (!_.find(locales, { value: currentLocale })) {
-          currentLocale = 'en-US';
-        }
-        this.setState({ locale: currentLocale });
-
-        this.setState({ initDone: false });
+  connect(
+    state => ({
+      locale: state.locale,
+      localeLoaded: state.localeLoaded,
+    }),
+    dispatch => ({
+      loadLocales(locale = 'en-US') {
+        dispatch({
+          type: 'LOAD_LOCALE',
+          payload: { locale: locale, initDone: false },
+        });
         axios
-          .get(`/locales/${currentLocale}.json`)
+          .get(`/locales/${locale}.json`)
           .then(res => {
-            // init method will load CLDR locale data according to currentLocale
+            // init method will load CLDR locale data according to locale
             return intl.init({
-              currentLocale,
+              currentLocale: locale,
               locales: {
-                [currentLocale]: res.data,
+                [locale]: res.data,
               },
             });
           })
           .then(() => {
             // After loading CLDR locale data, start to render
             window.scrollTo(0, 0);
-            this.setState({ initDone: true });
+            dispatch({ type: 'LOCALE_LOADED' });
           })
           .catch(error => console.log(error));
+      },
+    })
+  )(
+    class Initiliazed extends Component {
+      componentDidMount() {
+        this.props.loadLocales();
       }
 
-      onLanguageChange(value) {
-        localStorage.setItem('locale', value);
-        this.loadLocales();
-      }
+      onLanguageChange = value => {
+        this.props.loadLocales(value);
+      };
 
       render() {
         return (
           <WrappedComponent
             {...this.props}
-            {...this.state}
             locales={locales}
             onLanguageChange={this.onLanguageChange}
-            loader={this.state.initDone ? null : <Animator />}
           />
         );
       }
