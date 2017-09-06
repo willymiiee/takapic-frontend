@@ -18,7 +18,7 @@ const locales = [
   },
 ];
 
-const initialize = WrappedComponent =>
+const withLocale = WrappedComponent =>
   connect(null, { getUser })(
     class Initiliazed extends Component {
       state = { initDone: false, locale: 'en-US' };
@@ -74,10 +74,10 @@ const initialize = WrappedComponent =>
             {...this.state}
             locales={locales}
             onLanguageChange={this.onLanguageChange}
-            animator={!this.state.initDone ? <Animator /> : null}
+            loader={this.state.initDone ? null : <Animator />}
           />
         );
       }
     }
   );
-export default initialize;
+export default withLocale;

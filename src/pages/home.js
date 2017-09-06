@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import TopPhotographer from './TopPhotographer';
+import TopPhotographer from 'components/TopPhotographer';
+import Page from 'components/Page';
 import DateTime from 'react-datetime';
 import moment from 'moment';
 
@@ -66,7 +67,7 @@ class Home extends Component {
       return current.isAfter(yesterday);
     };
     return (
-      <div>
+      <Page>
         <div id="bg-slide">
           <img src="/images/insung-yoon-259475.jpg" alt="" />
           <img src="/images/hero_1.jpg" alt="" />
@@ -252,7 +253,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Page>
     );
   }
 }
