@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DateTime from 'react-datetime';
 import moment from 'moment';
+import Page from 'components/Page';
 
 class PhotographerDetail extends Component {
   constructor(props) {
@@ -245,7 +246,7 @@ class PhotographerDetail extends Component {
       return current.isAfter(yesterday);
     };
     return (
-      <div>
+      <Page>
         <div className="hidden-xs padding-bottom-60" />
         <div className="container">
           <div id="photographer-top">
@@ -260,7 +261,9 @@ class PhotographerDetail extends Component {
             </div>
             <h2>Dana Kim</h2>
             <h4>Seoul, Korea</h4>
-            <button className="button button-white">Go to Portofolio</button>
+            <a href="/photographer-portofolio/1" className="button button-white">
+              Go to Portofolio
+            </a>
           </div>
 
           <div id="photographer-photo-collection">
@@ -416,7 +419,7 @@ class PhotographerDetail extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Page>
     );
   }
 }
