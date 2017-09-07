@@ -8,11 +8,12 @@ import ScrollToTop from 'components/common/ScrollToTop';
 import Home from 'pages/home';
 import Signin from 'components/Signin';
 import PhotographerDetail from 'components/Profile/PhotographerDetail';
-import PhotographerPortofolio from 'components/PhotographerPortofolio';
+import PortofolioContent from 'components/PhotographerPortofolio/PortofolioContent';
+import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
+import PortofolioReviews from 'components/PhotographerPortofolio/PortofolioReviews';
 import Search from 'components/Search/Search';
 import Secret from 'components/Secret';
-
-
+import NotFoundPage from 'pages/not-found';
 
 const App = withLocale(props =>
   <Router>
@@ -24,8 +25,11 @@ const App = withLocale(props =>
           <Route path="/signin" component={Signin} />
           <Route path="/photographer/:id" component={PhotographerDetail} />
           <Route path="/search" component={Search} />
-          <Route path="/photographer-portofolio/:id" component={PhotographerPortofolio} />
+          <Route path="/photographer-portofolio/:id" component={PortofolioContent} />
+          <Route path="/photographer-portofolio-about" component={PortofolioAbout} />
+          <Route path="/photographer-portofolio-reviews" component={PortofolioReviews} />
           <PrivateRoute user={props.user} path="/secret" component={Secret} />
+          <Route path="*" component={NotFoundPage} />
         </Switch>
       </ScrollToTop>
     </div>

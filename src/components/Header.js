@@ -51,9 +51,9 @@ class Header extends Component {
           <div id="nav-menu">
             <i className="fa fa-bars" />
             <div>
-              <a>Become Our Photographer</a>
-              <a>How It Works</a>
-              <a>Help</a>
+              <Link to="/become-our-photographer">Become Our Photographer</Link>
+              <Link to="/how-it-works">How It Works</Link>
+              <Link to="/help">Help</Link>
               {signInButton}
             </div>
           </div>
