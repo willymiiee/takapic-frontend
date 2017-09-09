@@ -8,7 +8,9 @@ export default class StepGrabCity extends Component {
       <Page>
         <div className="container" id="photographer-landing">
           <div className="steps steps-3">
-            <div className="active" /><div /><div />
+            <div className="active" />
+            <div />
+            <div />
           </div>
           <hr />
           <h3>Which city do you live in?</h3>
@@ -21,8 +23,15 @@ export default class StepGrabCity extends Component {
             </div>
           </div>
           <hr />
-          <Link to="/become-our-photographer/welcome-1" className="button button-white-no-shadow u">Back</Link>
-          <Link to="/become-our-photographer/step-1-2" className="button">Next</Link>
+          <Link
+            to="/become-our-photographer/welcome-1"
+            className="button button-white-no-shadow u"
+          >
+            Back
+          </Link>
+          <Link to="/become-our-photographer/step-1-2" className="button">
+            Next
+          </Link>
         </div>
       </Page>
     );

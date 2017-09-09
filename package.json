@@ -30,12 +30,14 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "chokidar-cli": "^1.2.0",
     "react-scripts": "1.0.13"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "format": "prettier --single-quote --trailing-comma='es5' --write '*.js' 'src/**/*.js'",
+    "format": "prettier --single-quote --trailing-comma='es5' --write \"*.js\" \"src/**/*.js\"",
+    "format:watch": "chokidar 'src/**/*.js' -c \"test '{event}' = 'change' && prettier --write '{path}'\"",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

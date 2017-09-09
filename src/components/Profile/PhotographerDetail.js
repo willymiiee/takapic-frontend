@@ -261,7 +261,10 @@ class PhotographerDetail extends Component {
             </div>
             <h2>Dana Kim</h2>
             <h4>Seoul, Korea</h4>
-            <a href="/photographer-portofolio/1" className="button button-white">
+            <a
+              href="/photographer-portofolio/1"
+              className="button button-white"
+            >
               Go to Portofolio
             </a>
           </div>

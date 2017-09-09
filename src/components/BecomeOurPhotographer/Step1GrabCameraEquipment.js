@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Page from 'components/Page';
 
 export default class StepGrabCameraEquipment extends Component {
   componentDidMount() {
-    window.$(function () {
+    window.$(function() {
       window.$('.select2').select2();
     });
   }
@@ -14,16 +14,14 @@ export default class StepGrabCameraEquipment extends Component {
       <Page>
         <div className="container" id="photographer-landing">
           <div className="steps steps-3">
-            <div/>
-            <div/>
-            <div className="active"/>
+            <div />
+            <div />
+            <div className="active" />
           </div>
-          <hr/>
+          <hr />
           <h3>What camera equipment do you have?</h3>
           <div className="row">
-            <div className="col-sm-2 col-md-1 padding-top-5">
-              Body
-            </div>
+            <div className="col-sm-2 col-md-1 padding-top-5">Body</div>
             <div className="col-sm-10 col-md-11 margin-bottom-15">
               <select className="select2" multiple>
                 <option>Nikon D5600</option>
@@ -34,9 +32,7 @@ export default class StepGrabCameraEquipment extends Component {
                 <option>Canon 80D</option>
               </select>
             </div>
-            <div className="col-sm-2 col-md-1 padding-top-5">
-              Lens
-            </div>
+            <div className="col-sm-2 col-md-1 padding-top-5">Lens</div>
             <div className="col-sm-10 col-md-11 margin-bottom-15">
               <select className="select2" multiple>
                 <option>Canon EF 50mm f/1.8 II Lens – f</option>
@@ -66,11 +62,17 @@ export default class StepGrabCameraEquipment extends Component {
             <option>Snap</option>
             <option>Glamour</option>
           </select>
-          <hr/>
-          <Link to="/become-our-photographer/step-1-2" className="button button-white-no-shadow u">Back</Link>
-          <Link to="/become-our-photographer/welcome-2" className="button">Done</Link>
+          <hr />
+          <Link
+            to="/become-our-photographer/step-1-2"
+            className="button button-white-no-shadow u"
+          >
+            Back
+          </Link>
+          <Link to="/become-our-photographer/welcome-2" className="button">
+            Done
+          </Link>
         </div>
-
       </Page>
     );
   }

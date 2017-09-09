@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Page from 'components/Page';
 
@@ -17,18 +17,25 @@ export default class Step2SetupMeetingPointB extends Component {
       <Page>
         <div className="container" id="photographer-landing">
           <div className="steps steps-4">
-            <div/>
-            <div/>
-            <div/>
-            <div className="active"/>
+            <div />
+            <div />
+            <div />
+            <div className="active" />
           </div>
-          <hr/>
+          <hr />
           <h3>Please choose three different meeting points</h3>
           <div className="row">
             <div className="col-lg-7 margin-top-15 margin-bottom-30">
               <div id="meeting-points">
-                <div><input type="text"/><input type="text"/>
-                  <Link to="/become-our-photographer/step-2-4a" className="button">Confirm</Link>
+                <div>
+                  <input type="text" />
+                  <input type="text" />
+                  <Link
+                    to="/become-our-photographer/step-2-4a"
+                    className="button"
+                  >
+                    Confirm
+                  </Link>
                 </div>
               </div>
             </div>
@@ -36,9 +43,16 @@ export default class Step2SetupMeetingPointB extends Component {
               <div id="map">Ada map disini</div>
             </div>
           </div>
-          <hr/>
-          <Link to="/become-our-photographer/step-2-3" className="button button-white-no-shadow u">Back</Link>
-          <Link to="/become-our-photographer/step-2-5" className="button">Done</Link>
+          <hr />
+          <Link
+            to="/become-our-photographer/step-2-3"
+            className="button button-white-no-shadow u"
+          >
+            Back
+          </Link>
+          <Link to="/become-our-photographer/step-2-5" className="button">
+            Done
+          </Link>
         </div>
       </Page>
     );

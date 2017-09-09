@@ -1,8 +1,8 @@
 import React from 'react';
 import Page from 'components/Page';
 
-export default (props) => (
+export default props => (
   <Page>
-    <h1 style={{ paddingTop: '50px'}}>Not Found</h1>
+    <h1 style={{ paddingTop: '50px' }}>Not Found</h1>
   </Page>
 );
