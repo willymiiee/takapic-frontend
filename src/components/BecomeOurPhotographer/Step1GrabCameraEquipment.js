@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Page from "components/Page";
-import { Formik } from "formik";
 import { compose, lifecycle } from "recompose";
 
 export default compose(
@@ -10,16 +9,6 @@ export default compose(
       window.$(function() {
         window.$(".select2").select2();
       });
-    }
-  }),
-  Formik({
-    mapPropsToValues: props => ({}),
-    handleSubmit: (values, { props, setErrors, setSubmitting }) => {
-      // do stuff with your payload
-      // e.preventDefault(), setSubmitting, setError(undefined) are
-      // called before handleSubmit is. So you don't have to do repeat this.
-      // handleSubmit will only be executed if form values pass validation (if you specify it).
-      console.log(values);
     }
   })
 )(
