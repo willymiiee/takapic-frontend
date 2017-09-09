@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import withLocale from 'hoc/withLocale';
+import React, { Component } from "react";
+import withLocale from "hoc/withLocale";
+import { Link } from "react-router-dom";
 
 class Footer extends Component {
   onLanguageChange = event => {
@@ -37,51 +38,51 @@ class Footer extends Component {
               <h4>TakaPic</h4>
               <ul className="footer-links">
                 <li>
-                  <a href="">About Us</a>
+                  <Link to="/">About Us</Link>
                 </li>
                 <li>
-                  <a href="">How it Works</a>
+                  <Link to="/">How it Works</Link>
                 </li>
                 <li>
-                  <a href="">Packages</a>
+                  <Link to="/">Packages</Link>
                 </li>
                 <li>
-                  <a href="">FAQs</a>
+                  <Link to="/">FAQs</Link>
                 </li>
                 <li>
-                  <a href="">Privacy Policy</a>
+                  <Link to="/">Privacy Policy</Link>
                 </li>
               </ul>
               <ul className="footer-links">
                 <li>
-                  <a href="">About Us</a>
+                  <Link to="/">About Us</Link>
                 </li>
                 <li>
-                  <a href="">How it Works</a>
+                  <Link to="/">How it Works</Link>
                 </li>
                 <li>
-                  <a href="">Packages</a>
+                  <Link to="/">Packages</Link>
                 </li>
                 <li>
-                  <a href="">FAQs</a>
+                  <Link to="/">FAQs</Link>
                 </li>
                 <li>
-                  <a href="">Privacy Policy</a>
+                  <Link to="/">Privacy Policy</Link>
                 </li>
               </ul>
             </div>
             <div className="col-sm-3">
               <h4>Contact Us</h4>
               <div id="footer-social">
-                <a href="">
+                <Link to="/">
                   <i className="fa fa-facebook-official" />
-                </a>
-                <a href="">
+                </Link>
+                <Link to="/">
                   <i className="fa fa-instagram" />
-                </a>
-                <a href="">
+                </Link>
+                <Link to="/">
                   <i className="fa fa-weibo" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-import SigninContainer from 'components/Signin/SigninContainer';
-import { logOutUser } from '../services/user';
-import { Modal } from 'react-bootstrap';
+import SigninContainer from "components/Signin/SigninContainer";
+import { logOutUser } from "../services/user";
+import { Modal } from "react-bootstrap";
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false,
+      showModal: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -35,12 +35,11 @@ class Header extends Component {
   }
 
   render() {
-    let signInButton = null;
-    if (this.props.user) {
-      signInButton = <a onClick={this.logOut}>Sign Out</a>;
-    } else {
-      signInButton = <a onClick={this.openModal}>Sign In</a>;
-    }
+    const signInButton = this.props.user ? (
+      <a onClick={this.logOut}>Sign Out</a>
+    ) : (
+      <a onClick={this.openModal}>Sign In</a>
+    );
 
     return (
       <div id="nav">
@@ -79,7 +78,7 @@ class Header extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    user: state.user,
+    user: state.user
   };
 }
 
