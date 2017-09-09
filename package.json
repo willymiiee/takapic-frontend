@@ -37,7 +37,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "format": "prettier --single-quote --trailing-comma='es5' --write \"*.js\" \"src/**/*.js\"",
-    "format:watch": "chokidar 'src/**/*.js' -c \"test '{event}' = 'change' && prettier --write '{path}'\"",
+    "format:watch": "chokidar 'src/**/*.js' -c \"test '{event}' = 'change' && prettier --single-quote --trailing-comma='es5' --write '{path}'\"",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
