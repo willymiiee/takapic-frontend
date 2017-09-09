@@ -26,7 +26,7 @@ export default class PhotographerPortofolio extends Component {
                   <Link to="/photographer-portofolio-about">About Me</Link>
                   <Link to="/photographer-portofolio-reviews">Reviews</Link>
                 </div>
-                <button className="button w-100 margin-top-30 margin-bottom-15">Contact</button>
+                <Link to="/photographer/2" className="button w-100 margin-top-30 margin-bottom-15">Contact</Link>
                 <h3>Share</h3>
                 <div id="photographer-portofolio-share">
                   <i className="fa fa-facebook-official"/>

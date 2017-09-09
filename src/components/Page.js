@@ -5,7 +5,7 @@ import Footer from 'components/Footer';
 export default props =>
 	<div>
 		<Header />
-		<div style={{ paddingTop: '25px'}}>
+		<div style={{ paddingTop: '50px'}}>
       {props.children}
 		</div>
 		<Footer />
