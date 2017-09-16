@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import withLocale from "hoc/withLocale";
 import PrivateRoute from "components/Route/PrivateRoute";
 import Animator from "components/common/Animator";
@@ -30,9 +30,10 @@ import Step2IntiatePortofolio from "components/BecomeOurPhotographer/Step2Initia
 import Step2SetupMeetingPointA from "components/BecomeOurPhotographer/Step2SetupMeetingPointA";
 import Step2SetupMeetingPointB from "components/BecomeOurPhotographer/Step2SetupMeetingPointB";
 import Step2Done from "components/BecomeOurPhotographer/Step2Done";
+import history from "services/history";
 
 const App = withLocale(props => (
-  <Router>
+  <Router history={history}>
     <div>
       {props.localeLoaded ? null : <Animator />}
       <ScrollToTop>

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import SigninContainer from "components/Signin/SigninContainer";
 import { logOutUser } from "../services/user";
 import { Modal } from "react-bootstrap";
+import withAuth from "hoc/withAuth";
 
 class Header extends Component {
   constructor(props) {
@@ -12,33 +13,13 @@ class Header extends Component {
     this.state = {
       showModal: false
     };
-
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.logOut = this.logOut.bind(this);
-  }
-
-  logOut() {
-    logOutUser()
-      .then(function(data) {
-        console.log(data);
-      })
-      .catch(error => console.log(error));
-  }
-
-  openModal() {
-    this.setState({ showModal: true });
-  }
-
-  closeModal() {
-    this.setState({ showModal: false });
   }
 
   render() {
     const signInButton = this.props.user ? (
-      <a onClick={this.logOut}>Sign Out</a>
+      <a onClick={this.props.auth.logout}>Sign Out</a>
     ) : (
-      <a onClick={this.openModal}>Sign In</a>
+      <a onClick={this.props.auth.login}>Sign In</a>
     );
 
     return (
@@ -76,10 +57,4 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    user: state.user
-  };
-}
-
-export default connect(mapStateToProps)(Header);
+export default withAuth(Header);
