@@ -12,10 +12,12 @@ export default class Auth {
     scope: "openid"
   });
 
-  login = () => {
-    this.auth0.popup.authorize({
-      connection: "twitter"
-    });
+  login = (
+    obj = {
+      connection: "Username-Password-Authentication"
+    }
+  ) => {
+    return this.auth0.popup.authorize(obj);
   };
 
   handleAuthentication = () => {

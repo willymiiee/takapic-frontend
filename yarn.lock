@@ -5557,9 +5557,9 @@ react-autocomplete@^1.6.0:
     dom-scroll-into-view "1.0.1"
     prop-types "^15.5.10"
 
-react-bootstrap@^0.31.2:
-  version "0.31.2"
-  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.31.2.tgz#f59184676ecedfc4c572d29ffdd6f9126ea8fe6a"
+react-bootstrap@^0.31.3:
+  version "0.31.3"
+  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.31.3.tgz#db2b7d45b00b5dac1ab8b6de3dd97feb3091b849"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"

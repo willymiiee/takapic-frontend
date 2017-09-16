@@ -8,13 +8,6 @@ import { Modal } from "react-bootstrap";
 import withAuth from "hoc/withAuth";
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModal: false
-    };
-  }
-
   render() {
     const signInButton = this.props.user ? (
       <a onClick={this.props.auth.logout}>Sign Out</a>
@@ -43,14 +36,6 @@ class Header extends Component {
             <i className="fa fa-search" />
             <input type="text" placeholder="Anywhere, Anytime" />
           </div>
-          {!this.props.user && (
-            <Modal show={this.state.showModal} onHide={this.closeModal}>
-              <Modal.Header closeButton />
-              <Modal.Body>
-                <SigninContainer />
-              </Modal.Body>
-            </Modal>
-          )}
         </div>
       </div>
     );

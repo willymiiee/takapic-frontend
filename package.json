@@ -16,7 +16,7 @@
     "query-string": "^5.0.0",
     "react": "^15.6.1",
     "react-autocomplete": "^1.6.0",
-    "react-bootstrap": "^0.31.2",
+    "react-bootstrap": "^0.31.3",
     "react-datetime": "^2.9.0",
     "react-dom": "^15.6.1",
     "react-facebook-login": "^3.6.2",
