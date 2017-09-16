@@ -1,62 +1,85 @@
 import history from "services/history";
+import Auth0Lock from "auth0-lock";
 import { WebAuth } from "auth0-js";
+import logo from "img/logo.png";
+import store from "store";
 
-// ...
-export default class Auth {
-  auth0 = new WebAuth({
-    domain: "viankakrisna.auth0.com",
-    clientID: "lBF9tmmEKsdZQlk11r71haHxeP3XQhOZ",
-    redirectUri: "http://localhost:3000/callback",
-    audience: "https://viankakrisna.auth0.com/userinfo",
-    responseType: "token id_token",
-    scope: "openid"
-  });
+const CLIENT_ID = "zbQbMQuebPNi45I71U08vvdpcjHIeSbk";
+const CLIENT_DOMAIN = "takapic.au.auth0.com";
 
-  login = (
-    obj = {
-      connection: "Username-Password-Authentication"
-    }
-  ) => {
-    return this.auth0.popup.authorize(obj);
-  };
+const auth0 = new WebAuth({
+  domain: CLIENT_DOMAIN,
+  clientID: CLIENT_ID,
+  redirectUri: window.location.origin,
+  audience: "https://takapic.au.auth0.com/userinfo",
+  responseType: "token",
+  scope: "openid"
+});
 
-  handleAuthentication = () => {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-        history.replace("/");
-      } else if (err) {
-        history.replace("/");
-        console.log(err);
+const lock = new Auth0Lock(CLIENT_ID, CLIENT_DOMAIN, {
+  auth: {
+    redirectUrl: window.location.origin,
+    responseType: "token"
+  },
+  theme: { logo, primaryColor: "#aaa" },
+  additionalSignUpFields: [
+    {
+      name: "name",
+      placeholder: "Enter your name",
+      validator: function(name) {
+        return {
+          valid: Boolean(name),
+          hint: "Name is required" // optional
+        };
       }
+    },
+    {
+      name: "phone",
+      placeholder: "Enter your phone number",
+      validator: function(phone) {
+        return {
+          valid:
+            String(phone).startsWith("+") &&
+            Number.isInteger(Number(String(phone).substr(1))),
+          hint: "Must be a number that starts with +" // optional
+        };
+      }
+    }
+  ]
+});
+
+export const getProfile = authResult => {
+  if (authResult.accessToken) {
+    lock.getUserInfo(authResult.accessToken, function(error, profile) {
+      if (error) {
+        // Handle error
+        return;
+      }
+
+      // Save token and profile locally
+      localStorage.setItem("accessToken", authResult.accessToken);
+      localStorage.setItem("profile", JSON.stringify(profile));
+
+      store.dispatch({ type: "LOGIN_SUCCESS", payload: profile });
     });
-  };
+  } else {
+    store.dispatch({ type: "LOGIN_ERROR" });
+  }
+};
 
-  setSession = authResult => {
-    // Set the time that the access token will expire at
-    let expiresAt = JSON.stringify(
-      authResult.expiresIn * 1000 + new Date().getTime()
-    );
-    localStorage.setItem("access_token", authResult.accessToken);
-    localStorage.setItem("id_token", authResult.idToken);
-    localStorage.setItem("expires_at", expiresAt);
-    // navigate to the home route
-    history.replace("/");
-  };
+const login = () => lock.show();
+const logout = () => {
+  localStorage.setItem("accessToken", "");
+  localStorage.setItem("profile", "");
+  store.dispatch({
+    type: "LOGOUT_SUCCESS"
+  });
+};
 
-  logout = () => {
-    // Clear access token and ID token from local storage
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("expires_at");
-    // navigate to the home route
-    history.replace("/");
-  };
+lock.on("authenticated", getProfile);
 
-  isAuthenticated = () => {
-    // Check whether the current time is past the
-    // access token's expiry time
-    let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-    return new Date().getTime() < expiresAt;
-  };
-}
+export default {
+  login,
+  logout,
+  getProfile
+};

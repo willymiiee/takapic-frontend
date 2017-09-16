@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { compose } from "recompose";
 import SigninContainer from "components/Signin/SigninContainer";
 import { logOutUser } from "../services/user";
 import { Modal } from "react-bootstrap";
@@ -9,11 +9,7 @@ import withAuth from "hoc/withAuth";
 
 class Header extends Component {
   render() {
-    const signInButton = this.props.user ? (
-      <a onClick={this.props.auth.logout}>Sign Out</a>
-    ) : (
-      <a onClick={this.props.auth.login}>Sign In</a>
-    );
+    const { auth, user } = this.props;
 
     return (
       <div id="nav">
@@ -24,12 +20,24 @@ class Header extends Component {
           <div id="nav-menu">
             <i className="fa fa-bars" />
             <div>
-              <Link to="/photographer-registration/s1">
+              <Link
+                to={
+                  user ? (
+                    "/become-our-photographer/welcome-1"
+                  ) : (
+                    "/photographer-registration/s1"
+                  )
+                }
+              >
                 Become Our Photographer
               </Link>
               <Link to="/how-it-works">How It Works</Link>
               <Link to="/help">Help</Link>
-              {signInButton}
+              {user ? (
+                <a onClick={auth.logout}>Sign Out</a>
+              ) : (
+                <a onClick={auth.login}>Sign In</a>
+              )}
             </div>
           </div>
           <div id="nav-search" className="search-toggle">
@@ -42,4 +50,9 @@ class Header extends Component {
   }
 }
 
-export default withAuth(Header);
+export default compose(
+  withAuth,
+  connect(state => ({
+    user: state.user
+  }))
+)(Header);

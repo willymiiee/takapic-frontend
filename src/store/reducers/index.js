@@ -5,10 +5,25 @@ const rootReducer = combineReducers({
   user,
   locale: (state = "en-US", action) =>
     action.type === "SET_LOCALE" ? action.payload : state,
-  localeLoaded: (state = false, action) =>
-    action.type === "LOCALE_LOADED"
-      ? true
-      : action.type === "LOAD_LOCALE" ? false : state,
+  localeLoaded: (state = false, action) => {
+    switch (action.type) {
+      case "LOCALE_LOADED":
+        return true;
+      case "LOAD_LOCALE":
+        return false;
+      default:
+        return state;
+    }
+  },
+  authLoaded: (state = false, action) => {
+    switch (action.type) {
+      case "LOGIN_SUCCESS":
+      case "LOGIN_ERROR":
+        return true;
+      default:
+        return state;
+    }
+  },
   bop: (
     state = {
       location: {
