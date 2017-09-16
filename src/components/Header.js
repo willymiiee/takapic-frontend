@@ -33,8 +33,9 @@ class Header extends Component {
               </Link>
               <Link to="/how-it-works">How It Works</Link>
               <Link to="/help">Help</Link>
+              {user ? <Link to="/profile">{user.name}</Link> : null}
               {user ? (
-                <a onClick={auth.logout}>Sign Out</a>
+                <a onClick={auth.logout}> (Sign Out)</a>
               ) : (
                 <a onClick={auth.login}>Sign In</a>
               )}
