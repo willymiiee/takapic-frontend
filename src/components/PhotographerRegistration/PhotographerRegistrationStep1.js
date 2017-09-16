@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Page from "components/Page";
-import { compose, lifecycle } from "recompose";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Page from 'components/Page';
+import { compose, lifecycle } from 'recompose';
 
 export default compose(
   lifecycle({
     componentDidMount() {
       window.$(function() {
-        window.$(".select2").select2();
+        window.$('.select2').select2();
       });
-    }
+    },
   })
 )(
   class PhotographerRegistrationStep1 extends Component {

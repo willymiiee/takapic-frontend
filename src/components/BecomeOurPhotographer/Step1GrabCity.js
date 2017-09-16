@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Page from "components/Page";
-import { connect } from "react-redux";
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Page from 'components/Page';
+import { connect } from 'react-redux';
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
-import SearchBox from "react-google-maps/lib/places/SearchBox";
+import SearchBox from 'react-google-maps/lib/places/SearchBox';
 
 const google = window.google;
 
@@ -35,7 +35,7 @@ const GrabCitySearchBox = withGoogleMap(props => (
       onPlacesChanged={props.onPlacesChanged}
       inputPlaceholder={`Which city do you live in?`}
       inputStyle={{
-        zIndex: 9999999
+        zIndex: 9999999,
       }}
     />
   </GoogleMap>
@@ -61,18 +61,18 @@ export default connect(state => state.bop.location)(
 
     handleBoundsChanged = () => {
       this.props.dispatch({
-        type: "BECOME_OUR_PHOTOGRAPHER_BOUNDS_CHANGED",
+        type: 'BECOME_OUR_PHOTOGRAPHER_BOUNDS_CHANGED',
         payload: {
           bounds: this.mapRef.getBounds(),
-          center: this.mapRef.getCenter()
-        }
+          center: this.mapRef.getCenter(),
+        },
       });
     };
 
     handlePlacesChanged = () => {
       this.props.dispatch({
-        type: "BECOME_OUR_PHOTOGRAPHER_PLACES_CHANGED",
-        payload: this.setBounds(this.searchBoxRef.getPlaces())
+        type: 'BECOME_OUR_PHOTOGRAPHER_PLACES_CHANGED',
+        payload: this.setBounds(this.searchBoxRef.getPlaces()),
       });
     };
 
@@ -86,7 +86,7 @@ export default connect(state => state.bop.location)(
       });
 
       const markers = places.map(place => ({
-        position: place.geometry.location
+        position: place.geometry.location,
       }));
 
       const center =
@@ -95,7 +95,7 @@ export default connect(state => state.bop.location)(
       return {
         places,
         center,
-        markers
+        markers,
       };
     }
 

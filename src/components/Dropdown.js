@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import Overlay from "components/Overlay";
-import { compose, withState } from "recompose";
+import React from 'react';
+import styled from 'styled-components';
+import Overlay from 'components/Overlay';
+import { compose, withState } from 'recompose';
 
 const Dropdown = styled.div`
   background: white;
@@ -21,8 +21,8 @@ const Dropdown = styled.div`
   overflow: auto;
   transform-origin: top right;
   transition: 250ms;
-  transform: ${props => (props.active ? "scale(1)" : "scale(0)")};
-  opacity: ${props => (props.active ? "1" : "0")};
+  transform: ${props => (props.active ? 'scale(1)' : 'scale(0)')};
+  opacity: ${props => (props.active ? '1' : '0')};
   max-height: 75vh;
 `;
 export const Button = styled.button`
@@ -39,7 +39,7 @@ export const Button = styled.button`
   }
 `;
 const DropdownWrapper = styled(
-  compose(withState("active", "setActive"))(props => (
+  compose(withState('active', 'setActive'))(props => (
     <div className={`${props.className} dropdown`}>
       <Button onClick={e => props.setActive(!props.active)}>
         {props.toggle}

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import withLocale from "hoc/withLocale";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import withLocale from 'hoc/withLocale';
+import { Link } from 'react-router-dom';
 
 class Footer extends Component {
   onLanguageChange = event => {

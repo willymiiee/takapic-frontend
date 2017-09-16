@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Page from "components/Page";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Page from 'components/Page';
+import { connect } from 'react-redux';
 
 export default connect(state => ({ user: state.user }))(
   class StepWelcome extends Component {

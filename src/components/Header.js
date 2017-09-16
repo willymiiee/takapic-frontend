@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { compose } from "recompose";
-import SigninContainer from "components/Signin/SigninContainer";
-import { logOutUser } from "../services/user";
-import { Modal } from "react-bootstrap";
-import withAuth from "hoc/withAuth";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import SigninContainer from 'components/Signin/SigninContainer';
+import { logOutUser } from '../services/user';
+import { Modal } from 'react-bootstrap';
+import withAuth from 'hoc/withAuth';
 
 class Header extends Component {
   render() {
@@ -23,9 +23,9 @@ class Header extends Component {
               <Link
                 to={
                   user ? (
-                    "/become-our-photographer/welcome-1"
+                    '/become-our-photographer/welcome-1'
                   ) : (
-                    "/photographer-registration/s1"
+                    '/photographer-registration/s1'
                   )
                 }
               >
@@ -53,6 +53,6 @@ class Header extends Component {
 export default compose(
   withAuth,
   connect(state => ({
-    user: state.user
+    user: state.user,
   }))
 )(Header);

@@ -1,62 +1,62 @@
-import React from "react";
-import { Router, Route, Switch } from "react-router-dom";
-import withLocale from "hoc/withLocale";
-import PrivateRoute from "components/Route/PrivateRoute";
-import Animator from "components/common/Animator";
-import ScrollToTop from "components/common/ScrollToTop";
-import { ConnectedRouter } from "react-router-redux";
-import { connect } from "react-redux";
-import qs from "qs";
-import history from "services/history";
-import { lifecycle, compose } from "recompose";
-import { replace } from "react-router-redux";
+import React from 'react';
+import { Router, Route, Switch } from 'react-router-dom';
+import withLocale from 'hoc/withLocale';
+import PrivateRoute from 'components/Route/PrivateRoute';
+import Animator from 'components/common/Animator';
+import ScrollToTop from 'components/common/ScrollToTop';
+import { ConnectedRouter } from 'react-router-redux';
+import { connect } from 'react-redux';
+import qs from 'qs';
+import history from 'services/history';
+import { lifecycle, compose } from 'recompose';
+import { replace } from 'react-router-redux';
 
-import Home from "pages/home";
-import Signin from "components/Signin";
-import PhotographerDetail from "components/Profile/PhotographerDetail";
-import PortofolioContent from "components/PhotographerPortofolio/PortofolioContent";
-import PortofolioAbout from "components/PhotographerPortofolio/PortofolioAbout";
-import PortofolioReviews from "components/PhotographerPortofolio/PortofolioReviews";
-import Search from "components/Search/Search";
-import Secret from "components/Secret";
-import NotFoundPage from "pages/not-found";
+import Home from 'pages/home';
+import Signin from 'components/Signin';
+import PhotographerDetail from 'components/Profile/PhotographerDetail';
+import PortofolioContent from 'components/PhotographerPortofolio/PortofolioContent';
+import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
+import PortofolioReviews from 'components/PhotographerPortofolio/PortofolioReviews';
+import Search from 'components/Search/Search';
+import Secret from 'components/Secret';
+import NotFoundPage from 'pages/not-found';
 
-import PhotographerRegistrationStep1 from "components/PhotographerRegistration/PhotographerRegistrationStep1";
-import PhotographerRegistrationStep2 from "components/PhotographerRegistration/PhotographerRegistrationStep2";
-import PhotographerRegistrationStep3 from "components/PhotographerRegistration/PhotographerRegistrationStep3";
+import PhotographerRegistrationStep1 from 'components/PhotographerRegistration/PhotographerRegistrationStep1';
+import PhotographerRegistrationStep2 from 'components/PhotographerRegistration/PhotographerRegistrationStep2';
+import PhotographerRegistrationStep3 from 'components/PhotographerRegistration/PhotographerRegistrationStep3';
 
-import Step1Welcome from "components/BecomeOurPhotographer/Step1Welcome";
-import Step1GrabCity from "components/BecomeOurPhotographer/Step1GrabCity";
-import Step1GrabInterestingSelfIntroduction from "components/BecomeOurPhotographer/Step1GrabInterestingSelfIntroduction";
-import Step1GrabCameraEquipment from "components/BecomeOurPhotographer/Step1GrabCameraEquipment";
-import Step2Welcome from "components/BecomeOurPhotographer/Step2Welcome";
-import Step2IndicatePrice from "components/BecomeOurPhotographer/Step2IndicatePrice";
-import Step2DateAvailability from "components/BecomeOurPhotographer/Step2DateAvailability";
-import Step2IntiatePortofolio from "components/BecomeOurPhotographer/Step2InitiatePortofolio";
-import Step2SetupMeetingPointA from "components/BecomeOurPhotographer/Step2SetupMeetingPointA";
-import Step2SetupMeetingPointB from "components/BecomeOurPhotographer/Step2SetupMeetingPointB";
-import Step2Done from "components/BecomeOurPhotographer/Step2Done";
+import Step1Welcome from 'components/BecomeOurPhotographer/Step1Welcome';
+import Step1GrabCity from 'components/BecomeOurPhotographer/Step1GrabCity';
+import Step1GrabInterestingSelfIntroduction from 'components/BecomeOurPhotographer/Step1GrabInterestingSelfIntroduction';
+import Step1GrabCameraEquipment from 'components/BecomeOurPhotographer/Step1GrabCameraEquipment';
+import Step2Welcome from 'components/BecomeOurPhotographer/Step2Welcome';
+import Step2IndicatePrice from 'components/BecomeOurPhotographer/Step2IndicatePrice';
+import Step2DateAvailability from 'components/BecomeOurPhotographer/Step2DateAvailability';
+import Step2IntiatePortofolio from 'components/BecomeOurPhotographer/Step2InitiatePortofolio';
+import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2SetupMeetingPointA';
+import Step2SetupMeetingPointB from 'components/BecomeOurPhotographer/Step2SetupMeetingPointB';
+import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
 
-import store from "store";
-import { getProfile } from "services/auth";
+import store from 'store';
+import { getProfile } from 'services/auth';
 
-store.dispatch({ type: "LOADING_AUTH" });
+store.dispatch({ type: 'LOADING_AUTH' });
 getProfile({
-  accessToken: localStorage.getItem("accessToken")
+  accessToken: localStorage.getItem('accessToken'),
 });
 
 const redirect = props => {
   props.replace(
-    qs.parse(props.location.search.replace("?", "")).from ||
-      qs.parse(props.location.search.replace("?", "")).to ||
-      "/"
+    qs.parse(props.location.search.replace('?', '')).from ||
+      qs.parse(props.location.search.replace('?', '')).to ||
+      '/'
   );
 };
 
 const onlyLoggedOut = WrappedComponent =>
   compose(
     connect(state => ({ user: state.user, authLoaded: state.authLoaded }), {
-      replace
+      replace,
     }),
     lifecycle({
       componentDidMount() {
@@ -68,7 +68,7 @@ const onlyLoggedOut = WrappedComponent =>
         if (nextProps.user) {
           redirect(nextProps);
         }
-      }
+      },
     })
   )(
     props => (props.authLoaded ? <WrappedComponent {...props} /> : <Animator />)
@@ -77,7 +77,7 @@ const onlyLoggedOut = WrappedComponent =>
 const onlyLoggedIn = WrappedComponent =>
   compose(
     connect(state => ({ user: state.user, authLoaded: state.authLoaded }), {
-      replace
+      replace,
     }),
     lifecycle({
       componentDidMount() {
@@ -89,7 +89,7 @@ const onlyLoggedIn = WrappedComponent =>
         if (!nextProps.user) {
           redirect(nextProps);
         }
-      }
+      },
     })
   )(
     props => (props.authLoaded ? <WrappedComponent {...props} /> : <Animator />)

@@ -1,35 +1,35 @@
-import React, { Component } from "react";
-import SearchResult from "./SearchResult";
-import queryString from "query-string";
-import DateTime from "react-datetime";
-import moment from "moment";
-import axios from "axios";
-import Page from "components/Page";
-import Autocomplete from "react-autocomplete";
+import React, { Component } from 'react';
+import SearchResult from './SearchResult';
+import queryString from 'query-string';
+import DateTime from 'react-datetime';
+import moment from 'moment';
+import axios from 'axios';
+import Page from 'components/Page';
+import Autocomplete from 'react-autocomplete';
 
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
       search: {
-        destination: "",
-        date: ""
+        destination: '',
+        date: '',
       },
-      cities: []
+      cities: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   onSearchChange(key, event) {
-    let value = "";
-    if (key === "date") {
-      value = event.format("MM-DD-YYYY");
+    let value = '';
+    if (key === 'date') {
+      value = event.format('MM-DD-YYYY');
     } else {
       value = event.target.value;
     }
 
     this.setState({
-      search: Object.assign({}, this.state.search, { [key]: value })
+      search: Object.assign({}, this.state.search, { [key]: value }),
     });
   }
 
@@ -37,12 +37,12 @@ class Search extends Component {
     let { destination, date } = this.state.search;
     e.preventDefault();
     this.props.history.push({
-      pathname: "/search",
-      search: "destination=" + destination + "&date=" + date,
+      pathname: '/search',
+      search: 'destination=' + destination + '&date=' + date,
       state: {
-        referrer: "/",
-        search: this.state.search
-      }
+        referrer: '/',
+        search: this.state.search,
+      },
     });
   }
 
@@ -53,18 +53,18 @@ class Search extends Component {
 
   componentDidMount() {
     window
-      .$("#landing-page-search > div > input")
+      .$('#landing-page-search > div > input')
       .focus(function() {
-        window.$("#landing-page-search").addClass("focus");
+        window.$('#landing-page-search').addClass('focus');
       })
       .blur(function() {
-        window.$("#landing-page-search").removeClass("focus");
+        window.$('#landing-page-search').removeClass('focus');
       });
   }
 
   render() {
     let { destination, date } = queryString.parse(this.props.location.search);
-    let yesterday = moment().subtract(1, "day");
+    let yesterday = moment().subtract(1, 'day');
     let valid = function(current) {
       return current.isAfter(yesterday);
     };
@@ -74,25 +74,25 @@ class Search extends Component {
           <div id="landing-page-top" className="srp">
             <div id="landing-page-search" className="srp">
               <Autocomplete
-                inputProps={{ placeholder: "Destination" }}
+                inputProps={{ placeholder: 'Destination' }}
                 items={this.state.cities}
                 menuStyle={{
-                  borderRadius: "3px",
-                  boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-                  background: "white",
-                  padding: "2px 0",
-                  position: "fixed",
-                  overflow: "auto",
-                  maxHeight: "50%", // TODO: don't cheat, let it flow to the bottom
-                  color: "#333"
+                  borderRadius: '3px',
+                  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                  background: 'white',
+                  padding: '2px 0',
+                  position: 'fixed',
+                  overflow: 'auto',
+                  maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
+                  color: '#333',
                 }}
                 getItemValue={item => item}
                 renderItem={(item, highlighted) => (
                   <div
                     style={{
-                      backgroundColor: highlighted ? "#eee" : "transparent",
-                      padding: "2px 6px",
-                      fontSize: "14px"
+                      backgroundColor: highlighted ? '#eee' : 'transparent',
+                      padding: '2px 6px',
+                      fontSize: '14px',
                     }}
                   >
                     {item}
@@ -102,11 +102,11 @@ class Search extends Component {
                 onChange={e => {
                   this.setState({
                     search: Object.assign({}, this.state.search, {
-                      destination: e.target.value
-                    })
+                      destination: e.target.value,
+                    }),
                   });
                   axios
-                    .get("/tes/cities.json")
+                    .get('/tes/cities.json')
                     .then(res => {
                       let cities = res.data.cities;
                       this.setState({ cities });
@@ -117,16 +117,16 @@ class Search extends Component {
                 onSelect={value => {
                   this.setState({
                     search: Object.assign({}, this.state.search, {
-                      destination: value
-                    })
+                      destination: value,
+                    }),
                   });
                 }}
                 wrapperStyle={{}}
               />
               <DateTime
                 value={this.state.search.date}
-                onChange={this.onSearchChange.bind(this, "date")}
-                inputProps={{ placeholder: "Date" }}
+                onChange={this.onSearchChange.bind(this, 'date')}
+                inputProps={{ placeholder: 'Date' }}
                 timeFormat={false}
                 dateFormat="MM-DD-YYYY"
                 isValidDate={valid}

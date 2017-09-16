@@ -1,5 +1,5 @@
-import React from "react";
-import { Formik } from "formik";
+import React from 'react';
+import { Formik } from 'formik';
 
 // Assign the HoC returned by Formik to a variable
 const withFormik = Formik(

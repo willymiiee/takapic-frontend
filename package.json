@@ -54,6 +54,9 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,json,css}": ["prettier --write", "git add"]
+    "*.{js,json,css}": [
+      "prettier --single-quote --trailing-comma=es5 --write",
+      "git add"
+    ]
   }
 }

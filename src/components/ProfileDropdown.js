@@ -1,11 +1,11 @@
-import React from "react";
-import t from "helper/t";
-import Dropdown from "components/Dropdown";
-import styled from "styled-components";
-import get from "lodash/get";
-import map from "lodash/fp/map";
-import { connect } from "react-redux";
-import api from "store/actions/api";
+import React from 'react';
+import t from 'helper/t';
+import Dropdown from 'components/Dropdown';
+import styled from 'styled-components';
+import get from 'lodash/get';
+import map from 'lodash/fp/map';
+import { connect } from 'react-redux';
+import api from 'store/actions/api';
 
 const avatarHeight = 42;
 
@@ -43,7 +43,7 @@ const ProfileDropdownInitial = styled.div`
   font-weight: bold;
 `;
 
-const getCurrentUser = props => get(props, "currentUser", {});
+const getCurrentUser = props => get(props, 'currentUser', {});
 
 const ProfileDropdown = styled(props => (
   <Dropdown
@@ -52,26 +52,26 @@ const ProfileDropdown = styled(props => (
       <ProfileDropdownToggle>
         <ProfileDropdownUsername>
           {String(getCurrentUser(props).username)
-            .split(" ")
+            .split(' ')
             .filter(Boolean)
-            .join(" ")
+            .join(' ')
             .trim() || getCurrentUser(props).email}
         </ProfileDropdownUsername>
         {getCurrentUser(props).avatar ? (
           <ProfileDropdownAvatar
             style={{
-              backgroundImage: `url(${getCurrentUser(props).avatar})`
+              backgroundImage: `url(${getCurrentUser(props).avatar})`,
             }}
           />
         ) : (
           <ProfileDropdownInitial>
             {String(getCurrentUser(props).name)
-              .split(" ")
+              .split(' ')
               .filter(Boolean)
               .filter(String)
               .map(s => s[0])
               .map(s => s.toUpperCase())
-              .join("")
+              .join('')
               .trim() || String(getCurrentUser(props).email)[0]}
           </ProfileDropdownInitial>
         )}
@@ -102,7 +102,7 @@ const ProfileDropdown = styled(props => (
 `;
 export default connect(
   state => ({
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
   }),
   api
 )(ProfileDropdown);
