@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import SigninContainer from 'components/Signin/SigninContainer';
 import { logOutUser } from '../services/user';
 import { Modal } from 'react-bootstrap';
+import get from 'lodash/get';
 import withAuth from 'hoc/withAuth';
 
 class Header extends Component {
@@ -33,7 +34,11 @@ class Header extends Component {
               </Link>
               <Link to="/how-it-works">How It Works</Link>
               <Link to="/help">Help</Link>
-              {user ? <Link to="/profile">{user.name}</Link> : null}
+              {user ? (
+                <Link to="/profile">
+                  {get(user, 'user_metadata.name', user.name)}
+                </Link>
+              ) : null}
               {user ? (
                 <a onClick={auth.logout}> (Sign Out)</a>
               ) : (
