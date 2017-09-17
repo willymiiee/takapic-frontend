@@ -121,7 +121,7 @@ const App = connect(state => state)(props => {
             />
             <Route
               path="/photographer-registration/s1"
-              component={onlyLoggedIn(PhotographerRegistrationStep1)}
+              component={onlyLoggedOut(PhotographerRegistrationStep1)}
             />
             <Route
               path="/photographer-registration/s1-checkmail"
@@ -129,11 +129,11 @@ const App = connect(state => state)(props => {
             />
             <Route
               path="/photographer-registration/s2"
-              component={onlyLoggedIn(PhotographerRegistrationStep2)}
+              component={onlyLoggedOut(PhotographerRegistrationStep2)}
             />
             <Route
               path="/photographer-registration/s3"
-              component={onlyLoggedIn(PhotographerRegistrationStep3)}
+              component={onlyLoggedOut(PhotographerRegistrationStep3)}
             />
             <Route
               path="/photographer-registration/finish"
