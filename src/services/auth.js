@@ -52,7 +52,7 @@ export const getProfile = authResult => {
   if (authResult.accessToken) {
     lock.getUserInfo(authResult.accessToken, function(error, profile) {
       if (error) {
-        // Handle error
+        store.dispatch({ type: 'LOGIN_ERROR' });
         return;
       }
 
