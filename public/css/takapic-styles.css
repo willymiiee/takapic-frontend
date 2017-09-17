@@ -1,23 +1,23 @@
 @font-face {
-  font-family: "HelveticaNeue";
-  src: url("../fonts/helveticaneue/HelveticaNeue.ttf");
+  font-family: 'HelveticaNeue';
+  src: url('../fonts/helveticaneue/HelveticaNeue.ttf');
   font-weight: 400;
 }
 /*@font-face {font-family: 'HelveticaNeue'; src: url('../fonts/helveticaneue/HelveticaNeue Light.ttf'); font-weight: 200;}*/
 @font-face {
-  font-family: "Gillory";
-  src: url("../fonts/gillory/Gilroy-ExtraBold.otf");
+  font-family: 'Gillory';
+  src: url('../fonts/gillory/Gilroy-ExtraBold.otf');
   font-weight: 800;
 }
 
 body,
-input[type="text"],
-input[type="password"],
-input[type="email"],
+input[type='text'],
+input[type='password'],
+input[type='email'],
 textarea,
 select,
-input[type="button"],
-input[type="submit"],
+input[type='button'],
+input[type='submit'],
 button {
   font-size: 18px;
 }
@@ -28,19 +28,19 @@ h3,
 h4,
 h5,
 h6,
-input[type="text"],
-input[type="password"],
-input[type="email"],
+input[type='text'],
+input[type='password'],
+input[type='email'],
 textarea,
 select,
-input[type="button"],
-input[type="submit"],
+input[type='button'],
+input[type='submit'],
 button,
 #tiptip_content,
 .map-box p,
 .map-box div,
 .numerical-rating .rating-counter {
-  font-family: "HelveticaNeue";
+  font-family: 'HelveticaNeue';
 }
 
 h1.title {
@@ -57,8 +57,8 @@ a:hover {
   text-decoration: underline;
 }
 button.button,
-input[type="button"],
-input[type="submit"],
+input[type='button'],
+input[type='submit'],
 a.button.border,
 a.button {
   background: #aaa;
@@ -195,7 +195,7 @@ button.u:hover {
 }
 
 #promo {
-  background: #fff url("../img/takapic-bg.jpeg");
+  background: #fff url('../img/takapic-bg.jpeg');
   background-size: 100%;
   background-repeat: no-repeat;
   color: #333;
@@ -669,7 +669,7 @@ button.u:hover {
   margin-left: 5px;
 }
 #photographer-score:before {
-  content: "/";
+  content: '/';
 }
 #photographer-stats {
   font-size: 0;
@@ -733,7 +733,7 @@ button.u:hover {
 }
 #photographer-reservation > .reservation-opt:after {
   font-family: FontAwesome;
-  content: "\f0d7";
+  content: '\f0d7';
   display: inline-block;
   margin-left: 5px;
 }
@@ -786,7 +786,7 @@ button.u:hover {
 }
 .reservation.datepicker.datepicker-dropdown.dropdown-menu
   .datepicker-days:before {
-  content: "Date";
+  content: 'Date';
   display: block;
   text-align: center;
   background: #aaa;
@@ -803,7 +803,7 @@ button.u:hover {
   padding-left: 4px;
 }
 #reservation-time:before {
-  content: "Time";
+  content: 'Time';
   display: block;
   text-align: center;
   background: #aaa;
@@ -903,7 +903,7 @@ button.u:hover {
   float: left;
 }
 .schedule.datepicker.datepicker-dropdown.dropdown-menu .datepicker-days:before {
-  content: "Date";
+  content: 'Date';
   display: block;
   text-align: center;
   background: #aaa;
@@ -920,7 +920,7 @@ button.u:hover {
   padding-left: 4px;
 }
 #schedule-time:before {
-  content: "Time";
+  content: 'Time';
   display: block;
   text-align: center;
   background: #aaa;
@@ -984,7 +984,7 @@ button.u:hover {
 }
 #photo-preview > div > i:before {
   font-family: FontAwesome;
-  content: "\f057";
+  content: '\f057';
   text-align: center;
   display: block;
   position: absolute;
@@ -1044,7 +1044,7 @@ button.u:hover {
   margin: 0 5px 0 40px;
 }
 #photographer-portofolio-package > div > span:after {
-  content: ":";
+  content: ':';
   display: inline-block;
   float: right;
 }
@@ -1113,7 +1113,7 @@ CLASSES
   font-size: 40px;
   font-weight: bold;
   color: #fff;
-  font-family: "Gillory";
+  font-family: 'Gillory';
 }
 .poster > img {
   object-fit: cover;
@@ -1202,7 +1202,7 @@ img.cover {
 }
 .has-dot:before {
   font-family: FontAwesome;
-  content: "\f111";
+  content: '\f111';
   display: inline-block;
   width: 30px;
   font-size: 0.7em;
@@ -2491,5 +2491,5 @@ p.l-h-22 {
 }
 
 .gillory {
-  font-family: "Gillory";
+  font-family: 'Gillory';
 }
