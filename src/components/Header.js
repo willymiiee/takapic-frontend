@@ -23,7 +23,7 @@ class Header extends Component {
             <div>
               <Link
                 to={
-                  get(user, 'user_metadata.name') ? (
+                  user ? (
                     '/become-our-photographer/welcome-1'
                   ) : (
                     '/photographer-registration/s1'
