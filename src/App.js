@@ -22,8 +22,10 @@ import Secret from 'components/Secret';
 import NotFoundPage from 'pages/not-found';
 
 import PhotographerRegistrationStep1 from 'components/PhotographerRegistration/PhotographerRegistrationStep1';
+import PhotographerRegistrationStep1CheckMail from 'components/PhotographerRegistration/PhotographerRegistrationStep1CheckMail';
 import PhotographerRegistrationStep2 from 'components/PhotographerRegistration/PhotographerRegistrationStep2';
 import PhotographerRegistrationStep3 from 'components/PhotographerRegistration/PhotographerRegistrationStep3';
+import PhotographerRegistrationStepFinish from 'components/PhotographerRegistration/PhotographerRegistrationStepFinish';
 
 import Step1Welcome from 'components/BecomeOurPhotographer/Step1Welcome';
 import Step1GrabCity from 'components/BecomeOurPhotographer/Step1GrabCity';
@@ -122,12 +124,20 @@ const App = connect(state => state)(props => {
               component={onlyLoggedOut(PhotographerRegistrationStep1)}
             />
             <Route
+              path="/photographer-registration/s1-checkmail"
+              component={onlyLoggedOut(PhotographerRegistrationStep1CheckMail)}
+            />
+            <Route
               path="/photographer-registration/s2"
               component={onlyLoggedOut(PhotographerRegistrationStep2)}
             />
             <Route
               path="/photographer-registration/s3"
               component={onlyLoggedOut(PhotographerRegistrationStep3)}
+            />
+            <Route
+              path="/photographer-registration/finish"
+              component={onlyLoggedOut(PhotographerRegistrationStepFinish)}
             />
             <Route
               path="/become-our-photographer/welcome-1"

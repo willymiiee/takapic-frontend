@@ -22,28 +22,58 @@ export default compose(
               <div />
               <div />
             </div>
-            <hr />
 
-            <h2>Photographer Registration</h2>
-            <div className="row">
-              <div className="col-sm-4 col-md-2 padding-top-5">
-                Your complete name
-              </div>
-              <div className="col-sm-10 col-md-11 margin-bottom-15">
-                <input />
+            <div className="panel setup-content" id="step-1">
+              <div className="panel-body">
+                <h2 className="text-center">Photographer Registration</h2>
+                <div className="text-center social-media-signup">
+                  <p>
+                    You can register to be our photographer using your existing
+                    Facebook or Gmail account
+                  </p>
+                  <div className="social-media-btn">
+                    <button type="button" className="btn fb-btn">
+                      <img
+                        src="https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png"
+                        alt=""
+                      />Facebook
+                    </button>
+                    <button type="button" className="btn gmail-btn">
+                      <img
+                        src="http://pngimg.com/uploads/gmail_logo/gmail_logo_PNG5.png"
+                        alt=""
+                      />Gmail
+                    </button>
+                  </div>
+                  <p>or fill the form below</p>
+                </div>
+                <div className="form-group">
+                  <label className="control-label">Your Complete Name</label>
+                  <input
+                    type="text"
+                    required="required"
+                    className="form-control"
+                    placeholder="Enter Your Complete Name"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="control-label">Your Email</label>
+                  <input
+                    type="email"
+                    required="required"
+                    className="form-control"
+                    placeholder="Enter Your Email Address"
+                  />
+                </div>
+
+                <Link
+                  to="/photographer-registration/s1-checkmail"
+                  className="button next-btn"
+                >
+                  Next
+                </Link>
               </div>
             </div>
-
-            <div className="row">
-              <div className="col-sm-4 col-md-2 padding-top-5">Email</div>
-              <div className="col-sm-10 col-md-11 margin-bottom-15">
-                <input />
-              </div>
-            </div>
-
-            <Link to="/photographer-registration/s2" className="button">
-              Next
-            </Link>
           </div>
         </Page>
       );

@@ -2493,3 +2493,217 @@ p.l-h-22 {
 .gillory {
   font-family: 'Gillory';
 }
+
+/*
+----------------------------------------------------------------------------
+PHASE 1 BOP - New Photographer Account Register
+----------------------------------------------------------------------------
+*/
+
+#photographer-landing {
+  padding-top: 40px;
+}
+@media (max-width: 480px) {
+  #photographer-landing {
+    padding-top: 0;
+  }
+}
+#photographer-landing h2 {
+  margin: 24px 0;
+}
+#photographer-landing .panel-body {
+  padding: 24px;
+}
+#photographer-landing .social-media-signup {
+  margin-bottom: 32px;
+}
+#photographer-landing .social-media-signup p {
+  font-size: 16px;
+  color: #414141;
+}
+#photographer-landing .social-media-btn {
+  margin: 16px 0;
+}
+#photographer-landing .social-media-btn button {
+  background-color: #fff;
+  padding: 4px 8px;
+  height: 32px;
+}
+#photographer-landing .fb-btn {
+  color: #3b5998;
+  border: 1px solid #3b5998;
+  margin-right: 4px;
+}
+#photographer-landing .gmail-btn {
+  color: #dd4b39;
+  border: 1px solid #dd4b39;
+}
+#photographer-landing .social-media-btn img {
+  max-height: 20px;
+  margin-right: 4px;
+}
+#photographer-landing .setup-content {
+  width: 85%;
+  margin: 32px auto 0 auto;
+  box-shadow: 2px 6px 10px #ccc;
+  border-radius: 0;
+  border: 0;
+}
+@media (max-width: 480px) {
+  #photographer-landing .setup-content {
+    width: 100%;
+    margin: 16px auto 0 auto;
+  }
+}
+#photographer-landing .setup-content .next-btn {
+  float: right;
+  padding: 9px 20px;
+  background: #aaa;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+}
+#photographer-landing .setup-content .next-btn:hover {
+  background: #000;
+}
+#photographer-landing .setup-content .form-group {
+  margin-bottom: 32px;
+}
+#photographer-landing .setup-content label {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: normal;
+}
+#photographer-landing .setup-content input {
+  border-radius: 0;
+}
+#photographer-landing .setup-content #phonenumber {
+  width: 100%;
+}
+#photographer-landing .setup-content .form-control {
+  height: 45px;
+}
+#photographer-landing .checkmail-wrapper {
+  background-color: #5cb85c;
+  color: #fff;
+}
+#photographer-landing .checkmail-wrapper h2 {
+  color: #fff;
+}
+#photographer-landing .checkmail-wrapper .checkmail-text p {
+  font-size: 16px;
+}
+#photographer-landing #profile-dragarea {
+  position: relative;
+  background-color: #e5e5e5;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 150px;
+  height: 150px;
+  margin: 32px auto;
+  font-weight: bold;
+  text-align: center;
+  color: #555;
+  border: 1px dashed #ccc;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+#photographer-landing #profile-dragarea .ph {
+  font-size: 8px;
+  color: #aaa;
+  font-weight: normal;
+}
+#photographer-landing #profile-dragarea .icon {
+  background: url(http://ssl.gstatic.com/s2/oz/images/sprites/sharebox_simple_photo-9a6fe78f09124ebf6240131f07c5dd15.png)
+    no-repeat -179px 0;
+  height: 64px;
+  width: 64px;
+  margin: 0 auto;
+}
+#photographer-landing #step-2 input {
+  height: inherit;
+  line-height: inherit;
+  margin-bottom: 32px;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  width: 100%;
+  background-color: #fff;
+}
+#photographer-landing #step-3 img {
+  max-height: 100px;
+  margin-bottom: 32px;
+}
+#photographer-landing #step-3 .input-group {
+  margin-top: 16px;
+}
+#photographer-landing-finish #success-page {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  background: url(http://phonetask.com/wp-content/uploads/2017/03/taking-photo-hiking-sport-adventure.jpg)
+    center center no-repeat;
+  background-size: cover;
+}
+#photographer-landing-finish #success-page h2,
+#photographer-landing-finish #success-page p {
+  color: #fff;
+  letter-spacing: 1.2px;
+}
+#photographer-landing-finish #success-page h2 {
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+@media (max-width: 480px) {
+  #photographer-landing-finish #success-page h2 {
+    font-size: 32px;
+  }
+}
+#photographer-landing-finish #success-page .wrapper {
+  width: 75%;
+  margin: 0 auto;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.8);
+  position: relative;
+  transform: translate(0%, 50%);
+}
+@media (max-width: 480px) {
+  #photographer-landing-finish #success-page .wrapper {
+    width: 85%;
+  }
+}
+#photographer-landing-finish #success-page .inner-wrapper {
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid #fff;
+  padding: 72px;
+}
+@media (max-width: 480px) {
+  #photographer-landing-finish #success-page .inner-wrapper {
+    width: 100%;
+    padding: 16px;
+  }
+}
+#photographer-landing-finish #success-page .wrapper button {
+  padding: 16px 48px;
+  margin-top: 40px;
+  border-radius: 50px;
+  letter-spacing: 1px;
+}
+@media (max-width: 480px) {
+  #photographer-landing-finish #success-page .wrapper button {
+    padding: 8px 12px;
+  }
+}

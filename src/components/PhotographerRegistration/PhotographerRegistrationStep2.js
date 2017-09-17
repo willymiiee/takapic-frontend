@@ -22,23 +22,33 @@ export default compose(
               <div className="active" />
               <div />
             </div>
-            <hr />
 
-            <h2>Add your best photo profile</h2>
+            <div className="panel setup-content" id="step-2">
+              <div className="panel-body">
+                <h2 className="text-center">Add your best photo profile</h2>
+                <div id="profile-dragarea">
+                  <div
+                    id="filedrag-photo"
+                    className="center-block img-responsive"
+                  >
+                    <div className="ph">
+                      <div className="icon" />Drag your profile photo here
+                    </div>
+                  </div>
+                </div>
+                <p className="text-center">or choose file</p>
+                <div className="form-group">
+                  <input className="input-file" type="file" name="" />
+                </div>
 
-            <div className="profile-picture-profile">
-              <img className="cover" alt="" src="/images/photo/02.jpg" />
-            </div>
-
-            <div className="row">
-              <div className="col-sm-10 col-md-11 margin-bottom-15">
-                <input type="file" />
+                <Link
+                  to="/photographer-registration/s3"
+                  className="button next-btn"
+                >
+                  Next
+                </Link>
               </div>
             </div>
-
-            <Link to="/photographer-registration/s3" className="button">
-              Next
-            </Link>
           </div>
         </Page>
       );
