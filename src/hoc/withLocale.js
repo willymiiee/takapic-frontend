@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getUser } from 'store/actions';
-import _ from 'lodash';
 import intl from 'react-intl-universal';
 import axios from 'axios';
 

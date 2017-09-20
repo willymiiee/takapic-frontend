@@ -1,4 +1,3 @@
-// import history from 'services/history';
 import Auth0Lock from 'auth0-lock';
 import { WebAuth } from 'auth0-js';
 import logo from 'img/logo.png';
@@ -10,16 +9,7 @@ const CLIENT_DOMAIN = 'takapic.au.auth0.com';
 const REDIRECT_URI =
   'http://localhost:3000/photographer-registration/s1-checkmail';
 
-/*const webAuth = new WebAuth({
-  domain: CLIENT_DOMAIN,
-  clientID: CLIENT_ID,
-  redirectUri: window.location.origin,
-  audience: 'https://takapic.au.auth0.com/userinfo',
-  responseType: 'token',
-  scope: 'openid',
-});*/
-
-const webAuthLagi = new WebAuth({
+const webAuth = new WebAuth({
   domain: CLIENT_DOMAIN,
   clientID: CLIENT_ID,
   redirectUri: REDIRECT_URI,
@@ -27,7 +17,7 @@ const webAuthLagi = new WebAuth({
 });
 
 export const photographerSignUp = data => {
-  webAuthLagi.signup(
+  webAuth.signup(
     {
       connection: CONNECTION,
       email: data.email,
@@ -47,15 +37,15 @@ export const photographerSignUp = data => {
 };
 
 export const photographerSignUpFacebook = () => {
-  webAuthLagi.authorize({ connection: 'facebook' });
+  webAuth.authorize({ connection: 'facebook' });
 };
 
 export const photographerSignUpGoogle = () => {
-  webAuthLagi.authorize({ connection: 'google-oauth2' });
+  webAuth.authorize({ connection: 'google-oauth2' });
 };
 
 export const loginCustomForm = () => {
-  webAuthLagi.redirect.loginWithCredentials(
+  webAuth.redirect.loginWithCredentials(
     {
       connection: CONNECTION,
       username: 'okaprinarjaya',
@@ -69,7 +59,7 @@ export const loginCustomForm = () => {
 };
 
 export const logoutAjaDeh = () => {
-  webAuthLagi.logout({
+  webAuth.logout({
     returnTo: 'http://localhost:3000/',
     clientID: CLIENT_ID,
   });

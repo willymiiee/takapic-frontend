@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import SigninContainer from 'components/Signin/SigninContainer';
-import { logOutUser } from '../services/user';
-import { Modal } from 'react-bootstrap';
 import get from 'lodash/get';
 import withAuth from 'hoc/withAuth';
 

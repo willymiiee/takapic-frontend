@@ -1,7 +1,5 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import withLocale from 'hoc/withLocale';
-import PrivateRoute from 'components/Route/PrivateRoute';
 import Animator from 'components/common/Animator';
 import ScrollToTop from 'components/common/ScrollToTop';
 import { ConnectedRouter } from 'react-router-redux';
@@ -12,13 +10,11 @@ import { lifecycle, compose } from 'recompose';
 import { replace } from 'react-router-redux';
 
 import Home from 'pages/home';
-import Signin from 'components/Signin';
 import PhotographerDetail from 'components/Profile/PhotographerDetail';
 import PortofolioContent from 'components/PhotographerPortofolio/PortofolioContent';
 import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
 import PortofolioReviews from 'components/PhotographerPortofolio/PortofolioReviews';
 import Search from 'components/Search/Search';
-import Secret from 'components/Secret';
 import NotFoundPage from 'pages/not-found';
 
 import PhotographerRegistrationStep1 from 'components/PhotographerRegistration/PhotographerRegistrationStep1';
@@ -104,7 +100,6 @@ const App = connect(state => state)(props => {
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/signin" component={Signin} />
             <Route path="/photographer/:id" component={PhotographerDetail} />
             <Route path="/search" component={Search} />
             <Route
@@ -187,7 +182,6 @@ const App = connect(state => state)(props => {
               path="/become-our-photographer/step-2-5"
               component={onlyLoggedIn(Step2Done)}
             />
-            <PrivateRoute user={props.user} path="/secret" component={Secret} />
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </ScrollToTop>
