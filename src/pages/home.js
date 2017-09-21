@@ -9,6 +9,7 @@ import axios from 'axios';
 import Autocomplete from 'react-autocomplete';
 
 import intl from 'react-intl-universal';
+// import { login } from "../services/auth";
 
 class Home extends Component {
   constructor(props) {
@@ -50,6 +51,16 @@ class Home extends Component {
     });
   }
 
+  getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
   componentDidMount() {
     var bgSlide = window.$('#bg-slide');
 
@@ -60,7 +71,12 @@ class Home extends Component {
     setInterval(function() {
       window.$('#bg-slide > img:first').appendTo(bgSlide);
     }, 6000);
+
+    /*if (this.getParameterByName('_l')) {
+      login();
+    }*/
   }
+
   render() {
     let yesterday = moment().subtract(1, 'day');
     let valid = function(current) {

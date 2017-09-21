@@ -2,7 +2,6 @@ import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import Animator from 'components/common/Animator';
 import ScrollToTop from 'components/common/ScrollToTop';
-import { ConnectedRouter } from 'react-router-redux';
 import { connect } from 'react-redux';
 import qs from 'qs';
 import history from 'services/history';
@@ -120,11 +119,11 @@ const App = connect(state => state)(props => {
             />
             <Route
               path="/photographer-registration/s1-checkmail"
-              component={onlyLoggedOut(PhotographerRegistrationStep1CheckMail)}
+              component={PhotographerRegistrationStep1CheckMail}
             />
             <Route
               path="/photographer-registration/s2"
-              component={onlyLoggedOut(PhotographerRegistrationStep2)}
+              component={PhotographerRegistrationStep2}
             />
             <Route
               path="/photographer-registration/s3"

@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux';
-import {
-  photographerReg,
-  photographerRegSubmit,
-} from './photographerRegReducers';
+import user from './user';
 
 const rootReducer = combineReducers({
-  photographerReg,
-  photographerRegSubmit,
+  user,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

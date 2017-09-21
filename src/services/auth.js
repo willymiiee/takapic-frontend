@@ -1,13 +1,13 @@
 import Auth0Lock from 'auth0-lock';
 import { WebAuth } from 'auth0-js';
+import history from './history';
 import logo from 'img/logo.png';
 import store from 'store';
 
 const CONNECTION = 'Username-Password-Authentication';
 const CLIENT_ID = 'zbQbMQuebPNi45I71U08vvdpcjHIeSbk';
 const CLIENT_DOMAIN = 'takapic.au.auth0.com';
-const REDIRECT_URI =
-  'http://localhost:3000/photographer-registration/s1-checkmail';
+const REDIRECT_URI = process.env.REDIRECT_AFTER_LOGIN;
 
 const webAuth = new WebAuth({
   domain: CLIENT_DOMAIN,
@@ -24,13 +24,19 @@ export const photographerSignUp = data => {
       password: data.password,
       user_metadata: {
         name: data.complete_name,
+        role: 'photographer',
       },
     },
     error => {
       if (error) {
-        console.log('Someting went wrong: ' + error.message);
+        alert(
+          'Something went wrong! Error: ' +
+            error.name +
+            ', ' +
+            error.description
+        );
       } else {
-        console.log('Success');
+        history.push('/photographer-registration/s1-checkmail');
       }
     }
   );
@@ -44,30 +50,16 @@ export const photographerSignUpGoogle = () => {
   webAuth.authorize({ connection: 'google-oauth2' });
 };
 
-export const loginCustomForm = () => {
-  webAuth.redirect.loginWithCredentials(
-    {
-      connection: CONNECTION,
-      username: 'okaprinarjaya',
-      password: '12qwaszx',
-      scope: 'openid',
-    },
-    (error, authResult) => {
-      console.log(authResult);
-    }
-  );
-};
-
-export const logoutAjaDeh = () => {
+export const logoutMore = () => {
   webAuth.logout({
-    returnTo: 'http://localhost:3000/',
+    returnTo: process.env.REDIRECT_AFTER_LOGOUT,
     clientID: CLIENT_ID,
   });
 };
 
 const lock = new Auth0Lock(CLIENT_ID, CLIENT_DOMAIN, {
   auth: {
-    redirectUrl: window.location.origin,
+    redirectUrl: process.env.REDIRECT_AFTER_LOGIN,
     responseType: 'token',
   },
   theme: { logo, primaryColor: '#aaa' },
@@ -108,7 +100,6 @@ export const getProfile = authResult => {
       // Save token and profile locally
       localStorage.setItem('accessToken', authResult.accessToken);
       localStorage.setItem('profile', JSON.stringify(profile));
-
       store.dispatch({ type: 'LOGIN_SUCCESS', payload: profile });
     });
   } else {
@@ -116,13 +107,15 @@ export const getProfile = authResult => {
   }
 };
 
-const login = () => lock.show();
+export const login = () => lock.show();
+
 const logout = () => {
   localStorage.setItem('accessToken', '');
   localStorage.setItem('profile', '');
   store.dispatch({
     type: 'LOGOUT_SUCCESS',
   });
+  logoutMore();
 };
 
 lock.on('authenticated', getProfile);

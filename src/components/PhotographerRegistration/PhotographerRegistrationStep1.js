@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { nextStepHandle } from '../../store/actions/photographerRegActions';
 import {
-  loginCustomForm,
-  logoutAjaDeh,
   photographerSignUp,
   photographerSignUpFacebook,
   photographerSignUpGoogle,
@@ -24,8 +19,7 @@ class PhotographerRegistrationStep1 extends Component {
     this.completeNameChangeHandler = this.completeNameChangeHandler.bind(this);
     this.emailChangeHandler = this.emailChangeHandler.bind(this);
     this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
-    this.nextStep = this.nextStep.bind(this);
-    this.logoutAjaDulu = this.logoutAjaDulu.bind(this);
+    this.nextStepHandler = this.nextStepHandler.bind(this);
     this.signUpFacebook = this.signUpFacebook.bind(this);
     this.signUpGoogle = this.signUpGoogle.bind(this);
   }
@@ -50,16 +44,8 @@ class PhotographerRegistrationStep1 extends Component {
     this.setState({ password: evt.target.value });
   }
 
-  nextStep(evt) {
-    // evt.preventDefault();
-    // loginCustomForm();
-    // this.props.nextStepHandle(this.state);
+  nextStepHandler(evt) {
     photographerSignUp(this.state);
-  }
-
-  logoutAjaDulu(evt) {
-    evt.preventDefault();
-    logoutAjaDeh();
   }
 
   render() {
@@ -138,7 +124,10 @@ class PhotographerRegistrationStep1 extends Component {
                 />
               </div>
 
-              <button className="button next-btn" onClick={this.nextStep}>
+              <button
+                className="button next-btn"
+                onClick={this.nextStepHandler}
+              >
                 Next
               </button>
             </div>
@@ -149,7 +138,4 @@ class PhotographerRegistrationStep1 extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  nextStepHandle: currentStepState =>
-    dispatch(nextStepHandle(currentStepState)),
-}))(PhotographerRegistrationStep1);
+export default PhotographerRegistrationStep1;
