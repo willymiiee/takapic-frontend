@@ -7,7 +7,7 @@ import store from 'store';
 const CONNECTION = 'Username-Password-Authentication';
 const CLIENT_ID = 'zbQbMQuebPNi45I71U08vvdpcjHIeSbk';
 const CLIENT_DOMAIN = 'takapic.au.auth0.com';
-const REDIRECT_URI = process.env.REDIRECT_AFTER_LOGIN;
+const REDIRECT_URI = process.env.REACT_APP_REDIRECT_AFTER_LOGIN;
 
 const webAuth = new WebAuth({
   domain: CLIENT_DOMAIN,
@@ -52,14 +52,14 @@ export const photographerSignUpGoogle = () => {
 
 export const logoutMore = () => {
   webAuth.logout({
-    returnTo: process.env.REDIRECT_AFTER_LOGOUT,
+    returnTo: process.env.REACT_APP_REDIRECT_AFTER_LOGOUT,
     clientID: CLIENT_ID,
   });
 };
 
 const lock = new Auth0Lock(CLIENT_ID, CLIENT_DOMAIN, {
   auth: {
-    redirectUrl: process.env.REDIRECT_AFTER_LOGIN,
+    redirectUrl: process.env.REACT_APP_REDIRECT_AFTER_LOGIN,
     responseType: 'token',
   },
   theme: { logo, primaryColor: '#aaa' },
