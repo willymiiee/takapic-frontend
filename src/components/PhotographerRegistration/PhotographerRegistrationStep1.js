@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   photographerSignUp,
   photographerSignUpFacebook,
   photographerSignUpGoogle,
 } from '../../services/auth';
+import { database, facebookAuthProvider } from 'services/firebase';
 
 import Page from 'components/Page';
 
@@ -25,7 +27,32 @@ class PhotographerRegistrationStep1 extends Component {
   }
 
   signUpFacebook(evt) {
-    photographerSignUpFacebook();
+    // photographerSignUpFacebook();
+    const { dorrr } = this.props;
+    facebookAuthProvider.addScope('public_profile,email');
+    database
+      .auth()
+      .signInWithPopup(facebookAuthProvider)
+      .then(result => {
+        const token = result.credential.accessToken;
+        const user = result.user;
+        dorrr({ user, token });
+        console.log(token, user);
+      })
+      .catch(error => {
+        console.log('error error error');
+        console.log(error.code, error.message, error.email, error.credential);
+      });
+
+    /* database.auth().getRedirectResult().then(result => {
+      if (result.credential) {
+        const token = result.credential.accessToken;
+      }
+      const user = result.user;
+      console.log('oka oka oka user: ', user);
+    }).catch(error => {
+      console.log('get redirect result: ', error.code, error.message);
+    }); */
   }
 
   signUpGoogle(evt) {
@@ -77,6 +104,7 @@ class PhotographerRegistrationStep1 extends Component {
                       alt=""
                     />Facebook
                   </button>
+
                   <button
                     type="button"
                     className="btn gmail-btn"
@@ -138,4 +166,6 @@ class PhotographerRegistrationStep1 extends Component {
   }
 }
 
-export default PhotographerRegistrationStep1;
+export default connect(null, dispatch => ({
+  dorrr: payload => dispatch({ type: 'LOGIN_SUCCESS', payload: payload }),
+}))(PhotographerRegistrationStep1);
