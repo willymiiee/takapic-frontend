@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  photographerSignUp,
-  photographerSignUpFacebook,
-  photographerSignUpGoogle,
-} from '../../services/auth';
 import { database, facebookAuthProvider } from 'services/firebase';
+import history from '../../services/history';
+import { userSignupByEmailPassword } from '../../store/actions/userActions';
 
 import Page from 'components/Page';
 
@@ -27,7 +24,6 @@ class PhotographerRegistrationStep1 extends Component {
   }
 
   signUpFacebook(evt) {
-    // photographerSignUpFacebook();
     const { dorrr } = this.props;
     facebookAuthProvider.addScope('public_profile,email');
     database
@@ -43,20 +39,10 @@ class PhotographerRegistrationStep1 extends Component {
         console.log('error error error');
         console.log(error.code, error.message, error.email, error.credential);
       });
-
-    /* database.auth().getRedirectResult().then(result => {
-      if (result.credential) {
-        const token = result.credential.accessToken;
-      }
-      const user = result.user;
-      console.log('oka oka oka user: ', user);
-    }).catch(error => {
-      console.log('get redirect result: ', error.code, error.message);
-    }); */
   }
 
   signUpGoogle(evt) {
-    photographerSignUpGoogle();
+    // photographerSignUpGoogle();
   }
 
   completeNameChangeHandler(evt) {
@@ -72,7 +58,11 @@ class PhotographerRegistrationStep1 extends Component {
   }
 
   nextStepHandler(evt) {
-    photographerSignUp(this.state);
+    this.props.userSignupByEmailPassword(
+      this.state.email,
+      this.state.password,
+      this.state.complete_name
+    );
   }
 
   render() {
@@ -87,7 +77,12 @@ class PhotographerRegistrationStep1 extends Component {
 
           <div className="panel setup-content" id="step-1">
             <div className="panel-body">
-              <h2 className="text-center">Photographer Registration</h2>
+              <p style={{ color: 'red' }}>
+                {this.props.status !== 'OK' ? this.props.message : ''}
+              </p>
+              <h2 className="text-center">
+                Register as a takapic photographer
+              </h2>
               <div className="text-center social-media-signup">
                 <p>
                   You can register to be our photographer using your existing
@@ -156,7 +151,11 @@ class PhotographerRegistrationStep1 extends Component {
                 className="button next-btn"
                 onClick={this.nextStepHandler}
               >
-                Next
+                {this.props.isSigningUp ? (
+                  'Signing you up, Please wait...'
+                ) : (
+                  'Next'
+                )}
               </button>
             </div>
           </div>
@@ -166,6 +165,14 @@ class PhotographerRegistrationStep1 extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  dorrr: payload => dispatch({ type: 'LOGIN_SUCCESS', payload: payload }),
-}))(PhotographerRegistrationStep1);
+export default connect(
+  state => ({
+    isSigningUp: state.userSignup.signingUp,
+    status: state.userSignup.status,
+    message: state.userSignup.message,
+  }),
+  dispatch => ({
+    userSignupByEmailPassword: (email, password, displayName) =>
+      dispatch(userSignupByEmailPassword(email, password, displayName)),
+  })
+)(PhotographerRegistrationStep1);
