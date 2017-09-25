@@ -4,9 +4,11 @@ import Animator from 'components/common/Animator';
 import ScrollToTop from 'components/common/ScrollToTop';
 import { connect } from 'react-redux';
 import qs from 'qs';
-import history from 'services/history';
 import { lifecycle, compose } from 'recompose';
 import { replace } from 'react-router-redux';
+
+import history from 'services/history';
+import store from 'store';
 
 import Home from 'pages/home';
 import PhotographerDetail from 'components/Profile/PhotographerDetail';
@@ -15,6 +17,7 @@ import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
 import PortofolioReviews from 'components/PhotographerPortofolio/PortofolioReviews';
 import Search from 'components/Search/Search';
 import NotFoundPage from 'pages/not-found';
+import SignIn from './components/SignIn/SignIn';
 
 import PhotographerRegistrationStep1 from 'components/PhotographerRegistration/PhotographerRegistrationStep1';
 import PhotographerRegistrationStep1CheckMail from 'components/PhotographerRegistration/PhotographerRegistrationStep1CheckMail';
@@ -34,13 +37,7 @@ import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2Setup
 import Step2SetupMeetingPointB from 'components/BecomeOurPhotographer/Step2SetupMeetingPointB';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
 
-import store from 'store';
-import { getProfile } from 'services/auth';
-
-store.dispatch({ type: 'LOADING_AUTH' });
-getProfile({
-  accessToken: localStorage.getItem('accessToken'),
-});
+store.dispatch({ type: 'USER_LOADING_AUTH' });
 
 const redirect = props => {
   props.replace(
@@ -52,12 +49,12 @@ const redirect = props => {
 
 const onlyLoggedOut = WrappedComponent =>
   compose(
-    connect(state => ({ user: state.user, authLoaded: state.authLoaded }), {
+    connect(state => ({ user: state.userAuth }), {
       replace,
     }),
     lifecycle({
       componentDidMount() {
-        if (this.props.user) {
+        if (this.props.user.data) {
           redirect(this.props);
         }
       },
@@ -67,18 +64,16 @@ const onlyLoggedOut = WrappedComponent =>
         }
       },
     })
-  )(
-    props => (props.authLoaded ? <WrappedComponent {...props} /> : <Animator />)
-  );
+  )(props => <WrappedComponent {...props} />);
 
 const onlyLoggedIn = WrappedComponent =>
   compose(
-    connect(state => ({ user: state.user, authLoaded: state.authLoaded }), {
+    connect(state => ({ user: state.userAuth }), {
       replace,
     }),
     lifecycle({
       componentDidMount() {
-        if (!this.props.user) {
+        if (!this.props.user.data) {
           redirect(this.props);
         }
       },
@@ -88,17 +83,16 @@ const onlyLoggedIn = WrappedComponent =>
         }
       },
     })
-  )(
-    props => (props.authLoaded ? <WrappedComponent {...props} /> : <Animator />)
-  );
+  )(props => <WrappedComponent {...props} />);
 const App = connect(state => state)(props => {
   return (
     <Router history={history}>
       <div>
-        {props.localeLoaded && props.authLoaded ? null : <Animator />}
+        {props.localeLoaded ? null : <Animator />}
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route path="/sign-in" component={SignIn} />
             <Route path="/photographer/:id" component={PhotographerDetail} />
             <Route path="/search" component={Search} />
             <Route
@@ -123,15 +117,15 @@ const App = connect(state => state)(props => {
             />
             <Route
               path="/photographer-registration/s2"
-              component={PhotographerRegistrationStep2}
+              component={onlyLoggedIn(PhotographerRegistrationStep2)}
             />
             <Route
               path="/photographer-registration/s3"
-              component={onlyLoggedOut(PhotographerRegistrationStep3)}
+              component={onlyLoggedIn(PhotographerRegistrationStep3)}
             />
             <Route
               path="/photographer-registration/finish"
-              component={onlyLoggedOut(PhotographerRegistrationStepFinish)}
+              component={onlyLoggedIn(PhotographerRegistrationStepFinish)}
             />
             <Route
               path="/become-our-photographer/welcome-1"

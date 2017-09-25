@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import user from './user';
+import { userAuth, userSignup } from './userReducers';
 
 const rootReducer = combineReducers({
-  user,
+  userAuth,
+  userSignup,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {
@@ -11,15 +12,6 @@ const rootReducer = combineReducers({
         return true;
       case 'LOAD_LOCALE':
         return false;
-      default:
-        return state;
-    }
-  },
-  authLoaded: (state = false, action) => {
-    switch (action.type) {
-      case 'LOGIN_SUCCESS':
-      case 'LOGIN_ERROR':
-        return true;
       default:
         return state;
     }

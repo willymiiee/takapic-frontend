@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import get from 'lodash/get';
-import withAuth from 'hoc/withAuth';
+import { loggingOut } from '../store/actions/userActions';
 
 class Header extends Component {
   render() {
-    const { auth, user } = this.props;
+    const { user } = this.props;
 
     return (
       <div id="nav">
@@ -20,27 +18,26 @@ class Header extends Component {
             <div>
               <Link
                 to={
-                  user ? (
+                  user.data ? (
                     '/become-our-photographer/welcome-1'
                   ) : (
                     '/photographer-registration/s1'
                   )
                 }
               >
-                Become Our Photographer
+                Become our photographer
               </Link>
-              <Link to="/how-it-works">How It Works</Link>
+              <Link to="/traveller-sign-up">Traveller sign up</Link>
+              <Link to="/how-it-works">How it works</Link>
               <Link to="/help">Help</Link>
-              {user ? (
-                <Link to="/profile">
-                  {get(user, 'user_metadata.name', user.name)}
-                </Link>
-              ) : null}
-              {user ? (
-                <a onClick={auth.logout}> (Sign Out)</a>
+              {this.props.user.data ? (
+                <Link to="/user/1">[ {this.props.user.data.displayName} ]</Link>
               ) : (
-                <a onClick={auth.login}>Sign In</a>
+                <Link to="/sign-in">Sign in</Link>
               )}
+              {this.props.user.data ? (
+                <a onClick={this.props.logout}>Sign out</a>
+              ) : null}
             </div>
           </div>
           <div id="nav-search" className="search-toggle">
@@ -53,9 +50,11 @@ class Header extends Component {
   }
 }
 
-export default compose(
-  withAuth,
-  connect(state => ({
-    user: state.user,
-  }))
+export default connect(
+  state => ({
+    user: state.userAuth,
+  }),
+  dispatch => ({
+    logout: () => dispatch(loggingOut()),
+  })
 )(Header);
