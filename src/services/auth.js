@@ -1,7 +1,8 @@
 export const userSignupByEmailPasswordService = async (
   email,
   password,
-  displayName
+  displayName,
+  userType
 ) => {
   const requestInit = {
     method: 'POST',
@@ -12,6 +13,7 @@ export const userSignupByEmailPasswordService = async (
       email,
       password,
       displayName,
+      userType,
     }),
     mode: 'cors',
   };
