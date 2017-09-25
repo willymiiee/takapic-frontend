@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { database, facebookAuthProvider } from 'services/firebase';
-import history from '../../services/history';
 import { userSignupByEmailPassword } from '../../store/actions/userActions';
+import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
 import Page from 'components/Page';
 
@@ -61,7 +61,8 @@ class PhotographerRegistrationStep1 extends Component {
     this.props.userSignupByEmailPassword(
       this.state.email,
       this.state.password,
-      this.state.complete_name
+      this.state.complete_name,
+      USER_PHOTOGRAPHER
     );
   }
 
@@ -172,7 +173,9 @@ export default connect(
     message: state.userSignup.message,
   }),
   dispatch => ({
-    userSignupByEmailPassword: (email, password, displayName) =>
-      dispatch(userSignupByEmailPassword(email, password, displayName)),
+    userSignupByEmailPassword: (email, password, displayName, userType) =>
+      dispatch(
+        userSignupByEmailPassword(email, password, displayName, userType)
+      ),
   })
 )(PhotographerRegistrationStep1);

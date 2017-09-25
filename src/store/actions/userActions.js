@@ -1,11 +1,22 @@
 import { database } from 'services/firebase';
 import history from '../../services/history';
 import { userSignupByEmailPasswordService } from '../../services/auth';
+import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
-export const userSignupByEmailPassword = (email, password, displayName) => {
+export const userSignupByEmailPassword = (
+  email,
+  password,
+  displayName,
+  userType
+) => {
   return dispatch => {
     dispatch({ type: 'PHOTOGRAPHER_SIGNUP_START' });
-    userSignupByEmailPasswordService(email, password, displayName).then(
+    userSignupByEmailPasswordService(
+      email,
+      password,
+      displayName,
+      userType
+    ).then(
       result => {
         if (result.status === 'OK' && result.uid) {
           dispatch({
@@ -31,6 +42,30 @@ export const userSignupByEmailPassword = (email, password, displayName) => {
   };
 };
 
+const createUIDChars = strEmail => {
+  const rgxPatt = /[._@]+/g;
+  return strEmail.replace(rgxPatt, '-');
+};
+
+const fetchUserMetadata = (email, dispatch) => {
+  const db = database.database();
+  db
+    .ref('/user_metadata/' + createUIDChars(email))
+    .once('value')
+    .then(snapshot => {
+      const data = snapshot.val();
+      dispatch({
+        type: 'USER_LOGIN_SUCCESS_FETCH_USER_METADATA',
+        payload: data,
+      });
+      if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
+        history.push('/photographer-registration/s2');
+      } else {
+        history.push('/');
+      }
+    });
+};
+
 export const loggingIn = (email, password) => {
   return dispatch => {
     dispatch({ type: 'USER_LOGIN_START', payload: { loggingIn: true } });
@@ -51,7 +86,7 @@ export const loggingIn = (email, password) => {
           });
         } else {
           dispatch({ type: 'USER_LOGIN_SUCCESS', payload: user });
-          history.push('/');
+          fetchUserMetadata(email, dispatch);
         }
       }
     });

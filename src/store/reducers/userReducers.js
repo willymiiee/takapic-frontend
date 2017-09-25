@@ -1,34 +1,40 @@
 const storeAuthDataToLocalStorage = authData => {
   localStorage.removeItem('initial_login_data');
-  const data = {
-    loggingIn: false,
-    data: authData,
-    error: null,
-  };
-  localStorage.setItem('initial_login_data', JSON.stringify(data));
+  localStorage.setItem('initial_login_data', JSON.stringify(authData));
 };
 
-export const userAuth = (state = { loggingIn: false }, action) => {
+export const userAuth = (
+  state = { loggingIn: false, data: null, error: null },
+  action
+) => {
   switch (action.type) {
     case 'USER_LOGIN_START':
       return { ...state, loggingIn: true, data: null, error: null };
+
     case 'USER_LOGIN_SUCCESS':
+      const newData1 = { ...state, data: action.payload };
+      storeAuthDataToLocalStorage(newData1);
+      return newData1;
+
+    case 'USER_LOGIN_SUCCESS_FETCH_USER_METADATA':
+      const newData2 = { ...state, metadata: action.payload };
+      storeAuthDataToLocalStorage(newData2);
+      return newData2;
+
     case 'USER_LOADING_AUTH':
-      if (action.type === 'USER_LOGIN_SUCCESS') {
-        storeAuthDataToLocalStorage(action.payload);
-        return { ...state, loggingIn: false, data: action.payload };
-      } else if (action.type === 'USER_LOADING_AUTH') {
-        const initialLoginData = localStorage.getItem('initial_login_data');
-        if (initialLoginData) {
-          return JSON.parse(initialLoginData);
-        }
+      const initialLoginData = localStorage.getItem('initial_login_data');
+      if (initialLoginData) {
+        return JSON.parse(initialLoginData);
       }
       return state;
+
     case 'USER_LOGIN_ERROR':
       return { ...state, loggingIn: false, data: null, error: action.payload };
+
     case 'USER_LOGOUT_SUCCESS':
       localStorage.removeItem('initial_login_data');
-      return { loggingIn: false };
+      return { loggingIn: false, data: null, error: null };
+
     default:
       return state;
   }

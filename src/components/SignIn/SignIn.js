@@ -48,6 +48,9 @@ class SignIn extends Component {
                 </div>
 
                 <div className="sign-in-form style-1">
+                  {this.props.error ? (
+                    <p style={{ color: 'red' }}>{this.props.error.message}</p>
+                  ) : null}
                   <form
                     method="post"
                     className="login"
@@ -117,6 +120,7 @@ class SignIn extends Component {
 export default connect(
   state => ({
     isLoggingIn: state.userAuth.loggingIn,
+    error: state.userAuth.error,
   }),
   dispatch => ({
     loggingIn: (email, password) => dispatch(loggingIn(email, password)),
