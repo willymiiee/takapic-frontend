@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { database } from 'services/firebase';
-import history from '../../services/history';
+import { uploadPhotoProfile } from '../../store/actions/userInitProfileActions';
 
 import Page from 'components/Page';
 
@@ -24,20 +22,6 @@ class PhotographerRegistrationStep2 extends Component {
     let fileReader = new FileReader();
     let file = evt.target.files[0];
 
-    const storageRef = database.storage().ref();
-    const userPhotoProfilePath =
-      'pictures/user-photo-profile/linspirell-gmail-com';
-    const pictureRef = storageRef.child(userPhotoProfilePath + '/' + file.name);
-
-    pictureRef
-      .put(file, { contentType: file.type })
-      .then(snapshot => {
-        console.log('Uploaded', snapshot.totalBytes, 'bytes');
-      })
-      .catch(error => {
-        console.log('Upload failed: ', error);
-      });
-
     fileReader.onloadend = () => {
       this.setState({ file: file, imagePreviewUrl: fileReader.result });
     };
@@ -47,8 +31,9 @@ class PhotographerRegistrationStep2 extends Component {
 
   uploadPhotoProfileHandler(evt) {
     evt.preventDefault();
-    // this.props.uploadPhotoProfile();
-    history.push('/photographer-registration/s3');
+    const { user: { email, userMetadata: { displayName } } } = this.props;
+
+    this.props.uploadPhotoProfile(this.state.file, email, displayName);
   }
 
   render() {
@@ -89,13 +74,16 @@ class PhotographerRegistrationStep2 extends Component {
                 />
               </div>
 
-              <Link
-                to="/photographer-registration/s3"
+              <button
                 className="button next-btn"
                 onClick={this.uploadPhotoProfileHandler}
               >
-                Next
-              </Link>
+                {this.props.userInitProfile.isUploadingPhotoProfile ? (
+                  'Uploading your photo profile, please wait...'
+                ) : (
+                  'Next'
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -104,6 +92,13 @@ class PhotographerRegistrationStep2 extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  uploadPhotoProfile: () => dispatch({ type: 'SOMETHING' }),
-}))(PhotographerRegistrationStep2);
+export default connect(
+  state => ({
+    user: state.userAuth,
+    userInitProfile: state.userInitProfile,
+  }),
+  dispatch => ({
+    uploadPhotoProfile: (fileObject, email, displayName) =>
+      dispatch(uploadPhotoProfile(fileObject, email, displayName)),
+  })
+)(PhotographerRegistrationStep2);

@@ -1,7 +1,18 @@
-import { database } from 'services/firebase';
+import { database, facebookAuthProvider } from 'services/firebase';
 import history from '../../services/history';
-import { userSignupByEmailPasswordService } from '../../services/auth';
+import { dashify } from '../../helpers/helpers';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
+
+const createUserMetadata = (email, userType, displayName) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const metadataRef = ref.child(dashify(email));
+  metadataRef.set({
+    userType: userType,
+    firstLogin: true,
+    displayName: displayName,
+  });
+};
 
 export const userSignupByEmailPassword = (
   email,
@@ -10,52 +21,64 @@ export const userSignupByEmailPassword = (
   userType
 ) => {
   return dispatch => {
-    dispatch({ type: 'PHOTOGRAPHER_SIGNUP_START' });
-    userSignupByEmailPasswordService(
-      email,
-      password,
-      displayName,
-      userType
-    ).then(
-      result => {
-        if (result.status === 'OK' && result.uid) {
-          dispatch({
-            type: 'PHOTOGRAPHER_SIGNUP_SUCCESS',
-            payload: result,
-          });
+    dispatch({ type: 'USER_SIGNUP_START' });
+    database
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(function(result) {
+        createUserMetadata(email, userType, displayName);
+        result.sendEmailVerification();
 
-          history.push('/photographer-registration/s1-checkmail');
-        } else {
-          dispatch({
-            type: 'PHOTOGRAPHER_SIGNUP_ERROR',
-            payload: result,
-          });
-        }
-      },
-      error => {
         dispatch({
-          type: 'PHOTOGRAPHER_SIGNUP_ERROR',
+          type: 'USER_SIGNUP_SUCCESS',
+          payload: { status: 'OK', message: 'User created', uid: result.uid },
+        });
+
+        history.push('/photographer-registration/s1-checkmail');
+      })
+      .catch(function(error) {
+        console.log(error);
+        dispatch({
+          type: 'USER_SIGNUP_ERROR',
           payload: error,
         });
-      }
-    );
+      });
   };
 };
 
-const createUIDChars = strEmail => {
-  const rgxPatt = /[._@]+/g;
-  return strEmail.replace(rgxPatt, '-');
+export const userSignupByFacebook = userType => {
+  return dispatch => {
+    dispatch({ type: 'USER_AUTH_LOGIN_START' });
+    facebookAuthProvider.addScope('public_profile,email');
+    database
+      .auth()
+      .signInWithPopup(facebookAuthProvider)
+      .then(result => {
+        const email = result.additionalUserInfo.profile.email;
+        const displayName = result.additionalUserInfo.profile.name;
+        createUserMetadata(email, userType, displayName);
+        dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload: result.user });
+        fetchUserMetadata(email, dispatch);
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch({
+          type: 'USER_AUTH_LOGIN_ERROR',
+          payload: error,
+        });
+      });
+  };
 };
 
 const fetchUserMetadata = (email, dispatch) => {
   const db = database.database();
   db
-    .ref('/user_metadata/' + createUIDChars(email))
+    .ref('/user_metadata/' + dashify(email))
     .once('value')
     .then(snapshot => {
       const data = snapshot.val();
       dispatch({
-        type: 'USER_LOGIN_SUCCESS_FETCH_USER_METADATA',
+        type: 'USER_AUTH_LOGIN_SUCCESS_FETCH_USER_METADATA',
         payload: data,
       });
       if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
@@ -68,24 +91,28 @@ const fetchUserMetadata = (email, dispatch) => {
 
 export const loggingIn = (email, password) => {
   return dispatch => {
-    dispatch({ type: 'USER_LOGIN_START', payload: { loggingIn: true } });
+    dispatch({
+      type: 'USER_AUTH_LOGIN_START',
+      payload: { loggingIn: true },
+    });
 
     const firebaseAuth = database.auth();
     firebaseAuth.signInWithEmailAndPassword(email, password).catch(error => {
-      dispatch({ type: 'USER_LOGIN_ERROR', payload: error });
+      dispatch({
+        type: 'USER_AUTH_LOGIN_ERROR',
+        payload: error,
+      });
     });
 
     firebaseAuth.onAuthStateChanged(user => {
       if (user) {
         if (!user.emailVerified) {
-          user.sendEmailVerification().then(() => {
-            dispatch({
-              type: 'USER_LOGIN_ERROR',
-              payload: { message: 'User not verified.' },
-            });
+          dispatch({
+            type: 'USER_AUTH_LOGIN_ERROR',
+            payload: { message: 'User not verified.' },
           });
         } else {
-          dispatch({ type: 'USER_LOGIN_SUCCESS', payload: user });
+          dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload: user });
           fetchUserMetadata(email, dispatch);
         }
       }
@@ -95,18 +122,18 @@ export const loggingIn = (email, password) => {
 
 export const loggingOut = () => {
   return dispatch => {
-    dispatch({ type: 'USER_LOGOUT_START' });
+    dispatch({ type: 'USER_AUTH_LOGOUT_START' });
 
     const firebaseAuth = database.auth();
     firebaseAuth
       .signOut()
       .then(() => {
-        dispatch({ type: 'USER_LOGOUT_SUCCESS' });
+        dispatch({ type: 'USER_AUTH_LOGOUT_SUCCESS' });
         history.push('/');
         window.location.reload(true);
       })
       .catch(error => {
-        dispatch({ type: 'USER_LOGOUT_ERROR' });
+        dispatch({ type: 'USER_AUTH_LOGOUT_ERROR' });
         history.push('/');
         window.location.reload(true);
       });

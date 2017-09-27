@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import { userAuth, userSignup } from './userReducers';
+import { userInitProfile } from './userInitProfileReducers';
 
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
+  userInitProfile,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

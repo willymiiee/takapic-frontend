@@ -10,6 +10,7 @@ class SignIn extends Component {
     this.state = {
       email: '',
       password: '',
+      isLoggingIn: false,
     };
 
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -19,6 +20,7 @@ class SignIn extends Component {
 
   onSubmitHandler(evt) {
     evt.preventDefault();
+    this.setState({ isLoggingIn: true });
     this.props.loggingIn(this.state.email, this.state.password);
   }
 
@@ -97,9 +99,9 @@ class SignIn extends Component {
                         className="button margin-top-5"
                         name="login"
                         defaultValue="Login"
-                        disabled={this.props.isLoggingIn}
+                        disabled={this.state.isLoggingIn}
                       >
-                        {this.props.isLoggingIn ? (
+                        {this.state.isLoggingIn ? (
                           'Logging you in, please wait..'
                         ) : (
                           'Login'
@@ -119,7 +121,6 @@ class SignIn extends Component {
 
 export default connect(
   state => ({
-    isLoggingIn: state.userAuth.loggingIn,
     error: state.userAuth.error,
   }),
   dispatch => ({

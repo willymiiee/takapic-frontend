@@ -37,7 +37,7 @@ import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2Setup
 import Step2SetupMeetingPointB from 'components/BecomeOurPhotographer/Step2SetupMeetingPointB';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
 
-store.dispatch({ type: 'USER_LOADING_AUTH' });
+store.dispatch({ type: 'USER_AUTH_LOADING_AUTH' });
 
 const redirect = props => {
   props.replace(
@@ -54,7 +54,7 @@ const onlyLoggedOut = WrappedComponent =>
     }),
     lifecycle({
       componentDidMount() {
-        if (this.props.user.data) {
+        if (this.props.user.uid) {
           redirect(this.props);
         }
       },
@@ -73,7 +73,7 @@ const onlyLoggedIn = WrappedComponent =>
     }),
     lifecycle({
       componentDidMount() {
-        if (!this.props.user.data) {
+        if (!this.props.user.uid) {
           redirect(this.props);
         }
       },

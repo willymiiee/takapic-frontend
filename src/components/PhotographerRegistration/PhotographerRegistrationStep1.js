@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { database, facebookAuthProvider } from 'services/firebase';
-import { userSignupByEmailPassword } from '../../store/actions/userActions';
+import {
+  userSignupByEmailPassword,
+  userSignupByFacebook,
+} from '../../store/actions/userActions';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
 import Page from 'components/Page';
@@ -24,24 +26,11 @@ class PhotographerRegistrationStep1 extends Component {
   }
 
   signUpFacebook(evt) {
-    const { dorrr } = this.props;
-    facebookAuthProvider.addScope('public_profile,email');
-    database
-      .auth()
-      .signInWithPopup(facebookAuthProvider)
-      .then(result => {
-        const token = result.credential.accessToken;
-        const user = result.user;
-        dorrr({ user, token });
-        console.log(token, user);
-      })
-      .catch(error => {
-        console.log('error error error');
-        console.log(error.code, error.message, error.email, error.credential);
-      });
+    this.props.userSignupByFacebook(USER_PHOTOGRAPHER);
   }
 
   signUpGoogle(evt) {
+    evt.preventDefault();
     // photographerSignUpGoogle();
   }
 
@@ -177,5 +166,6 @@ export default connect(
       dispatch(
         userSignupByEmailPassword(email, password, displayName, userType)
       ),
+    userSignupByFacebook: userType => dispatch(userSignupByFacebook(userType)),
   })
 )(PhotographerRegistrationStep1);
