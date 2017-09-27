@@ -5,7 +5,7 @@ import { loggingOut } from '../store/actions/userActions';
 
 class Header extends Component {
   render() {
-    const { user } = this.props;
+    const { logout, user: { userMetadata } } = this.props;
 
     return (
       <div id="nav">
@@ -16,27 +16,30 @@ class Header extends Component {
           <div id="nav-menu">
             <i className="fa fa-bars" />
             <div>
-              <Link
-                to={
-                  user.data ? (
-                    '/become-our-photographer/welcome-1'
-                  ) : (
-                    '/photographer-registration/s1'
-                  )
-                }
-              >
-                Become our photographer
-              </Link>
-              <Link to="/traveller-sign-up">Traveller sign up</Link>
+              {userMetadata ? null : (
+                <Link to="/photographer-registration/s1">
+                  Become our photographer
+                </Link>
+              )}
+              {userMetadata ? null : (
+                <Link to="/traveller-sign-up">Traveller sign up</Link>
+              )}
               <Link to="/how-it-works">How it works</Link>
               <Link to="/help">Help</Link>
-              {this.props.user.data ? (
-                <Link to="/user/1">[ {this.props.user.data.displayName} ]</Link>
+              {userMetadata ? (
+                <Link to="/user/1">[ {userMetadata.displayName} ]</Link>
               ) : (
                 <Link to="/sign-in">Sign in</Link>
               )}
-              {this.props.user.data ? (
-                <a onClick={this.props.logout}>Sign out</a>
+              {userMetadata ? (
+                <a
+                  onClick={evt => {
+                    evt.preventDefault();
+                    logout();
+                  }}
+                >
+                  Sign out
+                </a>
               ) : null}
             </div>
           </div>
