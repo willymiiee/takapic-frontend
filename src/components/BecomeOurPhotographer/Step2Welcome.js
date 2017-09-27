@@ -22,10 +22,7 @@ export default class Step2Welcome extends Component {
                 <p>
                   Location, Short Descripton, Equipment, Language, Speciality
                 </p>
-                <button
-                  className="button button-white-no-shadow u"
-                  onclick="window.location='photographer-landing-1-1a.html'"
-                >
+                <button className="button button-white-no-shadow u">
                   Change
                 </button>
               </div>

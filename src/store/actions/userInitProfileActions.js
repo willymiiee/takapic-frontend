@@ -48,3 +48,31 @@ export const uploadPhotoProfile = (fileObject, email, displayName) => {
       });
   };
 };
+
+export const uploadPhonenumber = (phonenumber, email) => {
+  return dispatch => {
+    dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_START ' });
+
+    const ref = database.database().ref('/user_metadata');
+    const metadataRef = ref.child(dashify(email));
+    metadataRef
+      .update({
+        phoneNumber: phonenumber,
+        firstLogin: false,
+      })
+      .then(() => {
+        dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_SUCCESS ' });
+        dispatch({
+          type: 'USER_AUTH_UPDATE_METADATA',
+          payload: { phoneNumber: phonenumber, firstLogin: false },
+        });
+        history.push('/photographer-registration/finish');
+      })
+      .catch(error => {
+        dispatch({
+          type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_ERROR',
+          payload: error,
+        });
+      });
+  };
+};

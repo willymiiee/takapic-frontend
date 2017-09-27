@@ -17,7 +17,6 @@ export const userAuth = (state = {}, action) => {
             ? providerData.email
             : action.payload.email,
         emailVerified: action.payload.emailVerified,
-        phoneNumber: action.payload.phoneNumber,
         displayName: action.payload.displayName,
         photoURL: action.payload.photoURL,
         providerId: providerData.providerId,
@@ -40,6 +39,10 @@ export const userAuth = (state = {}, action) => {
 
     case 'USER_AUTH_UPDATE_PROFILE':
       return { ...state, ...action.payload };
+
+    case 'USER_AUTH_UPDATE_METADATA':
+      const newMetadata = { ...state.userMetadata, ...action.payload };
+      return { ...state, userMetadata: newMetadata };
 
     case 'USER_AUTH_LOGIN_ERROR':
       return { ...state, error: action.payload };

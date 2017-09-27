@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Typeahead } from 'react-bootstrap-typeahead';
-import { Link } from 'react-router-dom';
+import { uploadPhonenumber } from '../../store/actions/userInitProfileActions';
 
 import 'react-select/dist/react-select.css';
 import Page from 'components/Page';
@@ -9,18 +9,37 @@ import Page from 'components/Page';
 class PhotographerRegistrationStep3 extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      phonenumber_country_code: '',
+      phonenumber: '',
+    };
+
+    this.submitDataHandler = this.submitDataHandler.bind(this);
     this.countryCodeChangeHandler = this.countryCodeChangeHandler.bind(this);
+    this.phonumberChangeHandler = this.phonumberChangeHandler.bind(this);
+  }
+
+  submitDataHandler(evt) {
+    evt.preventDefault();
+    const phonenumber =
+      this.state.phonenumber_country_code + this.state.phonenumber;
+    this.props.uploadPhonenumber(phonenumber, this.props.user.email);
   }
 
   countryCodeChangeHandler(value) {
-    console.log('Selected: ', JSON.stringify(value));
+    this.setState({ phonenumber_country_code: value.value });
+  }
+
+  phonumberChangeHandler(evt) {
+    evt.preventDefault();
+    this.setState({ phonenumber: evt.target.value });
   }
 
   render() {
     const options = [
-      { value: 'Indonesia', label: 'Indonesia (+62)' },
-      { value: 'Malaysia', label: 'Malaysia (+60)' },
-      { value: 'Singapore', label: 'Singapore (+61)' },
+      { value: '+62', label: 'Indonesia (+62)' },
+      { value: '+60', label: 'Malaysia (+60)' },
+      { value: '+61', label: 'Singapore (+61)' },
     ];
 
     return (
@@ -42,19 +61,9 @@ class PhotographerRegistrationStep3 extends Component {
                 className="center-block"
               />
               <div className="form-group">
-                <Typeahead
-                  id="phonenumber"
-                  labelKey="value"
-                  options={options}
-                  placeholder="Choose a state..."
-                />
-
-                <br />
-                <br />
-
                 <Select
                   name="form-field-name"
-                  value="one"
+                  value={this.state.phonenumber_country_code}
                   options={options}
                   onChange={this.countryCodeChangeHandler}
                 />
@@ -62,6 +71,8 @@ class PhotographerRegistrationStep3 extends Component {
                   <span className="input-group-addon">+62</span>
                   <input
                     type="text"
+                    onChange={this.phonumberChangeHandler}
+                    value={this.state.phonenumber}
                     required="required"
                     className="form-control"
                     placeholder="Enter Your Phone Number"
@@ -69,12 +80,17 @@ class PhotographerRegistrationStep3 extends Component {
                 </div>
               </div>
 
-              <Link
-                to="/photographer-registration/finish"
+              <button
+                type="button"
+                onClick={this.submitDataHandler}
                 className="button next-btn"
               >
-                Next
-              </Link>
+                {this.props.isUploadingPhoneNumber ? (
+                  'Saving your phone number, please wait...'
+                ) : (
+                  'Next'
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -83,4 +99,13 @@ class PhotographerRegistrationStep3 extends Component {
   }
 }
 
-export default PhotographerRegistrationStep3;
+export default connect(
+  state => ({
+    user: state.userAuth,
+    isUploadingPhoneNumber: state.userInitProfile.isUploadingPhoneNumber,
+  }),
+  dispatch => ({
+    uploadPhonenumber: (phonenumber, email) =>
+      dispatch(uploadPhonenumber(phonenumber, email)),
+  })
+)(PhotographerRegistrationStep3);
