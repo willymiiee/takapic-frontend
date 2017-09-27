@@ -11,6 +11,7 @@ const createUserMetadata = (email, userType, displayName) => {
     userType: userType,
     firstLogin: true,
     displayName: displayName,
+    phoneNumber: '-',
   });
 };
 
