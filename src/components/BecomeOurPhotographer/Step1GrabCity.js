@@ -8,19 +8,6 @@ import SearchBox from 'react-google-maps/lib/places/SearchBox';
 
 const google = window.google;
 
-const GrabCityGoogleMap = withGoogleMap(props => (
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={15}
-    center={props.center}
-    onBoundsChanged={props.onBoundsChanged}
-  >
-    {props.markers.map((marker, index) => (
-      <Marker position={marker.position} key={index} />
-    ))}
-  </GoogleMap>
-));
-
 const GrabCitySearchBox = withGoogleMap(props => (
   <GoogleMap
     ref={props.onMapMounted}
@@ -46,7 +33,7 @@ const GrabCitySearchBox = withGoogleMap(props => (
  *
  * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
  */
-export default connect(state => state.bop.location)(
+export default connect(state => state.photographerServiceInfo.location)(
   class SearchBoxExample extends Component {
     handleMapMounted = map => {
       this.mapRef = map;
