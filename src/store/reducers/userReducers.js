@@ -21,6 +21,7 @@ export const userAuth = (state = {}, action) => {
         photoURL: action.payload.photoURL,
         providerId: providerData.providerId,
         refreshToken: action.payload.refreshToken,
+        userCurrency: 'NZD',
       };
       storeAuthDataToLocalStorage(newData1);
       return newData1;

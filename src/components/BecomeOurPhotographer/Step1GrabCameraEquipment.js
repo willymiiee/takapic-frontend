@@ -3,6 +3,23 @@ import { Link } from 'react-router-dom';
 import Page from 'components/Page';
 
 class Step1GrabCameraEquipment extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cameraEquipment: {
+        body: ['Nikon D5600', 'Canon 60D'],
+        lens: [
+          'Canon EF 50mm f/1.8 II Lens – f',
+          'Canon EF 85mm f/1.8 USM Telephoto Lens',
+        ],
+      },
+      languages: ['English', 'Japanese'],
+      speciality: ['Wedding', 'Snap'],
+    };
+
+    // this.nextStepHandler = this.nextStepHandler.bind(this);
+  }
+
   render() {
     return (
       <Page>
