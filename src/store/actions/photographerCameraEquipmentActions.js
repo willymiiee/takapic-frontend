@@ -16,13 +16,12 @@ const createCameraEquipment = (
   const ref = db.ref('/photographer_service_information');
   const metadataRef = ref.child(dashify(email));
   metadataRef
-    .set({
+    .update({
       cameraEquipment: { body, lens },
       languages,
       speciality,
     })
     .then(result => {
-      console.log('result', result);
       dispatch({
         type: 'SUBMIT_CAMERA_EQUIPMENT_SUCCESS',
         payload: { status: 'OK', message: 'Data saved' },
@@ -30,7 +29,6 @@ const createCameraEquipment = (
       history.push('/become-our-photographer/welcome-2');
     })
     .catch(error => {
-      console.log('error', error);
       dispatch({
         type: 'SUBMIT_CAMERA_EQUIPMENT_ERROR',
         payload: error,

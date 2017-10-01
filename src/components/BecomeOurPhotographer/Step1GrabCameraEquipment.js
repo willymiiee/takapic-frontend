@@ -86,15 +86,15 @@ class Step1GrabCameraEquipment extends Component {
       this.notEmpty(languages) &&
       this.notEmpty(speciality)
     ) {
-      console.log(this.state.selected);
       const { user: { email } } = this.props;
-      this.props.submitCameraEquipment({
+      const params = {
         email,
-        bodies,
-        lenses,
+        bodies: bodies.filter(b => b !== ''),
+        lenses: lenses.filter(l => l !== ''),
         languages,
         speciality,
-      });
+      };
+      this.props.submitCameraEquipment(params);
     } else {
       alert('Please complete the form');
     }
