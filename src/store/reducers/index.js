@@ -2,11 +2,13 @@ import { combineReducers } from 'redux';
 import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
+import photographerCameraEquipment from './photographerCameraEquipment';
 
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
   userInitProfile,
+  photographerCameraEquipment,
   photographerServiceInfo,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
