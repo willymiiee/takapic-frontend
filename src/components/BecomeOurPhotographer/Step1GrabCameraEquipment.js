@@ -29,10 +29,10 @@ class Step1GrabCameraEquipment extends Component {
       languages: ['English', 'Japanese'],
       speciality: ['Wedding', 'Snap'],
       selected: {
-        bodies: ['Canon'],
-        lenses: ['Nikon'],
-        languages: ['English'],
-        speciality: ['Wedding'],
+        bodies: [''],
+        lenses: [''],
+        languages: [],
+        speciality: [],
       },
     };
 
