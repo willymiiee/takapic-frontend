@@ -3,6 +3,7 @@ import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
 import photographerCameraEquipment from './photographerCameraEquipment';
+import photographerServiceInfoStep2 from './photographerServiceInfoReducersStep2';
 
 const rootReducer = combineReducers({
   userAuth,
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   userInitProfile,
   photographerCameraEquipment,
   photographerServiceInfo,
+  photographerServiceInfoStep2,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {
