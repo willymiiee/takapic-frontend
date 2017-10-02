@@ -1,5 +1,7 @@
 import firebase from 'firebase';
+import { database } from 'services/firebase';
 import history from './../../services/history';
+import { dashify } from '../../helpers/helpers';
 
 export const setPricing = payload => {
   return dispatch => {
@@ -10,13 +12,45 @@ export const setPricing = payload => {
   };
 };
 
+export const setDateAvailability = () => {};
+
+export const setMeetingPoint = params => {
+  const { email, packagesPrice } = params;
+  console.log('email', email);
+  console.log('packagesPrice', packagesPrice);
+
+  return dispatch => {
+    dispatch({ type: 'SUBMIT_MEETING_POINT' });
+    const db = database.database();
+    const ref = db.ref('/photographer_service_information');
+    const metadataRef = ref.child(dashify(email));
+    metadataRef
+      .update({
+        packagesPrice,
+      })
+      .then(result => {
+        dispatch({
+          type: 'SUBMIT_MEETING_POINT_SUCCESS',
+          payload: { status: 'OK', message: 'Data saved' },
+        });
+        history.push('/become-our-photographer/step-2-4');
+      })
+      .catch(error => {
+        dispatch({
+          type: 'SUBMIT_MEETING_POINT_ERROR',
+          error,
+        });
+      });
+  };
+};
+
 export const submitUploadPhotosPortfolio = params => {
   const { email, files } = params;
   return dispatch => {
     let percentages = files.map(f => 0);
     let tasks = [];
     for (let i in files) {
-      const fullDirectory = 'pictures/user-photo-profile';
+      const fullDirectory = `pictures/portofolio-photos/${dashify(email)}`;
       const imageFile = files[i].file;
       var storageRef = firebase
         .storage()

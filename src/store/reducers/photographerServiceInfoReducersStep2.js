@@ -1,5 +1,3 @@
-import camelCase from 'lodash/camelCase';
-
 const initialState = {
   loading: false,
   loaded: false,
