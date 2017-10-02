@@ -4,6 +4,7 @@ import { userInitProfile } from './userInitProfileReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
 import photographerCameraEquipment from './photographerCameraEquipment';
 import photographerServiceInfoStep2 from './photographerServiceInfoReducersStep2';
+import photographerCameraEquipment from './photographerCameraEquipment';
 
 const rootReducer = combineReducers({
   userAuth,
