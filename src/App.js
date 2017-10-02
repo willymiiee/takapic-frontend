@@ -156,19 +156,15 @@ const App = connect(state => state)(props => {
               component={onlyLoggedIn(Step2DateAvailability)}
             />
             <Route
-              path="/become-our-photographer/step-2-3"
+              path="/become-our-photographer/step-2-4"
               component={onlyLoggedIn(Step2IntiatePortofolio)}
             />
             <Route
-              path="/become-our-photographer/step-2-3"
-              component={onlyLoggedIn(Step2IntiatePortofolio)}
-            />
-            <Route
-              path="/become-our-photographer/step-2-4a"
+              path="/become-our-photographer/step-2-3a"
               component={onlyLoggedIn(Step2SetupMeetingPointA)}
             />
             <Route
-              path="/become-our-photographer/step-2-4b"
+              path="/become-our-photographer/step-2-3b"
               component={onlyLoggedIn(Step2SetupMeetingPointB)}
             />
             <Route
