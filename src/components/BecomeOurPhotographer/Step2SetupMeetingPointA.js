@@ -22,7 +22,7 @@ export default class Step2SetupMeetingPointA extends Component {
                   <input type="text" />
                   <input type="text" />
                   <Link
-                    to="/become-our-photographer/step-2-4b"
+                    to="/become-our-photographer/step-2-3b"
                     className="button"
                   >
                     Confirm
@@ -43,12 +43,12 @@ export default class Step2SetupMeetingPointA extends Component {
           </div>
           <hr />
           <Link
-            to="/become-our-photographer/step-2-3"
+            to="/become-our-photographer/step-2-2"
             className="button button-white-no-shadow u"
           >
             Back
           </Link>
-          <Link to="/become-our-photographer/step-2-5" className="button">
+          <Link to="/become-our-photographer/step-2-3b" className="button">
             Done
           </Link>
         </div>
