@@ -10,8 +10,8 @@ export default class Step2SetupMeetingPointA extends Component {
           <div className="steps steps-4">
             <div />
             <div />
-            <div />
             <div className="active" />
+            <div />
           </div>
           <hr />
           <h3>Please choose three different meeting points</h3>

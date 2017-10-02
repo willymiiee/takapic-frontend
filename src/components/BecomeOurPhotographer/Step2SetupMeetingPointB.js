@@ -19,8 +19,8 @@ export default class Step2SetupMeetingPointB extends Component {
           <div className="steps steps-4">
             <div />
             <div />
-            <div />
             <div className="active" />
+            <div />
           </div>
           <hr />
           <h3>Please choose three different meeting points</h3>
@@ -31,7 +31,7 @@ export default class Step2SetupMeetingPointB extends Component {
                   <input type="text" />
                   <input type="text" />
                   <Link
-                    to="/become-our-photographer/step-2-3a"
+                    to="/become-our-photographer/step-2-4"
                     className="button"
                   >
                     Confirm

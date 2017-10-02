@@ -12,7 +12,6 @@ export const setPricing = payload => {
 
 export const submitUploadPhotosPortfolio = params => {
   const { email, files } = params;
-  console.log('params', params);
   return dispatch => {
     let percentages = files.map(f => 0);
     let tasks = [];
@@ -30,7 +29,11 @@ export const submitUploadPhotosPortfolio = params => {
           var percentage =
             snapshot.bytesTransferred / snapshot.totalBytes * 100;
           percentages[i] = percentage;
-          dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO', percentages });
+          dispatch({
+            type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO',
+            files,
+            percentages,
+          });
         },
         function error(err) {},
         function complete() {
@@ -38,10 +41,10 @@ export const submitUploadPhotosPortfolio = params => {
         }
       );
     }
-    dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO', percentages: [0] });
-    Promise.all().then(
+    return Promise.all(tasks).then(
       data => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_SUCCESS' });
+        history.push('/become-our-photographer/step-2-5');
       },
       error => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ERROR' });
