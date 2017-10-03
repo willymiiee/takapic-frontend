@@ -13,7 +13,15 @@ export const selfDescription = description => {
 };
 
 export const submitCameraEquipment = params => {
-  const { email, bodies, lenses, languages, speciality } = params;
+  const {
+    email,
+    bodies,
+    lenses,
+    languages,
+    speciality,
+    location,
+    selfDescription,
+  } = params;
   return dispatch => {
     dispatch({ type: 'SUBMIT_CAMERA_EQUIPMENT' });
     const db = database.database();
@@ -23,6 +31,8 @@ export const submitCameraEquipment = params => {
       .update({
         cameraEquipment: { body: bodies, lens: lenses },
         languages,
+        location,
+        selfDescription,
         speciality,
       })
       .then(result => {
