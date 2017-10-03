@@ -1,71 +1,73 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Page from 'components/Page';
+import { ProgressBar } from 'react-bootstrap';
+import { submitUploadPhotosPortfolio } from '../../store/actions/photographerServiceInfoActionsStep2';
 
-export default class Step2IntiatePortofolio extends Component {
-  componentDidMount() {
-    var photoPreview = window.$('#photo-preview');
-
-    window.$(function() {
-      function preview(files) {
-        photoPreview.html('');
-        if (window.File && window.FileReader && window.FileList) {
-          for (var i = 0, n = Math.min(files.length, 10); i < n; i++) {
-            if (files[i]) {
-              var reader = new FileReader();
-              reader.onload = function(e) {
-                window
-                  .$('#photo-preview')
-                  .append(
-                    '<div><img src="' +
-                      e.target.result +
-                      '"><i title="Remove Photo"></i></div>'
-                  );
-              };
-              reader.readAsDataURL(files[i]);
-            }
-          }
-          window
-            .$('#photographer-landing > h3')
-            .html('Great! You are ready to impress travellers with your work!');
-          window.$('#next-button').prop('disabled', false);
-        } else {
-          alert('The File APIs are not fully supported in this browser!');
-        }
-      }
-
-      window.$('#upload-btn').click(function() {
-        window.$('#upload-file').trigger('click');
-      });
-
-      window.$('#upload-file').change(function() {
-        preview(this.files);
-      });
-
-      photoPreview.on('click', 'i', function() {
-        window
-          .$(this)
-          .parent()
-          .remove();
-        if (window.$('#photo-preview').children().length === 0) {
-          window
-            .$('#photographer-landing > h3')
-            .html('Let start building your portofolio! (Maximum 10 photos)');
-          window.$('#next-button').prop('disabled', true);
-        }
-      });
-    });
+class Step2IntiatePortofolio extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedPhotos: props.photographerServiceInfoStep2.files || [],
+    };
   }
 
+  handleUpload = event => {
+    const files = event.target.files;
+    for (let i = 0, n = Math.min(files.length, 10); i < n; i++) {
+      if (files[i]) {
+        const file = files[i];
+        if (file.type.indexOf('image/') === 0) {
+          var reader = new FileReader();
+          reader.onload = e => {
+            let { selectedPhotos } = this.state;
+            selectedPhotos = [
+              ...selectedPhotos,
+              { file, reader: e.target.result },
+            ];
+            this.setState({ selectedPhotos });
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+  };
+
+  handleRemove = (event, index) => {
+    let { selectedPhotos } = this.state;
+    selectedPhotos = [
+      ...selectedPhotos.slice(0, index),
+      ...selectedPhotos.slice(index + 1),
+    ];
+    this.setState({ selectedPhotos });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const { selectedPhotos } = this.state;
+    if (selectedPhotos.length < 1) {
+      alert('Please upload at least on photo.');
+    } else {
+      const { user: { email } } = this.props;
+      const params = {
+        email,
+        files: selectedPhotos,
+      };
+      this.props.submitUploadPhotosPortfolio(params);
+    }
+  };
+
   render() {
+    const { selectedPhotos } = this.state;
     return (
       <Page>
         <div className="container" id="photographer-landing">
           <div className="steps steps-4">
             <div />
             <div />
-            <div className="active" />
             <div />
+            <div className="active" />
           </div>
           <hr />
           <h3>Let start building your portofolio! (Maximum 10 photos)</h3>
@@ -74,15 +76,56 @@ export default class Step2IntiatePortofolio extends Component {
               <div>
                 <input
                   accept="image/*"
-                  id="upload-file"
+                  ref={ref => (this._uploadFile = ref)}
                   className="hidden"
                   multiple
                   type="file"
+                  onChange={this.handleUpload}
                 />
-                <button className="button" id="upload-btn">
+                <button
+                  className="button"
+                  onClick={() => this._uploadFile.click()}
+                >
                   Upload
                 </button>
-                <div id="photo-preview" />
+                <div id="photo-preview">
+                  {selectedPhotos.map((photo, key) => (
+                    <div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                        }}
+                      />
+                      {this.props.photographerServiceInfoStep2.loading && (
+                        <ProgressBar
+                          striped
+                          bsStyle="success"
+                          now={
+                            this.props.photographerServiceInfoStep2.percentages[
+                              key
+                            ]
+                          }
+                          style={{
+                            position: 'absolute',
+                            top: 70,
+                            width: '100%',
+                          }}
+                        />
+                      )}
+                      <img src={photo.reader} />
+                      {!this.props.photographerServiceInfoStep2.loading && (
+                        <i
+                          title="Remove Photo"
+                          onClick={event => this.handleRemove(event, key)}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
@@ -98,12 +141,16 @@ export default class Step2IntiatePortofolio extends Component {
           </div>
           <hr />
           <Link
-            to="/become-our-photographer/step-2-2"
+            to="/become-our-photographer/step-2-3b"
             className="button button-white-no-shadow u"
           >
             Back
           </Link>
-          <Link to="/become-our-photographer/step-2-4a" className="button">
+          <Link
+            to="/become-our-photographer/step-2-5"
+            className="button"
+            onClick={this.handleSubmit}
+          >
             Next
           </Link>
         </div>
@@ -111,3 +158,17 @@ export default class Step2IntiatePortofolio extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.userAuth,
+  photographerServiceInfoStep2: state.photographerServiceInfoStep2,
+});
+
+const mapDispatchToProps = dispatch => ({
+  submitUploadPhotosPortfolio: payload =>
+    dispatch(submitUploadPhotosPortfolio(payload)),
+});
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Step2IntiatePortofolio)
+);
