@@ -35,7 +35,7 @@ export const submitCameraEquipment = params => {
       .catch(error => {
         dispatch({
           type: 'SUBMIT_CAMERA_EQUIPMENT_ERROR',
-          payload: error,
+          error,
         });
       });
   };

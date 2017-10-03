@@ -44,8 +44,15 @@ const photographerServiceInfo = (state = initialState, action) => {
       return { loading: true, loaded: false };
     case 'SUBMIT_CAMERA_EQUIPMENT_SUCCESS':
       delete state.error;
-      return { ...state, loading: false, loaded: true, data: action.payload };
+      return { ...state, loading: false, loaded: true, ...action.payload };
     case 'SUBMIT_CAMERA_EQUIPMENT_ERROR':
+      return { loading: false, loaded: true, error: action.error };
+    case 'SUBMIT_MEETING_POINT':
+      return { loading: true, loaded: false };
+    case 'SUBMIT_MEETING_POINT_SUCCESS':
+      delete state.error;
+      return { ...state, loading: false, loaded: true, data: action.payload };
+    case 'SUBMIT_MEETING_POINT_ERROR':
       return { loading: false, loaded: true, error: action.payload };
     default:
       return state;
