@@ -115,7 +115,7 @@ export default class Step2DateAvailability extends Component {
           >
             Back
           </Link>
-          <Link to="/become-our-photographer/step-2-3a" className="button">
+          <Link to="/become-our-photographer/step-2-3" className="button">
             Next
           </Link>
         </div>
