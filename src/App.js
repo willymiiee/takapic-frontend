@@ -32,7 +32,7 @@ import Step1GrabCameraEquipment from 'components/BecomeOurPhotographer/Step1Grab
 import Step2Welcome from 'components/BecomeOurPhotographer/Step2Welcome';
 import Step2IndicatePrice from 'components/BecomeOurPhotographer/Step2IndicatePrice';
 import Step2DateAvailability from 'components/BecomeOurPhotographer/Step2DateAvailability';
-import Step2IntiatePortofolio from 'components/BecomeOurPhotographer/Step2InitiatePortofolio';
+import Step2InitiatePortofolio from 'components/BecomeOurPhotographer/Step2InitiatePortofolio';
 import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2SetupMeetingPointA';
 import Step2SetupMeetingPointB from 'components/BecomeOurPhotographer/Step2SetupMeetingPointB';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
@@ -156,16 +156,12 @@ const App = connect(state => state)(props => {
               component={onlyLoggedIn(Step2DateAvailability)}
             />
             <Route
-              path="/become-our-photographer/step-2-4"
-              component={onlyLoggedIn(Step2IntiatePortofolio)}
-            />
-            <Route
-              path="/become-our-photographer/step-2-3a"
+              path="/become-our-photographer/step-2-3"
               component={onlyLoggedIn(Step2SetupMeetingPointA)}
             />
             <Route
-              path="/become-our-photographer/step-2-3b"
-              component={onlyLoggedIn(Step2SetupMeetingPointB)}
+              path="/become-our-photographer/step-2-4"
+              component={onlyLoggedIn(Step2InitiatePortofolio)}
             />
             <Route
               path="/become-our-photographer/step-2-5"

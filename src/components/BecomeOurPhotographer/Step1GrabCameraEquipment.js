@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from 'react-bootstrap';
 
-import { submitCameraEquipment } from '../../store/actions/photographerCameraEquipmentActions';
+import { submitCameraEquipment } from '../../store/actions/photographerServiceInfoActions';
 
 class Step1GrabCameraEquipment extends Component {
   constructor(props) {
