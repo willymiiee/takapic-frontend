@@ -86,13 +86,21 @@ class Step1GrabCameraEquipment extends Component {
       this.notEmpty(languages) &&
       this.notEmpty(speciality)
     ) {
-      const { user: { email } } = this.props;
+      const {
+        photographerServiceInfo: { locationStructure, selfDescription },
+        user: { email },
+      } = this.props;
+      locationStructure.location_merge = this.setLocationMerge(
+        locationStructure
+      );
       const params = {
         email,
         bodies: bodies.filter(b => b !== ''),
         lenses: lenses.filter(l => l !== ''),
         languages,
         speciality,
+        location: locationStructure,
+        selfDescription,
       };
       this.props.submitCameraEquipment(params);
     } else {
@@ -100,9 +108,21 @@ class Step1GrabCameraEquipment extends Component {
     }
   };
 
-  notEmpty(arr) {
+  notEmpty = arr => {
     return arr.length > 0;
-  }
+  };
+
+  setLocationMerge = n => {
+    let res = [];
+    for (var key in n) {
+      // check also if property is not inherited from prototype
+      if (n.hasOwnProperty(key)) {
+        var value = n[key];
+        res = [...res, value];
+      }
+    }
+    return res.join(',');
+  };
 
   render() {
     return (
@@ -216,6 +236,7 @@ class Step1GrabCameraEquipment extends Component {
 export default connect(
   state => ({
     user: state.userAuth,
+    photographerServiceInfo: state.photographerServiceInfo,
   }),
   dispatch => ({
     submitCameraEquipment: (email, password, displayName, userType) =>
