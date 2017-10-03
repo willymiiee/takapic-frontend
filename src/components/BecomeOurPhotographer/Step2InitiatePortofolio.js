@@ -141,7 +141,7 @@ class Step2IntiatePortofolio extends Component {
           </div>
           <hr />
           <Link
-            to="/become-our-photographer/step-2-3b"
+            to="/become-our-photographer/step-2-3"
             className="button button-white-no-shadow u"
           >
             Back

@@ -45,13 +45,13 @@ export default class Step2SetupMeetingPointB extends Component {
           </div>
           <hr />
           <Link
-            to="/become-our-photographer/step-2-3b"
+            to="/become-our-photographer/step-2-3a"
             className="button button-white-no-shadow u"
           >
             Back
           </Link>
           <Link to="/become-our-photographer/step-2-4" className="button">
-            Done
+            Next
           </Link>
         </div>
       </Page>
