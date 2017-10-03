@@ -1,7 +1,6 @@
 import { database } from 'services/firebase';
 import history from '../../services/history';
 import { dashify } from '../../helpers/helpers';
-// import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
 export const selfDescription = description => {
   return dispatch => {
@@ -22,6 +21,7 @@ export const submitCameraEquipment = params => {
     location,
     selfDescription,
   } = params;
+
   return dispatch => {
     dispatch({ type: 'SUBMIT_CAMERA_EQUIPMENT' });
     const db = database.database();
@@ -45,7 +45,7 @@ export const submitCameraEquipment = params => {
       .catch(error => {
         dispatch({
           type: 'SUBMIT_CAMERA_EQUIPMENT_ERROR',
-          error,
+          error
         });
       });
   };

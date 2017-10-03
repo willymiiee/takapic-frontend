@@ -13,11 +13,11 @@ class Step2SetupMeetingPointA extends Component {
     } = this.props;
     const n = detailMasterPackage;
     let packagesPrice = [];
-    console.log('n', n);
-    for (var key in n) {
+
+    for (let key in n) {
       // check also if property is not inherited from prototype
       if (n.hasOwnProperty(key)) {
-        var value = n[key];
+        let value = n[key];
         packagesPrice = [
           ...packagesPrice,
           {
@@ -33,12 +33,10 @@ class Step2SetupMeetingPointA extends Component {
       email,
       packagesPrice,
     };
-    console.log(params);
     this.props.setMeetingPoint(params);
   };
 
   render() {
-    console.log(this.props.photographerServiceInfoStep2);
     return (
       <Page>
         <div className="container" id="photographer-landing">
@@ -83,6 +81,7 @@ class Step2SetupMeetingPointA extends Component {
           >
             Back
           </Link>
+
           <Link
             to="/become-our-photographer/step-2-4"
             className="button"
