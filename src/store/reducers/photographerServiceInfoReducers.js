@@ -1,6 +1,8 @@
 import camelCase from 'lodash/camelCase';
 
 const initialState = {
+  loading: false,
+  loaded: false,
   location: {
     bounds: null,
     center: {
@@ -36,9 +38,15 @@ const photographerServiceInfo = (state = initialState, action) => {
         },
         locationStructure,
       };
-
     case 'BECOME_OUR_PHOTOGRAPHER_SELF_INTRO':
       return { ...state, ...action.payload };
+    case 'SUBMIT_CAMERA_EQUIPMENT':
+      return { loading: true, loaded: false };
+    case 'SUBMIT_CAMERA_EQUIPMENT_SUCCESS':
+      delete state.error;
+      return { ...state, loading: false, loaded: true, data: action.payload };
+    case 'SUBMIT_CAMERA_EQUIPMENT_ERROR':
+      return { loading: false, loaded: true, error: action.payload };
     default:
       return state;
   }
