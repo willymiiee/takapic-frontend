@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import history from './../../services/history';
+import { dashify } from '../../helpers/helpers';
 
 export const setPricing = payload => {
   return dispatch => {
@@ -10,13 +11,17 @@ export const setPricing = payload => {
   };
 };
 
+export const setDateAvailability = () => {};
+
+export const setMeetingPoint = () => {};
+
 export const submitUploadPhotosPortfolio = params => {
   const { email, files } = params;
   return dispatch => {
     let percentages = files.map(f => 0);
     let tasks = [];
     for (let i in files) {
-      const fullDirectory = 'pictures/user-photo-profile';
+      const fullDirectory = `pictures/portofolio-photos/${dashify(email)}`;
       const imageFile = files[i].file;
       var storageRef = firebase
         .storage()
