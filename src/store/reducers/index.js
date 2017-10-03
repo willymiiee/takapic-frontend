@@ -8,6 +8,7 @@ const rootReducer = combineReducers({
   userAuth,
   userSignup,
   userInitProfile,
+  photographerCameraEquipment,
   photographerServiceInfo,
   photographerServiceInfoStep2,
   locale: (state = 'en-US', action) =>
