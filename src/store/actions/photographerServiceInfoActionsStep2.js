@@ -44,10 +44,6 @@ export const setMeetingPoint = params => {
   };
 };
 
-export const setDateAvailability = () => {};
-
-export const setMeetingPoint = () => {};
-
 export const submitUploadPhotosPortfolio = params => {
   const { email, files } = params;
   return dispatch => {
