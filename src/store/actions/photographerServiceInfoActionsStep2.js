@@ -16,8 +16,6 @@ export const setDateAvailability = () => {};
 
 export const setMeetingPoint = params => {
   const { email, packagesPrice } = params;
-  console.log('email', email);
-  console.log('packagesPrice', packagesPrice);
 
   return dispatch => {
     dispatch({ type: 'SUBMIT_MEETING_POINT' });

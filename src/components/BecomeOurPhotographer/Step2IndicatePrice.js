@@ -33,28 +33,6 @@ class Step2IndicatePrice extends Component {
           requirement: 'Minimum 200 photos',
         },
       },
-      // detailMasterPackage: {
-      //   PKG1: {
-      //     packageName: '1 hour',
-      //     requirement: 'Minimum 30 photos',
-      //     currency: props.user.userCurrency
-      //   },
-      //   PKG2: {
-      //     packageName: '2 hours',
-      //     requirement: 'Minimum 60 photos',
-      //     currency: props.user.userCurrency
-      //   },
-      //   PKG3: {
-      //     packageName: '4 hours',
-      //     requirement: 'Minimum 120 photos',
-      //     currency: props.user.userCurrency
-      //   },
-      //   PKG4: {
-      //     packageName: '8 hours',
-      //     requirement: 'Minimum 200 photos',
-      //     currency: props.user.userCurrency
-      //   }
-      // }
     };
   }
   handleChange = (event, tr, index) => {
