@@ -4,7 +4,7 @@ import Page from 'components/Page';
 import { connect } from 'react-redux';
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
-import SearchBox from 'react-google-maps/lib/places/SearchBox';
+import SearchBox from 'react-google-maps/lib/components/places/SearchBox';
 
 const google = window.google;
 
