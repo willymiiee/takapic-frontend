@@ -3,30 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Page from 'components/Page';
 import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
-import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
-import SearchBox from 'react-google-maps/lib/places/SearchBox';
-
-const google = window.google;
-
-const TakeMeetingPoint = withGoogleMap(props => (
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={15}
-    center={props.center}
-    onBoundsChanged={props.onBoundsChanged}
-  >
-    <SearchBox
-      ref={props.onSearchBoxMounted}
-      bounds={props.bounds}
-      controlPosition={google.maps.ControlPosition.TOP}
-      onPlacesChanged={props.onPlacesChanged}
-      inputPlaceholder={`Which city do you live in?`}
-      inputStyle={{
-        zIndex: 9999999,
-      }}
-    />
-  </GoogleMap>
-));
+import MapWithASearchBox from './../MapWithASearchBox';
 /*
  * https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
  *
@@ -65,56 +42,6 @@ class Step2SetupMeetingPointA extends Component {
     this.props.setMeetingPoint(params);
   };
 
-  handleMapMounted = map => {
-    this.mapRef = map;
-    if (this.props.places && this.mapRef) {
-      this.setBounds(this.props.places);
-    }
-  };
-
-  handleSearchBoxMounted = searchBox => {
-    this.searchBoxRef = searchBox;
-  };
-
-  handleBoundsChanged = () => {
-    this.props.dispatch({
-      type: 'BECOME_OUR_PHOTOGRAPHER_BOUNDS_CHANGED',
-      payload: {
-        bounds: this.mapRef.getBounds(),
-        center: this.mapRef.getCenter(),
-      },
-    });
-  };
-
-  handlePlacesChanged = () => {
-    this.props.dispatch({
-      type: 'BECOME_OUR_PHOTOGRAPHER_PLACES_CHANGED',
-      payload: this.setBounds(this.searchBoxRef.getPlaces()),
-    });
-  };
-
-  setBounds(places) {
-    const bounds = new google.maps.LatLngBounds();
-
-    places.forEach(place => {
-      place.geometry.viewport
-        ? bounds.union(place.geometry.viewport)
-        : bounds.extend(place.geometry.location);
-    });
-
-    const markers = places.map(place => ({
-      position: place.geometry.location,
-    }));
-
-    const center = markers.length > 0 ? markers[0].position : this.props.center;
-    this.mapRef.fitBounds(bounds);
-    return {
-      places,
-      center,
-      markers,
-    };
-  }
-
   render() {
     console.log(this.props.photographerServiceInfoStep2);
     return (
@@ -144,17 +71,7 @@ class Step2SetupMeetingPointA extends Component {
               </div>
             </div>
             <div className="col-lg-12 margin-top-15">
-              <TakeMeetingPoint
-                containerElement={<div style={{ height: 480 }} />}
-                mapElement={<div style={{ height: 480 }} />}
-                center={this.props.center}
-                onMapMounted={this.handleMapMounted}
-                onBoundsChanged={this.handleBoundsChanged}
-                onSearchBoxMounted={this.handleSearchBoxMounted}
-                bounds={this.props.bounds}
-                onPlacesChanged={this.handlePlacesChanged}
-                markers={this.markers}
-              />
+              <MapWithASearchBox />
               <div className="container">
                 <h3>Your Created Point</h3>
                 <div>
