@@ -993,16 +993,19 @@ button.u:hover {
 }
 #meeting-points > div > input:nth-child(1) {
   display: inline-block;
-  width: 200px;
+  width: 570px;
+  margin-top: 0px;
 }
 #meeting-points > div > input:nth-child(2) {
   display: inline-block;
-  width: calc(100% - 320px);
+  width: 484px;
   margin: 0 10px;
+  margin-top: 0px;
 }
 #meeting-points > div > .button {
   width: 100px;
   margin-right: 0;
+  padding-left: 30px;
 }
 
 #photographer-portofolio-left > img {
@@ -2723,4 +2726,57 @@ PHASE 1 BOP - New Photographer Account Register
   #photographer-landing-finish #success-page .wrapper button {
     padding: 8px 12px;
   }
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+#line-number {
+  position: static;
+  top: 58%;
+  content: '';
+  display: block;
+  width: 60%;
+  margin-left: 47px;
+  margin-top: -40px;
+  border-bottom: 1px solid #367fbb;
+  z-index: -5;
+}
+
+#delete-button {
+  z-index: -7;
+  margin-right: -20px;
+  float: right;
+  color: red;
+  font-size: 30px;
+  margin-top: -3px;
+}
+.delete-button {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
 }
