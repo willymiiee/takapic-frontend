@@ -16,14 +16,7 @@ export const setDateAvailability = () => {};
 
 export const setMeetingPoint = params => {
   const { email, packagesPrice } = params;
-  console.log('email', email);
-  console.log('packagesPrice', packagesPrice);
-  // const packagesPrice = detailMasterPackage.map(d => ({
-  //   currency: d.currency,
-  //   packageName: d.packageName,
-  //   price: d.price,
-  //   requirement: d.requirement
-  // }))
+
   return dispatch => {
     dispatch({ type: 'SUBMIT_MEETING_POINT' });
     const db = database.database();
