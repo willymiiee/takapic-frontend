@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import DateTime from 'react-datetime';
 import moment from 'moment';
 import Page from 'components/Page';
+import ReactRating from 'react-rating-float';
+import CircularProgressbar from 'react-circular-progressbar';
 
 class PhotographerDetail extends Component {
   constructor(props) {
@@ -9,6 +12,26 @@ class PhotographerDetail extends Component {
     let { state } = this.props.location;
     console.log(state);
     this.state = {
+      reviews: {
+        rating: {
+          label: 'Average',
+          value: 3.4,
+        },
+        impressions: [
+          {
+            label: 'Friendly',
+            value: 0.6,
+          },
+          {
+            label: 'Skillful',
+            value: 0.8,
+          },
+          {
+            label: 'Comprehensive',
+            value: 0.7,
+          },
+        ],
+      },
       progress1: 0.6,
       progress2: 0.8,
       progress3: 0.7,
@@ -320,29 +343,25 @@ class PhotographerDetail extends Component {
                 </div>
                 <h3 className="has-dot">Reviews</h3>
                 <div className="has-border">
-                  <div id="photographer-rating">
-                    <div>Average</div>
-                    <div id="photographer-rating-star">
-                      <i className="fa fa-star" />
-                      <i className="fa fa-star" />
-                      <i className="fa fa-star" />
-                      <i className="fa fa-star" />
-                    </div>
-                    <div id="photographer-score">4.0</div>
+                  <div style={{ marginBottom: 30 }}>
+                    <h3 style={{ color: '#666' }}>
+                      {this.state.reviews.rating.label}
+                    </h3>
+                    <ReactRating
+                      rate={this.state.reviews.rating.value}
+                      total={5}
+                    />
                   </div>
                   <div id="photographer-stats">
-                    <div>
-                      <div className="circle-progress" />
-                      <b>Friendly</b>
-                    </div>
-                    <div>
-                      <div className="circle-progress" />
-                      <b>Skillful</b>
-                    </div>
-                    <div>
-                      <div className="circle-progress" />
-                      <b>Comprehensive</b>
-                    </div>
+                    {this.state.reviews.impressions.map((item, key) => (
+                      <div style={{ padding: 10 }}>
+                        <CircularProgressbar
+                          percentage={item.value * 100}
+                          initialAnimation
+                        />
+                        <b>{item.label}</b>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <h3 className="has-dot">
@@ -427,4 +446,4 @@ class PhotographerDetail extends Component {
   }
 }
 
-export default PhotographerDetail;
+export default withRouter(PhotographerDetail);

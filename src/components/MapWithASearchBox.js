@@ -9,7 +9,6 @@ import {
 } from 'react-google-maps';
 import SearchBox from 'react-google-maps/lib/components/places/SearchBox';
 const google = window.google;
-console.log(google.maps);
 
 const MapWithASearchBox = compose(
   withProps(),
