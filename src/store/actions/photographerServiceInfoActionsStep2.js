@@ -15,7 +15,7 @@ export const setPricing = payload => {
 export const setDateAvailability = () => {};
 
 export const setMeetingPoint = params => {
-  const { email, packagesPrice } = params;
+  const { email, packagesPrice, meetingPoints } = params;
 
   return dispatch => {
     dispatch({ type: 'SUBMIT_MEETING_POINT' });
@@ -25,6 +25,7 @@ export const setMeetingPoint = params => {
     metadataRef
       .update({
         packagesPrice,
+        meetingPoints,
       })
       .then(result => {
         dispatch({
