@@ -7,37 +7,19 @@ import Slider from 'react-slick';
 const WIDTH = 270;
 
 class MasonryImage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModal: false,
-      initialSlide: 0,
-    };
-    this.close = this.close.bind(this);
-  }
-
-  close() {
-    this.setState({ showModal: false });
-  }
-
-  open = (evt, indexSlide) => {
-    evt.preventDefault();
-    this.setState({ showModal: true, initialSlide: indexSlide });
-  };
-
   render() {
     let flex = 1 / (this.props.widest / this.props.ratio);
     flex = flex !== 0 ? flex : 1;
     const width = WIDTH * flex;
+    const { openFunc, indexItem } = this.props;
 
     return (
       <div>
         <a
           href="#"
-          href="#"
-          className="cv-MasonryGallery-figure"
+          className={`cv-MasonryGallery-figure itemke-${indexItem}`}
           style={{ width: width }}
-          onClick={evt => this.open(evt)}
+          onClick={evt => openFunc(evt, indexItem)}
         >
           <img
             className="cv-MasonryGallery-image"
@@ -45,12 +27,6 @@ class MasonryImage extends React.Component {
             alt=""
           />
         </a>
-        <Modal show={this.state.showModal} onHide={this.close}>
-          <Modal.Header closeButton />
-          <Modal.Body>
-            <GallerySlider initialSlide={this.state.initialSlide} />
-          </Modal.Body>
-        </Modal>
       </div>
     );
   }
@@ -90,6 +66,7 @@ class MasonryGallery extends React.Component {
   }
 
   render() {
+    const { openFunc } = this.props;
     const widest = this.state.images.length ? this.state.images[0].ratio : null;
     return (
       <div>
@@ -101,6 +78,8 @@ class MasonryGallery extends React.Component {
                 src={image.url}
                 ratio={image.ratio}
                 widest={widest}
+                openFunc={openFunc}
+                indexItem={index}
               />
             );
           })}
@@ -126,15 +105,7 @@ class GallerySlider extends Component {
       <Slider {...settings}>
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/01.jpg" alt="" className="center-block" />
-        </div>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
           <img src="/images/photo/02.jpg" alt="" className="center-block" />
-        </div>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/03.jpg" alt="" className="center-block" />
         </div>
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
@@ -142,11 +113,19 @@ class GallerySlider extends Component {
         </div>
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
+          <img src="/images/photo/06.jpg" alt="" className="center-block" />
+        </div>
+        <div>
+          <h3 className="text-center">I'm the title of image below</h3>
+          <img src="/images/photo/01.jpg" alt="" className="center-block" />
+        </div>
+        <div>
+          <h3 className="text-center">I'm the title of image below</h3>
           <img src="/images/photo/05.jpg" alt="" className="center-block" />
         </div>
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/06.jpg" alt="" className="center-block" />
+          <img src="/images/photo/03.jpg" alt="" className="center-block" />
         </div>
       </Slider>
     );
@@ -154,6 +133,25 @@ class GallerySlider extends Component {
 }
 
 export default class PortofolioContent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false,
+      initialSlide: 0,
+    };
+
+    this.close = this.close.bind(this);
+  }
+
+  close() {
+    this.setState({ showModal: false });
+  }
+
+  open = (evt, indexSlide) => {
+    evt.preventDefault();
+    this.setState({ showModal: true, initialSlide: indexSlide });
+  };
+
   render() {
     const images = [
       '01.jpg',
@@ -163,6 +161,7 @@ export default class PortofolioContent extends Component {
       '05.jpg',
       '06.jpg',
     ].map(filename => `/images/photo/${filename}`);
+
     return (
       <PhotographerPortofolio>
         <div className="col-sm-9 margin-top-50">
@@ -171,7 +170,14 @@ export default class PortofolioContent extends Component {
             className="photographer-portofolio-container"
           >
             <div className="masonry-container">
-              <MasonryGallery images={images} />
+              <MasonryGallery images={images} openFunc={this.open} />
+
+              <Modal show={this.state.showModal} onHide={this.close}>
+                <Modal.Header closeButton />
+                <Modal.Body>
+                  <GallerySlider initialSlide={this.state.initialSlide} />
+                </Modal.Body>
+              </Modal>
             </div>
             <div className="load">Load More</div>
           </div>
