@@ -1,136 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+
 import PhotographerPortofolio from 'components/PhotographerPortofolio';
-import { Modal, Button } from 'react-bootstrap';
-import Slider from 'react-slick';
-
-const WIDTH = 270;
-
-class MasonryImage extends React.Component {
-  render() {
-    let flex = 1 / (this.props.widest / this.props.ratio);
-    flex = flex !== 0 ? flex : 1;
-    const width = WIDTH * flex;
-    const { openFunc, indexItem } = this.props;
-
-    return (
-      <div>
-        <a
-          href="#"
-          className={`cv-MasonryGallery-figure itemke-${indexItem}`}
-          style={{ width: width }}
-          onClick={evt => openFunc(evt, indexItem)}
-        >
-          <img
-            className="cv-MasonryGallery-image"
-            src={this.props.src}
-            alt=""
-          />
-        </a>
-      </div>
-    );
-  }
-}
-
-MasonryImage.propTypes = {
-  src: React.PropTypes.string.isRequired,
-  ratio: React.PropTypes.number.isRequired,
-  widest: React.PropTypes.number.isRequired,
-};
-
-const load = url => {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => {
-      resolve({ url, ratio: img.naturalWidth / img.naturalHeight });
-    };
-    img.src = url;
-  });
-};
-
-const descentOrder = (a, b) => {
-  const ratioA = a.ratio;
-  const ratioB = b.ratio;
-
-  return ratioA === ratioB ? 0 : ratioA < ratioB ? 1 : -1;
-};
-
-class MasonryGallery extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { images: [] };
-
-    Promise.all(this.props.images.map(load))
-      .then(ratios => ratios.sort(descentOrder))
-      .then(orderRatios => this.setState({ images: orderRatios }));
-  }
-
-  render() {
-    const { openFunc } = this.props;
-    const widest = this.state.images.length ? this.state.images[0].ratio : null;
-    return (
-      <div>
-        <div className="cv-MasonryGallery">
-          {this.state.images.map((image, index) => {
-            return (
-              <MasonryImage
-                key={index}
-                src={image.url}
-                ratio={image.ratio}
-                widest={widest}
-                openFunc={openFunc}
-                indexItem={index}
-              />
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-}
-
-MasonryGallery.propTypes = { images: React.PropTypes.array.isRequired };
-
-class GallerySlider extends Component {
-  render() {
-    const settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      initialSlide: this.props.initialSlide,
-    };
-    return (
-      <Slider {...settings}>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/02.jpg" alt="" className="center-block" />
-        </div>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/04.jpg" alt="" className="center-block" />
-        </div>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/06.jpg" alt="" className="center-block" />
-        </div>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/01.jpg" alt="" className="center-block" />
-        </div>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/05.jpg" alt="" className="center-block" />
-        </div>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/03.jpg" alt="" className="center-block" />
-        </div>
-      </Slider>
-    );
-  }
-}
+import MasonryGalleryThumbnails from './ImagesGallery/MasonryGalleryThumbnails';
+import ImagePopupAndSlider from './ImagesGallery/ImagePopupAndSlider';
 
 export default class PortofolioContent extends Component {
   constructor(props) {
@@ -170,16 +43,15 @@ export default class PortofolioContent extends Component {
             className="photographer-portofolio-container"
           >
             <div className="masonry-container">
-              <MasonryGallery images={images} openFunc={this.open} />
+              <MasonryGalleryThumbnails images={images} openFunc={this.open} />
 
               <Modal show={this.state.showModal} onHide={this.close}>
                 <Modal.Header closeButton />
                 <Modal.Body>
-                  <GallerySlider initialSlide={this.state.initialSlide} />
+                  <ImagePopupAndSlider initialSlide={this.state.initialSlide} />
                 </Modal.Body>
               </Modal>
             </div>
-            <div className="load">Load More</div>
           </div>
         </div>
       </PhotographerPortofolio>
