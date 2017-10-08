@@ -12,76 +12,128 @@ export default class PortofolioReviews extends Component {
           >
             <div>
               <div>
-                <div className="photographer-photo">
-                  <img
-                    src="images/photographer/white-photography-ideas.jpg"
-                    className="cover"
-                  />
+                <div className="col-sm-1">
+                  <div className="photographer-photo">
+                    <img
+                      src="images/photographer/white-photography-ideas.jpg"
+                      className="cover"
+                    />
+                  </div>
                 </div>
-                <h4>Name</h4>
-                <div className="ratings">
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star-half-o" />
-                  <i className="fa fa-star-o" />
-                </div>
-              </div>
-              <p>I'm quite happy with his work.</p>
-            </div>
-            <div>
-              <div>
-                <div className="photographer-photo">
-                  <img
-                    src="images/photographer/white-photography-ideas.jpg"
-                    className="cover"
-                  />
-                </div>
-                <h4>Name</h4>
-                <div className="ratings">
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star-half-o" />
-                  <i className="fa fa-star-o" />
+                <div className="col-sm-11">
+                  <div className="photographer-info">
+                    <div>
+                      <div className="name-info">
+                        <h4>Name</h4>
+                      </div>
+                      <div className="review-date">
+                        <p>30th Aug</p>
+                      </div>
+                    </div>
+                    <div className="ratings">
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star-half-o" />
+                      <i className="fa fa-star-o" />
+                    </div>
+                  </div>
                 </div>
               </div>
               <p>I'm quite happy with his work.</p>
             </div>
             <div>
               <div>
-                <div className="photographer-photo">
-                  <img
-                    src="images/photographer/white-photography-ideas.jpg"
-                    className="cover"
-                  />
+                <div className="col-sm-1">
+                  <div className="photographer-photo">
+                    <img
+                      src="images/photographer/white-photography-ideas.jpg"
+                      className="cover"
+                    />
+                  </div>
                 </div>
-                <h4>Name</h4>
-                <div className="ratings">
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star-half-o" />
-                  <i className="fa fa-star-o" />
+                <div className="col-sm-11">
+                  <div className="photographer-info">
+                    <div>
+                      <div className="name-info">
+                        <h4>Name</h4>
+                      </div>
+                      <div className="review-date">
+                        <p>30th Aug</p>
+                      </div>
+                    </div>
+                    <div className="ratings">
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star-half-o" />
+                      <i className="fa fa-star-o" />
+                    </div>
+                  </div>
                 </div>
               </div>
               <p>I'm quite happy with his work.</p>
             </div>
             <div>
               <div>
-                <div className="photographer-photo">
-                  <img
-                    src="images/photographer/white-photography-ideas.jpg"
-                    className="cover"
-                  />
+                <div className="col-sm-1">
+                  <div className="photographer-photo">
+                    <img
+                      src="images/photographer/white-photography-ideas.jpg"
+                      className="cover"
+                    />
+                  </div>
                 </div>
-                <h4>Name</h4>
-                <div className="ratings">
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  <i className="fa fa-star-half-o" />
-                  <i className="fa fa-star-o" />
+                <div className="col-sm-11">
+                  <div className="photographer-info">
+                    <div>
+                      <div className="name-info">
+                        <h4>Name</h4>
+                      </div>
+                      <div className="review-date">
+                        <p>30th Aug</p>
+                      </div>
+                    </div>
+                    <div className="ratings">
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star-half-o" />
+                      <i className="fa fa-star-o" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p>I'm quite happy with his work.</p>
+            </div>
+            <div>
+              <div>
+                <div className="col-sm-1">
+                  <div className="photographer-photo">
+                    <img
+                      src="images/photographer/white-photography-ideas.jpg"
+                      className="cover"
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-11">
+                  <div className="photographer-info">
+                    <div>
+                      <div className="name-info">
+                        <h4>Name</h4>
+                      </div>
+                      <div className="review-date">
+                        <p>30th Aug</p>
+                      </div>
+                    </div>
+                    <div className="ratings">
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star" />
+                      <i className="fa fa-star-half-o" />
+                      <i className="fa fa-star-o" />
+                    </div>
+                  </div>
                 </div>
               </div>
               <p>I'm quite happy with his work.</p>
