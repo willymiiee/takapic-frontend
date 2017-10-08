@@ -1339,40 +1339,40 @@ CUSTOMIZE LIBRARY
 .gutter-sizer {
   width: 30px;
 }
-.grid-item {
-  width: calc(33.3333% - 20px);
-  margin-bottom: 30px;
-  cursor: pointer;
-  float: left;
-}
-.grid-item > div {
-  position: relative;
-  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  transition: 0.3s;
-}
-.grid-item > div > .fa {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  color: #ffd202;
-  display: none;
-}
-.grid-item > div > img {
-  width: 100%;
-}
-.grid-item:hover > div {
-  -webkit-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-}
-.grid-item:hover > div > .fa {
-  display: inline-block;
-}
-.grid-item.gigante {
-  width: 100%;
-}
+// .grid-item {
+//   width: calc(33.3333% - 20px);
+//   margin-bottom: 30px;
+//   cursor: pointer;
+//   float: left;
+// }
+// .grid-item > div {
+//   position: relative;
+//   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+//   -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+//   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+//   transition: 0.3s;
+// }
+// .grid-item > div > .fa {
+//   position: absolute;
+//   right: 5px;
+//   top: 5px;
+//   color: #ffd202;
+//   display: none;
+// }
+// .grid-item > div > img {
+//   width: 100%;
+// }
+// .grid-item:hover > div {
+//   -webkit-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
+//   -moz-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
+//   box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
+// }
+// .grid-item:hover > div > .fa {
+//   display: inline-block;
+// }
+// .grid-item.gigante {
+//   width: 100%;
+// }
 
 /*
 ------------------------------------------------------------------------
@@ -2723,4 +2723,101 @@ PHASE 1 BOP - New Photographer Account Register
   #photographer-landing-finish #success-page .wrapper button {
     padding: 8px 12px;
   }
+}
+
+/*
+----------------------------------------------------------------------------
+MASONRY STYLES
+----------------------------------------------------------------------------
+*/
+
+.cv-MasonryGallery {
+  display: flex;
+  flex-flow: row wrap;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.cv-MasonryGallery-figure {
+  display: block;
+  margin: 5px;
+}
+
+.cv-MasonryGallery-image {
+  width: 100%;
+  height: auto;
+}
+
+/*
+----------------------------------------------------------------------------
+PORTOFOLIO CONTENT MODAL
+----------------------------------------------------------------------------
+*/
+
+.modal-dialog {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  opacity: 0;
+}
+.modal.fade .modal-dialog {
+  transform: none;
+}
+.modal.in .modal-dialog {
+  opacity: 1;
+  transition: all 1s;
+}
+.modal-content {
+  background: none;
+  box-shadow: none;
+}
+.modal-header {
+  border-bottom: none;
+}
+.modal-header .close {
+  margin-top: -24px;
+}
+.modal-body p {
+  width: 75%;
+  height: 500px;
+  margin: 0 auto;
+  background: #fff;
+}
+.close {
+  font-size: 80px;
+  font-weight: normal;
+  text-shadow: none;
+  color: #fff;
+  opacity: 0.8;
+  -webkit-font-smoothing: antialiased;
+}
+.modal-backdrop.in {
+  opacity: 0.95;
+}
+
+/*
+----------------------------------------------------------------------------
+PORTOFOLIO CONTENT SLIDER
+----------------------------------------------------------------------------
+*/
+
+.slick-slide h3 {
+  color: #fff;
+  margin: 0 0 24px 0;
+}
+.slick-slide img {
+  max-height: 500px;
+}
+.slick-prev:before,
+.slick-next:before {
+  font-size: 80px;
+}
+.slick-dots {
+  bottom: -80px;
+}
+.slick-dots li {
+  opacity: 0.5;
 }
