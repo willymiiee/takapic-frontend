@@ -1035,13 +1035,43 @@ button.u:hover {
 #photographer-portofolio-about > div {
   margin-bottom: 15px;
 }
-#photographer-portofolio-tags > a {
+#photographer-portofolio-about ul {
+  list-style-type: disc;
+}
+#photographer-portofolio-about h3 {
+  margin: 0 0 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+#photographer-portofolio-about .about-content {
+  margin: 0 0 0 -16px;
+  padding: 8px 0 16px 24px;
+  border-left: 1px solid #ddd;
+}
+#photographer-portofolio-tags a {
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 16px;
   font-weight: bold;
 }
 #photographer-portofolio-package > div > span {
   display: inline-block;
   width: 80px;
   margin: 0 5px 0 40px;
+}
+#photographer-portofolio-package .package {
+  margin: 16px 0 0 8px;
+}
+#photographer-portofolio-package .package .package-detail {
+  width: 100px;
+  float: left;
+}
+#photographer-portofolio-package .package .package-detail p {
+  margin-bottom: 0;
+}
+#photographer-portofolio-package .package .package-detail:last-child {
+  padding-left: 48px;
+  border-left: 1px solid #ddd;
 }
 #photographer-portofolio-package > div > span:after {
   content: ':';
@@ -1058,24 +1088,40 @@ button.u:hover {
 }
 #photographer-portofolio-reviews > div > div {
   display: inline-block;
-  width: 90px;
+  width: 100%;
   text-align: center;
 }
-#photographer-portofolio-reviews > div > div > .photographer-photo {
+#photographer-portofolio-reviews .photographer-photo {
   height: 46px;
   width: 46px;
   border-radius: 46px;
   overflow: hidden;
-  margin: 0 auto;
 }
-#photographer-portofolio-reviews > div > div > h4 {
+#photographer-portofolio-reviews .photographer-info {
+  width: 100%;
+  text-align: left;
+}
+#photographer-portofolio-reviews .photographer-info .name-info {
+  width: 90%;
+  float: left;
+}
+#photographer-portofolio-reviews .photographer-info .review-date {
+  width: 10%;
+  float: right;
+  text-align: right;
+}
+#photographer-portofolio-reviews .photographer-info .review-date p {
+  color: #ddd;
+  font-size: 14px;
+}
+#photographer-portofolio-reviews h4 {
   margin: 5px 0 0;
 }
-#photographer-portofolio-reviews > div > div > .ratings {
+#photographer-portofolio-reviews .ratings {
   color: #ffd202;
   font-size: 14px;
 }
-#photographer-portofolio-reviews > div > div > .ratings > .fa {
+#photographer-portofolio-reviews .ratings .fa {
   margin-right: 1px;
 }
 #photographer-portofolio-reviews > div > p {
@@ -2777,9 +2823,6 @@ PORTOFOLIO CONTENT MODAL
 .modal-header {
   border-bottom: none;
 }
-.modal-header .close {
-  margin-top: -24px;
-}
 .modal-body p {
   width: 75%;
   height: 500px;
@@ -2787,12 +2830,16 @@ PORTOFOLIO CONTENT MODAL
   background: #fff;
 }
 .close {
-  font-size: 80px;
+  font-size: 32px;
   font-weight: normal;
   text-shadow: none;
   color: #fff;
   opacity: 0.8;
   -webkit-font-smoothing: antialiased;
+}
+.close:hover {
+  color: #fff;
+  opacity: 1;
 }
 .modal-backdrop.in {
   opacity: 0.95;
@@ -2811,9 +2858,15 @@ PORTOFOLIO CONTENT SLIDER
 .slick-slide img {
   max-height: 500px;
 }
+.slick-prev {
+  left: 4%;
+}
+.slick-next {
+  right: 4%;
+}
 .slick-prev:before,
 .slick-next:before {
-  font-size: 80px;
+  font-size: 32px;
 }
 .slick-dots {
   bottom: -80px;
