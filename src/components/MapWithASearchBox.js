@@ -98,7 +98,7 @@ const MapWithASearchBox = compose(
       >
         <input
           type="text"
-          placeholder="Your general location"
+          placeholder="Place / location name"
           style={{
             boxSizing: `border-box`,
             border: `1px solid transparent`,
@@ -108,7 +108,7 @@ const MapWithASearchBox = compose(
             padding: `0 12px`,
             borderRadius: `3px`,
             boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `14px`,
+            fontSize: `16px`,
             outline: `none`,
             textOverflow: `ellipses`,
           }}
@@ -120,7 +120,7 @@ const MapWithASearchBox = compose(
             className="form-control"
             onChange={props.handleSpecificLocation}
             type="text"
-            placeholder="Your specific location"
+            placeholder="Notes for this place / location"
             style={{
               boxSizing: `border-box`,
               border: `1px solid transparent`,
@@ -132,7 +132,7 @@ const MapWithASearchBox = compose(
               padding: `0 12px`,
               borderRadius: `3px`,
               boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
+              fontSize: `16px`,
               outline: `none`,
               textOverflow: `ellipses`,
             }}
@@ -152,7 +152,7 @@ const MapWithASearchBox = compose(
             padding: `0 12px`,
             borderRadius: `3px`,
             boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `14px`,
+            fontSize: `15px`,
             outline: `none`,
             textOverflow: `ellipses`,
           }}
