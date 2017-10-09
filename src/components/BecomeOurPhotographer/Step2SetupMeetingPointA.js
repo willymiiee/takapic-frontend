@@ -102,7 +102,7 @@ class Step2SetupMeetingPointA extends Component {
               {this.state.mapLoaded && (
                 <MapWithASearchBox
                   handleAddition={this.handleAddition}
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0mVjfAwriCSsNcH8bng0Mi0-6ZR8kVZ0&v=3.exp&libraries=geometry,drawing,places"
+                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
                   loadingElement={<div style={{ height: `100%` }} />}
                   containerElement={<div style={{ height: `400px` }} />}
                   mapElement={<div style={{ height: `100%` }} />}
@@ -151,10 +151,7 @@ class Step2SetupMeetingPointA extends Component {
             </div>
           </div>
           <hr />
-          <Link
-            to="/become-our-photographer/step-2-2"
-            className="button button-white-no-shadow u"
-          >
+          <Link to="/become-our-photographer/step-2-2" className="button">
             Back
           </Link>
 
