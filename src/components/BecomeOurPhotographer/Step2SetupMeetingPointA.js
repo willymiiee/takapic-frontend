@@ -29,12 +29,8 @@ class Step2SetupMeetingPointA extends Component {
     let { meetingPoints } = this.state;
     const n = detailMasterPackage;
     let packagesPrice = [];
-<<<<<<< HEAD
 
     for (let key in n) {
-=======
-    for (var key in n) {
->>>>>>> Submit to Firebase
       // check also if property is not inherited from prototype
       if (n.hasOwnProperty(key)) {
         let value = n[key];
@@ -62,14 +58,7 @@ class Step2SetupMeetingPointA extends Component {
       packagesPrice,
       meetingPoints,
     };
-<<<<<<< HEAD
-=======
-    // Make sure that the params are complete
-    // if (params.email && params.packagesPrice.length > 0 && params.meetingPoints.length === 3) {
-    console.log(params);
->>>>>>> Submit to Firebase
     this.props.setMeetingPoint(params);
-    // }
   };
 
   handleAddition = params => {
