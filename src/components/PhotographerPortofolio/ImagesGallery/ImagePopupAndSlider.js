@@ -17,32 +17,56 @@ class ImagePopupAndSlider extends Component {
       <Slider {...settings}>
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/02.jpg" alt="" className="center-block" />
+          <img
+            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg"
+            alt=""
+            className="center-block"
+          />
         </div>
 
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/04.jpg" alt="" className="center-block" />
+          <img
+            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg"
+            alt=""
+            className="center-block"
+          />
         </div>
 
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/06.jpg" alt="" className="center-block" />
+          <img
+            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg"
+            alt=""
+            className="center-block"
+          />
         </div>
 
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/01.jpg" alt="" className="center-block" />
+          <img
+            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg"
+            alt=""
+            className="center-block"
+          />
         </div>
 
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/05.jpg" alt="" className="center-block" />
+          <img
+            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg"
+            alt=""
+            className="center-block"
+          />
         </div>
 
         <div>
           <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/03.jpg" alt="" className="center-block" />
+          <img
+            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg"
+            alt=""
+            className="center-block"
+          />
         </div>
       </Slider>
     );

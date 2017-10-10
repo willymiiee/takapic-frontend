@@ -27,13 +27,13 @@ export default class PortofolioContent extends Component {
 
   render() {
     const images = [
-      '01.jpg',
-      '02.jpg',
-      '03.jpg',
-      '04.jpg',
-      '05.jpg',
-      '06.jpg',
-    ].map(filename => `/images/photo/${filename}`);
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg',
+    ];
 
     return (
       <PhotographerPortofolio>
