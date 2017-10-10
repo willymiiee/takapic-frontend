@@ -2843,6 +2843,37 @@ PORTOFOLIO CONTENT SLIDER
 .slick-dots li {
   opacity: 0.5;
 }
+.img-container {
+  max-width: 750px;
+  margin: 0 auto;
+  position: relative;
+}
+figure {
+  display: block;
+}
+figcaption {
+  height: 40px;
+  line-height: 40px;
+  margin-top: 8px;
+}
+.cap-bot figcaption.action-btn {
+  width: 100px;
+  float: left;
+  background: rgba(255, 255, 255, 0.8);
+  color: #414141;
+}
+.cap-bot figcaption.theme-info {
+  float: right;
+  padding: 0 10px;
+  text-align: center;
+  border: 1px solid #fff;
+  background: none;
+  color: #fff;
+  border-radius: 8px;
+}
+figcaption.action-btn a .fa {
+  margin: 0 16px;
+}
 
 .btn-circle {
   width: 30px;

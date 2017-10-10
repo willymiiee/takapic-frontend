@@ -15,59 +15,161 @@ class ImagePopupAndSlider extends Component {
 
     return (
       <Slider {...settings}>
-        <div>
+        <figure className="cap-bot">
           <h3 className="text-center">I'm the title of image below</h3>
-          <img
-            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg"
-            alt=""
-            className="center-block"
-          />
-        </div>
+          <div className="img-container">
+            <img
+              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg"
+              alt=""
+              className="center-block"
+            />
+            <figcaption className="action-btn">
+              <a href="#" title="Share">
+                <span className="share-icon">
+                  <i className="fa fa-share-alt" aria-hidden="true" />
+                </span>
+              </a>
+              <a href="#" title="Like">
+                <span className="favorite-icon">
+                  <i className="fa fa-heart-o" aria-hidden="true" />
+                </span>
+              </a>
+            </figcaption>
+            <figcaption className="theme-info">
+              <span># Family</span>
+            </figcaption>
+          </div>
+        </figure>
 
-        <div>
+        <figure className="cap-bot">
           <h3 className="text-center">I'm the title of image below</h3>
-          <img
-            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg"
-            alt=""
-            className="center-block"
-          />
-        </div>
+          <div className="img-container">
+            <img
+              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg"
+              alt=""
+              className="center-block"
+            />
+            <figcaption className="action-btn">
+              <a href="#" title="Share">
+                <span className="share-icon">
+                  <i className="fa fa-share-alt" aria-hidden="true" />
+                </span>
+              </a>
+              <a href="#" title="Like">
+                <span className="favorite-icon">
+                  <i className="fa fa-heart-o" aria-hidden="true" />
+                </span>
+              </a>
+            </figcaption>
+            <figcaption className="theme-info">
+              <span># Family</span>
+            </figcaption>
+          </div>
+        </figure>
 
-        <div>
+        <figure className="cap-bot">
           <h3 className="text-center">I'm the title of image below</h3>
-          <img
-            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg"
-            alt=""
-            className="center-block"
-          />
-        </div>
+          <div className="img-container">
+            <img
+              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg"
+              alt=""
+              className="center-block"
+            />
+            <figcaption className="action-btn">
+              <a href="#" title="Share">
+                <span className="share-icon">
+                  <i className="fa fa-share-alt" aria-hidden="true" />
+                </span>
+              </a>
+              <a href="#" title="Like">
+                <span className="favorite-icon">
+                  <i className="fa fa-heart-o" aria-hidden="true" />
+                </span>
+              </a>
+            </figcaption>
+            <figcaption className="theme-info">
+              <span># Family</span>
+            </figcaption>
+          </div>
+        </figure>
 
-        <div>
+        <figure className="cap-bot">
           <h3 className="text-center">I'm the title of image below</h3>
-          <img
-            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg"
-            alt=""
-            className="center-block"
-          />
-        </div>
+          <div className="img-container">
+            <img
+              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg"
+              alt=""
+              className="center-block"
+            />
+            <figcaption className="action-btn">
+              <a href="#" title="Share">
+                <span className="share-icon">
+                  <i className="fa fa-share-alt" aria-hidden="true" />
+                </span>
+              </a>
+              <a href="#" title="Like">
+                <span className="favorite-icon">
+                  <i className="fa fa-heart-o" aria-hidden="true" />
+                </span>
+              </a>
+            </figcaption>
+            <figcaption className="theme-info">
+              <span># Family</span>
+            </figcaption>
+          </div>
+        </figure>
 
-        <div>
+        <figure className="cap-bot">
           <h3 className="text-center">I'm the title of image below</h3>
-          <img
-            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg"
-            alt=""
-            className="center-block"
-          />
-        </div>
+          <div className="img-container">
+            <img
+              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg"
+              alt=""
+              className="center-block"
+            />
+            <figcaption className="action-btn">
+              <a href="#" title="Share">
+                <span className="share-icon">
+                  <i className="fa fa-share-alt" aria-hidden="true" />
+                </span>
+              </a>
+              <a href="#" title="Like">
+                <span className="favorite-icon">
+                  <i className="fa fa-heart-o" aria-hidden="true" />
+                </span>
+              </a>
+            </figcaption>
+            <figcaption className="theme-info">
+              <span># Family</span>
+            </figcaption>
+          </div>
+        </figure>
 
-        <div>
+        <figure className="cap-bot">
           <h3 className="text-center">I'm the title of image below</h3>
-          <img
-            src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg"
-            alt=""
-            className="center-block"
-          />
-        </div>
+          <div className="img-container">
+            <img
+              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg"
+              alt=""
+              className="center-block"
+            />
+            <figcaption className="action-btn">
+              <a href="#" title="Share">
+                <span className="share-icon">
+                  <i className="fa fa-share-alt" aria-hidden="true" />
+                </span>
+              </a>
+              <a href="#" title="Like">
+                <span className="favorite-icon">
+                  <i className="fa fa-heart-o" aria-hidden="true" />
+                </span>
+              </a>
+            </figcaption>
+            <figcaption className="theme-info">
+              <span># Family</span>
+            </figcaption>
+          </div>
+        </figure>
       </Slider>
     );
   }
