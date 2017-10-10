@@ -2906,7 +2906,7 @@ figcaption.action-btn a .fa {
   content: '';
   display: block;
   width: 60%;
-  margin-left: 47px;
+  margin-left: 35px;
   margin-top: -40px;
   border-bottom: 1px solid #367fbb;
   z-index: -5;
@@ -2926,4 +2926,8 @@ figcaption.action-btn a .fa {
   border: none;
   cursor: pointer;
   overflow: hidden;
+  margin-top: -2%;
+  margin-left: -1%;
+  display: block;
+  position: absolute;
 }

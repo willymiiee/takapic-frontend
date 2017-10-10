@@ -68,6 +68,8 @@ const MapWithASearchBox = compose(
             },
           });
           // refs.map.fitBounds(bounds);
+          console.log('ini place', places);
+          console.log('ini bounds', bounds);
         },
         handleSpecificLocation: event => {
           this.setState({ specificLocation: event.target.value });
@@ -75,6 +77,8 @@ const MapWithASearchBox = compose(
         handleAddition: () => {
           const { generalLocation, specificLocation } = this.state;
           this.props.handleAddition({ generalLocation, specificLocation });
+          document.getElementById('input1').value = '';
+          document.getElementById('input2').value = '';
         },
       });
     },
@@ -97,6 +101,7 @@ const MapWithASearchBox = compose(
         onPlacesChanged={props.onPlacesChanged}
       >
         <input
+          id="input1"
           type="text"
           placeholder="Place / location name"
           style={{
@@ -117,6 +122,7 @@ const MapWithASearchBox = compose(
       <SearchBox key={2} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
         <div>
           <input
+            id="input2"
             className="form-control"
             onChange={props.handleSpecificLocation}
             type="text"
@@ -157,7 +163,7 @@ const MapWithASearchBox = compose(
             textOverflow: `ellipses`,
           }}
         >
-          Add +
+          ADD +
         </button>
       </SearchBox>
       {props.markers.map((marker, index) => (

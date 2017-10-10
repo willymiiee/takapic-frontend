@@ -112,9 +112,24 @@ class Step2SetupMeetingPointA extends Component {
                         {key + 1}
                       </button>
                       <div id="line-number">
-                        <div className="margin-left-20">
-                          {p.generalLocation.meetingPointName},{' '}
-                          {p.specificLocation}
+                        <div
+                          className="margin-left-20"
+                          style={{ marginTop: '-8%' }}
+                        >
+                          <div
+                            style={{
+                              marginTop: '1%',
+                              marginBottom: '-5%',
+                              color: 'black',
+                              fontSize: '16px',
+                            }}
+                          >
+                            <b>{p.generalLocation.meetingPointName}</b>
+                          </div>{' '}
+                          <br />
+                          <div style={{ fontSize: '16px' }}>
+                            {p.specificLocation}
+                          </div>
                           <div id="delete-button">
                             <button
                               className="delete-button"
