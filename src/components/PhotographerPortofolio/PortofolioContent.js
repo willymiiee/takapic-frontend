@@ -1,45 +1,40 @@
 import React, { Component } from 'react';
+import { Modal } from 'react-bootstrap';
+
 import PhotographerPortofolio from 'components/PhotographerPortofolio';
+import MasonryGalleryThumbnails from './ImagesGallery/MasonryGalleryThumbnails';
+import ImagePopupAndSlider from './ImagesGallery/ImagePopupAndSlider';
 
 export default class PortofolioContent extends Component {
-  componentDidMount() {
-    let gallery = window.$('#photographer-portofolio-gallery'),
-      footer = window.$('#footer'),
-      load = window.$('.load');
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false,
+      initialSlide: 0,
+    };
 
-    window.$(function() {
-      load.click(function() {
-        if (window.$(this).hasClass('loading')) return false;
-        window
-          .$(this)
-          .addClass('loading')
-          .html(
-            '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>'
-          );
-        // Dummy Request More Photos
-        setTimeout(function() {
-          var newPhoto = window.$(
-            '<div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/theme/shubham-sharma-224917.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/location/paris.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/theme/tord-sollie-865.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/theme/chris-herath-182666.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/theme/brooke-lark-158022.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/theme/anne-edgar-119371.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/theme/autumn-goodman-242825.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/location/bali.jpg"></div></div><div class="grid-item"><div><i class="fa fa-star-o"></i><img src="img/location/seoul.jpg"></div></div>'
-          );
-          grid.append(newPhoto).masonry('appended', newPhoto);
-          load.removeClass('loading').html('Load More');
-        }, 750);
-      });
-
-      var grid = window.$('.grid').masonry({
-        itemSelector: '.grid-item',
-        columnWidth: '.grid-item',
-        percentPosition: true,
-        gutter: '.gutter-sizer',
-      });
-      grid.on('click', '.grid-item', function() {
-        window.$(this).toggleClass('gigante');
-        grid.masonry('layout');
-      });
-    });
+    this.close = this.close.bind(this);
   }
 
+  close() {
+    this.setState({ showModal: false });
+  }
+
+  open = (evt, indexSlide) => {
+    evt.preventDefault();
+    this.setState({ showModal: true, initialSlide: indexSlide });
+  };
+
   render() {
+    const images = [
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg',
+      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg',
+    ];
+
     return (
       <PhotographerPortofolio>
         <div className="col-sm-9 margin-top-50">
@@ -47,64 +42,16 @@ export default class PortofolioContent extends Component {
             id="photographer-portofolio-gallery"
             className="photographer-portofolio-container"
           >
-            <div className="grid">
-              <div className="gutter-sizer" />
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star" />
-                  <img src="/images/photo/01.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star-o" />
-                  <img src="/images/photo/02.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star" />
-                  <img src="/images/photo/03.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star-o" />
-                  <img src="/images/photo/04.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star-o" />
-                  <img src="/images/photo/05.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star" />
-                  <img src="/images/photo/06.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star-o" />
-                  <img src="/images/photo/01.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star-o" />
-                  <img src="/images/photo/02.jpg" />
-                </div>
-              </div>
-              <div className="grid-item">
-                <div>
-                  <i className="fa fa-star-o" />
-                  <img src="/images/photo/03.jpg" />
-                </div>
-              </div>
+            <div className="masonry-container">
+              <MasonryGalleryThumbnails images={images} openFunc={this.open} />
+
+              <Modal show={this.state.showModal} onHide={this.close}>
+                <Modal.Header closeButton />
+                <Modal.Body>
+                  <ImagePopupAndSlider initialSlide={this.state.initialSlide} />
+                </Modal.Body>
+              </Modal>
             </div>
-            <div className="load">Load More</div>
           </div>
         </div>
       </PhotographerPortofolio>

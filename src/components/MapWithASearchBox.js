@@ -88,31 +88,6 @@ const MapWithASearchBox = compose(
     onBoundsChanged={props.onBoundsChanged}
   >
     <div id="meeting-points" style={{ position: 'absolute', top: 0 }}>
-      {/* <div style={{
-        marginTop: `19px`,
-        marginLeft: 380,
-      }}>
-        <input
-          type="text"
-          placeholder="Your spesific location"
-          style={{
-            boxSizing: `border-box`,
-            border: `1px solid transparent`,
-            width: `240px`,
-            height: `32px`,
-            padding: `0 12px`,
-            borderRadius: `3px`,
-            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `14px`,
-            outline: `none`,
-            textOverflow: `ellipses`,
-          }} />
-        <button
-          to="/become-our-photographer/step-2-4"
-          className="button">
-          Add +
-      </button>
-      </div> */}
       <SearchBox
         key={1}
         ref={props.onSearchBoxMounted}
@@ -122,52 +97,48 @@ const MapWithASearchBox = compose(
       >
         <input
           type="text"
-          placeholder="Your general location"
+          placeholder="Place / location name"
           style={{
             boxSizing: `border-box`,
             border: `1px solid transparent`,
-            width: `240px`,
+            width: `350px`,
             height: `32px`,
             marginTop: `8px`,
             padding: `0 12px`,
             borderRadius: `3px`,
             boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `14px`,
+            fontSize: `16px`,
             outline: `none`,
             textOverflow: `ellipses`,
           }}
         />
       </SearchBox>
-      <SearchBox
-        key={2}
-        controlPosition={google.maps.ControlPosition.TOP_CENTER}
-      >
+      <SearchBox key={2} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
         <div>
           <input
             className="form-control"
             onChange={props.handleSpecificLocation}
             type="text"
-            placeholder="Your specific location"
+            placeholder="Notes for this place / location"
             style={{
               boxSizing: `border-box`,
               border: `1px solid transparent`,
-              width: `240px`,
+              width: `450px`,
               height: `32px`,
               marginTop: `8px`,
+              marginLeft: `20px`,
+              marginRight: `20px`,
               padding: `0 12px`,
               borderRadius: `3px`,
               boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
+              fontSize: `16px`,
               outline: `none`,
               textOverflow: `ellipses`,
             }}
           />
         </div>
       </SearchBox>
-      <SearchBox
-        key={3}
-        controlPosition={google.maps.ControlPosition.TOP_RIGHT}
-      >
+      <SearchBox key={3} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
         <button
           onClick={props.handleAddition}
           to="/become-our-photographer/step-2-4"
@@ -180,7 +151,7 @@ const MapWithASearchBox = compose(
             padding: `0 12px`,
             borderRadius: `3px`,
             boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `14px`,
+            fontSize: `15px`,
             outline: `none`,
             textOverflow: `ellipses`,
           }}

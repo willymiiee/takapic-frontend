@@ -1038,13 +1038,43 @@ button.u:hover {
 #photographer-portofolio-about > div {
   margin-bottom: 15px;
 }
-#photographer-portofolio-tags > a {
+#photographer-portofolio-about ul {
+  list-style-type: disc;
+}
+#photographer-portofolio-about h3 {
+  margin: 0 0 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+#photographer-portofolio-about .about-content {
+  margin: 0 0 0 -16px;
+  padding: 8px 0 16px 24px;
+  border-left: 1px solid #ddd;
+}
+#photographer-portofolio-tags a {
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 16px;
   font-weight: bold;
 }
 #photographer-portofolio-package > div > span {
   display: inline-block;
   width: 80px;
   margin: 0 5px 0 40px;
+}
+#photographer-portofolio-package .package {
+  margin: 16px 0 0 8px;
+}
+#photographer-portofolio-package .package .package-detail {
+  width: 100px;
+  float: left;
+}
+#photographer-portofolio-package .package .package-detail p {
+  margin-bottom: 0;
+}
+#photographer-portofolio-package .package .package-detail:last-child {
+  padding-left: 48px;
+  border-left: 1px solid #ddd;
 }
 #photographer-portofolio-package > div > span:after {
   content: ':';
@@ -1061,24 +1091,40 @@ button.u:hover {
 }
 #photographer-portofolio-reviews > div > div {
   display: inline-block;
-  width: 90px;
+  width: 100%;
   text-align: center;
 }
-#photographer-portofolio-reviews > div > div > .photographer-photo {
+#photographer-portofolio-reviews .photographer-photo {
   height: 46px;
   width: 46px;
   border-radius: 46px;
   overflow: hidden;
-  margin: 0 auto;
 }
-#photographer-portofolio-reviews > div > div > h4 {
+#photographer-portofolio-reviews .photographer-info {
+  width: 100%;
+  text-align: left;
+}
+#photographer-portofolio-reviews .photographer-info .name-info {
+  width: 90%;
+  float: left;
+}
+#photographer-portofolio-reviews .photographer-info .review-date {
+  width: 10%;
+  float: right;
+  text-align: right;
+}
+#photographer-portofolio-reviews .photographer-info .review-date p {
+  color: #ddd;
+  font-size: 14px;
+}
+#photographer-portofolio-reviews h4 {
   margin: 5px 0 0;
 }
-#photographer-portofolio-reviews > div > div > .ratings {
+#photographer-portofolio-reviews .ratings {
   color: #ffd202;
   font-size: 14px;
 }
-#photographer-portofolio-reviews > div > div > .ratings > .fa {
+#photographer-portofolio-reviews .ratings .fa {
   margin-right: 1px;
 }
 #photographer-portofolio-reviews > div > p {
@@ -1341,40 +1387,6 @@ CUSTOMIZE LIBRARY
 
 .gutter-sizer {
   width: 30px;
-}
-.grid-item {
-  width: calc(33.3333% - 20px);
-  margin-bottom: 30px;
-  cursor: pointer;
-  float: left;
-}
-.grid-item > div {
-  position: relative;
-  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  transition: 0.3s;
-}
-.grid-item > div > .fa {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  color: #ffd202;
-  display: none;
-}
-.grid-item > div > img {
-  width: 100%;
-}
-.grid-item:hover > div {
-  -webkit-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-}
-.grid-item:hover > div > .fa {
-  display: inline-block;
-}
-.grid-item.gigante {
-  width: 100%;
 }
 
 /*
@@ -2726,6 +2738,141 @@ PHASE 1 BOP - New Photographer Account Register
   #photographer-landing-finish #success-page .wrapper button {
     padding: 8px 12px;
   }
+}
+
+/*
+----------------------------------------------------------------------------
+MASONRY STYLES
+----------------------------------------------------------------------------
+*/
+
+.cv-MasonryGallery {
+  display: flex;
+  flex-flow: row wrap;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.cv-MasonryGallery-figure {
+  display: block;
+  margin: 5px;
+}
+
+.cv-MasonryGallery-image {
+  width: 100%;
+  height: auto;
+}
+
+/*
+----------------------------------------------------------------------------
+PORTOFOLIO CONTENT MODAL
+----------------------------------------------------------------------------
+*/
+
+.modal-dialog {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  opacity: 0;
+}
+.modal.fade .modal-dialog {
+  transform: none;
+}
+.modal.in .modal-dialog {
+  opacity: 1;
+  transition: all 1s;
+}
+.modal-content {
+  background: none;
+  box-shadow: none;
+}
+.modal-header {
+  border-bottom: none;
+}
+.modal-body p {
+  width: 75%;
+  height: 500px;
+  margin: 0 auto;
+  background: #fff;
+}
+.close {
+  font-size: 32px;
+  font-weight: normal;
+  text-shadow: none;
+  color: #fff;
+  opacity: 0.8;
+  -webkit-font-smoothing: antialiased;
+}
+.close:hover {
+  color: #fff;
+  opacity: 1;
+}
+.modal-backdrop.in {
+  opacity: 0.95;
+}
+
+/*
+----------------------------------------------------------------------------
+PORTOFOLIO CONTENT SLIDER
+----------------------------------------------------------------------------
+*/
+
+.slick-slide h3 {
+  color: #fff;
+  margin: 0 0 24px 0;
+}
+.slick-slide img {
+  max-height: 500px;
+}
+.slick-prev {
+  left: 4%;
+}
+.slick-next {
+  right: 4%;
+}
+.slick-prev:before,
+.slick-next:before {
+  font-size: 32px;
+}
+.slick-dots {
+  bottom: -80px;
+}
+.slick-dots li {
+  opacity: 0.5;
+}
+.img-container {
+  max-width: 750px;
+  margin: 0 auto;
+  position: relative;
+}
+figure {
+  display: block;
+}
+figcaption {
+  height: 40px;
+  line-height: 40px;
+  margin-top: 8px;
+}
+.cap-bot figcaption.action-btn {
+  width: 100px;
+  float: left;
+  background: rgba(255, 255, 255, 0.8);
+  color: #414141;
+}
+.cap-bot figcaption.theme-info {
+  float: right;
+  padding: 0 10px;
+  text-align: center;
+  border: 1px solid #fff;
+  background: none;
+  color: #fff;
+  border-radius: 8px;
+}
+figcaption.action-btn a .fa {
+  margin: 0 16px;
 }
 
 .btn-circle {

@@ -20,11 +20,13 @@ const GrabCitySearchBox = withGoogleMap(props => (
       bounds={props.bounds}
       controlPosition={google.maps.ControlPosition.TOP}
       onPlacesChanged={props.onPlacesChanged}
-      inputPlaceholder={`Which city do you live in?`}
-      inputStyle={{
-        zIndex: 9999999,
-      }}
-    />
+    >
+      <input
+        type="text"
+        placeholder="Which city do you live in?"
+        style={{ zIndex: `999999` }}
+      />
+    </SearchBox>
   </GoogleMap>
 ));
 

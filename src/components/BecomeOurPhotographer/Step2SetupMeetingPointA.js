@@ -29,10 +29,11 @@ class Step2SetupMeetingPointA extends Component {
     let { meetingPoints } = this.state;
     const n = detailMasterPackage;
     let packagesPrice = [];
-    for (var key in n) {
+
+    for (let key in n) {
       // check also if property is not inherited from prototype
       if (n.hasOwnProperty(key)) {
-        var value = n[key];
+        let value = n[key];
         packagesPrice = [
           ...packagesPrice,
           {
@@ -59,9 +60,21 @@ class Step2SetupMeetingPointA extends Component {
     };
     // Make sure that the params are complete
     // if (params.email && params.packagesPrice.length > 0 && params.meetingPoints.length === 3) {
-    console.log(params);
     this.props.setMeetingPoint(params);
     // }
+  };
+
+  handleAddition = params => {
+    if (
+      params.generalLocation &&
+      params.specificLocation &&
+      this.state.meetingPoints.length < 3
+    ) {
+      const { generalLocation, specificLocation } = params;
+      let { meetingPoints } = this.state;
+      meetingPoints = [...meetingPoints, { generalLocation, specificLocation }];
+      this.setState({ meetingPoints });
+    }
   };
 
   handleAddition = params => {
@@ -94,7 +107,7 @@ class Step2SetupMeetingPointA extends Component {
               {this.state.mapLoaded && (
                 <MapWithASearchBox
                   handleAddition={this.handleAddition}
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0mVjfAwriCSsNcH8bng0Mi0-6ZR8kVZ0&v=3.exp&libraries=geometry,drawing,places"
+                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
                   loadingElement={<div style={{ height: `100%` }} />}
                   containerElement={<div style={{ height: `400px` }} />}
                   mapElement={<div style={{ height: `100%` }} />}
@@ -143,12 +156,10 @@ class Step2SetupMeetingPointA extends Component {
             </div>
           </div>
           <hr />
-          <Link
-            to="/become-our-photographer/step-2-2"
-            className="button button-white-no-shadow u"
-          >
+          <Link to="/become-our-photographer/step-2-2" className="button">
             Back
           </Link>
+
           <Link
             to="/become-our-photographer/step-2-4"
             className="button"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import DateTime from 'react-datetime';
 import moment from 'moment';
@@ -7,13 +8,15 @@ import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
 import './../../react-slick.min.css';
+import { fetchPhotographerDetail } from '../../store/actions/photographerDetailActions';
 
 class PhotographerDetail extends Component {
   constructor(props) {
     super(props);
     let { state } = this.props.location;
-    console.log(state);
     this.state = {
+      email: 'agungsuryabangsa-gmail-com',
+      uuid: '0jknVmGuMwPLKjFetyLm9xYWSh62',
       reviews: {
         rating: {
           label: 'Average',
@@ -34,9 +37,17 @@ class PhotographerDetail extends Component {
           },
         ],
       },
-      progress1: 0.6,
-      progress2: 0.8,
-      progress3: 0.7,
+      reservation: {
+        startingTime: '',
+        package: {
+          value: 0,
+          opened: false,
+        },
+        photographerFee: '',
+        serviceFee: 0.15,
+        credit: 0,
+        total: '',
+      },
       datetime: state && state.date ? state.date : '',
     };
   }
@@ -48,11 +59,23 @@ class PhotographerDetail extends Component {
     });
   }
 
+  componentWillMount() {
+    this.props.fetchPhotographerDetail(this.state.email);
+  }
+
   componentDidMount() {
+    window.addEventListener('click', event => {
+      event.stopPropagation();
+      const { reservation } = this.state;
+      if (reservation.package.opened) {
+        reservation.package.opened = false;
+        this.setState({ reservation });
+      }
+    });
     var self = this;
     // var photoCollection = window.$('#photographer-photo-collection');
     var photographerTop = window.$('#photographer-top'),
-      reserveBtn2 = window.$('#photographer-reservation-btn-2'),
+      // reserveBtn2 = window.$('#photographer-reservation-btn-2'),
       reservationForm = window.$('#photographer-reservation'),
       reservationFormCloseBtn = window.$(
         '#photographer-reservation > .fa-times'
@@ -74,14 +97,6 @@ class PhotographerDetail extends Component {
         })
         .prepend('<div>' + opt.value * 100 + '%</div>');
     };
-
-    // function photoCollectionSlick() {
-    //   try {
-    //     if (window.matchMedia('(max-width: 767px)').matches)
-    //       photoCollection.slick({ slidesToShow: 1, slidesToScroll: 1 });
-    //     else photoCollection.slick('unslick');
-    //   } catch (e) { }
-    // }
 
     var disableTime = ['11:00', '12:00', '17:00', '18:00', '23:00'],
       availablePackage = [1, 2, 3];
@@ -128,26 +143,26 @@ class PhotographerDetail extends Component {
       return html;
     }
 
-    function html_reservationPackage() {
-      var i = 0,
-        n = availablePackage.length,
-        html = '',
-        txt = '';
-      while (i < n) {
-        txt =
-          availablePackage[i] +
-          ' hour' +
-          (availablePackage[i] > 1 ? 's' : '') +
-          ' package';
-        html +=
-          '<i' +
-          (reservationPackageTxt.html() === txt ? ' class="active">' : '>') +
-          txt +
-          '</i>';
-        i++;
-      }
-      return html;
-    }
+    // function html_reservationPackage() {
+    //   var i = 0,
+    //     n = availablePackage.length,
+    //     html = '',
+    //     txt = '';
+    //   while (i < n) {
+    //     txt =
+    //       availablePackage[i] +
+    //       ' hour' +
+    //       (availablePackage[i] > 1 ? 's' : '') +
+    //       ' package';
+    //     html +=
+    //       '<i' +
+    //       (reservationPackageTxt.html() === txt ? ' class="active">' : '>') +
+    //       txt +
+    //       '</i>';
+    //     i++;
+    //   }
+    //   return html;
+    // }
 
     window.$(function() {
       window
@@ -164,8 +179,8 @@ class PhotographerDetail extends Component {
             if (s > 67) {
               photographerTop.addClass('sticky');
               // photoCollection.addClass('sticky');
-              if (s > 490) reserveBtn2.addClass('sticky');
-              else reserveBtn2.removeClass('sticky');
+              // if (s > 490) reserveBtn2.addClass('sticky');
+              // else reserveBtn2.removeClass('sticky');
             } else {
               photographerTop.removeClass('sticky');
               // photoCollection.removeClass('sticky');
@@ -204,33 +219,52 @@ class PhotographerDetail extends Component {
       //     window.$('#reservation-date').datepicker('show');
       // });
 
-      reservationPackage
-        .click(function() {
-          window
-            .$(this)
-            .find('.card-popup')
-            .html(html_reservationPackage())
-            .toggle();
-        })
-        .on('click', '.card-popup > i:not(.disabled)', function() {
-          window.$('#reservation-package i').removeClass('active');
-          window.$(this).addClass('active');
-          reservationPackageTxt.html(window.$(this).html());
-        });
-      window.$(document).mouseup(function(e) {
-        if (
-          !reservationPackage.is(e.target) &&
-          reservationPackage.has(e.target).length === 0
-        )
-          reservationPackage.find('.card-popup').hide();
-      });
+      // reservationPackage
+      //   .click(function () {
+      //     window
+      //       .$(this)
+      //       .find('.card-popup')
+      //       .html(html_reservationPackage())
+      //       .toggle();
+      //   })
+      //   .on('click', '.card-popup > i:not(.disabled)', function () {
+      //     window.$('#reservation-package i').removeClass('active');
+      //     window.$(this).addClass('active');
+      //     reservationPackageTxt.html(window.$(this).html());
+      //   });
+      // window.$(document).mouseup(function (e) {
+      //   if (
+      //     !reservationPackage.is(e.target) &&
+      //     reservationPackage.has(e.target).length === 0
+      //   )
+      //     reservationPackage.find('.card-popup').hide();
+      // });
     });
   }
 
   focus() {
-    console.log(this.textInput);
     this.textInput.openCalendar();
   }
+
+  choosePackage = (event, value) => {
+    event.stopPropagation();
+    let { reservation } = this.state;
+    reservation.package = { value, opened: false };
+    this.setState({ reservation });
+  };
+
+  handleReserve = () => {
+    const { reservation } = this.state;
+    const { photographerDetail } = this.props;
+    const total =
+      reservation.credit +
+      parseInt(
+        photographerDetail.data.packagesPrice[reservation.package.value].price
+      ) +
+      photographerDetail.data.packagesPrice[reservation.package.value].price *
+        reservation.serviceFee;
+    this.setState({ total });
+  };
 
   render() {
     let yesterday = moment().subtract(1, 'day');
@@ -383,26 +417,122 @@ class PhotographerDetail extends Component {
                     )}
                   </span>
                 </div>
-                <div className="reservation-opt" id="reservation-package">
-                  <div className="card-popup" />
-                  <span>1 hour package</span>
+                <div
+                  className="reservation-opt"
+                  id="reservation-package"
+                  onClick={event => {
+                    event.stopPropagation();
+                    let { reservation } = this.state;
+                    if (reservation.package.opened) {
+                      reservation.package.opened = false;
+                    } else {
+                      reservation.package.opened = true;
+                    }
+                    this.setState({ reservation });
+                  }}
+                >
+                  <div
+                    className="card-popup"
+                    style={{
+                      display: this.state.reservation.package.opened
+                        ? 'block'
+                        : 'none',
+                    }}
+                  >
+                    {this.props.photographerDetail &&
+                      this.props.photographerDetail.loaded &&
+                      this.props.photographerDetail.data &&
+                      this.props.photographerDetail.data.packagesPrice.map(
+                        (data, key) => (
+                          <i
+                            className={
+                              this.state.reservation.package.value === key ? (
+                                'active'
+                              ) : (
+                                ''
+                              )
+                            }
+                            onClick={event => this.choosePackage(event, key)}
+                            key={key}
+                          >
+                            {data.packageName}
+                          </i>
+                        )
+                      )}
+                  </div>
+                  {this.props.photographerDetail &&
+                  this.props.photographerDetail.loaded &&
+                  this.props.photographerDetail.data && (
+                    <span>
+                      {this.state.reservation.package.value + 1} hour{this.state.reservation.package.value > 0 ? 's' : ''}{' '}
+                      package
+                    </span>
+                  )}
                 </div>
                 <div id="photographer-reservation-calc">
                   <div>
-                    2 hours<i>$110</i>
+                    Photographer Fee&nbsp;
+                    {this.props.photographerDetail &&
+                    this.props.photographerDetail.loaded &&
+                    this.props.photographerDetail.data && (
+                      <span>
+                        ({
+                          this.props.photographerDetail.data.packagesPrice[
+                            this.state.reservation.package.value
+                          ].packageName
+                        })
+                      </span>
+                    )}
+                    {this.props.photographerDetail &&
+                    this.props.photographerDetail.loaded &&
+                    this.props.photographerDetail.data && (
+                      <i>
+                        ${
+                          this.props.photographerDetail.data.packagesPrice[
+                            this.state.reservation.package.value
+                          ].price
+                        }
+                      </i>
+                    )}
                   </div>
                   <div>
-                    Service fee<i>$10</i>
+                    Service fee
+                    {this.props.photographerDetail &&
+                    this.props.photographerDetail.loaded &&
+                    this.props.photographerDetail.data && (
+                      <i>
+                        ${this.props.photographerDetail.data.packagesPrice[
+                          this.state.reservation.package.value
+                        ].price * this.state.reservation.serviceFee}
+                      </i>
+                    )}
                   </div>
                   <div>
-                    Credit<i>-$20</i>
+                    Credit<i>${this.state.reservation.credit}</i>
                   </div>
                 </div>
                 <div id="photographer-reservation-calc-total">
-                  Total<i>$100</i>
+                  Total{' '}
+                  {this.props.photographerDetail &&
+                  this.props.photographerDetail.loaded &&
+                  this.props.photographerDetail.data && (
+                    <i>
+                      ${this.state.reservation.credit +
+                        parseInt(
+                          this.props.photographerDetail.data.packagesPrice[
+                            this.state.reservation.package.value
+                          ].price
+                        ) +
+                        this.props.photographerDetail.data.packagesPrice[
+                          this.state.reservation.package.value
+                        ].price *
+                          this.state.reservation.serviceFee}
+                    </i>
+                  )}
                 </div>
                 <div id="photographer-reservation-bottom">
                   <button
+                    onClick={this.handleReserve}
                     id="photographer-reservation-btn"
                     className="button button-white padding-left-40 padding-right-40"
                   >
@@ -422,4 +552,14 @@ class PhotographerDetail extends Component {
   }
 }
 
-export default withRouter(PhotographerDetail);
+const mapStateToProps = state => ({
+  photographerDetail: state.photographerDetail,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchPhotographerDetail: email => dispatch(fetchPhotographerDetail(email)),
+});
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(PhotographerDetail)
+);
