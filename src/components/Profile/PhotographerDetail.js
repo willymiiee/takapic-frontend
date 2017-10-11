@@ -5,6 +5,8 @@ import moment from 'moment';
 import Page from 'components/Page';
 import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
+import Slider from 'react-slick';
+import './../../react-slick.min.css';
 
 class PhotographerDetail extends Component {
   constructor(props) {
@@ -48,8 +50,8 @@ class PhotographerDetail extends Component {
 
   componentDidMount() {
     var self = this;
-    var photoCollection = window.$('#photographer-photo-collection'),
-      photographerTop = window.$('#photographer-top'),
+    // var photoCollection = window.$('#photographer-photo-collection');
+    var photographerTop = window.$('#photographer-top'),
       reserveBtn2 = window.$('#photographer-reservation-btn-2'),
       reservationForm = window.$('#photographer-reservation'),
       reservationFormCloseBtn = window.$(
@@ -73,13 +75,13 @@ class PhotographerDetail extends Component {
         .prepend('<div>' + opt.value * 100 + '%</div>');
     };
 
-    function photoCollectionSlick() {
-      try {
-        if (window.matchMedia('(max-width: 767px)').matches)
-          photoCollection.slick({ slidesToShow: 1, slidesToScroll: 1 });
-        else photoCollection.slick('unslick');
-      } catch (e) {}
-    }
+    // function photoCollectionSlick() {
+    //   try {
+    //     if (window.matchMedia('(max-width: 767px)').matches)
+    //       photoCollection.slick({ slidesToShow: 1, slidesToScroll: 1 });
+    //     else photoCollection.slick('unslick');
+    //   } catch (e) { }
+    // }
 
     var disableTime = ['11:00', '12:00', '17:00', '18:00', '23:00'],
       availablePackage = [1, 2, 3];
@@ -148,43 +150,10 @@ class PhotographerDetail extends Component {
     }
 
     window.$(function() {
-      // Photo Collections
-      window.$('#photographer-photo-collection > div').click(function() {
-        if (window.matchMedia('(min-width: 768px)').matches)
-          window.$(this).prependTo(photoCollection);
-      });
-      photoCollectionSlick();
-
-      reserveBtn2.click(function() {
-        reservationForm.addClass('reservation-show');
-        reservationFormBg.addClass('reservation-show');
-      });
-      reservationFormBg.click(function() {
-        reservationForm.removeClass('reservation-show');
-        reservationFormBg.removeClass('reservation-show');
-      });
-      reservationFormCloseBtn.click(function() {
-        reservationForm.removeClass('reservation-show');
-        reservationFormBg.removeClass('reservation-show');
-      });
-
-      // Skill Percentage
-      window.$('.circle-progress:eq(0)').generateCircleProgress({
-        value: self.state.progress1,
-        gradient: ['blue', 'lightblue'],
-      });
-      window.$('.circle-progress:eq(1)').generateCircleProgress({
-        value: self.state.progress2,
-        gradient: ['red', 'orange'],
-      });
-      window.$('.circle-progress:eq(2)').generateCircleProgress({
-        value: self.state.progress3,
-        gradient: ['green', 'lightgreen'],
-      });
       window
         .$(window)
         .resize(function() {
-          photoCollectionSlick();
+          // photoCollectionSlick();
         })
         .scroll(function() {
           if (
@@ -194,12 +163,12 @@ class PhotographerDetail extends Component {
             s = window.pageYOffset;
             if (s > 67) {
               photographerTop.addClass('sticky');
-              photoCollection.addClass('sticky');
+              // photoCollection.addClass('sticky');
               if (s > 490) reserveBtn2.addClass('sticky');
               else reserveBtn2.removeClass('sticky');
             } else {
               photographerTop.removeClass('sticky');
-              photoCollection.removeClass('sticky');
+              // photoCollection.removeClass('sticky');
             }
           }
         });
@@ -268,6 +237,21 @@ class PhotographerDetail extends Component {
     let valid = function(current) {
       return current.isAfter(yesterday);
     };
+    const settings = {
+      customPaging: function(i) {
+        return (
+          <a>
+            <img src={`/images/photo/0${i + 1}.jpg`} />
+          </a>
+        );
+      },
+      dots: true,
+      dotsClass: 'slick-dots slick-thumb',
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+    };
     return (
       <Page>
         <div className="hidden-xs padding-bottom-60" />
@@ -277,6 +261,8 @@ class PhotographerDetail extends Component {
             <i className="fa fa-share-alt" />
             <div id="photographer-profile-photo">
               <img
+                width="400"
+                height="300"
                 className="cover"
                 src="/images/photographer/outlook-photography-jobs-2.jpg"
                 alt=""
@@ -292,29 +278,19 @@ class PhotographerDetail extends Component {
             </a>
           </div>
 
-          <div id="photographer-photo-collection">
-            <div>
-              <img className="cover" src="/images/photo/06.jpg" alt="" />
-            </div>
-            <div>
-              <img className="cover" src="/images/photo/05.jpg" alt="" />
-            </div>
-            <div>
-              <img className="cover" src="/images/photo/04.jpg" alt="" />
-            </div>
-            <div>
-              <img className="cover" src="/images/photo/03.jpg" alt="" />
-            </div>
-            <div>
-              <img className="cover" src="/images/photo/02.jpg" alt="" />
-            </div>
-            <div>
-              <img className="cover" src="/images/photo/01.jpg" alt="" />
-            </div>
-            <div>
-              <img className="cover" src="/images/hero_1.jpg" alt="" />
-            </div>
-          </div>
+          <Slider {...settings}>
+            {[1, 2, 3, 4, 5, 6].map(item => (
+              <div key={item} style={{ textAlign: 'center' }}>
+                <img
+                  style={{ display: 'inline-block' }}
+                  width="400"
+                  height="300"
+                  src={`/images/photo/0${item}.jpg`}
+                  alt=""
+                />
+              </div>
+            ))}
+          </Slider>
 
           <button
             id="photographer-reservation-btn-2"
@@ -354,7 +330,7 @@ class PhotographerDetail extends Component {
                   </div>
                   <div id="photographer-stats">
                     {this.state.reviews.impressions.map((item, key) => (
-                      <div style={{ padding: 10 }}>
+                      <div style={{ padding: 10 }} key={key}>
                         <CircularProgressbar
                           percentage={item.value * 100}
                           initialAnimation
