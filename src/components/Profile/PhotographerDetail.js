@@ -64,14 +64,7 @@ class PhotographerDetail extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('click', event => {
-      event.stopPropagation();
-      const { reservation } = this.state;
-      if (reservation.package.opened) {
-        reservation.package.opened = false;
-        this.setState({ reservation });
-      }
-    });
+    window.addEventListener('click', this.handleWindowClicked, false);
     var self = this;
     // var photoCollection = window.$('#photographer-photo-collection');
     var photographerTop = window.$('#photographer-top'),
@@ -241,6 +234,19 @@ class PhotographerDetail extends Component {
       // });
     });
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.handleWindowClicked, false);
+  }
+
+  handleWindowClicked = event => {
+    event.stopPropagation();
+    const { reservation } = this.state;
+    if (reservation.package.opened) {
+      reservation.package.opened = false;
+      this.setState({ reservation });
+    }
+  };
 
   focus() {
     this.textInput.openCalendar();
