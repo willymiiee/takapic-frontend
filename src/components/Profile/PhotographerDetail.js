@@ -7,8 +7,11 @@ import Page from 'components/Page';
 import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
+import './../../daterangepicker.css';
 import './../../react-slick.min.css';
 import { fetchPhotographerDetail } from '../../store/actions/photographerDetailActions';
+
+import DateRangePicker from 'react-bootstrap-daterangepicker';
 
 class PhotographerDetail extends Component {
   constructor(props) {
@@ -38,7 +41,10 @@ class PhotographerDetail extends Component {
         ],
       },
       reservation: {
-        startingTime: '',
+        startingTime: {
+          startDate: '',
+          endDate: '',
+        },
         package: {
           value: 0,
           opened: false,
@@ -239,6 +245,20 @@ class PhotographerDetail extends Component {
     window.removeEventListener('click', this.handleWindowClicked, false);
   }
 
+  handleEvent = (event, picker) => {
+    const { reservation } = this.state;
+    reservation.startingTime = {
+      startDate: moment(picker.startDate)
+        .locale('id')
+        .format('MM-DD-YYYY HH:mm'),
+      endDate: moment(picker.endDate)
+        .locale('id')
+        .format('MM-DD-YYYY HH:mm'),
+    };
+    console.log(reservation.startingTime);
+    this.setState({ reservation });
+  };
+
   handleWindowClicked = event => {
     event.stopPropagation();
     const { reservation } = this.state;
@@ -269,6 +289,7 @@ class PhotographerDetail extends Component {
       ) +
       photographerDetail.data.packagesPrice[reservation.package.value].price *
         reservation.serviceFee;
+    console.log('total', total);
     this.setState({ total });
   };
 
@@ -396,12 +417,56 @@ class PhotographerDetail extends Component {
                 </h4>
                 <div id="reservation-status">OK</div>
                 <div
-                  onClick={this.focus.bind(this)}
                   className="reservation-opt"
                   id="reservation-starting-time"
                   data-time="-"
                 >
-                  <DateTime
+                  <DateRangePicker
+                    locale={{
+                      format: 'MM-DD-YYYY HH:mm',
+                    }}
+                    ranges={{
+                      Today: [moment(), moment()],
+                      Yesterday: [
+                        moment().subtract(1, 'days'),
+                        moment().subtract(1, 'days'),
+                      ],
+                      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                      'This Month': [
+                        moment().startOf('month'),
+                        moment().endOf('month'),
+                      ],
+                      'Last Month': [
+                        moment()
+                          .subtract(1, 'month')
+                          .startOf('month'),
+                        moment()
+                          .subtract(1, 'month')
+                          .endOf('month'),
+                      ],
+                    }}
+                    onEvent={this.handleEvent}
+                    timePicker
+                    startDate={moment()}
+                  >
+                    <span>
+                      {this.state.reservation.startingTime.startDate === '' &&
+                      this.state.reservation.startingTime.endDate === '' ? (
+                        'Starting Time'
+                      ) : (
+                        `(${this.state.reservation.startingTime
+                          .startDate}) - (${this.state.reservation.startingTime
+                          .endDate})`
+                      )}
+                    </span>
+                  </DateRangePicker>
+                </div>
+                {/* <div
+                  className="reservation-opt"
+                  id="reservation-starting-time"
+                  data-time="-"> */}
+                {/* <DateTime
                     value={this.state.datetime}
                     ref={input => {
                       this.textInput = input;
@@ -414,15 +479,15 @@ class PhotographerDetail extends Component {
                     dateFormat="MM-DD-YYYY"
                     onChange={this.onDateChange.bind(this)}
                     isValidDate={valid}
-                  />
-                  <span>
+                  /> */}
+                {/* <span>
                     {this.state.datetime === '' ? (
                       'Starting Time'
                     ) : (
-                      this.state.datetime
-                    )}
-                  </span>
-                </div>
+                        this.state.datetime
+                      )}
+                  </span> */}
+                {/* </div> */}
                 <div
                   className="reservation-opt"
                   id="reservation-package"
@@ -466,14 +531,17 @@ class PhotographerDetail extends Component {
                         )
                       )}
                   </div>
-                  {this.props.photographerDetail &&
-                  this.props.photographerDetail.loaded &&
-                  this.props.photographerDetail.data && (
+                  {
                     <span>
-                      {this.state.reservation.package.value + 1} hour{this.state.reservation.package.value > 0 ? 's' : ''}{' '}
-                      package
+                      {this.props.photographerDetail &&
+                        this.props.photographerDetail.loaded &&
+                        this.props.photographerDetail.data &&
+                        this.props.photographerDetail.data.packagesPrice[
+                          this.state.reservation.package.value
+                        ].packageName}{' '}
+                      Package
                     </span>
-                  )}
+                  }
                 </div>
                 <div id="photographer-reservation-calc">
                   <div>
