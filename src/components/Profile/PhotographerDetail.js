@@ -1,23 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import DateTime from 'react-datetime';
+// import DateTime from 'react-datetime';
 import moment from 'moment';
 import Page from 'components/Page';
 import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
-import './../../daterangepicker.css';
+// import './../../daterangepicker.css';
 import './../../react-slick.min.css';
+import PopPicker from 'rmc-date-picker/lib/Popup';
+import DatePicker from 'rmc-date-picker/lib/DatePicker';
+import enUs from 'rmc-date-picker/lib/locale/en_US';
+import 'rmc-picker/assets/index.css';
+import 'rmc-date-picker/assets/index.css';
+import 'rmc-picker/assets/popup.css';
+
 import { fetchPhotographerDetail } from '../../store/actions/photographerDetailActions';
 
-import DateRangePicker from 'react-bootstrap-daterangepicker';
+// import DateRangePicker from 'react-bootstrap-daterangepicker';
 
 class PhotographerDetail extends Component {
   constructor(props) {
     super(props);
     let { state } = this.props.location;
     this.state = {
+      date: null,
       email: 'agungsuryabangsa-gmail-com',
       uuid: '0jknVmGuMwPLKjFetyLm9xYWSh62',
       reviews: {
@@ -56,6 +64,22 @@ class PhotographerDetail extends Component {
       },
       datetime: state && state.date ? state.date : '',
     };
+  }
+
+  onOssomChange = date => {
+    console.log('onChange', this.formattt(date));
+    this.setState({ date });
+  };
+
+  onOssomDismiss = _ => _;
+  ossomShow = _ => _;
+
+  formattt(date) {
+    let mday = date.getDate();
+    let month = date.getMonth() + 1;
+    month = month < 10 ? `0${month}` : month;
+    mday = mday < 10 ? `0${mday}` : mday;
+    return `${date.getFullYear()}-${month}-${mday} ${date.getHours()}:${date.getMinutes()}`;
   }
 
   onDateChange(event) {
@@ -313,6 +337,23 @@ class PhotographerDetail extends Component {
       slidesToShow: 1,
       slidesToScroll: 1,
     };
+
+    var now = new Date();
+    const minDate = new Date(2015, 8, 15, 10, 30, 0);
+    const maxDate = new Date(2018, 1, 1, 23, 49, 59);
+
+    const { date } = this.state;
+    const datePicker = (
+      <DatePicker
+        rootNativeProps={{ 'data-xx': 'yy' }}
+        minDate={minDate}
+        maxDate={maxDate}
+        defaultDate={now}
+        mode="datetime"
+        locale={enUs}
+      />
+    );
+
     return (
       <Page>
         <div className="hidden-xs padding-bottom-60" />
@@ -421,46 +462,19 @@ class PhotographerDetail extends Component {
                   id="reservation-starting-time"
                   data-time="-"
                 >
-                  <DateRangePicker
-                    locale={{
-                      format: 'MM-DD-YYYY HH:mm',
-                    }}
-                    ranges={{
-                      Today: [moment(), moment()],
-                      Yesterday: [
-                        moment().subtract(1, 'days'),
-                        moment().subtract(1, 'days'),
-                      ],
-                      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                      'This Month': [
-                        moment().startOf('month'),
-                        moment().endOf('month'),
-                      ],
-                      'Last Month': [
-                        moment()
-                          .subtract(1, 'month')
-                          .startOf('month'),
-                        moment()
-                          .subtract(1, 'month')
-                          .endOf('month'),
-                      ],
-                    }}
-                    onEvent={this.handleEvent}
-                    timePicker
-                    startDate={moment()}
+                  <PopPicker
+                    datePicker={datePicker}
+                    transitionName="rmc-picker-popup-slide-fade"
+                    maskTransitionName="rmc-picker-popup-fade"
+                    title="Date picker"
+                    date={date}
+                    onDismiss={this.onOssomDismiss}
+                    onChange={this.onOssomChange}
                   >
-                    <span>
-                      {this.state.reservation.startingTime.startDate === '' &&
-                      this.state.reservation.startingTime.endDate === '' ? (
-                        'Starting Time'
-                      ) : (
-                        `(${this.state.reservation.startingTime
-                          .startDate}) - (${this.state.reservation.startingTime
-                          .endDate})`
-                      )}
-                    </span>
-                  </DateRangePicker>
+                    <button onClick={this.ossomShow}>
+                      {(date && this.formattt(date)) || 'open'}
+                    </button>
+                  </PopPicker>
                 </div>
                 {/* <div
                   className="reservation-opt"
