@@ -1813,6 +1813,22 @@ RESPONSIVE
     padding-left: 0;
   }
 
+  /*
+  ----------------------------------------------------------------------------
+  RESERVATION MODAL
+  ----------------------------------------------------------------------------
+  */
+
+  #reservation-modal .modal-body #photographer-reservation {
+    height: inherit;
+    opacity: 1;
+  }
+
+  #reservation-modal .modal-body #photographer-reservation > .fa-times {
+    top: 30px;
+    right: 30px;
+  }
+
   .poster > .text {
     font-size: 16px;
   }

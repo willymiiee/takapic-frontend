@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 // import DateTime from 'react-datetime';
 import moment from 'moment';
 import Page from 'components/Page';
@@ -63,7 +64,11 @@ class PhotographerDetail extends Component {
         total: '',
       },
       datetime: state && state.date ? state.date : '',
+      showModal: false,
     };
+
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   onOssomChange = date => {
@@ -79,7 +84,7 @@ class PhotographerDetail extends Component {
     let month = date.getMonth() + 1;
     month = month < 10 ? `0${month}` : month;
     mday = mday < 10 ? `0${mday}` : mday;
-    return `${date.getFullYear()}-${month}-${mday} ${date.getHours()}:${date.getMinutes()}`;
+    return `${mday}-${month}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
   }
 
   onDateChange(event) {
@@ -317,6 +322,14 @@ class PhotographerDetail extends Component {
     this.setState({ total });
   };
 
+  openModal() {
+    this.setState({ showModal: true });
+  }
+
+  closeModal() {
+    this.setState({ showModal: false });
+  }
+
   render() {
     let yesterday = moment().subtract(1, 'day');
     let valid = function(current) {
@@ -397,9 +410,202 @@ class PhotographerDetail extends Component {
           <button
             id="photographer-reservation-btn-2"
             className="button button-white padding-left-35 padding-right-35"
+            onClick={this.openModal}
           >
             Reserve
           </button>
+
+          <Modal
+            id="reservation-modal"
+            show={this.state.showModal}
+            onHide={this.close}
+          >
+            <Modal.Body>
+              <div id="photographer-reservation-bg" />
+              <div className="card" id="photographer-reservation">
+                <i className="fa fa-times" onClick={this.closeModal} />
+                <h3>Reservation form</h3>
+                <h4>
+                  From <b>$100</b>
+                </h4>
+                <div id="reservation-status">OK</div>
+                <div
+                  className="reservation-opt"
+                  id="reservation-starting-time"
+                  data-time="-"
+                >
+                  <PopPicker
+                    datePicker={datePicker}
+                    transitionName="rmc-picker-popup-slide-fade"
+                    maskTransitionName="rmc-picker-popup-fade"
+                    title="Date picker"
+                    date={date}
+                    onDismiss={this.onOssomDismiss}
+                    onChange={this.onOssomChange}
+                  >
+                    <button onClick={this.ossomShow}>
+                      {(date && this.formattt(date)) || 'Choose date'}
+                    </button>
+                  </PopPicker>
+                </div>
+                {/* <div
+                  className="reservation-opt"
+                  id="reservation-starting-time"
+                  data-time="-"> */}
+                {/* <DateTime
+                    value={this.state.datetime}
+                    ref={input => {
+                      this.textInput = input;
+                    }}
+                    inputProps={{
+                      placeholder: 'Date',
+                      style: { display: 'none' },
+                    }}
+                    timeFormat="HH:mm"
+                    dateFormat="MM-DD-YYYY"
+                    onChange={this.onDateChange.bind(this)}
+                    isValidDate={valid}
+                  /> */}
+                {/* <span>
+                    {this.state.datetime === '' ? (
+                      'Starting Time'
+                    ) : (
+                        this.state.datetime
+                      )}
+                  </span> */}
+                {/* </div> */}
+                <div
+                  className="reservation-opt"
+                  id="reservation-package"
+                  onClick={event => {
+                    event.stopPropagation();
+                    let { reservation } = this.state;
+                    if (reservation.package.opened) {
+                      reservation.package.opened = false;
+                    } else {
+                      reservation.package.opened = true;
+                    }
+                    this.setState({ reservation });
+                  }}
+                >
+                  <div
+                    className="card-popup"
+                    style={{
+                      display: this.state.reservation.package.opened
+                        ? 'block'
+                        : 'none',
+                    }}
+                  >
+                    {this.props.photographerDetail &&
+                      this.props.photographerDetail.loaded &&
+                      this.props.photographerDetail.data &&
+                      this.props.photographerDetail.data.packagesPrice.map(
+                        (data, key) => (
+                          <i
+                            className={
+                              this.state.reservation.package.value === key ? (
+                                'active'
+                              ) : (
+                                ''
+                              )
+                            }
+                            onClick={event => this.choosePackage(event, key)}
+                            key={key}
+                          >
+                            {data.packageName}
+                          </i>
+                        )
+                      )}
+                  </div>
+                  {
+                    <span>
+                      {this.props.photographerDetail &&
+                        this.props.photographerDetail.loaded &&
+                        this.props.photographerDetail.data &&
+                        this.props.photographerDetail.data.packagesPrice[
+                          this.state.reservation.package.value
+                        ].packageName}{' '}
+                      Package
+                    </span>
+                  }
+                </div>
+                <div id="photographer-reservation-calc">
+                  <div>
+                    Photographer Fee&nbsp;
+                    {this.props.photographerDetail &&
+                    this.props.photographerDetail.loaded &&
+                    this.props.photographerDetail.data && (
+                      <span>
+                        ({
+                          this.props.photographerDetail.data.packagesPrice[
+                            this.state.reservation.package.value
+                          ].packageName
+                        })
+                      </span>
+                    )}
+                    {this.props.photographerDetail &&
+                    this.props.photographerDetail.loaded &&
+                    this.props.photographerDetail.data && (
+                      <i>
+                        ${
+                          this.props.photographerDetail.data.packagesPrice[
+                            this.state.reservation.package.value
+                          ].price
+                        }
+                      </i>
+                    )}
+                  </div>
+                  <div>
+                    Service fee
+                    {this.props.photographerDetail &&
+                    this.props.photographerDetail.loaded &&
+                    this.props.photographerDetail.data && (
+                      <i>
+                        ${this.props.photographerDetail.data.packagesPrice[
+                          this.state.reservation.package.value
+                        ].price * this.state.reservation.serviceFee}
+                      </i>
+                    )}
+                  </div>
+                  <div>
+                    Credit<i>${this.state.reservation.credit}</i>
+                  </div>
+                </div>
+                <div id="photographer-reservation-calc-total">
+                  Total{' '}
+                  {this.props.photographerDetail &&
+                  this.props.photographerDetail.loaded &&
+                  this.props.photographerDetail.data && (
+                    <i>
+                      ${this.state.reservation.credit +
+                        parseInt(
+                          this.props.photographerDetail.data.packagesPrice[
+                            this.state.reservation.package.value
+                          ].price
+                        ) +
+                        this.props.photographerDetail.data.packagesPrice[
+                          this.state.reservation.package.value
+                        ].price *
+                          this.state.reservation.serviceFee}
+                    </i>
+                  )}
+                </div>
+                <div id="photographer-reservation-bottom">
+                  <button
+                    onClick={this.handleReserve}
+                    id="photographer-reservation-btn"
+                    className="button button-white padding-left-40 padding-right-40"
+                  >
+                    Reserve
+                  </button>
+                  <div>
+                    or<br />
+                    <a href="">contact to your photographer</a>
+                  </div>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
 
           <div className="row">
             <div className="col-sm-6 col-md-7 margin-top-70">
