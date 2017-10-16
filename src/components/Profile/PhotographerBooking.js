@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 // import DateTime from 'react-datetime';
 import moment from 'moment';
 import Page from 'components/Page';
@@ -21,11 +21,12 @@ import { fetchPhotographerDetail } from '../../store/actions/photographerDetailA
 
 // import DateRangePicker from 'react-bootstrap-daterangepicker';
 
-class PhotographerDetail extends Component {
+class PhotographerBooking extends Component {
   constructor(props) {
     super(props);
     let { state } = this.props.location;
     this.state = {
+      activeKey: 1,
       date: null,
       email: 'agungsuryabangsa-gmail-com',
       uuid: '0jknVmGuMwPLKjFetyLm9xYWSh62',
@@ -608,6 +609,50 @@ class PhotographerDetail extends Component {
             </Modal.Body>
           </Modal>
 
+          <Row>
+            <Col sm={6} md={7}>
+              <Panel
+                collapsible
+                expanded={this.state.activeKey === 1}
+                header="1. About Your Booking"
+                eventKey="1"
+              >
+                <h4>Q1. Who is coming?</h4>
+                <h4>Q2. Preferred meeting point with your photographer</h4>
+                <h4>
+                  <strong>Say Hello To Your Photographer</strong>
+                </h4>
+                <textarea />
+                <Button
+                  className="pull-right"
+                  onClick={() => this.setState({ activeKey: 2 })}
+                >
+                  Next
+                </Button>
+              </Panel>
+              <Panel
+                collapsible
+                expanded={this.state.activeKey === 2}
+                header="2. Payment"
+                eventKey="2"
+              >
+                <p>
+                  You'll only be charged if your request is accepted by the
+                  photographer. They'll have 24 hours to accept or decline.
+                </p>
+                <h4>
+                  <strong>100% refundable</strong>
+                </h4>
+                <h4>
+                  <strong>Billing Country</strong>
+                </h4>
+                <h4>
+                  <strong>Payment Method</strong>
+                </h4>
+              </Panel>
+            </Col>
+          </Row>
+
           <div className="row">
             <div className="col-sm-6 col-md-7 margin-top-70">
               <div id="photographer-info">
@@ -856,5 +901,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PhotographerDetail)
+  connect(mapStateToProps, mapDispatchToProps)(PhotographerBooking)
 );
