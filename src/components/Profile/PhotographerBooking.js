@@ -373,109 +373,55 @@ class PhotographerBooking extends Component {
       <Page>
         <div className="hidden-xs padding-bottom-60" />
         <div className="container">
-          <div id="photographer-top">
-            <i className="fa fa-heart-o" />
-            <i className="fa fa-share-alt" />
-            <div id="photographer-profile-photo">
-              <img
-                width="400"
-                height="300"
-                className="cover"
-                src="/images/photographer/outlook-photography-jobs-2.jpg"
-                alt=""
-              />
-            </div>
-            <h2>Dana Kim</h2>
-            <h4>Seoul, Korea</h4>
-            <a
-              href="/photographer-portofolio/1"
-              className="button button-white"
-            >
-              Go to Portofolio
-            </a>
-          </div>
-
-          <Slider {...settings}>
-            {[1, 2, 3, 4, 5, 6].map(item => (
-              <div key={item} style={{ textAlign: 'center' }}>
-                <img
-                  style={{ display: 'inline-block' }}
-                  width="400"
-                  height="300"
-                  src={`/images/photo/0${item}.jpg`}
-                  alt=""
-                />
-              </div>
-            ))}
-          </Slider>
-
-          <button
-            id="photographer-reservation-btn-2"
-            className="button button-white padding-left-35 padding-right-35"
-            onClick={this.openModal}
-          >
-            Reserve
-          </button>
-
-          <Modal
-            id="reservation-modal"
-            show={this.state.showModal}
-            onHide={this.close}
-          >
-            <Modal.Body>
-              <div id="photographer-reservation-bg" />
+          <Row>
+            <Col sm={6} md={7}>
+              <Panel
+                collapsible
+                expanded={this.state.activeKey === 1}
+                header="1. About Your Booking"
+                eventKey="1"
+              >
+                <h4>Q1. Who is coming?</h4>
+                <h4>Q2. Preferred meeting point with your photographer</h4>
+                <h4>
+                  <strong>Say Hello To Your Photographer</strong>
+                </h4>
+                <textarea />
+                <Button
+                  className="pull-right"
+                  onClick={() => this.setState({ activeKey: 2 })}
+                >
+                  Next
+                </Button>
+              </Panel>
+              <Panel
+                collapsible
+                expanded={this.state.activeKey === 2}
+                header="2. Payment"
+                eventKey="2"
+              >
+                <p>
+                  You'll only be charged if your request is accepted by the
+                  photographer. They'll have 24 hours to accept or decline.
+                </p>
+                <h4>
+                  <strong>100% refundable</strong>
+                </h4>
+                <h4>
+                  <strong>Billing Country</strong>
+                </h4>
+                <h4>
+                  <strong>Payment Method</strong>
+                </h4>
+              </Panel>
+            </Col>
+            <Col sm={6} md={5}>
               <div className="card" id="photographer-reservation">
-                <i className="fa fa-times" onClick={this.closeModal} />
+                <i className="fa fa-times" />
                 <h3>Reservation form</h3>
                 <h4>
                   From <b>$100</b>
                 </h4>
-                <div id="reservation-status">OK</div>
-                <div
-                  className="reservation-opt"
-                  id="reservation-starting-time"
-                  data-time="-"
-                >
-                  <PopPicker
-                    datePicker={datePicker}
-                    transitionName="rmc-picker-popup-slide-fade"
-                    maskTransitionName="rmc-picker-popup-fade"
-                    title="Date picker"
-                    date={date}
-                    onDismiss={this.onOssomDismiss}
-                    onChange={this.onOssomChange}
-                  >
-                    <button onClick={this.ossomShow}>
-                      {(date && this.formattt(date)) || 'Choose date'}
-                    </button>
-                  </PopPicker>
-                </div>
-                {/* <div
-                  className="reservation-opt"
-                  id="reservation-starting-time"
-                  data-time="-"> */}
-                {/* <DateTime
-                    value={this.state.datetime}
-                    ref={input => {
-                      this.textInput = input;
-                    }}
-                    inputProps={{
-                      placeholder: 'Date',
-                      style: { display: 'none' },
-                    }}
-                    timeFormat="HH:mm"
-                    dateFormat="MM-DD-YYYY"
-                    onChange={this.onDateChange.bind(this)}
-                    isValidDate={valid}
-                  /> */}
-                {/* <span>
-                    {this.state.datetime === '' ? (
-                      'Starting Time'
-                    ) : (
-                        this.state.datetime
-                      )}
-                  </span> */}
-                {/* </div> */}
                 <div
                   className="reservation-opt"
                   id="reservation-package"
@@ -606,50 +552,6 @@ class PhotographerBooking extends Component {
                   </div>
                 </div>
               </div>
-            </Modal.Body>
-          </Modal>
-
-          <Row>
-            <Col sm={6} md={7}>
-              <Panel
-                collapsible
-                expanded={this.state.activeKey === 1}
-                header="1. About Your Booking"
-                eventKey="1"
-              >
-                <h4>Q1. Who is coming?</h4>
-                <h4>Q2. Preferred meeting point with your photographer</h4>
-                <h4>
-                  <strong>Say Hello To Your Photographer</strong>
-                </h4>
-                <textarea />
-                <Button
-                  className="pull-right"
-                  onClick={() => this.setState({ activeKey: 2 })}
-                >
-                  Next
-                </Button>
-              </Panel>
-              <Panel
-                collapsible
-                expanded={this.state.activeKey === 2}
-                header="2. Payment"
-                eventKey="2"
-              >
-                <p>
-                  You'll only be charged if your request is accepted by the
-                  photographer. They'll have 24 hours to accept or decline.
-                </p>
-                <h4>
-                  <strong>100% refundable</strong>
-                </h4>
-                <h4>
-                  <strong>Billing Country</strong>
-                </h4>
-                <h4>
-                  <strong>Payment Method</strong>
-                </h4>
-              </Panel>
             </Col>
           </Row>
 
@@ -697,192 +599,6 @@ class PhotographerBooking extends Component {
                 <h3 className="has-dot">
                   Comments <span className="thin">(38)</span>
                 </h3>
-              </div>
-            </div>
-
-            <div className="col-sm-6 col-md-5 margin-top-70">
-              <div id="photographer-reservation-bg" />
-              <div className="card" id="photographer-reservation">
-                <i className="fa fa-times" />
-                <h3>Reservation form</h3>
-                <h4>
-                  From <b>$100</b>
-                </h4>
-                <div id="reservation-status">OK</div>
-                <div
-                  className="reservation-opt"
-                  id="reservation-starting-time"
-                  data-time="-"
-                >
-                  <PopPicker
-                    datePicker={datePicker}
-                    transitionName="rmc-picker-popup-slide-fade"
-                    maskTransitionName="rmc-picker-popup-fade"
-                    title="Date picker"
-                    date={date}
-                    onDismiss={this.onOssomDismiss}
-                    onChange={this.onOssomChange}
-                  >
-                    <button onClick={this.ossomShow}>
-                      {(date && this.formattt(date)) || 'open'}
-                    </button>
-                  </PopPicker>
-                </div>
-                {/* <div
-                  className="reservation-opt"
-                  id="reservation-starting-time"
-                  data-time="-"> */}
-                {/* <DateTime
-                    value={this.state.datetime}
-                    ref={input => {
-                      this.textInput = input;
-                    }}
-                    inputProps={{
-                      placeholder: 'Date',
-                      style: { display: 'none' },
-                    }}
-                    timeFormat="HH:mm"
-                    dateFormat="MM-DD-YYYY"
-                    onChange={this.onDateChange.bind(this)}
-                    isValidDate={valid}
-                  /> */}
-                {/* <span>
-                    {this.state.datetime === '' ? (
-                      'Starting Time'
-                    ) : (
-                        this.state.datetime
-                      )}
-                  </span> */}
-                {/* </div> */}
-                <div
-                  className="reservation-opt"
-                  id="reservation-package"
-                  onClick={event => {
-                    event.stopPropagation();
-                    let { reservation } = this.state;
-                    if (reservation.package.opened) {
-                      reservation.package.opened = false;
-                    } else {
-                      reservation.package.opened = true;
-                    }
-                    this.setState({ reservation });
-                  }}
-                >
-                  <div
-                    className="card-popup"
-                    style={{
-                      display: this.state.reservation.package.opened
-                        ? 'block'
-                        : 'none',
-                    }}
-                  >
-                    {this.props.photographerDetail &&
-                      this.props.photographerDetail.loaded &&
-                      this.props.photographerDetail.data &&
-                      this.props.photographerDetail.data.packagesPrice.map(
-                        (data, key) => (
-                          <i
-                            className={
-                              this.state.reservation.package.value === key ? (
-                                'active'
-                              ) : (
-                                ''
-                              )
-                            }
-                            onClick={event => this.choosePackage(event, key)}
-                            key={key}
-                          >
-                            {data.packageName}
-                          </i>
-                        )
-                      )}
-                  </div>
-                  {
-                    <span>
-                      {this.props.photographerDetail &&
-                        this.props.photographerDetail.loaded &&
-                        this.props.photographerDetail.data &&
-                        this.props.photographerDetail.data.packagesPrice[
-                          this.state.reservation.package.value
-                        ].packageName}{' '}
-                      Package
-                    </span>
-                  }
-                </div>
-                <div id="photographer-reservation-calc">
-                  <div>
-                    Photographer Fee&nbsp;
-                    {this.props.photographerDetail &&
-                    this.props.photographerDetail.loaded &&
-                    this.props.photographerDetail.data && (
-                      <span>
-                        ({
-                          this.props.photographerDetail.data.packagesPrice[
-                            this.state.reservation.package.value
-                          ].packageName
-                        })
-                      </span>
-                    )}
-                    {this.props.photographerDetail &&
-                    this.props.photographerDetail.loaded &&
-                    this.props.photographerDetail.data && (
-                      <i>
-                        ${
-                          this.props.photographerDetail.data.packagesPrice[
-                            this.state.reservation.package.value
-                          ].price
-                        }
-                      </i>
-                    )}
-                  </div>
-                  <div>
-                    Service fee
-                    {this.props.photographerDetail &&
-                    this.props.photographerDetail.loaded &&
-                    this.props.photographerDetail.data && (
-                      <i>
-                        ${this.props.photographerDetail.data.packagesPrice[
-                          this.state.reservation.package.value
-                        ].price * this.state.reservation.serviceFee}
-                      </i>
-                    )}
-                  </div>
-                  <div>
-                    Credit<i>${this.state.reservation.credit}</i>
-                  </div>
-                </div>
-                <div id="photographer-reservation-calc-total">
-                  Total{' '}
-                  {this.props.photographerDetail &&
-                  this.props.photographerDetail.loaded &&
-                  this.props.photographerDetail.data && (
-                    <i>
-                      ${this.state.reservation.credit +
-                        parseInt(
-                          this.props.photographerDetail.data.packagesPrice[
-                            this.state.reservation.package.value
-                          ].price
-                        ) +
-                        this.props.photographerDetail.data.packagesPrice[
-                          this.state.reservation.package.value
-                        ].price *
-                          this.state.reservation.serviceFee}
-                    </i>
-                  )}
-                </div>
-                <div id="photographer-reservation-bottom">
-                  <button
-                    onClick={this.handleReserve}
-                    id="photographer-reservation-btn"
-                    className="button button-white padding-left-40 padding-right-40"
-                  >
-                    Reserve
-                  </button>
-                  <div>
-                    or<br />
-                    <a href="">contact to your photographer</a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
