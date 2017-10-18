@@ -64,6 +64,9 @@ class PhotographerBooking extends Component {
         credit: 0,
         total: '',
       },
+      totalAdults: 0,
+      totalChildren: 0,
+      totalInfants: 0,
     };
   }
 
@@ -77,8 +80,47 @@ class PhotographerBooking extends Component {
     console.log('nextProps', nextProps);
   }
 
+  handleAdults = event => {
+    const isEmpty = value =>
+      value === undefined || value === null || value === '';
+    if (
+      !isEmpty(event.currentTarget.value) &&
+      !Number.isInteger(Number(event.currentTarget.value))
+    ) {
+      return;
+    } else {
+      this.setState({ totalAdults: event.currentTarget.value });
+    }
+  };
+
+  handleChildren = event => {
+    const isEmpty = value =>
+      value === undefined || value === null || value === '';
+    if (
+      !isEmpty(event.currentTarget.value) &&
+      !Number.isInteger(Number(event.currentTarget.value))
+    ) {
+      return;
+    } else {
+      this.setState({ totalChildren: event.currentTarget.value });
+    }
+  };
+
+  handleInfants = event => {
+    const isEmpty = value =>
+      value === undefined || value === null || value === '';
+    if (
+      !isEmpty(event.currentTarget.value) &&
+      !Number.isInteger(Number(event.currentTarget.value))
+    ) {
+      return;
+    } else {
+      this.setState({ totalInfants: event.currentTarget.value });
+    }
+  };
+
   render() {
-    console.log('this.props', this.props);
+    const { totalAdults, totalChildren, totalInfants } = this.state;
     let yesterday = moment().subtract(1, 'day');
     let valid = function(current) {
       return current.isAfter(yesterday);
@@ -128,6 +170,33 @@ class PhotographerBooking extends Component {
                 eventKey="1"
               >
                 <h4>Q1. Who is coming?</h4>
+                <div className="form-group">
+                  <label>Adults</label>
+                  <input
+                    type="text"
+                    value={totalAdults}
+                    className="form-control"
+                    onChange={this.handleAdults}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Children</label>
+                  <input
+                    type="text"
+                    value={totalChildren}
+                    className="form-control"
+                    onChange={this.handleChildren}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Infants</label>
+                  <input
+                    type="text"
+                    value={totalInfants}
+                    className="form-control"
+                    onChange={this.handleInfants}
+                  />
+                </div>
                 <h4>Q2. Preferred meeting point with your photographer</h4>
                 <select>
                   <option>Your location</option>
