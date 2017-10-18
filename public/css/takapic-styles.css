@@ -1813,6 +1813,22 @@ RESPONSIVE
     padding-left: 0;
   }
 
+  /*
+  ----------------------------------------------------------------------------
+  RESERVATION MODAL
+  ----------------------------------------------------------------------------
+  */
+
+  #reservation-modal .modal-body #photographer-reservation {
+    height: inherit;
+    opacity: 1;
+  }
+
+  #reservation-modal .modal-body #photographer-reservation > .fa-times {
+    top: 30px;
+    right: 30px;
+  }
+
   .poster > .text {
     font-size: 16px;
   }
@@ -2827,15 +2843,29 @@ PORTOFOLIO CONTENT SLIDER
 .slick-slide img {
   max-height: 500px;
 }
+.slick-arrow {
+  height: inherit !important;
+  z-index: 9;
+}
 .slick-prev {
-  left: 4%;
+  left: 4% !important;
 }
 .slick-next {
-  right: 4%;
+  right: 4% !important;
 }
 .slick-prev:before,
 .slick-next:before {
-  font-size: 32px;
+  font-size: 40px !important;
+  color: #fff !important;
+  text-shadow: 1px 1px 1px #000;
+}
+.slick-prev:before {
+  font-family: 'FontAwesome' !important;
+  content: '\f104' !important;
+}
+.slick-next:before {
+  font-family: 'FontAwesome' !important;
+  content: '\f105' !important;
 }
 .slick-dots {
   bottom: -80px;

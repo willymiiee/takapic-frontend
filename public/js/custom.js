@@ -454,133 +454,133 @@
     /*  Slick Carousel
     /*----------------------------------------------------*/
 
-    $('.fullwidth-slick-carousel').slick({
-      centerMode: true,
-      centerPadding: '15%',
-      slidesToShow: 3,
-      dots: true,
-      arrows: false,
-      autoplay: true,
-      autoplaySpeed: 5000,
-      responsive: [
-        {
-          breakpoint: 1441,
-          settings: {
-            centerPadding: '10%',
-            slidesToShow: 3,
-          },
-        },
-        {
-          breakpoint: 1025,
-          settings: {
-            centerPadding: '5px',
-            slidesToShow: 2,
-          },
-        },
-        {
-          breakpoint: 767,
-          settings: {
-            centerPadding: '5px',
-            slidesToShow: 1,
-          },
-        },
-      ],
-    });
+    // $('.fullwidth-slick-carousel').slick({
+    //   centerMode: true,
+    //   centerPadding: '15%',
+    //   slidesToShow: 3,
+    //   dots: true,
+    //   arrows: false,
+    //   autoplay: true,
+    //   autoplaySpeed: 5000,
+    //   responsive: [
+    //     {
+    //       breakpoint: 1441,
+    //       settings: {
+    //         centerPadding: '10%',
+    //         slidesToShow: 3,
+    //       },
+    //     },
+    //     {
+    //       breakpoint: 1025,
+    //       settings: {
+    //         centerPadding: '5px',
+    //         slidesToShow: 2,
+    //       },
+    //     },
+    //     {
+    //       breakpoint: 767,
+    //       settings: {
+    //         centerPadding: '5px',
+    //         slidesToShow: 1,
+    //       },
+    //     },
+    //   ],
+    // });
 
-    $('.testimonial-carousel').slick({
-      centerMode: true,
-      centerPadding: '34%',
-      slidesToShow: 1,
-      dots: true,
-      arrows: false,
-      responsive: [
-        {
-          breakpoint: 1025,
-          settings: {
-            centerPadding: '10px',
-            slidesToShow: 2,
-          },
-        },
-        {
-          breakpoint: 767,
-          settings: {
-            centerPadding: '10px',
-            slidesToShow: 1,
-          },
-        },
-      ],
-    });
+    // $('.testimonial-carousel').slick({
+    //   centerMode: true,
+    //   centerPadding: '34%',
+    //   slidesToShow: 1,
+    //   dots: true,
+    //   arrows: false,
+    //   responsive: [
+    //     {
+    //       breakpoint: 1025,
+    //       settings: {
+    //         centerPadding: '10px',
+    //         slidesToShow: 2,
+    //       },
+    //     },
+    //     {
+    //       breakpoint: 767,
+    //       settings: {
+    //         centerPadding: '10px',
+    //         slidesToShow: 1,
+    //       },
+    //     },
+    //   ],
+    // });
 
-    $('.listing-slider').slick({
-      centerMode: true,
-      centerPadding: '20%',
-      slidesToShow: 2,
-      responsive: [
-        {
-          breakpoint: 1367,
-          settings: {
-            centerPadding: '15%',
-          },
-        },
-        {
-          breakpoint: 1025,
-          settings: {
-            centerPadding: '0',
-          },
-        },
-        {
-          breakpoint: 767,
-          settings: {
-            centerPadding: '0',
-            slidesToShow: 1,
-          },
-        },
-      ],
-    });
+    // $('.listing-slider').slick({
+    //   centerMode: true,
+    //   centerPadding: '20%',
+    //   slidesToShow: 2,
+    //   responsive: [
+    //     {
+    //       breakpoint: 1367,
+    //       settings: {
+    //         centerPadding: '15%',
+    //       },
+    //     },
+    //     {
+    //       breakpoint: 1025,
+    //       settings: {
+    //         centerPadding: '0',
+    //       },
+    //     },
+    //     {
+    //       breakpoint: 767,
+    //       settings: {
+    //         centerPadding: '0',
+    //         slidesToShow: 1,
+    //       },
+    //     },
+    //   ],
+    // });
 
-    $('.simple-slick-carousel').slick({
-      infinite: true,
-      slidesToShow: 3,
-      slidesToScroll: 3,
-      dots: true,
-      arrows: true,
-      responsive: [
-        {
-          breakpoint: 992,
-          settings: {
-            slidesToShow: 2,
-          },
-        },
-        {
-          breakpoint: 769,
-          settings: {
-            slidesToShow: 1,
-          },
-        },
-      ],
-    });
+    // $('.simple-slick-carousel').slick({
+    //   infinite: true,
+    //   slidesToShow: 3,
+    //   slidesToScroll: 3,
+    //   dots: true,
+    //   arrows: true,
+    //   responsive: [
+    //     {
+    //       breakpoint: 992,
+    //       settings: {
+    //         slidesToShow: 2,
+    //       },
+    //     },
+    //     {
+    //       breakpoint: 769,
+    //       settings: {
+    //         slidesToShow: 1,
+    //       },
+    //     },
+    //   ],
+    // });
 
-    $('.logo-slick-carousel').slick({
-      infinite: true,
-      slidesToShow: 5,
-      slidesToScroll: 4,
-      dots: true,
-      arrows: true,
-      responsive: [
-        {
-          breakpoint: 992,
-          settings: {
-            slidesToShow: 3,
-          },
-        },
-        {
-          breakpoint: 769,
-          settings: {
-            slidesToShow: 1,
-          },
-        },
-      ],
-    });
+    // $('.logo-slick-carousel').slick({
+    //   infinite: true,
+    //   slidesToShow: 5,
+    //   slidesToScroll: 4,
+    //   dots: true,
+    //   arrows: true,
+    //   responsive: [
+    //     {
+    //       breakpoint: 992,
+    //       settings: {
+    //         slidesToShow: 3,
+    //       },
+    //     },
+    //     {
+    //       breakpoint: 769,
+    //       settings: {
+    //         slidesToShow: 1,
+    //       },
+    //     },
+    //   ],
+    // });
 
     /*----------------------------------------------------*/
     /*  Tabs

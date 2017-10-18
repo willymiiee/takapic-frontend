@@ -58,7 +58,23 @@ class Step2SetupMeetingPointA extends Component {
       packagesPrice,
       meetingPoints,
     };
+    // Make sure that the params are complete
+    // if (params.email && params.packagesPrice.length > 0 && params.meetingPoints.length === 3) {
     this.props.setMeetingPoint(params);
+    // }
+  };
+
+  handleAddition = params => {
+    if (
+      params.generalLocation &&
+      params.specificLocation &&
+      this.state.meetingPoints.length < 3
+    ) {
+      const { generalLocation, specificLocation } = params;
+      let { meetingPoints } = this.state;
+      meetingPoints = [...meetingPoints, { generalLocation, specificLocation }];
+      this.setState({ meetingPoints });
+    }
   };
 
   handleAddition = params => {

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
+import photographerDetail from './photographerDetailReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
 import photographerServiceInfoStep2 from './photographerServiceInfoReducersStep2';
 
@@ -8,6 +9,7 @@ const rootReducer = combineReducers({
   userAuth,
   userSignup,
   userInitProfile,
+  photographerDetail,
   photographerServiceInfo,
   photographerServiceInfoStep2,
   locale: (state = 'en-US', action) =>

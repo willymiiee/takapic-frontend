@@ -11,6 +11,7 @@ import history from 'services/history';
 import store from 'store';
 
 import Home from 'pages/home';
+import PhotographerBooking from 'components/Profile/PhotographerBooking';
 import PhotographerDetail from 'components/Profile/PhotographerDetail';
 import PortofolioContent from 'components/PhotographerPortofolio/PortofolioContent';
 import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
@@ -92,6 +93,7 @@ const App = connect(state => state)(props => {
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route path="/booking" component={PhotographerBooking} />
             <Route path="/sign-in" component={SignIn} />
             <Route path="/photographer/:id" component={PhotographerDetail} />
             <Route path="/search" component={Search} />

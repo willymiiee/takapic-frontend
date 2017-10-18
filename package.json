@@ -24,7 +24,9 @@
     "react-addons-shallow-compare": "^15.6.2",
     "react-autocomplete": "^1.6.0",
     "react-bootstrap": "^0.31.3",
+    "react-bootstrap-daterangepicker": "^3.4.1",
     "react-bootstrap-typeahead": "^2.0.0-alpha.3",
+    "react-circular-progressbar": "^0.2.2",
     "react-datetime": "^2.9.0",
     "react-dom": "^15.6.1",
     "react-dom-factories": "^1.0.2",
@@ -34,6 +36,7 @@
     "react-google-login": "^2.9.2",
     "react-google-maps": "^8.3.5",
     "react-intl-universal": "^1.2.1",
+    "react-rating-float": "^1.1.9",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
     "react-router-redux": "^4.0.8",
@@ -48,6 +51,7 @@
     "recompose": "^0.25.0",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
+    "rmc-date-picker": "^6.0.0",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
