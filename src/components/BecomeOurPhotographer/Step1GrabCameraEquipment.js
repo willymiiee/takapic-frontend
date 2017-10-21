@@ -90,7 +90,7 @@ class Step1GrabCameraEquipment extends Component {
         photographerServiceInfo: { locationStructure, selfDescription },
         user: { email },
       } = this.props;
-      locationStructure.location_merge = this.setLocationMerge(
+      locationStructure.locationMerge = this.setLocationMerge(
         locationStructure
       );
       const params = {
@@ -138,14 +138,6 @@ class Step1GrabCameraEquipment extends Component {
           <div className="row">
             <div className="col-sm-2 col-md-1 padding-top-5">Body</div>
             <div className="col-sm-10 col-md-11 margin-bottom-15">
-              {/* <select className="select2" multiple>
-                <option>Nikon D5600</option>
-                <option>Nikon D7500</option>
-                <option>Nikon D7200</option>
-                <option>Canon 60D</option>
-                <option>Canon 70D</option>
-                <option>Canon 80D</option>
-              </select> */}
               {this.state.selected.bodies.map((item, key) => (
                 <FormGroup key={key}>
                   <FormControl
@@ -159,16 +151,6 @@ class Step1GrabCameraEquipment extends Component {
             </div>
             <div className="col-sm-2 col-md-1 padding-top-5">Lens</div>
             <div className="col-sm-10 col-md-11 margin-bottom-15">
-              {/* <select className="select2" multiple>
-                <option>Canon EF 50mm f/1.8 II Lens – f</option>
-                <option>Canon EF 85mm f/1.8 USM Telephoto Lens</option>
-                <option>Canon EF 28mm f/1.8 USM Wide Angle Lens</option>
-                <option>Nikon AF-S FX NIKKOR 50mm f/1.8G</option>
-                <option>Nikon AF FX NIKKOR 28mm f/1.8G</option>
-                <option>Sigma 17-50mm f/2.8 EX DC OS HSM FLD</option>
-                <option>Sigma 10-20mm f/3.5 EX DC HSM</option>
-                <option>Tamron Auto Focus 70-300mm f/4.0-5.6 Di LD</option>
-              </select> */}
               {this.state.selected.lenses.map((item, key) => (
                 <FormGroup key={key}>
                   <FormControl
@@ -182,13 +164,6 @@ class Step1GrabCameraEquipment extends Component {
             </div>
           </div>
           <h3>Language Spoken</h3>
-          {/* <select className="select2" multiple>
-            <option>English</option>
-            <option>Korean</option>
-            <option>Japanese</option>
-            <option>Indonesian</option>
-            <option>French</option>
-          </select> */}
           <MultiSelect
             placeholder="Select your language"
             options={this.state.languages.map(item => ({
@@ -198,13 +173,6 @@ class Step1GrabCameraEquipment extends Component {
             onValuesChange={this.handleLanguages}
           />
           <h3>Speciality</h3>
-          {/* <select className="select2" multiple>
-            <option>Wedding</option>
-            <option>Portrait</option>
-            <option>Couple</option>
-            <option>Snap</option>
-            <option>Glamour</option>
-          </select> */}
           <MultiSelect
             placeholder="Select your speciality"
             options={this.state.speciality.map(item => ({

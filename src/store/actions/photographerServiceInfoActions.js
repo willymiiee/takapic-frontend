@@ -1,6 +1,7 @@
 import { database } from 'services/firebase';
 import history from '../../services/history';
 import { dashify } from '../../helpers/helpers';
+import get from 'lodash/get';
 
 export const selfDescription = description => {
   return dispatch => {
@@ -9,6 +10,33 @@ export const selfDescription = description => {
       payload: { selfDescription: description },
     });
   };
+};
+
+const updateUserMetadataLocation = (email, location) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(dashify(email));
+  const updateData = {
+    locationCountry: get(location, 'country', '-'),
+    locationAdministrativeAreaLevel1: get(
+      location,
+      'administrativeAreaLevel1',
+      '-'
+    ),
+    locationAdministrativeAreaLevel2: get(
+      location,
+      'administrativeAreaLevel2',
+      '-'
+    ),
+    locationAdministrativeAreaLevel3: get(
+      location,
+      'administrativeAreaLevel3',
+      '-'
+    ),
+    locationMerge: get(location, 'locationMerge', '-'),
+  };
+
+  userRef.update(updateData);
 };
 
 export const submitCameraEquipment = params => {
@@ -40,6 +68,9 @@ export const submitCameraEquipment = params => {
           type: 'SUBMIT_CAMERA_EQUIPMENT_SUCCESS',
           payload: { status: 'OK', message: 'Data saved' },
         });
+
+        updateUserMetadataLocation(email, location);
+
         history.push('/become-our-photographer/welcome-2');
       })
       .catch(error => {

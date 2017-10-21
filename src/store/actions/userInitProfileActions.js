@@ -2,6 +2,14 @@ import { database } from '../../services/firebase';
 import { dashify } from '../../helpers/helpers';
 import history from '../../services/history';
 
+const updateUserMetadataPhotoProfile = (email, photoProfileUrl) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(dashify(email));
+
+  userRef.update({ photoProfileUrl });
+};
+
 export const uploadPhotoProfile = (fileObject, email, displayName) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_START' });
@@ -31,6 +39,8 @@ export const uploadPhotoProfile = (fileObject, email, displayName) => {
           displayName: displayName,
           photoURL: downloadURL,
         });
+
+        updateUserMetadataPhotoProfile(email, downloadURL);
 
         dispatch({
           type: 'USER_AUTH_UPDATE_PROFILE',

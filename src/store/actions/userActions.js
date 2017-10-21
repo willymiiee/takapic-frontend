@@ -3,16 +3,27 @@ import history from '../../services/history';
 import { dashify } from '../../helpers/helpers';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
-const createUserMetadata = (email, userType, displayName) => {
-  const db = database.database();
-  const ref = db.ref('/user_metadata');
-  const metadataRef = ref.child(dashify(email));
-  metadataRef.set({
-    userType: userType,
-    firstLogin: true,
-    displayName: displayName,
-    phoneNumber: '-',
-  });
+const createUserMetadata = async (uid, email, userType, displayName) => {
+  try {
+    const db = database.database();
+    const child = db.ref('/user_metadata').child(dashify(email));
+    const result_data = await child.once('value');
+    const data = await result_data.val();
+
+    if (data === null) {
+      await child.set({
+        uid,
+        email,
+        userType,
+        firstLogin: true,
+        displayName,
+        phoneNumber: '-',
+      });
+      return true;
+    }
+  } catch (error) {
+    return new Error('Failed to create user metadata, ' + error.message);
+  }
 };
 
 export const userSignupByEmailPassword = (
@@ -27,7 +38,14 @@ export const userSignupByEmailPassword = (
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function(result) {
-        createUserMetadata(email, userType, displayName);
+        createUserMetadata(result.uid, email, userType, displayName)
+          .then(result_sub => {
+            console.log(result_sub);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
         result.sendEmailVerification();
 
         dispatch({
@@ -57,9 +75,16 @@ export const userSignupByFacebook = userType => {
       .then(result => {
         const email = result.additionalUserInfo.profile.email;
         const displayName = result.additionalUserInfo.profile.name;
-        createUserMetadata(email, userType, displayName);
-        dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload: result.user });
-        fetchUserMetadata(email, dispatch);
+
+        createUserMetadata(result.user.uid, email, userType, displayName)
+          .then(result_sub => {
+            console.log(result_sub);
+            dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload: result.user });
+            fetchUserMetadata(email, dispatch);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       })
       .catch(error => {
         console.log(error);
@@ -74,7 +99,8 @@ export const userSignupByFacebook = userType => {
 const fetchUserMetadata = (email, dispatch) => {
   const db = database.database();
   db
-    .ref('/user_metadata/' + dashify(email))
+    .ref('/user_metadata')
+    .child(dashify(email))
     .once('value')
     .then(snapshot => {
       const data = snapshot.val();
