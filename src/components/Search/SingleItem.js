@@ -7,22 +7,28 @@ import StarRatingComponent from 'react-star-rating-component';
 class SingleItem extends Component {
   toDetail() {
     this.props.history.push({
-      pathname: '/photographer/' + this.props.id,
+      pathname: '/photographer/' + '123',
       state: { date: this.props.date },
     });
   }
 
   render() {
-    const { displayName: name } = this.props.item;
+    const { displayName: name, photoProfileUrl } = this.props.item;
 
     return (
       <div onClick={this.toDetail.bind(this)}>
         <div className="photo">
-          <img src={this.props.img} alt="" />
+          <img src="/images/photo/01.jpg" alt="" />
         </div>
         <div className="photographer">
           <div>
-            <img src={this.props.pp} alt="" />
+            <img
+              src={
+                photoProfileUrl ||
+                '/images/photographer/outlook-photography-jobs-2.jpg'
+              }
+              alt=""
+            />
           </div>
           <h4>
             <Link
@@ -61,19 +67,7 @@ class SingleItem extends Component {
 }
 
 SingleItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  pp: PropTypes.string,
-  img: PropTypes.string,
-  rating: PropTypes.number.isRequired,
-  basePrice: PropTypes.number,
-  id: PropTypes.any.isRequired,
-  date: PropTypes.string,
-};
-
-SingleItem.defaultProps = {
-  pp: '/images/photographer/outlook-photography-jobs-2.jpg',
-  img: '/images/photo/01.jpg',
-  date: '',
+  item: PropTypes.object.isRequired,
 };
 
 export default withRouter(SingleItem);
