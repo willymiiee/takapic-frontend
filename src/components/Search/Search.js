@@ -11,6 +11,7 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      items: [],
       search: {
         destination: '',
         date: '',
@@ -19,6 +20,20 @@ class Search extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  switchResultView = viewType => {
+    if (viewType === 'list') {
+      window.$('#result-view-list').addClass('active');
+      window.$('#result-view-grid').removeClass('active');
+      window.$('#result').removeClass('grid-view-lalala');
+      window.$('#result').addClass('list-view');
+    } else {
+      window.$('#result-view-grid').addClass('active');
+      window.$('#result-view-list').removeClass('active');
+      window.$('#result').removeClass('list-view');
+      window.$('#result').addClass('grid-view-lalala');
+    }
+  };
 
   onSearchChange(key, event) {
     let value = '';
@@ -37,7 +52,7 @@ class Search extends Component {
     let { destination, date } = this.state.search;
     e.preventDefault();
     this.props.history.push({
-      pathname: '/search',
+      pathname: '/search/',
       search: 'destination=' + destination + '&date=' + date,
       state: {
         referrer: '/',
@@ -60,10 +75,21 @@ class Search extends Component {
       .blur(function() {
         window.$('#landing-page-search').removeClass('focus');
       });
+
+    // Fetch photographers
+    let { destination, date } = queryString.parse(this.props.location.search);
+    const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
+    axios
+      .get(`http://localhost:8008/api/photographers/?${queryParams}`)
+      .then(response => {
+        this.setState({ items: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
-    let { destination, date } = queryString.parse(this.props.location.search);
     let yesterday = moment().subtract(1, 'day');
     let valid = function(current) {
       return current.isAfter(yesterday);
@@ -110,7 +136,6 @@ class Search extends Component {
                     .then(res => {
                       let cities = res.data.cities;
                       this.setState({ cities });
-                      console.log(res.data);
                     })
                     .catch(error => console.log(error));
                 }}
@@ -146,19 +171,23 @@ class Search extends Component {
               </div>
             </div>
           </div>
+
           <div id="result-view">
             <i
               id="result-view-grid"
               className="fa fa-th-large active"
               title="Grid View"
+              onClick={() => this.switchResultView('grid')}
             />
             <i
               id="result-view-list"
               className="fa fa-th-list"
               title="List View"
+              onClick={() => this.switchResultView('list')}
             />
           </div>
-          <SearchResult destination={destination} date={date} />
+
+          <SearchResult items={this.state.items} />
         </div>
       </Page>
     );

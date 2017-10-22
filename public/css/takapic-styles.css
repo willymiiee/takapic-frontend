@@ -2961,3 +2961,11 @@ figcaption.action-btn a .fa {
   display: block;
   position: absolute;
 }
+
+.list-view a {
+  color: #333333;
+}
+
+.grid-view-lalala a {
+  color: #ffffff;
+}

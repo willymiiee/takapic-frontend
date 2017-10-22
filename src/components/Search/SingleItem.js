@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 
-class SingleResult extends Component {
+class SingleItem extends Component {
   toDetail() {
     this.props.history.push({
       pathname: '/photographer/' + this.props.id,
@@ -13,6 +13,8 @@ class SingleResult extends Component {
   }
 
   render() {
+    const { displayName: name } = this.props.item;
+
     return (
       <div onClick={this.toDetail.bind(this)}>
         <div className="photo">
@@ -26,18 +28,18 @@ class SingleResult extends Component {
             <Link
               className="photographer-link"
               to={{
-                pathname: '/photographer/' + this.props.id,
-                state: { date: this.props.date },
+                pathname: '/photographer/' + '123',
+                state: { date: '' },
               }}
             >
-              {this.props.name}
+              {name}
             </Link>
           </h4>
         </div>
         <div className="ratings">
           <StarRatingComponent
             name="rating"
-            value={this.props.rating}
+            value={5}
             starCount={5}
             editing={false}
             starColor="#ffff66"
@@ -58,7 +60,7 @@ class SingleResult extends Component {
   }
 }
 
-SingleResult.propTypes = {
+SingleItem.propTypes = {
   name: PropTypes.string.isRequired,
   pp: PropTypes.string,
   img: PropTypes.string,
@@ -68,10 +70,10 @@ SingleResult.propTypes = {
   date: PropTypes.string,
 };
 
-SingleResult.defaultProps = {
+SingleItem.defaultProps = {
   pp: '/images/photographer/outlook-photography-jobs-2.jpg',
   img: '/images/photo/01.jpg',
   date: '',
 };
 
-export default withRouter(SingleResult);
+export default withRouter(SingleItem);

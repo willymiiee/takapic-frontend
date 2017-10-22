@@ -35,7 +35,6 @@ import Step2IndicatePrice from 'components/BecomeOurPhotographer/Step2IndicatePr
 import Step2DateAvailability from 'components/BecomeOurPhotographer/Step2DateAvailability';
 import Step2InitiatePortofolio from 'components/BecomeOurPhotographer/Step2InitiatePortofolio';
 import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2SetupMeetingPointA';
-import Step2SetupMeetingPointB from 'components/BecomeOurPhotographer/Step2SetupMeetingPointB';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
 
 store.dispatch({ type: 'USER_AUTH_LOADING_AUTH' });
@@ -85,6 +84,7 @@ const onlyLoggedIn = WrappedComponent =>
       },
     })
   )(props => <WrappedComponent {...props} />);
+
 const App = connect(state => state)(props => {
   return (
     <Router history={history}>

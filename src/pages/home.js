@@ -9,7 +9,6 @@ import axios from 'axios';
 import Autocomplete from 'react-autocomplete';
 
 import intl from 'react-intl-universal';
-// import { login } from "../services/auth";
 
 class Home extends Component {
   constructor(props) {
@@ -42,7 +41,7 @@ class Home extends Component {
     let { destination, date } = this.state.search;
     e.preventDefault();
     this.props.history.push({
-      pathname: '/search',
+      pathname: '/search/',
       search: 'destination=' + destination + '&date=' + date,
       state: {
         referrer: '/',
@@ -71,10 +70,6 @@ class Home extends Component {
     setInterval(function() {
       window.$('#bg-slide > img:first').appendTo(bgSlide);
     }, 6000);
-
-    /*if (this.getParameterByName('_l')) {
-      login();
-    }*/
   }
 
   render() {
@@ -136,7 +131,6 @@ class Home extends Component {
                     .then(res => {
                       let cities = res.data.cities;
                       this.setState({ cities });
-                      console.log(res.data);
                     })
                     .catch(error => console.log(error));
                 }}

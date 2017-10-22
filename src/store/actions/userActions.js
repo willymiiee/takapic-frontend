@@ -18,6 +18,9 @@ const createUserMetadata = async (uid, email, userType, displayName) => {
         firstLogin: true,
         displayName,
         phoneNumber: '-',
+        rating: 0,
+        priceStartFrom: 0,
+        defaultDisplayPictureUrl: '-',
       });
       return true;
     }
