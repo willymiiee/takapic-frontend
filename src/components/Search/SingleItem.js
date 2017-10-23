@@ -13,7 +13,11 @@ class SingleItem extends Component {
   }
 
   render() {
-    const { displayName: name, photoProfileUrl } = this.props.item;
+    const {
+      displayName: name,
+      photoProfileUrl,
+      priceStartFrom,
+    } = this.props.item;
 
     return (
       <div onClick={this.toDetail.bind(this)}>
@@ -59,7 +63,7 @@ class SingleItem extends Component {
           />
         </div>
         <div className="price">
-          from<b>$100</b>
+          from<b>${priceStartFrom}</b>
         </div>
       </div>
     );

@@ -3,6 +3,14 @@ import { database } from 'services/firebase';
 import history from './../../services/history';
 import { dashify } from '../../helpers/helpers';
 
+const updateUserMetadataPriceStartFrom = (email, price) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(dashify(email));
+
+  userRef.update({ priceStartFrom: price });
+};
+
 export const setPricing = payload => {
   return dispatch => {
     dispatch({
@@ -12,11 +20,8 @@ export const setPricing = payload => {
   };
 };
 
-export const setDateAvailability = () => {};
-
 export const setMeetingPoint = params => {
   const { email, packagesPrice, meetingPoints } = params;
-
   return dispatch => {
     dispatch({ type: 'SUBMIT_MEETING_POINT' });
     const db = database.database();
@@ -28,6 +33,7 @@ export const setMeetingPoint = params => {
         meetingPoints,
       })
       .then(result => {
+        updateUserMetadataPriceStartFrom(email, packagesPrice[0].price);
         dispatch({
           type: 'SUBMIT_MEETING_POINT_SUCCESS',
           payload: { status: 'OK', message: 'Data saved' },
