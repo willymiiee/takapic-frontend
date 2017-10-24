@@ -58,20 +58,26 @@ class PhotographerRegistrationStep2 extends Component {
                     {this.state.imagePreviewUrl && (
                       <img
                         src={this.state.imagePreviewUrl}
-                        className="center-block img-circle"
+                        className="center-block img-circle img-profile"
                       />
                     )}
                   </div>
                 </div>
               </div>
-              <p className="text-center">or choose file</p>
-              <div className="form-group">
-                <input
-                  className="input-file"
-                  type="file"
-                  name=""
-                  onChange={this.fileSelectChangeHandler}
-                />
+              <div className="form-group browse-profile-holder">
+                <div className="browse-profile-btn">
+                  <span>Browse</span>
+                  <input
+                    className="input-file choose-file"
+                    id="btn-choose-profile"
+                    type="file"
+                    name=""
+                    onChange={this.fileSelectChangeHandler}
+                  />
+                </div>
+                <div className="input-profile-name">
+                  {this.state.file ? this.state.file.name : 'Choose file'}
+                </div>
               </div>
 
               <button

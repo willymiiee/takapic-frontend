@@ -16,7 +16,7 @@ class PhotographerRegistrationStepFinish extends Component {
                     <p>You can now start your work on Takapic</p>
                     <Link
                       to="/become-our-photographer/welcome-1"
-                      className="btn btn-primary center-block"
+                      className="btn start-explore-btn center-block"
                       type="button"
                     >
                       Start Exploring
