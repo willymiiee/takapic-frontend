@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
 
 const CalculationTotal = props => {
   const {
@@ -24,32 +25,36 @@ const CalculationTotal = props => {
 };
 
 const StartServicePrice = props => {
-  const { packagesPrice } = props;
-  return (
-    <h4>
-      From <strong>$100</strong>
-    </h4>
-  );
+  const { loading, packagesPrice } = props;
+  if (!loading && packagesPrice) {
+    const prices = packagesPrice.map(item => parseInt(item.price));
+    const minPrice = prices.reduce((a, b) => Math.min(a, b));
+
+    return (
+      <h4>
+        From <strong>${ minPrice }</strong>
+      </h4>
+    );
+  }
+  return null;
 };
 
 class PhotographerDetailReservationForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: null,
       reservation: {
-        startingTime: {
-          startDate: '',
-        },
+        startingDate: null,
+        startingTime: null,
         package: {
           value: 0,
           opened: false,
         },
-        photographerFee: '',
+        photographerFee: 0,
         serviceFee: 0.15,
         credit: 0,
-        total: '',
-      },
+        total: 0,
+      }
     };
   }
 
@@ -57,37 +62,99 @@ class PhotographerDetailReservationForm extends Component {
   show = _ => _;
 
   handleReserve = () => {
+    if (this.state.reservation.total < 1) {
+      const {
+        photographerServiceInformation: {data: { totalReservationPriceInitiate }},
+      } = this.props;
+      console.log('Total = ', totalReservationPriceInitiate);
+    } else {
+      console.log('Total = ', this.state.reservation.total);
+    }
+    this.props.history.push('/booking');
+  };
+
+  calculateTotal(indexValue) {
     const {
       photographerServiceInformation: { data: { packagesPrice } },
     } = this.props;
 
     const {
-      reservation: { credit, package: { value }, serviceFee },
+      reservation: { credit, serviceFee },
     } = this.state;
 
-    const total = credit + parseInt(packagesPrice[value].price) + packagesPrice[value].price * serviceFee;
-    this.setState({ total });
-    this.props.history.push('/booking');
-  };
+    return credit + parseInt(packagesPrice[indexValue].price) + packagesPrice[indexValue].price * serviceFee;
+  }
 
   choosePackage = (event, value) => {
-    event.stopPropagation();
-    let { reservation } = this.state;
-    reservation.package = { value, opened: false };
-    this.setState({ reservation });
+    if (event) {
+      event.stopPropagation();
+    }
+
+    const total = this.calculateTotal(value);
+    const newCopyData = {
+      ...this.state,
+      reservation: {
+        ...this.state.reservation,
+        package: {
+          value,
+          opened: false
+        },
+        total
+      }
+    };
+    this.setState(newCopyData);
+  };
+
+  selectedDateHandler = context => {
+    const newCopyOhMyGod = {
+      ...this.state,
+      reservation: {
+        ...this.state.reservation,
+        startingDate: moment(new Date(context.select)).format('YYYY-MM-DD')
+      }
+    };
+    this.setState(newCopyOhMyGod);
+  };
+
+  selectedTimeHandler = context => {
+    const formatTime = this.refs.pickerTime.value.replace(/AM|PM/ig, '').trim() + ':00';
+    const newCopyOhMyGod = {
+      ...this.state,
+      reservation: {
+        ...this.state.reservation,
+        startingTime: formatTime
+      }
+    };
+    this.setState(newCopyOhMyGod);
   };
 
   openPackages = event => {
     event.stopPropagation();
-    let { reservation } = this.state;
-    reservation.package.opened ? reservation.package.opened = false : reservation.package.opened = true;
-    this.setState({ reservation });
+
+    const newCopyData = {
+      ...this.state,
+      reservation: {
+        ...this.state.reservation,
+        package: {
+          ...this.state.reservation.package,
+          opened: !this.state.reservation.package.opened
+        }
+      }
+    };
+    this.setState(newCopyData);
   };
 
   componentDidMount() {
+    const that = this;
     window.$(function() {
-      window.$('.input-start-date-lalala').pickadate();
-      window.$('.input-start-time-lalala').pickatime();
+      window.$('.input-start-date-lalala').pickadate({
+        onSet: that.selectedDateHandler
+      });
+
+      window.$('.input-start-time-lalala').pickatime({
+        format: 'HH:i A',
+        onSet: that.selectedTimeHandler
+      });
     });
   }
 
@@ -109,11 +176,13 @@ class PhotographerDetailReservationForm extends Component {
 
           <div id="reservation-starting-time">
             <input
+              ref="pickerDate"
               type="text"
               className="input-start-date-lalala"
               placeholder="Choose start date"
             />
             <input
+              ref="pickerTime"
               type="text"
               className="input-start-time-lalala"
               placeholder="Choose start time"
@@ -153,7 +222,7 @@ class PhotographerDetailReservationForm extends Component {
               Photographer Fee&nbsp;
               {
                 !loading && packagesPrice
-                  ? <span>({ packagesPrice[this.state.reservation.package.value].packageName }</span>
+                  ? <span>( { packagesPrice[this.state.reservation.package.value].packageName } )</span>
                   : null
               }
 

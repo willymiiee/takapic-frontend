@@ -19,8 +19,15 @@ const photographerServiceInformation = (
   action
 ) => {
   if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
+    const priceMin = parseInt(action.payload.packagesPrice[0].price);
+    const credit = 0;
+    const totalReservationPriceInitiate = credit + priceMin + priceMin * 0.15;
+
     return {
-      data: action.payload,
+      data: {
+        ...action.payload,
+        totalReservationPriceInitiate
+      },
       loading: false,
     };
   }
