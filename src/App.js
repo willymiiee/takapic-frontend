@@ -95,7 +95,7 @@ const App = connect(state => state)(props => {
             <Route exact path="/" component={Home} />
             <Route path="/booking" component={PhotographerBooking} />
             <Route path="/sign-in" component={SignIn} />
-            <Route path="/photographer/:id" component={PhotographerDetail} />
+            <Route path="/photographer/:uuid" component={PhotographerDetail} />
             <Route path="/search" component={Search} />
             <Route
               path="/photographer-portofolio/:id"

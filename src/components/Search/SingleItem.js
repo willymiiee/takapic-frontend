@@ -5,10 +5,14 @@ import { Link } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 
 class SingleItem extends Component {
-  toDetail() {
+  constructor(props) {
+    super(props);
+    this.toDetail = this.toDetail.bind(this);
+  }
+
+  toDetail(id) {
     this.props.history.push({
-      pathname: '/photographer/' + '123',
-      state: { date: this.props.date },
+      pathname: '/photographer/' + id,
     });
   }
 
@@ -17,10 +21,11 @@ class SingleItem extends Component {
       displayName: name,
       photoProfileUrl,
       priceStartFrom,
+      uid,
     } = this.props.item;
 
     return (
-      <div onClick={this.toDetail.bind(this)}>
+      <div onClick={() => this.toDetail(uid)}>
         <div className="photo">
           <img src="/images/photo/01.jpg" alt="" />
         </div>

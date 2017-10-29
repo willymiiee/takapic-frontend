@@ -54,12 +54,14 @@ export const submitUploadPhotosPortfolio = params => {
   return dispatch => {
     let percentages = files.map(f => 0);
     let tasks = [];
+
     for (let i in files) {
       const fullDirectory = `pictures/portofolio-photos/${dashify(email)}`;
       const imageFile = files[i].file;
       var storageRef = firebase
         .storage()
         .ref(fullDirectory + '/' + imageFile.name);
+
       //Upload file
       tasks = [...tasks, storageRef.put(imageFile)];
       tasks[i].on(
@@ -77,6 +79,13 @@ export const submitUploadPhotosPortfolio = params => {
         function error(err) {},
         function complete() {
           var downloadURL = tasks[i].snapshot.downloadURL;
+          dispatch({
+            type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS',
+            payload: {
+              url: downloadURL,
+              theme: '-',
+            },
+          });
         }
       );
     }

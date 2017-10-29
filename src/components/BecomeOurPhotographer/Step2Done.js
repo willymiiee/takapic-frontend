@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { database } from '../../services/firebase';
+import { dashify } from '../../helpers/helpers';
+
 import Page from 'components/Page';
 
-export default class Step2Done extends Component {
+const updatePhotographerServiceInfoPhotosPortofolio = (email, data) => {
+  return dispatch => {
+    dispatch({ type: 'FOO_STEP2_DONE' });
+    const db = database.database();
+    const ref = db.ref('/photographer_service_information');
+    const item = ref.child(dashify(email));
+
+    item.update({ photosPortofolio: data });
+  };
+};
+
+class Step2Done extends Component {
+  componentWillMount() {
+    const { email, photographerPhotosPortofolio: data } = this.props;
+    this.props.updatePhotographerServiceInfoPhotosPortofolio(email, data);
+  }
+
   render() {
     return (
       <Page>
@@ -24,3 +43,14 @@ export default class Step2Done extends Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+    email: state.userAuth.email,
+    photographerPhotosPortofolio: state.photographerPhotosPortofolio,
+  }),
+  dispatch => ({
+    updatePhotographerServiceInfoPhotosPortofolio: (email, data) =>
+      dispatch(updatePhotographerServiceInfoPhotosPortofolio(email, data)),
+  })
+)(Step2Done);
