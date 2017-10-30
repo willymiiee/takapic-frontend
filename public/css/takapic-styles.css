@@ -3092,3 +3092,10 @@ figcaption.action-btn a .fa {
 .grid-view-lalala a {
   color: #ffffff;
 }
+
+.close-popup-button {
+  position: absolute;
+  right: 35px;
+  top: 25px;
+  font-size: x-large;
+}

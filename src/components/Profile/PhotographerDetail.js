@@ -13,8 +13,6 @@ import './../../react-slick.min.css';
 import Page from 'components/Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';
 
-import { fetchPhotographerDetail } from '../../store/actions/photographerDetailActions';
-
 const fetchPhotographerServiceInformation = () => {
   return dispatch => {
     const uid = window.location.pathname.split('/')[2];
@@ -37,11 +35,7 @@ store.dispatch(fetchPhotographerServiceInformation());
 class PhotographerDetail extends Component {
   constructor(props) {
     super(props);
-    let { state } = this.props.location;
     this.state = {
-      date: null,
-      email: 'agungsuryabangsa-gmail-com',
-      uuid: '0jknVmGuMwPLKjFetyLm9xYWSh62',
       reviews: {
         rating: {
           label: 'Average',
@@ -62,16 +56,11 @@ class PhotographerDetail extends Component {
           },
         ],
       },
-      datetime: state && state.date ? state.date : '',
       showModal: false,
     };
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.fetchPhotographerDetail(this.state.email);
   }
 
   componentDidMount() {
@@ -114,150 +103,178 @@ class PhotographerDetail extends Component {
   }
 
   render() {
-    const settings = {
-      customPaging: function(i) {
-        return (
-          <a>
-            <img src={`/images/photo/0${i + 1}.jpg`} />
-          </a>
-        );
-      },
-      dots: true,
-      dotsClass: 'slick-dots slick-thumb',
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-    };
+    const {
+      photographerServiceInformation: { loading }
+    } = this.props;
 
-    return (
-      <Page>
-        <div className="hidden-xs padding-bottom-60" />
-        <div className="container">
-          <div id="photographer-top">
-            <i className="fa fa-heart-o" />
-            <i className="fa fa-share-alt" />
-            <div id="photographer-profile-photo">
-              <img
-                width="400"
-                height="300"
-                className="cover"
-                src="/images/photographer/outlook-photography-jobs-2.jpg"
-                alt=""
-              />
-            </div>
-            <h2>Dana Kim</h2>
-            <h4>Seoul, Korea</h4>
-            <a
-              href="/photographer-portofolio/1"
-              className="button button-white"
-            >
-              Go to Portofolio
+    if (!loading) {
+      const {
+        photographerServiceInformation: {
+          data: {
+            userMetadata: {
+              displayName,
+              locationMerge,
+              photoProfileUrl
+            },
+            photosPortofolio,
+            selfDescription,
+            speciality,
+            serviceReviews: {
+              rating,
+              impressions
+            }
+          }
+        }
+      } = this.props;
+
+      const settings = {
+        customPaging: function (i) {
+          return (
+            <a>
+              <img src={`/images/photo/0${i + 1}.jpg`}/>
             </a>
-          </div>
+          );
+        },
+        dots: true,
+        dotsClass: 'slick-dots slick-thumb',
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      };
 
-          <Slider {...settings}>
-            {[1, 2, 3, 4, 5, 6].map(item => (
-              <div key={item} style={{ textAlign: 'center' }}>
+      return (
+        <Page>
+          <div className="hidden-xs padding-bottom-60"/>
+          <div className="container">
+            <div id="photographer-top">
+              <i className="fa fa-heart-o"/>
+              <i className="fa fa-share-alt"/>
+              <div id="photographer-profile-photo">
                 <img
-                  style={{ display: 'inline-block' }}
                   width="400"
                   height="300"
-                  src={`/images/photo/0${item}.jpg`}
+                  className="cover"
+                  src={photoProfileUrl}
                   alt=""
                 />
               </div>
-            ))}
-          </Slider>
+              <h2>{displayName}</h2>
+              <h4>{locationMerge}</h4>
+              <a
+                href="/photographer-portofolio/1"
+                className="button button-white"
+              >
+                Go to Portofolio
+              </a>
+            </div>
 
-          <button
-            id="photographer-reservation-btn-2"
-            className="button button-white padding-left-35 padding-right-35"
-            onClick={this.openModal}
-          >
-            Reserve
-          </button>
+            <Slider {...settings}>
+              {
+                photosPortofolio.map((item, index) => <div key={`portofolio-photo-${index}`} style={{textAlign: 'center'}}>
+                  <img
+                    style={{display: 'inline-block'}}
+                    width="400"
+                    height="300"
+                    src={item.url}
+                    alt=""
+                  />
+                </div>)
+              }
+            </Slider>
 
-          <Modal id="reservation-modal" show={this.state.showModal}>
-            <Modal.Body>
-              <PhotographerDetailReservationForm
-                photographerServiceInformation={
-                  this.props.photographerServiceInformation
-                }
-              />
-            </Modal.Body>
-          </Modal>
+            <button
+              id="photographer-reservation-btn-2"
+              className="button button-white padding-left-35 padding-right-35"
+              onClick={this.openModal}
+            >
+              Reserve
+            </button>
 
-          <div className="row">
-            <div className="col-sm-6 col-md-7 margin-top-70">
-              <div id="photographer-info">
-                <h3 className="has-dot">About Me</h3>
-                <div className="has-border">
-                  <h1>Dana Kim</h1>
-                  <h3>Seoul, South Korea</h3>
-                  <p>
-                    Hi, welcome to Seoul.<br />I'm particurarly specialized in
-                    snaps.
-                  </p>
-                  <div className="tags margin-bottom-15">
-                    <a>#couple</a>
-                    <a>#natural</a>
-                    <a>#paparazzi</a>
-                    <a>#snaps</a>
-                  </div>
+            <Modal id="reservation-modal" show={this.state.showModal}>
+              <Modal.Body>
+                <div className="close-popup-button">
+                  <i className="fa fa-times" onClick={this.closeModal} />
                 </div>
-                <h3 className="has-dot">Reviews</h3>
-                <div className="has-border">
-                  <div style={{ marginBottom: 30 }}>
-                    <h3 style={{ color: '#666' }}>
-                      {this.state.reviews.rating.label}
-                    </h3>
-                    <ReactRating
-                      rate={this.state.reviews.rating.value}
-                      total={5}
-                    />
+                <PhotographerDetailReservationForm
+                  photographerServiceInformation={this.props.photographerServiceInformation}
+                />
+              </Modal.Body>
+            </Modal>
+
+            <div className="row">
+              <div className="col-sm-6 col-md-7 margin-top-70">
+                <div id="photographer-info">
+                  <h3 className="has-dot">About Me</h3>
+                  <div className="has-border">
+                    <h1>{ displayName }</h1>
+                    <h3>{ locationMerge }</h3>
+                    <p>
+                      { selfDescription }
+                    </p>
+                    <div className="tags margin-bottom-15">
+                      {
+                        speciality.map(item => <a>#{ item }</a>)
+                      }
+                    </div>
                   </div>
-                  <div id="photographer-stats">
-                    {this.state.reviews.impressions.map((item, key) => (
-                      <div style={{ padding: 10 }} key={key}>
-                        <CircularProgressbar
-                          percentage={item.value * 100}
-                          initialAnimation
-                        />
-                        <b>{item.label}</b>
-                      </div>
-                    ))}
+
+                  <h3 className="has-dot">Reviews</h3>
+                  <div className="has-border">
+                    <div style={{marginBottom: 30}}>
+                      <h3 style={{color: '#666'}}>
+                        { rating.label }
+                      </h3>
+                      <ReactRating
+                        rate={ rating.value }
+                        total={5}
+                      />
+                    </div>
+
+                    <div id="photographer-stats">
+                      {
+                        impressions.map((item, key) => (
+                        <div style={{padding: 10}} key={key}>
+                          <CircularProgressbar
+                            percentage={item.value * 100}
+                            initialAnimation
+                          />
+                          <b>{item.label}</b>
+                        </div>
+                      ))
+                      }
+                    </div>
                   </div>
+
+                  <h3 className="has-dot">
+                    Comments <span className="thin">(38)</span>
+                  </h3>
                 </div>
-                <h3 className="has-dot">
-                  Comments <span className="thin">(38)</span>
-                </h3>
+              </div>
+
+              <div className="col-sm-6 col-md-5 margin-top-70">
+                <PhotographerDetailReservationForm
+                  photographerServiceInformation={
+                    this.props.photographerServiceInformation
+                  }
+                />
               </div>
             </div>
-
-            <div className="col-sm-6 col-md-5 margin-top-70">
-              <PhotographerDetailReservationForm
-                photographerServiceInformation={
-                  this.props.photographerServiceInformation
-                }
-              />
-            </div>
           </div>
-        </div>
-      </Page>
-    );
+        </Page>
+      );
+    }
+
+    return (
+      <div>Loading...</div>
+    )
   }
 }
 
 const mapStateToProps = state => ({
-  photographerServiceInformation: state.photographerServiceInformation,
-  photographerDetail: state.photographerDetail,
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchPhotographerDetail: email => dispatch(fetchPhotographerDetail(email)),
+  photographerServiceInformation: state.photographerServiceInformation
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PhotographerDetail)
+  connect(mapStateToProps)(PhotographerDetail)
 );
