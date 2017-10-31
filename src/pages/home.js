@@ -157,7 +157,7 @@ class Home extends Component {
               </button>
             </div>
           </div>
-          <h1 className="title margin-bottom-40">Featured Destination</h1>
+          <h1 className="title margin-bottom-40">Featured Destination Here</h1>
           <div className="text-right margin-bottom-10">
             <Link to="">See All</Link>
           </div>
