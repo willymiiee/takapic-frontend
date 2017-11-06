@@ -12,7 +12,7 @@ export const selfDescription = description => {
   };
 };
 
-const updateUserMetadataLocation = (email, location) => {
+const updateUserMetadataLocationAndSpeciality = (email, location, speciality) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(dashify(email));
@@ -34,6 +34,7 @@ const updateUserMetadataLocation = (email, location) => {
       '-'
     ),
     locationMerge: get(location, 'locationMerge', '-'),
+    speciality
   };
 
   userRef.update(updateData);
@@ -69,7 +70,7 @@ export const submitCameraEquipment = params => {
           payload: { status: 'OK', message: 'Data saved' },
         });
 
-        updateUserMetadataLocation(email, location);
+        updateUserMetadataLocationAndSpeciality(email, location, speciality);
 
         history.push('/become-our-photographer/welcome-2');
       })

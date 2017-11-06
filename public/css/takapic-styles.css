@@ -3099,3 +3099,19 @@ figcaption.action-btn a .fa {
   top: 25px;
   font-size: x-large;
 }
+
+.rbt-input {
+  height: 65px;
+}
+
+.dropdown-menu {
+  min-width: 800px;
+}
+
+.Select-value-label, .Select-placeholder {
+  line-height: 50px;
+}
+
+.Select-input {
+  height: 70px;
+}

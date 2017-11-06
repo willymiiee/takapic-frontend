@@ -34,6 +34,18 @@ const photographerServiceInformation = (
   return state;
 };
 
+const homepageData = (state = { loading: true }, action) => {
+  if (action.type === 'HOMEPAGE_FETCH_TOP_PHOTOGRAPHERS_SUCCESS') {
+    return {
+      ...state,
+      topPhotographers: action.payload,
+      loading: false
+    };
+  }
+  return state;
+};
+
+
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
@@ -43,6 +55,7 @@ const rootReducer = combineReducers({
   photographerServiceInfoStep2,
   photographerPhotosPortofolio,
   photographerServiceInformation,
+  homepageData,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

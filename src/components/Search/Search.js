@@ -80,11 +80,9 @@ class Search extends Component {
     // Fetch photographers
     let { destination, date } = queryString.parse(this.props.location.search);
     const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
+
     axios
-      .get(
-        `${process.env
-          .REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`
-      )
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
       .then(response => {
         this.setState({ items: response.data.data });
       })

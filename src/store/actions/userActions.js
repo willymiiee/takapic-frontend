@@ -1,4 +1,4 @@
-import { database, facebookAuthProvider } from 'services/firebase';
+import { database, facebookAuthProvider } from '../../services/firebase';
 import history from '../../services/history';
 import { dashify } from '../../helpers/helpers';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
@@ -36,11 +36,12 @@ export const userSignupByEmailPassword = (
   userType
 ) => {
   return dispatch => {
-    dispatch({ type: 'USER_SIGNUP_START' });
     database
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function(result) {
+        const user = database.auth()
+        result.sendEmailVerification();
         createUserMetadata(result.uid, email, userType, displayName)
           .then(result_sub => {
             console.log(result_sub);
@@ -48,8 +49,6 @@ export const userSignupByEmailPassword = (
           .catch(error => {
             console.log(error);
           });
-
-        result.sendEmailVerification();
 
         dispatch({
           type: 'USER_SIGNUP_SUCCESS',
@@ -62,7 +61,7 @@ export const userSignupByEmailPassword = (
         console.log(error);
         dispatch({
           type: 'USER_SIGNUP_ERROR',
-          payload: error,
+          payload: { ...error, completeName: displayName, email, password },
         });
       });
   };

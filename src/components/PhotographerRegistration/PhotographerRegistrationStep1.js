@@ -1,26 +1,133 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Formik } from 'formik';
+import Yup from 'yup';
 import {
   userSignupByEmailPassword,
   userSignupByFacebook,
 } from '../../store/actions/userActions';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
-import Page from 'components/Page';
+import Page from '../Page';
+
+const PhotographerRegisterStep1Form = props => {
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    message
+  } = props;
+
+  return (
+    <div>
+      { message && <p style={{ color: 'red', marginBottom: '25px', width: '100%', textAlign: 'center', fontSize: '1em' }}>{ message }</p> }
+
+      <form onSubmit={handleSubmit}>
+        <div className={`form-group ${errors.completeName && touched.completeName && 'has-error'}`}>
+          <label className="control-label">Your complete name</label>
+          <input
+            name="completeName"
+            type="text"
+            value={values.completeName}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Enter your complete name"
+          />
+          {errors.completeName && touched.completeName && <label className="control-label">{errors.completeName}</label>}
+        </div>
+
+        <div className={`form-group ${errors.email && touched.email && 'has-error'}`}>
+          <label className="control-label">Your valid email</label>
+          <input
+            name="email"
+            type="text"
+            value={values.email}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Enter your valid email address"
+          />
+          {errors.email && touched.email && <label className="control-label">{errors.email}</label>}
+        </div>
+
+        <div className={`form-group ${errors.password && touched.password && 'has-error'}`}>
+          <label className="control-label">Choose a password</label>
+          <input
+            name="password"
+            type="password"
+            value={values.password}
+            onChange={handleChange}
+            className="form-control lalalalilili"
+            placeholder="Choose a password"
+          />
+          {errors.password && touched.password && <label className="control-label">{errors.password}</label>}
+        </div>
+
+        <div className={`form-group ${errors.passwordConfirm && touched.passwordConfirm && 'has-error'}`}>
+          <label className="control-label">Confirm / retype your password</label>
+          <input
+            name="passwordConfirm"
+            type="password"
+            value={values.passwordConfirm}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Confirm / retype your password"
+          />
+          {errors.passwordConfirm && touched.passwordConfirm && <label className="control-label">{errors.passwordConfirm}</label>}
+        </div>
+
+        <button
+          type="submit"
+          className="button next-btn"
+          disabled={isSubmitting}
+        >
+          { isSubmitting ? 'Signing you up, Please wait...' : 'Next' }
+        </button>
+      </form>
+    </div>
+  );
+};
+
+const equalTo = (msg) => {
+  return Yup.mixed().test({
+    name: 'equalTo',
+    exclusive: false,
+    message: msg,
+    test: value => {
+      const prevPwd = window.$('.lalalalilili').val();
+      return value === prevPwd;
+    }
+  });
+};
+
+Yup.addMethod(Yup.string, 'equalTo', equalTo);
+
+const PhotographerRegisterStep1Formik = Formik({
+  mapPropsToValues: props => ({
+    completeName: props.filledValues.completeName,
+    email: props.filledValues.email,
+    password: props.filledValues.password,
+    passwordConfirm: props.filledValues.password
+  }),
+  validationSchema: Yup.object().shape({
+    completeName: Yup.string().required('Please input your complete name'),
+    email: Yup.string().email().required('Please input your valid and frequently used email address'),
+    password: Yup.string().required('Please input your password'),
+    passwordConfirm: Yup.string().equalTo('Your confirmed password must match previous typed password').required('Please confirm / retype your password')
+  }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    setTimeout(() => {
+      props.userSignupByEmailPassword(values.email, values.password, values.completeName, USER_PHOTOGRAPHER);
+      setSubmitting(false);
+    }, 2000);
+  }
+})(PhotographerRegisterStep1Form);
 
 class PhotographerRegistrationStep1 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      complete_name: '',
-      email: '',
-      password: '',
-    };
-
-    this.completeNameChangeHandler = this.completeNameChangeHandler.bind(this);
-    this.emailChangeHandler = this.emailChangeHandler.bind(this);
-    this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
-    this.nextStepHandler = this.nextStepHandler.bind(this);
+  constructor() {
+    super();
     this.signUpFacebook = this.signUpFacebook.bind(this);
     this.signUpGoogle = this.signUpGoogle.bind(this);
   }
@@ -31,28 +138,6 @@ class PhotographerRegistrationStep1 extends Component {
 
   signUpGoogle(evt) {
     evt.preventDefault();
-    // photographerSignUpGoogle();
-  }
-
-  completeNameChangeHandler(evt) {
-    this.setState({ complete_name: evt.target.value });
-  }
-
-  emailChangeHandler(evt) {
-    this.setState({ email: evt.target.value });
-  }
-
-  passwordChangeHandler(evt) {
-    this.setState({ password: evt.target.value });
-  }
-
-  nextStepHandler(evt) {
-    this.props.userSignupByEmailPassword(
-      this.state.email,
-      this.state.password,
-      this.state.complete_name,
-      USER_PHOTOGRAPHER
-    );
   }
 
   render() {
@@ -67,17 +152,16 @@ class PhotographerRegistrationStep1 extends Component {
 
           <div className="panel setup-content" id="step-1">
             <div className="panel-body">
-              <p style={{ color: 'red' }}>
-                {this.props.status !== 'OK' ? this.props.message : ''}
-              </p>
               <h2 className="text-center">
                 Register as a takapic photographer
               </h2>
+
               <div className="text-center social-media-signup">
                 <p>
                   You can register to be our photographer using your existing
                   Facebook or Gmail account
                 </p>
+
                 <div className="social-media-btn">
                   <button
                     type="button"
@@ -101,52 +185,17 @@ class PhotographerRegistrationStep1 extends Component {
                     />Gmail
                   </button>
                 </div>
+
                 <p>or fill the form below</p>
-              </div>
-              <div className="form-group">
-                <label className="control-label">Your complete name</label>
-                <input
-                  type="text"
-                  value={this.state.complete_name}
-                  onChange={this.completeNameChangeHandler}
-                  required="required"
-                  className="form-control"
-                  placeholder="Enter your complete name"
-                />
-              </div>
-              <div className="form-group">
-                <label className="control-label">Your email</label>
-                <input
-                  type="email"
-                  value={this.state.email}
-                  onChange={this.emailChangeHandler}
-                  required="required"
-                  className="form-control"
-                  placeholder="Enter your email address"
-                />
-              </div>
-              <div className="form-group">
-                <label className="control-label">Choose a password</label>
-                <input
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.passwordChangeHandler}
-                  required="required"
-                  className="form-control"
-                  placeholder="Enter your desired password"
-                />
+
               </div>
 
-              <button
-                className="button next-btn"
-                onClick={this.nextStepHandler}
-              >
-                {this.props.isSigningUp ? (
-                  'Signing you up, Please wait...'
-                ) : (
-                  'Next'
-                )}
-              </button>
+              <PhotographerRegisterStep1Formik
+                userSignupByEmailPassword={this.props.userSignupByEmailPassword}
+                message={this.props.message}
+                filledValues={this.props.filledValues}
+              />
+
             </div>
           </div>
         </div>
@@ -157,9 +206,12 @@ class PhotographerRegistrationStep1 extends Component {
 
 export default connect(
   state => ({
-    isSigningUp: state.userSignup.signingUp,
-    status: state.userSignup.status,
-    message: state.userSignup.message,
+    filledValues: {
+      completeName: state.userSignup.completeName,
+      email: state.userSignup.email,
+      password: state.userSignup.password
+    },
+    message: state.userSignup.message
   }),
   dispatch => ({
     userSignupByEmailPassword: (email, password, displayName, userType) =>

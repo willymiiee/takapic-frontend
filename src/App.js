@@ -27,7 +27,7 @@ import PhotographerRegistrationStep3 from 'components/PhotographerRegistration/P
 import PhotographerRegistrationStepFinish from 'components/PhotographerRegistration/PhotographerRegistrationStepFinish';
 
 import Step1Welcome from 'components/BecomeOurPhotographer/Step1Welcome';
-import Step1GrabCity from 'components/BecomeOurPhotographer/Step1GrabCity';
+import Step1GrabCityNew from './components/BecomeOurPhotographer/Step1GrabCityNew';
 import Step1GrabInterestingSelfIntroduction from 'components/BecomeOurPhotographer/Step1GrabInterestingSelfIntroduction';
 import Step1GrabCameraEquipment from 'components/BecomeOurPhotographer/Step1GrabCameraEquipment';
 import Step2Welcome from 'components/BecomeOurPhotographer/Step2Welcome';
@@ -135,7 +135,7 @@ const App = connect(state => state)(props => {
             />
             <Route
               path="/become-our-photographer/step-1-1"
-              component={onlyLoggedIn(Step1GrabCity)}
+              component={onlyLoggedIn(Step1GrabCityNew)}
             />
             <Route
               path="/become-our-photographer/step-1-2"

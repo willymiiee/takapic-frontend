@@ -33,6 +33,16 @@ class Footer extends Component {
                 <option>Dollar</option>
                 <option>Rupiah</option>
               </select>
+              <div>
+                <a href="https://www.algolia.com/">
+                  <img
+                    className="footer-logo"
+                    src="/images/search-by-algolia.png"
+                    alt=""
+                    target="_blank"
+                  />
+                </a>
+              </div>
             </div>
             <div className="col-sm-5 margin-bottom-30">
               <h4>TakaPic</h4>

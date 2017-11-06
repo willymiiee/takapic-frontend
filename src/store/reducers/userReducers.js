@@ -57,13 +57,11 @@ export const userAuth = (state = {}, action) => {
   }
 };
 
-export const userSignup = (state = { signingUp: false }, action) => {
+export const userSignup = (state = {}, action) => {
   switch (action.type) {
-    case 'USER_SIGNUP_START':
-      return { signingUp: true };
     case 'USER_SIGNUP_SUCCESS':
     case 'USER_SIGNUP_ERROR':
-      return { signingUp: false, ...action.payload };
+      return { ...action.payload };
     default:
       return state;
   }

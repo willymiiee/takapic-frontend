@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import store from 'store';
+import history from 'services/history';
 
 import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
@@ -29,6 +30,12 @@ const fetchPhotographerServiceInformation = () => {
       });
   };
 };
+
+/*history.listen((location, action) => {
+  console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`);
+  console.log(`The last navigation action was ${action}`);
+  store.dispatch(fetchPhotographerServiceInformation());
+});*/
 
 store.dispatch(fetchPhotographerServiceInformation());
 
@@ -214,7 +221,7 @@ class PhotographerDetail extends Component {
                     </p>
                     <div className="tags margin-bottom-15">
                       {
-                        speciality.map(item => <a>#{ item }</a>)
+                        speciality.map((item, index) => <a key={`speciality-item-${index}`}>#{ item }</a>)
                       }
                     </div>
                   </div>

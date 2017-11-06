@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Page from 'components/Page';
+import Page from '../Page';
 import './../../styles/react-selectize.css';
-import { ReactSelectize, SimpleSelect, MultiSelect } from 'react-selectize';
+import { ReactSelectize, MultiSelect } from 'react-selectize';
 import {
   Button,
   FormGroup,
-  FormControl,
-  InputGroup,
-  DropdownButton,
-  MenuItem,
+  FormControl
 } from 'react-bootstrap';
 
 import { submitCameraEquipment } from '../../store/actions/photographerServiceInfoActions';
@@ -19,13 +16,6 @@ class Step1GrabCameraEquipment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // cameraEquipment: {
-      //   body: ['Nikon D5600', 'Canon 60D'],
-      //   lens: [
-      //     'Canon EF 50mm f/1.8 II Lens – f',
-      //     'Canon EF 85mm f/1.8 USM Telephoto Lens',
-      //   ],
-      // },
       languages: ['English', 'Japanese'],
       speciality: ['Wedding', 'Snap'],
       selected: {
@@ -35,8 +25,6 @@ class Step1GrabCameraEquipment extends Component {
         speciality: [],
       },
     };
-
-    // this.nextStepHandler = this.nextStepHandler.bind(this);
   }
 
   handleAddMoreBody = () => {
@@ -87,19 +75,19 @@ class Step1GrabCameraEquipment extends Component {
       this.notEmpty(speciality)
     ) {
       const {
-        photographerServiceInfo: { locationStructure, selfDescription },
+        photographerServiceInfo: { location, selfDescription },
         user: { email },
       } = this.props;
-      locationStructure.locationMerge = this.setLocationMerge(
-        locationStructure
-      );
+
+      location.locationMerge = location.locationAdmLevel2 + ', ' + location.locationAdmLevel1 + ', ' + location.countryName;
+
       const params = {
         email,
         bodies: bodies.filter(b => b !== ''),
         lenses: lenses.filter(l => l !== ''),
         languages,
         speciality,
-        location: locationStructure,
+        location,
         selfDescription,
       };
       this.props.submitCameraEquipment(params);
@@ -110,18 +98,6 @@ class Step1GrabCameraEquipment extends Component {
 
   notEmpty = arr => {
     return arr.length > 0;
-  };
-
-  setLocationMerge = n => {
-    let res = [];
-    for (var key in n) {
-      // check also if property is not inherited from prototype
-      if (n.hasOwnProperty(key)) {
-        var value = n[key];
-        res = [...res, value];
-      }
-    }
-    return res.join(',');
   };
 
   render() {
@@ -207,7 +183,6 @@ export default connect(
     photographerServiceInfo: state.photographerServiceInfo,
   }),
   dispatch => ({
-    submitCameraEquipment: (email, password, displayName, userType) =>
-      dispatch(submitCameraEquipment(email, password, displayName, userType)),
+    submitCameraEquipment: paramsObject => dispatch(submitCameraEquipment(paramsObject))
   })
 )(Step1GrabCameraEquipment);
