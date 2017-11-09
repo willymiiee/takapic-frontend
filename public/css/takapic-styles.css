@@ -3115,3 +3115,19 @@ figcaption.action-btn a .fa {
 .Select-input {
   height: 70px;
 }
+
+#schedule > .DayPicker {
+  display: block;
+}
+
+.DayPicker-Month {
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0 1rem;
+  width: 100%;
+}

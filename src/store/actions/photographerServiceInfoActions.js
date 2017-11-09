@@ -17,22 +17,10 @@ const updateUserMetadataLocationAndSpeciality = (email, location, speciality) =>
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(dashify(email));
   const updateData = {
-    locationCountry: get(location, 'country', '-'),
-    locationAdministrativeAreaLevel1: get(
-      location,
-      'administrativeAreaLevel1',
-      '-'
-    ),
-    locationAdministrativeAreaLevel2: get(
-      location,
-      'administrativeAreaLevel2',
-      '-'
-    ),
-    locationAdministrativeAreaLevel3: get(
-      location,
-      'administrativeAreaLevel3',
-      '-'
-    ),
+    country: get(location, 'country', '-'),
+    countryName: get(location, 'countryName', ''),
+    locationAdmLevel1: get(location, 'locationAdmLevel1', '-'),
+    locationAdmLevel2: get(location, 'locationAdmLevel2', '-'),
     locationMerge: get(location, 'locationMerge', '-'),
     speciality
   };

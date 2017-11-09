@@ -66,9 +66,6 @@ const MapWithASearchBox = compose(
               meetingPointName: places[0].name,
             },
           });
-          // refs.map.fitBounds(bounds);
-          console.log('ini place', places);
-          console.log('ini bounds', bounds);
         },
         handleSpecificLocation: event => {
           this.setState({ specificLocation: event.target.value });

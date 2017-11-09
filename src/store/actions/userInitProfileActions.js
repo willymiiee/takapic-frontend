@@ -10,6 +10,22 @@ const updateUserMetadataPhotoProfile = (email, photoProfileUrl) => {
   userRef.update({ photoProfileUrl });
 };
 
+export const imageSelectedAction = fileObject => {
+  return dispatch => {
+    let fileReader = new FileReader();
+    fileReader.onloadend = () => {
+      dispatch({
+        type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_IMAGE_SELECTED',
+        payload: {
+          file: fileObject,
+          imagePreviewUrl: fileReader.result
+        }
+      });
+    };
+    fileReader.readAsDataURL(fileObject);
+  };
+};
+
 export const uploadPhotoProfile = (fileObject, email, displayName) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_START' });

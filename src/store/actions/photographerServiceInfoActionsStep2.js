@@ -1,5 +1,6 @@
 import firebase from 'firebase';
-import { database } from 'services/firebase';
+import moment from 'moment';
+import { database } from '../../services/firebase';
 import history from './../../services/history';
 import { dashify } from '../../helpers/helpers';
 
@@ -21,16 +22,23 @@ export const setPricing = payload => {
 };
 
 export const setMeetingPoint = params => {
-  const { email, packagesPrice, meetingPoints } = params;
+  const { email, packagesPrice, meetingPoints, notAvailableDates } = params;
   return dispatch => {
     dispatch({ type: 'SUBMIT_MEETING_POINT' });
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
     const metadataRef = ref.child(dashify(email));
+
+    const notAvailableDatesFormattedList = [];
+    notAvailableDates.forEach(item => {
+      notAvailableDatesFormattedList.push(moment(item).format('YYYY-MM-DD'));
+    });
+
     metadataRef
       .update({
         packagesPrice,
         meetingPoints,
+        notAvailableDates: notAvailableDatesFormattedList
       })
       .then(result => {
         updateUserMetadataPriceStartFrom(email, packagesPrice[0].price);

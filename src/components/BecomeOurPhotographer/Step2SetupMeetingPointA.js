@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Page from 'components/Page';
+import Page from '../Page';
 import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
 import MapWithASearchBox from './../MapWithASearchBox';
-/*
- * https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
- *
- * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
- */
+
 class Step2SetupMeetingPointA extends Component {
   constructor(props) {
     super(props);
@@ -17,14 +13,17 @@ class Step2SetupMeetingPointA extends Component {
       mapLoaded: false,
     };
   }
+
   componentDidMount() {
     this.setState({ mapLoaded: true });
   }
+
   handleSubmit = event => {
     event.preventDefault();
     const {
       photographerServiceInfoStep2: { detailMasterPackage },
       user: { email },
+      userInitProfile: { notAvailableDates }
     } = this.props;
     let { meetingPoints } = this.state;
     const n = detailMasterPackage;
@@ -57,24 +56,12 @@ class Step2SetupMeetingPointA extends Component {
       email,
       packagesPrice,
       meetingPoints,
+      notAvailableDates
     };
     // Make sure that the params are complete
     // if (params.email && params.packagesPrice.length > 0 && params.meetingPoints.length === 3) {
     this.props.setMeetingPoint(params);
     // }
-  };
-
-  handleAddition = params => {
-    if (
-      params.generalLocation &&
-      params.specificLocation &&
-      this.state.meetingPoints.length < 3
-    ) {
-      const { generalLocation, specificLocation } = params;
-      let { meetingPoints } = this.state;
-      meetingPoints = [...meetingPoints, { generalLocation, specificLocation }];
-      this.setState({ meetingPoints });
-    }
   };
 
   handleAddition = params => {
@@ -191,6 +178,7 @@ class Step2SetupMeetingPointA extends Component {
 const mapStateToProps = state => ({
   user: state.userAuth,
   photographerServiceInfoStep2: state.photographerServiceInfoStep2,
+  userInitProfile: state.userInitProfile
 });
 
 const mapDispatchToProps = dispatch => ({
