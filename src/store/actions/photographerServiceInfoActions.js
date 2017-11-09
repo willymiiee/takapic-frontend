@@ -51,6 +51,17 @@ export const submitCameraEquipment = params => {
         location,
         selfDescription,
         speciality,
+        serviceReviews: {
+          rating: {
+            label: 'Common',
+            value: 3
+          },
+          impressions: [
+            { label: 'Abc', value: 0.5 },
+            { label: 'Def', value: 0.5 },
+            { label: 'Ghi', value: 0.5 }
+          ]
+        }
       })
       .then(result => {
         dispatch({

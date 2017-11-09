@@ -5,8 +5,8 @@ import StarRatingComponent from 'react-star-rating-component';
 const TopPhotographerSingle = props => {
   const {
     displayName,
-    locationCountry,
-    locationAdministrativeAreaLevel1,
+    countryName,
+    locationAdmLevel1,
     photoProfileUrl,
     speciality,
     serviceReviews
@@ -19,7 +19,7 @@ const TopPhotographerSingle = props => {
       </div>
 
       <h3>{displayName}</h3>
-      <div>{`${locationCountry}, ${locationAdministrativeAreaLevel1}`}</div>
+      <div>{`${countryName}, ${locationAdmLevel1}`}</div>
 
       <div className="ratings">
         <StarRatingComponent

@@ -13,7 +13,7 @@ import Page from '../components/Page';
 
 const fetchHomepageData = () => {
   return dispatch => {
-    const queryParams = 'filter[destination]=bali, indonesia&filter[date]=';
+    const queryParams = 'filter[destination]=jakarta, indonesia&filter[date]=';
     axios
       .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
       .then(response => {
