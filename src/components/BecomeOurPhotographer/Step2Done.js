@@ -5,12 +5,12 @@ import { dashify } from '../../helpers/helpers';
 
 import Page from 'components/Page';
 
-const updatePhotographerServiceInfoPhotosPortofolio = (email, data) => {
+const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
   return dispatch => {
     dispatch({ type: 'FOO_STEP2_DONE' });
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
-    const item = ref.child(dashify(email));
+    const item = ref.child(reference);
 
     item.update({ photosPortofolio: data });
   };
@@ -18,8 +18,21 @@ const updatePhotographerServiceInfoPhotosPortofolio = (email, data) => {
 
 class Step2Done extends Component {
   componentWillMount() {
-    const { email, photographerPhotosPortofolio: data } = this.props;
-    this.props.updatePhotographerServiceInfoPhotosPortofolio(email, data);
+    const {
+      user: { uid, email, userMetadata: { accountProviderType } },
+
+
+      photographerPhotosPortofolio: data
+    } = this.props;
+
+    let reference = '';
+    if (accountProviderType === 'google.com') {
+      reference = 'googlecom-' + uid;
+    } else {
+      reference = dashify(email);
+    }
+
+    this.props.updatePhotographerServiceInfoPhotosPortofolio(reference, data);
   }
 
   render() {
@@ -46,7 +59,7 @@ class Step2Done extends Component {
 
 export default connect(
   state => ({
-    email: state.userAuth.email,
+    user: state.userAuth,
     photographerPhotosPortofolio: state.photographerPhotosPortofolio,
   }),
   dispatch => ({

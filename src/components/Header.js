@@ -21,9 +21,7 @@ class Header extends Component {
                   Become our photographer
                 </Link>
               )}
-              {userMetadata ? null : (
-                <Link to="/traveller-sign-up">Traveller sign up</Link>
-              )}
+
               <Link to="/how-it-works">How it works</Link>
               <Link to="/help">Help</Link>
               {userMetadata ? (

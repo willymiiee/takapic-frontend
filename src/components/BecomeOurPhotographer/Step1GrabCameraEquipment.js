@@ -9,7 +9,7 @@ import {
   FormGroup,
   FormControl
 } from 'react-bootstrap';
-
+import { dashify } from "../../helpers/helpers";
 import { submitCameraEquipment } from '../../store/actions/photographerServiceInfoActions';
 
 class Step1GrabCameraEquipment extends Component {
@@ -76,13 +76,24 @@ class Step1GrabCameraEquipment extends Component {
     ) {
       const {
         photographerServiceInfo: { location, selfDescription },
-        user: { email },
+        user: {
+          uid,
+          email,
+          userMetadata: { accountProviderType }
+        }
       } = this.props;
 
       location.locationMerge = location.locationAdmLevel2 + ', ' + location.locationAdmLevel1 + ', ' + location.countryName;
 
+      let reference = '';
+      if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+      } else {
+        reference = dashify(email);
+      }
+
       const params = {
-        email,
+        reference,
         bodies: bodies.filter(b => b !== ''),
         lenses: lenses.filter(l => l !== ''),
         languages,

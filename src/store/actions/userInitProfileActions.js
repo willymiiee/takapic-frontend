@@ -1,11 +1,10 @@
 import { database } from '../../services/firebase';
-import { dashify } from '../../helpers/helpers';
 import history from '../../services/history';
 
-const updateUserMetadataPhotoProfile = (email, photoProfileUrl) => {
+const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
-  const userRef = ref.child(dashify(email));
+  const userRef = ref.child(reference);
 
   userRef.update({ photoProfileUrl });
 };
@@ -26,7 +25,7 @@ export const imageSelectedAction = fileObject => {
   };
 };
 
-export const uploadPhotoProfile = (fileObject, email, displayName) => {
+export const uploadPhotoProfile = (fileObject, reference, displayName) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_START' });
 
@@ -38,13 +37,12 @@ export const uploadPhotoProfile = (fileObject, email, displayName) => {
     }
 
     const storageRef = database.storage().ref();
-    const photoPath = `pictures/user-photo-profile/${dashify(email)}${fileExt}`;
+    const photoPath = `pictures/user-photo-profile/${reference}${fileExt}`;
     const pictureRef = storageRef.child(photoPath);
 
     pictureRef
       .put(fileObject, { contentType: fileObject.type })
       .then(snapshot => {
-        console.log('Uploaded', snapshot.totalBytes, 'bytes');
         const downloadURL = snapshot.downloadURL;
         dispatch({
           type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_SUCCESS',
@@ -56,7 +54,7 @@ export const uploadPhotoProfile = (fileObject, email, displayName) => {
           photoURL: downloadURL,
         });
 
-        updateUserMetadataPhotoProfile(email, downloadURL);
+        updateUserMetadataPhotoProfile(reference, downloadURL);
 
         dispatch({
           type: 'USER_AUTH_UPDATE_PROFILE',
@@ -66,7 +64,6 @@ export const uploadPhotoProfile = (fileObject, email, displayName) => {
         history.push('/photographer-registration/s3');
       })
       .catch(error => {
-        console.log('Upload failed: ', error);
         dispatch({
           type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_ERROR',
           payload: error,
@@ -75,12 +72,12 @@ export const uploadPhotoProfile = (fileObject, email, displayName) => {
   };
 };
 
-export const uploadPhonenumber = (phonenumber, email) => {
+export const uploadPhonenumber = (phonenumber, reference) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_START ' });
 
     const ref = database.database().ref('/user_metadata');
-    const metadataRef = ref.child(dashify(email));
+    const metadataRef = ref.child(reference);
     metadataRef
       .update({
         phoneNumber: phonenumber,

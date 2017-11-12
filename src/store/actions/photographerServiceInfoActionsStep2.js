@@ -2,12 +2,11 @@ import firebase from 'firebase';
 import moment from 'moment';
 import { database } from '../../services/firebase';
 import history from './../../services/history';
-import { dashify } from '../../helpers/helpers';
 
-const updateUserMetadataPriceStartFrom = (email, price) => {
+const updateUserMetadataPriceStartFrom = (reference, price) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
-  const userRef = ref.child(dashify(email));
+  const userRef = ref.child(reference);
 
   userRef.update({ priceStartFrom: price });
 };
@@ -22,12 +21,12 @@ export const setPricing = payload => {
 };
 
 export const setMeetingPoint = params => {
-  const { email, packagesPrice, meetingPoints, notAvailableDates } = params;
+  const { reference, packagesPrice, meetingPoints, notAvailableDates } = params;
   return dispatch => {
     dispatch({ type: 'SUBMIT_MEETING_POINT' });
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
-    const metadataRef = ref.child(dashify(email));
+    const metadataRef = ref.child(reference);
 
     const notAvailableDatesFormattedList = [];
     notAvailableDates.forEach(item => {
@@ -41,7 +40,7 @@ export const setMeetingPoint = params => {
         notAvailableDates: notAvailableDatesFormattedList
       })
       .then(result => {
-        updateUserMetadataPriceStartFrom(email, packagesPrice[0].price);
+        updateUserMetadataPriceStartFrom(reference, packagesPrice[0].price);
         dispatch({
           type: 'SUBMIT_MEETING_POINT_SUCCESS',
           payload: { status: 'OK', message: 'Data saved' },
@@ -58,13 +57,13 @@ export const setMeetingPoint = params => {
 };
 
 export const submitUploadPhotosPortfolio = params => {
-  const { email, files } = params;
+  const { reference, files } = params;
   return dispatch => {
     let percentages = files.map(f => 0);
     let tasks = [];
 
     for (let i in files) {
-      const fullDirectory = `pictures/portofolio-photos/${dashify(email)}`;
+      const fullDirectory = `pictures/portofolio-photos/${reference}`;
       const imageFile = files[i].file;
       var storageRef = firebase
         .storage()

@@ -1,6 +1,5 @@
-import { database } from 'services/firebase';
+import { database } from '../../services/firebase';
 import history from '../../services/history';
-import { dashify } from '../../helpers/helpers';
 import get from 'lodash/get';
 
 export const selfDescription = description => {
@@ -12,10 +11,10 @@ export const selfDescription = description => {
   };
 };
 
-const updateUserMetadataLocationAndSpeciality = (email, location, speciality) => {
+const updateUserMetadataLocationAndSpeciality = (reference, location, speciality) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
-  const userRef = ref.child(dashify(email));
+  const userRef = ref.child(reference);
   const updateData = {
     country: get(location, 'country', '-'),
     countryName: get(location, 'countryName', ''),
@@ -30,7 +29,7 @@ const updateUserMetadataLocationAndSpeciality = (email, location, speciality) =>
 
 export const submitCameraEquipment = params => {
   const {
-    email,
+    reference,
     bodies,
     lenses,
     languages,
@@ -43,7 +42,7 @@ export const submitCameraEquipment = params => {
     dispatch({ type: 'SUBMIT_CAMERA_EQUIPMENT' });
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
-    const metadataRef = ref.child(dashify(email));
+    const metadataRef = ref.child(reference);
     metadataRef
       .update({
         cameraEquipment: { body: bodies, lens: lenses },
@@ -57,19 +56,19 @@ export const submitCameraEquipment = params => {
             value: 3
           },
           impressions: [
-            { label: 'Abc', value: 0.5 },
-            { label: 'Def', value: 0.5 },
-            { label: 'Ghi', value: 0.5 }
+            { label: 'Friendly', value: 0.5 },
+            { label: 'Skillful', value: 0.5 },
+            { label: 'Comprehensive', value: 0.5 }
           ]
         }
       })
-      .then(result => {
+      .then(() => {
         dispatch({
           type: 'SUBMIT_CAMERA_EQUIPMENT_SUCCESS',
           payload: { status: 'OK', message: 'Data saved' },
         });
 
-        updateUserMetadataLocationAndSpeciality(email, location, speciality);
+        updateUserMetadataLocationAndSpeciality(reference, location, speciality);
 
         history.push('/become-our-photographer/welcome-2');
       })

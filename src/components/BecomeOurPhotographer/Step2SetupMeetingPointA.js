@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Page from '../Page';
 import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
+import { dashify } from "../../helpers/helpers";
+
 import MapWithASearchBox from './../MapWithASearchBox';
+import Page from '../Page';
 
 class Step2SetupMeetingPointA extends Component {
   constructor(props) {
@@ -20,48 +22,61 @@ class Step2SetupMeetingPointA extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const {
-      photographerServiceInfoStep2: { detailMasterPackage },
-      user: { email },
-      userInitProfile: { notAvailableDates }
-    } = this.props;
     let { meetingPoints } = this.state;
-    const n = detailMasterPackage;
-    let packagesPrice = [];
+    if (meetingPoints.length < 1) {
+      alert('Please create at least one meeting point. You cannot leave this empty');
+      return false;
+    } else {
+      const {
+        photographerServiceInfoStep2: {detailMasterPackage},
+        user: {uid, email, userMetadata: {accountProviderType}},
+        userInitProfile: {notAvailableDates}
+      } = this.props;
 
-    for (let key in n) {
-      // check also if property is not inherited from prototype
-      if (n.hasOwnProperty(key)) {
-        let value = n[key];
-        packagesPrice = [
-          ...packagesPrice,
-          {
-            currency: value.currency,
-            packageName: value.packageName,
-            price: value.price,
-            requirement: value.requirement,
-          },
-        ];
+      let {meetingPoints} = this.state;
+      const n = detailMasterPackage;
+      let packagesPrice = [];
+
+      for (let key in n) {
+        // check also if property is not inherited from prototype
+        if (n.hasOwnProperty(key)) {
+          let value = n[key];
+          packagesPrice = [
+            ...packagesPrice,
+            {
+              currency: value.currency,
+              packageName: value.packageName,
+              price: value.price,
+              requirement: value.requirement,
+            },
+          ];
+        }
       }
-    }
-    meetingPoints = meetingPoints.map(p => {
-      return {
-        lat: p.generalLocation.lat,
-        long: p.generalLocation.long,
-        meetingPointName: `${p.generalLocation
-          .meetingPointName}, ${p.specificLocation}`,
+
+      meetingPoints = meetingPoints.map(p => {
+        return {
+          lat: p.generalLocation.lat,
+          long: p.generalLocation.long,
+          meetingPointName: `${p.generalLocation
+            .meetingPointName}, ${p.specificLocation}`,
+        };
+      });
+
+      let reference = '';
+      if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+      } else {
+        reference = dashify(email);
+      }
+
+      const params = {
+        reference,
+        packagesPrice,
+        meetingPoints,
+        notAvailableDates
       };
-    });
-    const params = {
-      email,
-      packagesPrice,
-      meetingPoints,
-      notAvailableDates
-    };
-    // Make sure that the params are complete
-    // if (params.email && params.packagesPrice.length > 0 && params.meetingPoints.length === 3) {
-    this.props.setMeetingPoint(params);
-    // }
+      this.props.setMeetingPoint(params);
+    }
   };
 
   handleAddition = params => {

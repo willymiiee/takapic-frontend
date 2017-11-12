@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Page from 'components/Page';
 import { ProgressBar } from 'react-bootstrap';
+import { dashify } from "../../helpers/helpers";
 import { submitUploadPhotosPortfolio } from '../../store/actions/photographerServiceInfoActionsStep2';
+
+import Page from 'components/Page';
+
 
 class Step2IntiatePortofolio extends Component {
   constructor(props) {
@@ -47,13 +50,24 @@ class Step2IntiatePortofolio extends Component {
     event.preventDefault();
     const { selectedPhotos } = this.state;
     if (selectedPhotos.length < 1) {
-      alert('Please upload at least on photo.');
+      alert('Please choose and upload photos.');
     } else {
-      const { user: { email } } = this.props;
-      const params = {
-        email,
-        files: selectedPhotos,
-      };
+      const {
+        user: {
+          uid,
+          email,
+          userMetadata: { accountProviderType }
+        }
+      } = this.props;
+
+      let reference = '';
+      if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+      } else {
+        reference = dashify(email);
+      }
+
+      const params = { reference, files: selectedPhotos };
       this.props.submitUploadPhotosPortfolio(params);
     }
   };
@@ -86,7 +100,7 @@ class Step2IntiatePortofolio extends Component {
                   className="button"
                   onClick={() => this._uploadFile.click()}
                 >
-                  Upload
+                  Browse images
                 </button>
                 <div id="photo-preview">
                   {selectedPhotos.map((photo, key) => (
@@ -130,12 +144,17 @@ class Step2IntiatePortofolio extends Component {
             </div>
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
               <div className="card tips">
-                <b>Why important to upload your nice photos</b>
+                <h3>Why it's important to upload your nice photos</h3>
                 <p>
-                  It will be shown on your profile. You can change it later.
+                  Customers will frequent your page and view your photos so this is your best chance to give them
+                  a powerfull impression!
                 </p>
-                <b>Tips for choosing nice photos</b>
-                <p>Blah blah.</p>
+
+                <h3>Tips for choosing photos</h3>
+                <p>
+                  You should select photos that best showcase your skills and represent your photography style.
+                  You can update / change your photos anytime you want.
+                </p>
               </div>
             </div>
           </div>

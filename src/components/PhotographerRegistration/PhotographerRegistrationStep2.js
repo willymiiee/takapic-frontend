@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { uploadPhotoProfile, imageSelectedAction } from '../../store/actions/userInitProfileActions';
+import { dashify } from "../../helpers/helpers";
 
 import Page from '../Page';
 
@@ -23,12 +23,19 @@ class PhotographerRegistrationStep2 extends Component {
     if (file) {
       const {
         user: {
+          uid,
           email,
-          userMetadata: { displayName }
+          userMetadata: { displayName, accountProviderType }
         }
       } = this.props;
 
-      this.props.uploadPhotoProfile(file, email, displayName);
+      let reference = '';
+      if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+      } else {
+        reference = dashify(email);
+      }
+      this.props.uploadPhotoProfile(file, reference, displayName);
     } else {
       alert('Please choose an image for your photo profile');
     }
@@ -103,7 +110,8 @@ export default connect(
     userInitProfile: state.userInitProfile,
   }),
   dispatch => ({
-    uploadPhotoProfile: (fileObject, email, displayName) => dispatch(uploadPhotoProfile(fileObject, email, displayName)),
+    uploadPhotoProfile: (fileObject, email, displayName) =>
+      dispatch(uploadPhotoProfile(fileObject, email, displayName)),
     imageSelectedAction: fileObject => dispatch(imageSelectedAction(fileObject))
   })
 )(PhotographerRegistrationStep2);

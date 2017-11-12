@@ -5,6 +5,7 @@ import Yup from 'yup';
 import {
   userSignupByEmailPassword,
   userSignupByFacebook,
+  userSignupByGoogle
 } from '../../store/actions/userActions';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
@@ -137,7 +138,7 @@ class PhotographerRegistrationStep1 extends Component {
   }
 
   signUpGoogle(evt) {
-    evt.preventDefault();
+    this.props.userSignupByGoogle(USER_PHOTOGRAPHER);
   }
 
   render() {
@@ -215,9 +216,8 @@ export default connect(
   }),
   dispatch => ({
     userSignupByEmailPassword: (email, password, displayName, userType) =>
-      dispatch(
-        userSignupByEmailPassword(email, password, displayName, userType)
-      ),
+      dispatch(userSignupByEmailPassword(email, password, displayName, userType)),
     userSignupByFacebook: userType => dispatch(userSignupByFacebook(userType)),
+    userSignupByGoogle: userType => dispatch(userSignupByGoogle(userType))
   })
 )(PhotographerRegistrationStep1);

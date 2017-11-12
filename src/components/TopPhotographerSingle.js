@@ -9,7 +9,8 @@ const TopPhotographerSingle = props => {
     locationAdmLevel1,
     photoProfileUrl,
     speciality,
-    serviceReviews
+    serviceReviews,
+    uid
   } = props.item;
 
   return (
@@ -44,7 +45,7 @@ const TopPhotographerSingle = props => {
         }
       </div>
 
-      <Link className="button" to={'/photographer/'}>
+      <Link className="button" to={`/photographer/${uid}`}>
         Detail
       </Link>
     </div>

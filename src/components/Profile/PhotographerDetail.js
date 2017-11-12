@@ -2,20 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
-import store from 'store';
-import history from 'services/history';
-
+import store from '../../store';
+import history from '../../services/history';
 import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
 import { Modal } from 'react-bootstrap';
-import './../../react-slick.min.css';
+import { nl2br } from "../../helpers/helpers";
 
-import Page from 'components/Page';
+import './../../react-slick.min.css';
+import Animator from '../common/Animator';
+import Page from '../Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';
 
 const fetchPhotographerServiceInformation = () => {
   return dispatch => {
+    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_LOADING' });
     const uid = window.location.pathname.split('/')[2];
     axios
       .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/${uid}`)
@@ -31,39 +33,23 @@ const fetchPhotographerServiceInformation = () => {
   };
 };
 
-/*history.listen((location, action) => {
-  console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`);
-  console.log(`The last navigation action was ${action}`);
-  store.dispatch(fetchPhotographerServiceInformation());
-});*/
+const resetData = () => {
+  return dispatch => {
+    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET' })
+  };
+};
 
-store.dispatch(fetchPhotographerServiceInformation());
+history.listen((location, action) => {
+  if (location.pathname.includes('/photographer')) {
+    store.dispatch(resetData());
+  }
+});
 
 class PhotographerDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      reviews: {
-        rating: {
-          label: 'Average',
-          value: 3.4,
-        },
-        impressions: [
-          {
-            label: 'Friendly',
-            value: 0.6,
-          },
-          {
-            label: 'Skillful',
-            value: 0.8,
-          },
-          {
-            label: 'Comprehensive',
-            value: 0.7,
-          },
-        ],
-      },
-      showModal: false,
+      showModal: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -71,34 +57,43 @@ class PhotographerDetail extends Component {
   }
 
   componentDidMount() {
-    var photographerTop = window.$('#photographer-top');
-    var pageYOffset;
+    const {
+      photographerServiceInformation: { loading }
+    } = this.props;
 
-    window.$.fn.generateCircleProgress = function(opt) {
-      window
-        .$(this)
-        .circleProgress({
-          startAngle: -Math.PI / 2,
-          value: opt.value,
-          fill: { gradient: opt.gradient },
-        })
-        .prepend('<div>' + opt.value * 100 + '%</div>');
-    };
+    if (!loading) {
+      var photographerTop = window.$('#photographer-top');
+      var pageYOffset;
 
-    window.$(function() {
-      window.$(window).scroll(function() {
-        if (
-          window.matchMedia('(min-width: 481px) and (max-width: 767px)').matches
-        ) {
-          pageYOffset = window.pageYOffset;
-          if (pageYOffset > 67) {
-            photographerTop.addClass('sticky');
-          } else {
-            photographerTop.removeClass('sticky');
+      window.$.fn.generateCircleProgress = function (opt) {
+        window
+          .$(this)
+          .circleProgress({
+            startAngle: -Math.PI / 2,
+            value: opt.value,
+            fill: {gradient: opt.gradient},
+          })
+          .prepend('<div>' + opt.value * 100 + '%</div>');
+      };
+
+      window.$(function () {
+        window.$(window).scroll(function () {
+          if (
+            window.matchMedia('(min-width: 481px) and (max-width: 767px)').matches
+          ) {
+            pageYOffset = window.pageYOffset;
+            if (pageYOffset > 67) {
+              photographerTop.addClass('sticky');
+            } else {
+              photographerTop.removeClass('sticky');
+            }
           }
-        }
+        });
       });
-    });
+
+    } else {
+      this.props.fetchPhotographerServiceInformation();
+    }
   }
 
   openModal() {
@@ -217,7 +212,7 @@ class PhotographerDetail extends Component {
                     <h1>{ displayName }</h1>
                     <h3>{ locationMerge }</h3>
                     <p>
-                      { selfDescription }
+                      { nl2br(selfDescription) }
                     </p>
                     <div className="tags margin-bottom-15">
                       {
@@ -273,7 +268,7 @@ class PhotographerDetail extends Component {
     }
 
     return (
-      <div>Loading...</div>
+      <Animator/>
     )
   }
 }
@@ -282,6 +277,10 @@ const mapStateToProps = state => ({
   photographerServiceInformation: state.photographerServiceInformation
 });
 
+const mapDispatchToProps = dispatch => ({
+  fetchPhotographerServiceInformation: () => dispatch(fetchPhotographerServiceInformation())
+});
+
 export default withRouter(
-  connect(mapStateToProps)(PhotographerDetail)
+  connect(mapStateToProps, mapDispatchToProps)(PhotographerDetail)
 );

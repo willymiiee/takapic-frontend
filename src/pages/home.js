@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import DateTime from 'react-datetime';
 import moment from 'moment';
 import axios from 'axios';
 import Autocomplete from 'react-autocomplete';
 import intl from 'react-intl-universal';
-import store from 'store';
+import store from '../store';
 
 import TopPhotographers from '../components/TopPhotographers';
 import Page from '../components/Page';
@@ -28,8 +27,6 @@ const fetchHomepageData = () => {
   }
 
 };
-
-store.dispatch(fetchHomepageData());
 
 class Home extends Component {
   constructor(props) {
@@ -72,15 +69,25 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    var bgSlide = window.$('#bg-slide');
+    const {
+      homepageData: {
+        loading: loadingHomepageData
+      }
+    } = this.props;
 
-    window.$('.search-toggle').click(function() {
-      window.$('#landing-page-search').slideToggle();
-    });
+    if (loadingHomepageData) {
+      store.dispatch(fetchHomepageData());
+    } else {
+      var bgSlide = window.$('#bg-slide');
 
-    setInterval(function() {
-      window.$('#bg-slide > img:first').appendTo(bgSlide);
-    }, 6000);
+      window.$('.search-toggle').click(function() {
+        window.$('#landing-page-search').slideToggle();
+      });
+
+      setInterval(function() {
+        window.$('#bg-slide > img:first').appendTo(bgSlide);
+      }, 6000);
+    }
   }
 
   render() {

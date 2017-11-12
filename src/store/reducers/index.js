@@ -14,11 +14,11 @@ const photographerPhotosPortofolio = (state = [], action) => {
   return state;
 };
 
-const photographerServiceInformation = (
-  state = { loading: true, data: {} },
-  action
-) => {
-  if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
+const photographerServiceInformation = (state = { loading: true, data: {} }, action) => {
+  if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET') {
+    return { data: {}, loading: true };
+
+  } else if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
     const priceMin = parseInt(action.payload.packagesPrice[0].price);
     const credit = 0;
     const totalReservationPriceInitiate = credit + priceMin + priceMin * 0.15;
@@ -30,6 +30,8 @@ const photographerServiceInformation = (
       },
       loading: false,
     };
+  } else if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
+    return { loading: true, data: {} };
   }
   return state;
 };

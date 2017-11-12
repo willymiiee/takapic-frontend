@@ -126,13 +126,16 @@ class Step2IndicatePrice extends Component {
             </div>
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
               <div className="card tips">
-                <b>About Pricing</b>
+                <h3>About Pricing</h3>
                 <p>
-                  Explanation about our packages and standardised pricing
-                  policy. You can change it later.
+                  Packages are time-based and is the time you spend on the photoshoot. Please factor in
+                  some flexibility in timing when meeting your customer if they are not familiar with the location.
                 </p>
-                <b>Tips for pricing</b>
-                <p>Blah blah.</p>
+
+                <h3>Tips for pricing</h3>
+                <p>
+                  You can change your prices anytime you like depending on your schedule or free time.
+                </p>
               </div>
             </div>
           </div>

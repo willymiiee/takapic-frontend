@@ -9,20 +9,7 @@ export const userAuth = (state = {}, action) => {
       return { ...state };
 
     case 'USER_AUTH_LOGIN_SUCCESS':
-      const providerData = action.payload.providerData[0];
-      const newData1 = {
-        uid: action.payload.uid,
-        email:
-          providerData.providerId === 'facebook.com'
-            ? providerData.email
-            : action.payload.email,
-        emailVerified: action.payload.emailVerified,
-        displayName: action.payload.displayName,
-        photoURL: action.payload.photoURL,
-        providerId: providerData.providerId,
-        refreshToken: action.payload.refreshToken,
-        userCurrency: 'NZD',
-      };
+      const newData1 = { ...action.payload };
       storeAuthDataToLocalStorage(newData1);
       return newData1;
 

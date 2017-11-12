@@ -1,25 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
-// import DateTime from 'react-datetime';
+import { Button, Col, Panel, Row } from 'react-bootstrap';
 import moment from 'moment';
 import Page from 'components/Page';
-import ReactRating from 'react-rating-float';
-import CircularProgressbar from 'react-circular-progressbar';
-import Slider from 'react-slick';
-// import './../../daterangepicker.css';
 import './../../react-slick.min.css';
-import PopPicker from 'rmc-date-picker/lib/Popup';
-import DatePicker from 'rmc-date-picker/lib/DatePicker';
-import enUs from 'rmc-date-picker/lib/locale/en_US';
 import 'rmc-picker/assets/index.css';
 import 'rmc-date-picker/assets/index.css';
 import 'rmc-picker/assets/popup.css';
 
 import { fetchPhotographerDetail } from '../../store/actions/photographerDetailActions';
-
-// import DateRangePicker from 'react-bootstrap-daterangepicker';
 
 class PhotographerBooking extends Component {
   constructor(props) {
@@ -28,7 +18,7 @@ class PhotographerBooking extends Component {
     this.state = {
       activeKey: 1,
       date: null,
-      email: 'agungsuryabangsa-gmail-com',
+      email: 'okaprinarjaya-gmail-com',
       uuid: '0jknVmGuMwPLKjFetyLm9xYWSh62',
       reviews: {
         rating: {
@@ -140,22 +130,6 @@ class PhotographerBooking extends Component {
       slidesToShow: 1,
       slidesToScroll: 1,
     };
-
-    var now = new Date();
-    const minDate = new Date(2015, 8, 15, 10, 30, 0);
-    const maxDate = new Date(2018, 1, 1, 23, 49, 59);
-
-    const { date } = this.state;
-    const datePicker = (
-      <DatePicker
-        rootNativeProps={{ 'data-xx': 'yy' }}
-        minDate={minDate}
-        maxDate={maxDate}
-        defaultDate={now}
-        mode="datetime"
-        locale={enUs}
-      />
-    );
 
     return (
       <Page>
