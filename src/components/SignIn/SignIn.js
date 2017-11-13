@@ -1,129 +1,129 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { Formik } from 'formik';
+import Yup from 'yup';
 import { loggingIn } from '../../store/actions/userActions';
 
-import Page from 'components/Page';
+import Page from '../Page';
 
-class SignIn extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      isLoggingIn: false,
-    };
+const SignIn = props => {
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    errorResponse,
+    uidResponse
+  } = props;
 
-    this.onSubmitHandler = this.onSubmitHandler.bind(this);
-    this.emailChangeHandler = this.emailChangeHandler.bind(this);
-    this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
-  }
+  const bgtf = isSubmitting || uidResponse ? '#DDDDDD' : 'inherit';
 
-  onSubmitHandler(evt) {
-    evt.preventDefault();
-    this.setState({ isLoggingIn: true });
-    this.props.loggingIn(this.state.email, this.state.password);
-  }
+  return (
+    <Page>
+      <div
+        className="container"
+        style={{ marginTop: '20px' }}
+        id="sign-in-main-custom"
+      >
+        <div className="panel setup-content">
+          <div className="panel-body">
+            <div className="mfp-content">
+              <div className="small-dialog-header">
+                <h3>Sign In</h3>
+              </div>
 
-  emailChangeHandler(evt) {
-    evt.preventDefault();
-    this.setState({ email: evt.target.value });
-  }
+              <div className="sign-in-form style-1">
+                { errorResponse ? <p style={{ color: 'red' }}>{ errorResponse.message }</p> : null }
+                { uidResponse ? <p style={{ color: 'green' }}>{ 'Login success! Redirecting...' }</p> : null }
+                <form
+                  method="post"
+                  className="login"
+                  onSubmit={handleSubmit}
+                >
+                  <p className="form-row form-row-wide">
+                    <label htmlFor="email">
+                      Email:
+                      <i className="im im-icon-Email" />
+                      <input
+                        name="email"
+                        type="email"
+                        value={values.email}
+                        autoComplete="off"
+                        className="input-text"
+                        onChange={handleChange}
+                        disabled={isSubmitting}
+                        style={{ backgroundColor: bgtf }}
+                      />
+                    </label>
+                    {errors.email && touched.email && <label style={{ color: 'red' }}>{errors.email}</label>}
+                  </p>
 
-  passwordChangeHandler(evt) {
-    evt.preventDefault();
-    this.setState({ password: evt.target.value });
-  }
+                  <p className="form-row form-row-wide">
+                    <label htmlFor="password">
+                      Password:
+                      <i className="im im-icon-Lock-2" />
+                      <input
+                        name="password"
+                        type="password"
+                        value={values.password}
+                        autoComplete="off"
+                        className="input-text"
+                        onChange={handleChange}
+                        disabled={isSubmitting}
+                        style={{ backgroundColor: bgtf }}
+                      />
+                    </label>
+                    {errors.password && touched.password && <label style={{ color: 'red' }}>{errors.password}</label>}
 
-  render() {
-    return (
-      <Page>
-        <div
-          className="container"
-          style={{ marginTop: '20px' }}
-          id="sign-in-main-custom"
-        >
-          <div className="panel setup-content">
-            <div className="panel-body">
-              <div className="mfp-content">
-                <div className="small-dialog-header">
-                  <h3>Sign In</h3>
-                </div>
+                    <span className="lost_password">
+                      <a href="#">Lost Your Password?</a>
+                    </span>
+                  </p>
 
-                <div className="sign-in-form style-1">
-                  {this.props.error ? (
-                    <p style={{ color: 'red' }}>{this.props.error.message}</p>
-                  ) : null}
-                  <form
-                    method="post"
-                    className="login"
-                    onSubmit={this.onSubmitHandler}
-                  >
-                    <p className="form-row form-row-wide">
-                      <label htmlFor="email">
-                        Email:
-                        <i className="im im-icon-Email" />
-                        <input
-                          type="email"
-                          value={this.state.email}
-                          autoComplete="off"
-                          required={true}
-                          className="input-text"
-                          id="email"
-                          onChange={this.emailChangeHandler}
-                        />
-                      </label>
-                    </p>
-
-                    <p className="form-row form-row-wide">
-                      <label htmlFor="password">
-                        Password:
-                        <i className="im im-icon-Lock-2" />
-                        <input
-                          type="password"
-                          value={this.state.password}
-                          autoComplete="off"
-                          required={true}
-                          className="input-text"
-                          id="password"
-                          onChange={this.passwordChangeHandler}
-                        />
-                      </label>
-                      <span className="lost_password">
-                        <a href="#">Lost Your Password?</a>
-                      </span>
-                    </p>
-
-                    <div className="form-row">
-                      <button
-                        type="submit"
-                        className="button margin-top-5"
-                        name="login"
-                        defaultValue="Login"
-                        disabled={this.state.isLoggingIn}
-                      >
-                        {this.state.isLoggingIn ? (
-                          'Logging you in, please wait..'
-                        ) : (
-                          'Login'
-                        )}
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                  <div className="form-row">
+                    <button
+                      type="submit"
+                      className="button margin-top-5"
+                      disabled={isSubmitting}
+                    >
+                      { isSubmitting ? 'Logging you in, please wait..' : 'Login' }
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
-      </Page>
-    );
+      </div>
+    </Page>
+  );
+};
+
+const SignInFormik = Formik({
+  mapPropsToValues: props => ({
+    email: '',
+    password: ''
+  }),
+  validationSchema: Yup.object().shape({
+    email: Yup.string().email().required('Please input your valid registered email address'),
+    password: Yup.string().required('Please input your password')
+  }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    setTimeout(() => {
+      props.loggingIn(values.email, values.password);
+      setSubmitting(false);
+    }, 1000);
   }
-}
+})(SignIn);
 
 export default connect(
   state => ({
-    error: state.userAuth.error,
+    errorResponse: state.userAuth.error,
+    uidResponse: state.userAuth.uid
   }),
   dispatch => ({
     loggingIn: (email, password) => dispatch(loggingIn(email, password)),
   })
-)(SignIn);
+)(SignInFormik);

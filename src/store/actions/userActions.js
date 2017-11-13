@@ -174,7 +174,7 @@ export const userSignupByGoogle = userType => {
 const fetchUserMetadata = (accountProviderType, reference, dispatch) => {
   let referenceFix = reference;
   if (accountProviderType !== 'google.com') {
-    referenceFix = dashify(reference)
+    referenceFix = dashify(reference);
   }
 
   const db = database.database();
@@ -184,10 +184,12 @@ const fetchUserMetadata = (accountProviderType, reference, dispatch) => {
     .once('value')
     .then(snapshot => {
       const data = snapshot.val();
+
       dispatch({
         type: 'USER_AUTH_LOGIN_SUCCESS_FETCH_USER_METADATA',
         payload: data,
       });
+
       if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
         history.push('/photographer-registration/s2');
       } else {
@@ -204,38 +206,41 @@ export const loggingIn = (email, password) => {
     });
 
     const firebaseAuth = database.auth();
-    firebaseAuth.signInWithEmailAndPassword(email, password).catch(error => {
-      dispatch({
-        type: 'USER_AUTH_LOGIN_ERROR',
-        payload: error,
-      });
-    });
+    firebaseAuth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        firebaseAuth.onAuthStateChanged(user => {
+          if (user) {
+            const payload = {
+              uid: user.uid,
+              email: user.email,
+              emailVerified: user.emailVerified,
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+              providerId: 'email',
+              refreshToken: user.refreshToken,
+              userCurrency: 'NZD',
+            };
 
-    firebaseAuth.onAuthStateChanged(user => {
-      if (user) {
-        const payload = {
-          uid: user.uid,
-          email: user.email,
-          emailVerified: user.emailVerified,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          providerId: 'email',
-          refreshToken: user.refreshToken,
-          userCurrency: 'NZD',
-        };
-
-        dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-        fetchUserMetadata('email', email, dispatch);
-        /*if (!user.emailVerified) {
-          dispatch({
-            type: 'USER_AUTH_LOGIN_ERROR',
-            payload: { message: 'User not verified.' },
-          });
-        } else {
-          dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload: user });
-          fetchUserMetadata(email, dispatch);
-        }*/
-      }
+            dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+            fetchUserMetadata('email', email, dispatch);
+            /*if (!user.emailVerified) {
+              dispatch({
+                type: 'USER_AUTH_LOGIN_ERROR',
+                payload: { message: 'User not verified.' },
+              });
+            } else {
+              dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload: user });
+              fetchUserMetadata(email, dispatch);
+            }*/
+          }
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: 'USER_AUTH_LOGIN_ERROR',
+          payload: error,
+        });
     });
   };
 };
