@@ -15,7 +15,7 @@ export default connect(state => ({ user: state.userAuth }))(
               <div className="col-sm-6 col-md-4">
                 <div className="card margin-top-40">
                   <h4>
-                    <b>Hello, {get(user, 'data.displayName', user.name)}</b>
+                    <b>Hello, {get(user, 'displayName')}</b>
                   </h4>
                   <p>Let's start to make you a star Takapic photographer</p>
                 </div>

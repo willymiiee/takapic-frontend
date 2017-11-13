@@ -46,9 +46,11 @@ const MapWithASearchBox = compose(
               bounds.extend(place.geometry.location);
             }
           });
+
           const nextMarkers = places.map(place => ({
             position: place.geometry.location,
           }));
+
           const nextCenter = _.get(
             nextMarkers,
             '0.position',
@@ -58,12 +60,11 @@ const MapWithASearchBox = compose(
           this.setState({
             center: nextCenter,
             markers: nextMarkers,
-          });
-          this.setState({
             generalLocation: {
               lat: places[0].geometry.location.lat(),
               long: places[0].geometry.location.lng(),
               meetingPointName: places[0].name,
+              formattedAddress: places[0].formatted_address || ''
             },
           });
         },
@@ -144,7 +145,6 @@ const MapWithASearchBox = compose(
       <SearchBox key={3} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
         <button
           onClick={props.handleAddition}
-          to="/become-our-photographer/step-2-4"
           className="button"
           style={{
             boxSizing: `border-box`,

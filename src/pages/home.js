@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import DateTime from 'react-datetime';
 import moment from 'moment';
 import axios from 'axios';
@@ -190,6 +191,10 @@ class Home extends Component {
             </div>
 
             <h1 className="title margin-bottom-40">Featured Destination</h1>
+
+            <div className="text-right margin-bottom-10">
+              <Link to="/">See All</Link>
+            </div>
 
             <div className="row posters">
               <div className="col-xs-4">

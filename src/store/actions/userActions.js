@@ -222,17 +222,15 @@ export const loggingIn = (email, password) => {
               userCurrency: 'NZD',
             };
 
-            dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-            fetchUserMetadata('email', email, dispatch);
-            /*if (!user.emailVerified) {
+            if (!user.emailVerified) {
               dispatch({
                 type: 'USER_AUTH_LOGIN_ERROR',
                 payload: { message: 'User not verified.' },
               });
             } else {
-              dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload: user });
-              fetchUserMetadata(email, dispatch);
-            }*/
+              dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+              fetchUserMetadata('email', email, dispatch);
+            }
           }
         });
       })

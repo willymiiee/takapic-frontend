@@ -57,8 +57,9 @@ class Step2SetupMeetingPointA extends Component {
         return {
           lat: p.generalLocation.lat,
           long: p.generalLocation.long,
-          meetingPointName: `${p.generalLocation
-            .meetingPointName}, ${p.specificLocation}`,
+          meetingPointName: p.generalLocation.meetingPointName,
+          placeLocationNotes: p.specificLocation,
+          formattedAddress: p.generalLocation.formattedAddress
         };
       });
 
@@ -142,12 +143,25 @@ class Step2SetupMeetingPointA extends Component {
                               fontSize: '16px',
                             }}
                           >
-                            <b>{p.generalLocation.meetingPointName}</b>
-                          </div>{' '}
-                          <br />
-                          <div style={{ fontSize: '16px' }}>
-                            {p.specificLocation}
+                            <b>{ p.generalLocation.meetingPointName }</b>
                           </div>
+
+                          <br />
+
+                          <div style={{ fontSize: '16px' }}>
+                            {p.generalLocation.formattedAddress}
+                          </div>
+
+                          <div style={{ color: 'black', fontSize: '16px' }}>
+                            <p style={{ fontWeight: 'bold', color: '#999999', textDecoration: 'underline' }}>
+                              Place / location notes
+                            </p>
+
+                            <p style={{ margin: '-20px 0 0 0', padding: '0', color: '#999999' }}>
+                              { p.specificLocation }
+                              </p>
+                          </div>
+
                           <div id="delete-button">
                             <button
                               className="delete-button"
