@@ -74,6 +74,17 @@ const MapWithASearchBox = compose(
         handleAddition: () => {
           const { generalLocation, specificLocation } = this.state;
           this.props.handleAddition({ generalLocation, specificLocation });
+
+          this.setState({
+            center: {
+              lat: 41.9,
+              lng: -87.624,
+            },
+            markers: [],
+            generalLocation: {},
+            specificLocation: ''
+          });
+
           document.getElementById('input1').value = '';
           document.getElementById('input2').value = '';
         },
