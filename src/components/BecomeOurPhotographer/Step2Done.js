@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { database } from '../../services/firebase';
 import { dashify } from '../../helpers/helpers';
 
@@ -20,8 +21,6 @@ class Step2Done extends Component {
   componentWillMount() {
     const {
       user: { uid, email, userMetadata: { accountProviderType } },
-
-
       photographerPhotosPortofolio: data
     } = this.props;
 
@@ -32,7 +31,9 @@ class Step2Done extends Component {
       reference = dashify(email);
     }
 
-    this.props.updatePhotographerServiceInfoPhotosPortofolio(reference, data);
+    if (data.length > 0) {
+      this.props.updatePhotographerServiceInfoPhotosPortofolio(reference, data);
+    }
   }
 
   render() {
@@ -47,7 +48,7 @@ class Step2Done extends Component {
               >
                 Thanks!<br />
                 Now, it's time for you as a Takapic photographer to wow
-                travellers with your beautiful photography!
+                travellers with your beautiful photography! Let's go to your <Link to={`/photographer/${this.props.user.uid}`}> Portofolio Page </Link>
               </p>
             </div>
           </div>
