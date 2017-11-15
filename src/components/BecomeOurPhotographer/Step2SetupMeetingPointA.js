@@ -28,23 +28,20 @@ class Step2SetupMeetingPointA extends Component {
       return false;
     } else {
       const {
-        photographerServiceInfoStep2: {detailMasterPackage},
-        user: {uid, email, userMetadata: {accountProviderType}},
-        userInitProfile: {notAvailableDates}
+        photographerServiceInfoStep2: { detailMasterPackage },
+        user: {uid, email, userMetadata: { accountProviderType }},
+        userInitProfile: { notAvailableDates }
       } = this.props;
 
-      let {meetingPoints} = this.state;
-      const n = detailMasterPackage;
+      let { meetingPoints } = this.state;
       let packagesPrice = [];
 
-      for (let key in n) {
-        // check also if property is not inherited from prototype
-        if (n.hasOwnProperty(key)) {
-          let value = n[key];
+      for (let key in detailMasterPackage) {
+        if (detailMasterPackage.hasOwnProperty(key)) {
+          let value = detailMasterPackage[key];
           packagesPrice = [
             ...packagesPrice,
             {
-              currency: value.currency,
               packageName: value.packageName,
               price: value.price,
               requirement: value.requirement,

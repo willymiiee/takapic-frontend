@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
@@ -13,7 +14,7 @@ const CalculationTotal = props => {
 
   if (!loading && packagesPrice) {
     let total = reservationCredit + parseInt(packagesPrice[reservationPackageValue].price);
-    total = total + packagesPrice[reservationPackageValue].price * reservationServiceFee;
+    total = Math.round(total + packagesPrice[reservationPackageValue].price * reservationServiceFee);
 
     return (
       <span>
@@ -32,7 +33,7 @@ const StartServicePrice = props => {
 
     return (
       <h4>
-        From <strong>${ minPrice }</strong>
+        From <strong>USD { minPrice }</strong>
       </h4>
     );
   }
@@ -40,9 +41,10 @@ const StartServicePrice = props => {
 };
 
 class PhotographerDetailReservationForm extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
+      packagesPrice: [],
       reservation: {
         startingDate: null,
         startingTime: null,
@@ -70,26 +72,18 @@ class PhotographerDetailReservationForm extends Component {
     } else {
       console.log('Total = ', this.state.reservation.total);
     }
-    this.props.history.push('/booking');
+    console.log(this.state);
+    // this.props.history.push('/booking');
   };
 
   calculateTotal(indexValue) {
-    const {
-      photographerServiceInformation: { data: { packagesPrice } },
-    } = this.props;
-
-    const {
-      reservation: { credit, serviceFee },
-    } = this.state;
-
-    return credit + parseInt(packagesPrice[indexValue].price) + packagesPrice[indexValue].price * serviceFee;
+    const { packagesPrice, reservation: { credit, serviceFee } } = this.state;
+    return Math.round(credit + parseInt(packagesPrice[indexValue].price) + packagesPrice[indexValue].price * serviceFee);
   }
 
   choosePackage = (event, value) => {
-    if (event) {
-      event.stopPropagation();
-    }
-
+    event.stopPropagation();
+    const { packagesPrice } = this.state;
     const total = this.calculateTotal(value);
     const newCopyData = {
       ...this.state,
@@ -99,6 +93,7 @@ class PhotographerDetailReservationForm extends Component {
           value,
           opened: false
         },
+        photographerFee: packagesPrice[value].price,
         total
       }
     };
@@ -116,7 +111,7 @@ class PhotographerDetailReservationForm extends Component {
     this.setState(newCopyOhMyGod);
   };
 
-  selectedTimeHandler = context => {
+  selectedTimeHandler = () => {
     const formatTime = this.refs.pickerTime.value.replace(/AM|PM/ig, '').trim() + ':00';
     const newCopyOhMyGod = {
       ...this.state,
@@ -144,6 +139,22 @@ class PhotographerDetailReservationForm extends Component {
     this.setState(newCopyData);
   };
 
+  componentWillMount() {
+    const {
+      photographerServiceInformation: {
+        data: { packagesPrice, userMetadata: { currency } }
+      },
+      currenciesRates
+    } = this.props;
+
+    const packagesPriceConvertPrice = packagesPrice.map(item => {
+      const USDRates = currenciesRates['USD' + currency];
+      const convertedPrice = Math.round(item.price / USDRates);
+      return { ...item, price: convertedPrice };
+    });
+    this.setState({ packagesPrice: packagesPriceConvertPrice });
+  }
+
   componentDidMount() {
     const that = this;
     window.$(function() {
@@ -159,11 +170,10 @@ class PhotographerDetailReservationForm extends Component {
   }
 
   render() {
-    const {
-      photographerServiceInformation: { data: { packagesPrice }, loading },
-    } = this.props;
+    const { photographerServiceInformation: { loading } } = this.props;
 
     const {
+      packagesPrice: packagesPriceProcessed,
       reservation: { credit, package: { value: packageValueItem }, serviceFee },
     } = this.state;
 
@@ -172,7 +182,7 @@ class PhotographerDetailReservationForm extends Component {
         <div id="photographer-reservation-bg" />
         <div className="card" id="photographer-reservation">
           <h3>Reservation form</h3>
-          <StartServicePrice packagesPrice={packagesPrice}/>
+          <StartServicePrice packagesPrice={packagesPriceProcessed}/>
 
           <div id="reservation-starting-time">
             <input
@@ -199,20 +209,20 @@ class PhotographerDetailReservationForm extends Component {
               style={{ display: this.state.reservation.package.opened ? 'block' : 'none' }}
             >
               {
-                !loading && packagesPrice.map((data, key) => (
+                !loading && packagesPriceProcessed.map((data, key) => (
                   <i
-                    className={ this.state.reservation.package.value === key ? ('active') : ('') }
+                    className={ packageValueItem === key ? ('active') : ('') }
                     onClick={event => this.choosePackage(event, key)}
                     key={key}
                   >
-                    {data.packageName}
+                    { data.packageName }
                   </i>
                 ))
               }
             </div>
             {
-              !loading && packagesPrice
-                ? <span>{ packagesPrice[this.state.reservation.package.value].packageName } Package</span>
+              !loading && packagesPriceProcessed
+                ? <span>{ packagesPriceProcessed[packageValueItem].packageName } Package</span>
                 : null
             }
           </div>
@@ -221,14 +231,14 @@ class PhotographerDetailReservationForm extends Component {
             <div>
               Photographer Fee&nbsp;
               {
-                !loading && packagesPrice
-                  ? <span>( { packagesPrice[this.state.reservation.package.value].packageName } )</span>
+                !loading && packagesPriceProcessed
+                  ? <span>( { packagesPriceProcessed[packageValueItem].packageName } )</span>
                   : null
               }
 
               {
-                !loading && packagesPrice
-                  ? <i>${packagesPrice[this.state.reservation.package.value].price}</i>
+                !loading && packagesPriceProcessed
+                  ? <i>USD { packagesPriceProcessed[packageValueItem].price }</i>
                   : null
               }
             </div>
@@ -236,21 +246,21 @@ class PhotographerDetailReservationForm extends Component {
             <div>
               Service fee
               {
-                !loading && packagesPrice
-                  ? <i>${ packagesPrice[this.state.reservation.package.value].price * this.state.reservation.serviceFee }</i>
+                !loading && packagesPriceProcessed
+                  ? <i>USD { Math.round(packagesPriceProcessed[packageValueItem].price * this.state.reservation.serviceFee) }</i>
                   : null
               }
             </div>
 
             <div>
-              Credit <i>${this.state.reservation.credit}</i>
+              Credit <i>USD { this.state.reservation.credit }</i>
             </div>
           </div>
 
           <div id="photographer-reservation-calc-total">
             <CalculationTotal
               loading={loading}
-              packagesPrice={packagesPrice}
+              packagesPrice={packagesPriceProcessed}
               reservationCredit={credit}
               reservationPackageValue={packageValueItem}
               reservationServiceFee={serviceFee}
@@ -276,4 +286,11 @@ class PhotographerDetailReservationForm extends Component {
   }
 }
 
-export default withRouter(PhotographerDetailReservationForm);
+const mapStateToProps = state => ({
+  photographerServiceInformation: state.photographerServiceInformation,
+  currenciesRates: state.currenciesRates
+});
+
+export default withRouter(
+  connect(mapStateToProps)(PhotographerDetailReservationForm)
+);

@@ -104,8 +104,7 @@ export const userSignupByFacebook = userType => {
               displayName,
               photoURL: result.user.photoURL,
               providerId: 'facebok.com',
-              refreshToken: result.user.refreshToken,
-              userCurrency: 'NZD',
+              refreshToken: result.user.refreshToken
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
@@ -148,8 +147,7 @@ export const userSignupByGoogle = userType => {
               displayName,
               photoURL: result.user.photoURL,
               providerId: 'google.com',
-              refreshToken: result.user.refreshToken,
-              userCurrency: 'NZD',
+              refreshToken: result.user.refreshToken
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
@@ -218,8 +216,7 @@ export const loggingIn = (email, password) => {
               displayName: user.displayName,
               photoURL: user.photoURL,
               providerId: 'email',
-              refreshToken: user.refreshToken,
-              userCurrency: 'NZD',
+              refreshToken: user.refreshToken
             };
 
             if (!user.emailVerified) {

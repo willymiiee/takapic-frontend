@@ -11,7 +11,7 @@ export const selfDescription = description => {
   };
 };
 
-const updateUserMetadataLocationAndSpeciality = (reference, location, speciality) => {
+const updateUserMetadataLocationAndSpeciality = (reference, location, speciality, currency) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(reference);
@@ -21,6 +21,7 @@ const updateUserMetadataLocationAndSpeciality = (reference, location, speciality
     locationAdmLevel1: get(location, 'locationAdmLevel1', '-'),
     locationAdmLevel2: get(location, 'locationAdmLevel2', '-'),
     locationMerge: get(location, 'locationMerge', '-'),
+    currency,
     speciality
   };
 
@@ -36,6 +37,7 @@ export const submitCameraEquipment = params => {
     speciality,
     location,
     selfDescription,
+    currency
   } = params;
 
   return dispatch => {
@@ -68,8 +70,7 @@ export const submitCameraEquipment = params => {
           payload: { status: 'OK', message: 'Data saved' },
         });
 
-        updateUserMetadataLocationAndSpeciality(reference, location, speciality);
-
+        updateUserMetadataLocationAndSpeciality(reference, location, speciality, currency);
         history.push('/become-our-photographer/welcome-2');
       })
       .catch(error => {

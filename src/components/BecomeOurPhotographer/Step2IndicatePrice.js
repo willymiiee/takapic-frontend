@@ -19,46 +19,52 @@ class Step2IndicatePrice extends Component {
         PKG1: {
           packageName: '1 hour',
           requirement: 'Minimum 30 photos',
+          price: 0
         },
         PKG2: {
           packageName: '2 hours',
           requirement: 'Minimum 60 photos',
+          price: 0
         },
         PKG3: {
           packageName: '4 hours',
           requirement: 'Minimum 120 photos',
+          price: 0
         },
         PKG4: {
           packageName: '8 hours',
           requirement: 'Minimum 200 photos',
+          price: 0
         },
       },
     };
   }
+
   handleChange = (event, tr, index) => {
     event.preventDefault();
     const { masterPackage } = this.state;
     const key = tr[index].key;
-    masterPackage[key].price = event.target.value;
-    masterPackage[key].currency = this.props.user.userCurrency;
-    if (event.target.value === '') {
-      delete masterPackage[key].price;
+
+    if (event.target.value !== '') {
+      masterPackage[key].price = event.target.value;
     }
+
     this.setState({ masterPackage });
   };
+
   handleSubmit = event => {
     event.preventDefault();
     let invalid = false;
     const n = this.state.masterPackage;
     for (var key in n) {
-      // check also if property is not inherited from prototype
       if (n.hasOwnProperty(key)) {
         var value = n[key];
-        if (!value.price) {
+        if (value.price === 0) {
           invalid = true;
         }
       }
     }
+
     if (invalid) {
       alert('Please complete the form!');
     } else {
@@ -66,17 +72,20 @@ class Step2IndicatePrice extends Component {
       this.props.history.push('/become-our-photographer/step-2-2');
     }
   };
+
   render() {
     let tr = [];
     const n = this.state.masterPackage;
     for (var key in n) {
-      // check also if property is not inherited from prototype
       if (n.hasOwnProperty(key)) {
         var value = n[key];
         value.key = key;
         tr.push(value);
       }
     }
+
+    const { user: { userMetadata: { currency } } } = this.props;
+
     return (
       <Page>
         <div className="container" id="photographer-landing">
@@ -113,7 +122,7 @@ class Step2IndicatePrice extends Component {
                                   this.handleChange(event, tr, kk)}
                               />
                               <InputGroup.Button style={{ padding: 10 }}>
-                                <p>{this.props.user.userCurrency}</p>
+                                <p>{ currency }</p>
                               </InputGroup.Button>
                             </InputGroup>
                           </FormGroup>

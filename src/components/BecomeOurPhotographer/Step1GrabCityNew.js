@@ -6,7 +6,6 @@ import { Formik } from 'formik';
 import Yup from 'yup';
 import Select from 'react-select';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
-import { database } from '../../services/firebase';
 
 import Page from '../Page';
 
@@ -30,8 +29,12 @@ class CityCollectForm extends Component {
   }
 
   _handleSelectCountry = selectChoice => {
+    const { currencies } = this.props;
+    const selectedCurrency = currencies[selectChoice.value];
     this.props.setFieldValue('country', selectChoice.value);
     this.props.setFieldValue('countryName', selectChoice.label);
+    this.props.setFieldValue('currency', selectedCurrency);
+
     this.setState({
       countryCode: selectChoice.value,
       continent: selectChoice.continent
@@ -134,6 +137,7 @@ const CityCollectFormik = Formik({
   mapPropsToValues: props => ({
     country: '',
     countryName: '',
+    currency: '',
     locationAdmLevel1: '',
     locationAdmLevel2: ''
   }),
@@ -154,26 +158,28 @@ class Step1GrabCityNew extends Component {
   constructor() {
     super();
     this.state = {
-      countries: []
+      countries: [],
+      currencies: {}
     };
   }
 
   componentDidMount() {
-    const db = database.database();
-    const countriesRef = db.ref('/countries');
-    countriesRef.once('value', snapshot => {
-      const countriesSource = snapshot.val();
-      let countriesList = [];
-      for (let key in countriesSource) {
-        countriesList.push({
-          value: countriesSource[key]['iso3166alpha2'],
-          label: countriesSource[key].name,
-          continent: countriesSource[key].continent
-        });
-      }
+    const { countries: countriesSource } = this.props;
+    let countriesList = [];
+    let currenciesObjects = {};
 
-      this.setState({ countries: countriesList });
-    });
+    for (let key in countriesSource) {
+      const countryCode = countriesSource[key]['iso3166alpha2'];
+      countriesList.push({
+        value: countryCode,
+        label: countriesSource[key].name,
+        continent: countriesSource[key].continent
+      });
+
+      currenciesObjects[countryCode] = countriesSource[key].currency_code;
+    }
+
+    this.setState({ countries: countriesList, currencies: currenciesObjects });
   }
 
   render() {
@@ -191,6 +197,7 @@ class Step1GrabCityNew extends Component {
             <div className="col-sm-12">
               <CityCollectFormik
                 countries={this.state.countries}
+                currencies={this.state.currencies}
                 cityCollectAction={this.props.cityCollectAction}
                 history={this.props.history}
               />
@@ -202,9 +209,12 @@ class Step1GrabCityNew extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  countries: state.countries
+});
 const mapDispatchToProps = dispatch => ({
   cityCollectAction: dataObject => dispatch(cityCollectAction(dataObject))
 });
 export default withRouter(
-  connect(null, mapDispatchToProps)(Step1GrabCityNew)
+  connect(mapStateToProps, mapDispatchToProps)(Step1GrabCityNew)
 );

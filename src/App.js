@@ -1,15 +1,16 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import Animator from 'components/common/Animator';
-import ScrollToTop from 'components/common/ScrollToTop';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import qs from 'qs';
 import { lifecycle, compose } from 'recompose';
 import { replace } from 'react-router-redux';
-
+import { database } from "./services/firebase";
 import history from 'services/history';
 import store from 'store';
 
+import Animator from 'components/common/Animator';
+import ScrollToTop from 'components/common/ScrollToTop';
 import Home from 'pages/home';
 import PhotographerBooking from 'components/Profile/PhotographerBooking';
 import PhotographerDetail from 'components/Profile/PhotographerDetail';
@@ -37,7 +38,39 @@ import Step2InitiatePortofolio from 'components/BecomeOurPhotographer/Step2Initi
 import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2SetupMeetingPointA';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
 
+const fetchCountriesAction = () => {
+  return dispatch => {
+    const db = database.database();
+    const countriesRef = db.ref('/countries');
+    countriesRef.once('value', snapshot => {
+      const countriesSource = snapshot.val();
+      dispatch({
+        type: 'INIT_FETCH_COUNTRIES_SUCCESS',
+        payload: countriesSource
+      });
+    });
+  }
+};
+
+const fetchCurrenciesRates = () => {
+  return dispatch => {
+    axios
+      .get('http://apilayer.net/api/live?access_key=1aa6b5189fe7e7dc51f1189fe02008b4&source=USD&format=1')
+      .then(response => {
+        dispatch({
+          type: 'FETCH_CURRENCIES_RATES',
+          payload: response.data.quotes
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+
 store.dispatch({ type: 'USER_AUTH_LOADING_AUTH' });
+store.dispatch(fetchCountriesAction());
+store.dispatch(fetchCurrenciesRates());
 
 const redirect = props => {
   props.replace(

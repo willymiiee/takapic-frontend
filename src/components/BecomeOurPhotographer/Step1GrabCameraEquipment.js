@@ -83,7 +83,9 @@ class Step1GrabCameraEquipment extends Component {
         }
       } = this.props;
 
+      const currency = location.currency;
       location.locationMerge = location.locationAdmLevel2 + ', ' + location.locationAdmLevel1 + ', ' + location.countryName;
+      delete location.currency;
 
       let reference = '';
       if (accountProviderType === 'google.com') {
@@ -100,7 +102,9 @@ class Step1GrabCameraEquipment extends Component {
         speciality,
         location,
         selfDescription,
+        currency
       };
+
       this.props.submitCameraEquipment(params);
     } else {
       alert('Please complete the form');

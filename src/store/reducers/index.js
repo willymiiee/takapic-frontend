@@ -21,7 +21,7 @@ const photographerServiceInformation = (state = { loading: true, data: {} }, act
   } else if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
     const priceMin = parseInt(action.payload.packagesPrice[0].price);
     const credit = 0;
-    const totalReservationPriceInitiate = credit + priceMin + priceMin * 0.15;
+    const totalReservationPriceInitiate = Math.round(credit + priceMin + priceMin * 0.15);
 
     return {
       data: {
@@ -47,6 +47,20 @@ const homepageData = (state = { loading: true }, action) => {
   return state;
 };
 
+const countries = (state = {}, action) => {
+  if (action.type === 'INIT_FETCH_COUNTRIES_SUCCESS') {
+    return action.payload;
+  }
+  return state;
+};
+
+const currenciesRates = (state = {}, action) => {
+  if (action.type === 'FETCH_CURRENCIES_RATES') {
+    return action.payload;
+  }
+  return state;
+};
+
 
 const rootReducer = combineReducers({
   userAuth,
@@ -58,6 +72,8 @@ const rootReducer = combineReducers({
   photographerPhotosPortofolio,
   photographerServiceInformation,
   homepageData,
+  countries,
+  currenciesRates,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

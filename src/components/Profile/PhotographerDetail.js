@@ -46,8 +46,8 @@ history.listen((location, action) => {
 });
 
 class PhotographerDetail extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       showModal: false
     };
@@ -62,8 +62,8 @@ class PhotographerDetail extends Component {
     } = this.props;
 
     if (!loading) {
-      var photographerTop = window.$('#photographer-top');
-      var pageYOffset;
+      let photographerTop = window.$('#photographer-top');
+      let pageYOffset;
 
       window.$.fn.generateCircleProgress = function (opt) {
         window
@@ -255,11 +255,7 @@ class PhotographerDetail extends Component {
               </div>
 
               <div className="col-sm-6 col-md-5 margin-top-70">
-                <PhotographerDetailReservationForm
-                  photographerServiceInformation={
-                    this.props.photographerServiceInformation
-                  }
-                />
+                <PhotographerDetailReservationForm/>
               </div>
             </div>
           </div>
@@ -274,7 +270,8 @@ class PhotographerDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-  photographerServiceInformation: state.photographerServiceInformation
+  photographerServiceInformation: state.photographerServiceInformation,
+  currenciesRates: state.currenciesRates
 });
 
 const mapDispatchToProps = dispatch => ({
