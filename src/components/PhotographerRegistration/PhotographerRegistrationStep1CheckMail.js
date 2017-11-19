@@ -17,7 +17,9 @@ class PhotographerRegistrationStep1CheckMail extends Component {
               <div className="checkmail-icon">
                 <i className="fa fa-envelope fa-3x" />
               </div>
-              <h2 className="text-center">Check your email!</h2>
+              <a className="no_decoration" target="_blank" href="https://mail.google.com/">
+                <h2 className="text-center">Check your email!</h2>
+              </a>
               <div className="checkmail-text text-center">
                 <p>Tap the link in the email we sent you.</p>
                 <p>

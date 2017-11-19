@@ -1,216 +1,184 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
-import { dashify } from "../../helpers/helpers";
+import React, {Component} from 'react';
+import {Link, withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {setMeetingPoint} from '../../store/actions/photographerServiceInfoActionsStep2';
+import {dashify} from "../../helpers/helpers";
 
 import MapWithASearchBox from './../MapWithASearchBox';
 import Page from '../Page';
 
 class Step2SetupMeetingPointA extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      meetingPoints: [],
-      mapLoaded: false,
-    };
-  }
-
-  componentDidMount() {
-    this.setState({ mapLoaded: true });
-  }
-
-  handleSubmit = event => {
-    event.preventDefault();
-    let { meetingPoints } = this.state;
-    if (meetingPoints.length < 1) {
-      alert('Please create at least one meeting point. You cannot leave this empty');
-      return false;
-    } else {
-      const {
-        photographerServiceInfoStep2: { detailMasterPackage },
-        user: {uid, email, userMetadata: { accountProviderType }},
-        userInitProfile: { notAvailableDates }
-      } = this.props;
-
-      let { meetingPoints } = this.state;
-      let packagesPrice = [];
-
-      for (let key in detailMasterPackage) {
-        if (detailMasterPackage.hasOwnProperty(key)) {
-          let value = detailMasterPackage[key];
-          packagesPrice = [
-            ...packagesPrice,
-            {
-              packageName: value.packageName,
-              price: value.price,
-              requirement: value.requirement,
-            },
-          ];
-        }
-      }
-
-      meetingPoints = meetingPoints.map(p => {
-        return {
-          lat: p.generalLocation.lat,
-          long: p.generalLocation.long,
-          meetingPointName: p.generalLocation.meetingPointName,
-          placeLocationNotes: p.specificLocation,
-          formattedAddress: p.generalLocation.formattedAddress
+    constructor(props) {
+        super(props);
+        this.state = {
+            meetingPoints: [],
+            mapLoaded: false,
         };
-      });
-
-      let reference = '';
-      if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-      } else {
-        reference = dashify(email);
-      }
-
-      const params = {
-        reference,
-        packagesPrice,
-        meetingPoints,
-        notAvailableDates
-      };
-      this.props.setMeetingPoint(params);
     }
-  };
 
-  handleAddition = params => {
-    if (
-      params.generalLocation &&
-      params.specificLocation &&
-      this.state.meetingPoints.length < 3
-    ) {
-      const { generalLocation, specificLocation } = params;
-      let { meetingPoints } = this.state;
-      meetingPoints = [...meetingPoints, { generalLocation, specificLocation }];
-      this.setState({ meetingPoints });
+    componentDidMount() {
+        this.setState({mapLoaded: true});
     }
-  };
 
-  render() {
-    return (
-      <Page>
-        <div className="container" id="photographer-landing">
-          <div className="steps steps-4">
-            <div />
-            <div />
-            <div className="active" />
-            <div />
-          </div>
-          <hr />
-          <h3>Please choose three different meeting points</h3>
-          <div className="row">
-            <div className="col-lg-12">
-              {this.state.mapLoaded && (
-                <MapWithASearchBox
-                  handleAddition={this.handleAddition}
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
-                  loadingElement={<div style={{ height: `100%` }} />}
-                  containerElement={<div style={{ height: `400px` }} />}
-                  mapElement={<div style={{ height: `100%` }} />}
-                />
-              )}
-            </div>
-            <div className="col-lg-12 margin-top-15">
-              <div className="container">
-                <h3>Your Created Point</h3>
-                {this.state.meetingPoints.map((p, key) => (
-                  <div key={key}>
-                    {/* ini list number meeting point */}
-                    <div className="margin-top-30">
-                      <button
-                        type="button"
-                        className="btn btn-primary btn-circle btn-lg"
-                      >
-                        {key + 1}
-                      </button>
-                      <div id="line-number">
-                        <div
-                          className="margin-left-20"
-                          style={{ marginTop: '-8%' }}
-                        >
-                          <div
-                            style={{
-                              marginTop: '1%',
-                              marginBottom: '-5%',
-                              color: 'black',
-                              fontSize: '16px',
-                            }}
-                          >
-                            <b>{ p.generalLocation.meetingPointName }</b>
-                          </div>
+    handleSubmit = event => {
+        event.preventDefault();
+        let {meetingPoints} = this.state;
+        if (meetingPoints.length < 1) {
+            alert('Please create at least one meeting point. You cannot leave this empty');
+            return false;
+        } else {
+            const {
+                photographerServiceInfoStep2: {detailMasterPackage},
+                user: {uid, email, userMetadata: {accountProviderType}},
+                userInitProfile: {notAvailableDates}
+            } = this.props;
 
-                          <br />
+            let {meetingPoints} = this.state;
+            let packagesPrice = [];
 
-                          <div style={{ fontSize: '16px' }}>
-                            {p.generalLocation.formattedAddress}
-                          </div>
+            for (let key in detailMasterPackage) {
+                if (detailMasterPackage.hasOwnProperty(key)) {
+                    let value = detailMasterPackage[key];
+                    packagesPrice = [
+                        ...packagesPrice,
+                        {
+                            packageName: value.packageName,
+                            price: value.price,
+                            requirement: value.requirement,
+                        },
+                    ];
+                }
+            }
 
-                          <div style={{ color: 'black', fontSize: '16px' }}>
-                            <p style={{ fontWeight: 'bold', color: '#999999', textDecoration: 'underline' }}>
-                              Place / location notes
-                            </p>
+            meetingPoints = meetingPoints.map(p => {
+                return {
+                    lat: p.generalLocation.lat,
+                    long: p.generalLocation.long,
+                    meetingPointName: p.generalLocation.meetingPointName,
+                    placeLocationNotes: p.specificLocation,
+                    formattedAddress: p.generalLocation.formattedAddress
+                };
+            });
 
-                            <p style={{ margin: '-20px 0 0 0', padding: '0', color: '#999999' }}>
-                              { p.specificLocation }
-                              </p>
-                          </div>
+            let reference = '';
+            if (accountProviderType === 'google.com') {
+                reference = 'googlecom-' + uid;
+            } else {
+                reference = dashify(email);
+            }
 
-                          <div id="delete-button">
-                            <button
-                              className="delete-button"
-                              onClick={event => {
-                                let { meetingPoints } = this.state;
-                                meetingPoints = [
-                                  ...meetingPoints.slice(0, key),
-                                  ...meetingPoints.slice(key + 1),
-                                ];
-                                this.setState({ meetingPoints });
-                              }}
-                            >
-                              {' '}
-                              <strong>x</strong>{' '}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+            const params = {
+                reference,
+                packagesPrice,
+                meetingPoints,
+                notAvailableDates
+            };
+            this.props.setMeetingPoint(params);
+        }
+    };
+
+    handleAddition = params => {
+        if (
+            params.generalLocation &&
+            params.specificLocation &&
+            this.state.meetingPoints.length < 3
+        ) {
+            const {generalLocation, specificLocation} = params;
+            let {meetingPoints} = this.state;
+            meetingPoints = [...meetingPoints, {generalLocation, specificLocation}];
+            this.setState({meetingPoints});
+        }
+    };
+
+    render() {
+        return (
+            <Page>
+                <div className="container" id="photographer-landing">
+                    <div className="steps steps-4">
+                        <div/>
+                        <div/>
+                        <div className="active"/>
+                        <div/>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <hr />
-          <Link to="/become-our-photographer/step-2-2" className="button">
-            Back
-          </Link>
+                    <br/>
+                    <div className="row">
+                        <div className="col-md-8">
+                            <h4>Please choose three different meeting points</h4>
+                            <hr/>
+                            {this.state.mapLoaded && (
+                                <MapWithASearchBox
+                                    handleAddition={this.handleAddition}
+                                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
+                                    loadingElement={<div style={{height: `100%`}}/>}
+                                    containerElement={<div style={{height: `400px`}}/>}
+                                    mapElement={<div style={{height: `100%`}}/>}
+                                />
+                            )}
+                        </div>
+                        <div className="col-md-4">
+                            <h4>Your Created Point</h4>
+                            <hr/>
+                            {this.state.meetingPoints.map((p, key) => (
+                                <div key={key}>
+                                    {/* ini list number meeting point */}
+                                    <div className="row">
+                                        <div className="number-of-meetpoint col-xs-2">{key + 1}</div>
+                                        <div className="detail-of-meetpoint col-xs-8">
+                                            <stong>{p.generalLocation.meetingPointName}</stong>
+                                            <p>{p.generalLocation.formattedAddress}</p>
+                                            <h6>{p.specificLocation}</h6>
+                                        </div>
+                                        <button
+                                            className="delete-button col-xs-2"
+                                            onClick={event => {
+                                                let {meetingPoints} = this.state;
+                                                meetingPoints = [
+                                                    ...meetingPoints.slice(0, key),
+                                                    ...meetingPoints.slice(key + 1),
+                                                ];
+                                                this.setState({meetingPoints});
+                                            }}>
+                                            <i className="fa fa-close"/>
+                                        </button>
+                                    </div>
+                                    <hr/>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <hr/>
+                    <div style={{overflow: 'hidden'}}>
 
-          <Link
-            to="/become-our-photographer/step-2-4"
-            className="button"
-            onClick={this.handleSubmit}
-          >
-            Next
-          </Link>
-        </div>
-      </Page>
-    );
-  }
+                    </div>
+                    <Link
+                        to="/become-our-photographer/step-2-4"
+                        className="button"
+                        onClick={this.handleSubmit}
+                        style={{float: 'right'}}
+                    >
+                        Next
+                    </Link>
+                    <Link
+                        style={{float: 'right'}}
+                        to="/become-our-photographer/step-2-2" className="button">
+                        Back
+                    </Link>
+                </div>
+            </Page>
+        );
+    }
 }
 
 const mapStateToProps = state => ({
-  user: state.userAuth,
-  photographerServiceInfoStep2: state.photographerServiceInfoStep2,
-  userInitProfile: state.userInitProfile
+    user: state.userAuth,
+    photographerServiceInfoStep2: state.photographerServiceInfoStep2,
+    userInitProfile: state.userInitProfile
 });
 
 const mapDispatchToProps = dispatch => ({
-  setMeetingPoint: payload => dispatch(setMeetingPoint(payload)),
+    setMeetingPoint: payload => dispatch(setMeetingPoint(payload)),
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Step2SetupMeetingPointA)
+    connect(mapStateToProps, mapDispatchToProps)(Step2SetupMeetingPointA)
 );

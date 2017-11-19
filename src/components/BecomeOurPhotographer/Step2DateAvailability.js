@@ -63,7 +63,7 @@ class Step2DateAvailability extends Component {
             </div>
 
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
-              <div className="card tips">
+              <div className="card tips" style={{height:'340px'}}>
                 <h3>About setting your schedule</h3>
                 <p>
                   Please block out days which you are <strong>NOT</strong> available. The default setting is all days are
@@ -79,15 +79,20 @@ class Step2DateAvailability extends Component {
             </div>
           </div>
           <hr />
-          <Link
-            to="/become-our-photographer/step-2-1"
-            className="button button-white-no-shadow u"
-          >
-            Back
-          </Link>
-          <Link to="/become-our-photographer/step-2-3" className="button" onClick={this.nextStepHandle}>
-            Next
-          </Link>
+          <div style={{overflow:'hidden'}}>
+            <Link to="/become-our-photographer/step-2-3"
+                  className="button"
+                  onClick={this.nextStepHandle}
+                  style={{float:'right'}}>
+              Next
+            </Link>
+            <Link
+              to="/become-our-photographer/step-2-1"
+              className="button button-white-no-shadow u"
+              style={{float:'right'}}>
+              Back
+            </Link>
+          </div>
         </div>
       </Page>
     );

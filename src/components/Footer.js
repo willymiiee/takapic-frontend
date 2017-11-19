@@ -36,6 +36,7 @@ class Footer extends Component {
               <div>
                 <a href="https://www.algolia.com/">
                   <img
+                      style={{height: '17px'}}
                     className="footer-logo"
                     src="/images/search-by-algolia.png"
                     alt=""
