@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import get from 'lodash/get';
 import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
 import photographerDetail from './photographerDetailReducers';
@@ -19,9 +20,14 @@ const photographerServiceInformation = (state = { loading: true, data: {} }, act
     return { data: {}, loading: true };
 
   } else if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
-    const priceMin = parseInt(action.payload.packagesPrice[0].price);
-    const credit = 0;
-    const totalReservationPriceInitiate = Math.round(credit + priceMin + priceMin * 0.15);
+    const packagesPrice = get(action.payload, 'packagesPrice', false);
+    let totalReservationPriceInitiate = 0;
+
+    if (packagesPrice) {
+      const priceMin = parseInt(action.payload.packagesPrice[0].price);
+      const credit = 0;
+      totalReservationPriceInitiate = Math.round(credit + priceMin + priceMin * 0.15);
+    }
 
     return {
       data: {
@@ -30,8 +36,6 @@ const photographerServiceInformation = (state = { loading: true, data: {} }, act
       },
       loading: false,
     };
-  } else if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
-    return { loading: true, data: {} };
   }
   return state;
 };
