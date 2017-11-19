@@ -15,6 +15,13 @@ const cityCollectAction = dataObject => {
       type: 'BECOME_OUR_PHOTOGRAPHER_PLACES_CHANGED',
       payload: dataObject
     });
+
+    dispatch({
+      type: 'USER_AUTH_UPDATE_METADATA',
+      payload: {
+        currency: dataObject.currency
+      }
+    })
   };
 };
 

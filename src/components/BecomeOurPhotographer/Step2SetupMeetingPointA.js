@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
 import { dashify } from "../../helpers/helpers";
 
@@ -55,7 +56,7 @@ class Step2SetupMeetingPointA extends Component {
           lat: p.generalLocation.lat,
           long: p.generalLocation.long,
           meetingPointName: p.generalLocation.meetingPointName,
-          placeLocationNotes: p.specificLocation,
+          placeLocationNotes: p.specificLocation || '-',
           formattedAddress: p.generalLocation.formattedAddress
         };
       });
@@ -78,14 +79,11 @@ class Step2SetupMeetingPointA extends Component {
   };
 
   handleAddition = params => {
-    if (
-      params.generalLocation &&
-      params.specificLocation &&
-      this.state.meetingPoints.length < 3
-    ) {
-      const { generalLocation, specificLocation } = params;
-      let { meetingPoints } = this.state;
-      meetingPoints = [...meetingPoints, { generalLocation, specificLocation }];
+    const generalLocation = get(params, 'generalLocation');
+    const specificLocation = get(params, 'specificLocation', '-');
+
+    if (generalLocation && this.state.meetingPoints.length < 3) {
+      const meetingPoints = [...this.state.meetingPoints, { generalLocation, specificLocation }];
       this.setState({ meetingPoints });
     }
   };
@@ -117,7 +115,7 @@ class Step2SetupMeetingPointA extends Component {
             <div className="col-lg-12 margin-top-15">
               <div className="container">
                 <h3>Your Created Point</h3>
-                {this.state.meetingPoints.map((p, key) => (
+                {this.state.meetingPoints && this.state.meetingPoints.map((p, key) => (
                   <div key={key}>
                     {/* ini list number meeting point */}
                     <div className="margin-top-30">
@@ -155,7 +153,7 @@ class Step2SetupMeetingPointA extends Component {
                             </p>
 
                             <p style={{ margin: '-20px 0 0 0', padding: '0', color: '#999999' }}>
-                              { p.specificLocation }
+                              { p.specificLocation || '-' }
                               </p>
                           </div>
 
