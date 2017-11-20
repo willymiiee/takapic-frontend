@@ -56,11 +56,11 @@ const fetchCountriesAction = () => {
 const fetchCurrenciesRates = () => {
   return dispatch => {
     axios
-      .get('http://apilayer.net/api/live?access_key=1aa6b5189fe7e7dc51f1189fe02008b4&source=USD&format=1')
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/currencyExchangeRates`)
       .then(response => {
         dispatch({
           type: 'FETCH_CURRENCIES_RATES',
-          payload: response.data.quotes
+          payload: response.data.data
         });
       })
       .catch(error => {
