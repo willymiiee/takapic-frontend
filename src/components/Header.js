@@ -17,7 +17,7 @@ class Header extends Component {
             <i className="fa fa-bars" />
             <div>
               {userMetadata ? null : (
-                <Link to="/photographer-registration/s1">
+                <Link to="/welcome-photographer">
                   Become our photographer
                 </Link>
               )}

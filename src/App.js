@@ -27,6 +27,7 @@ import PhotographerRegistrationStep2 from 'components/PhotographerRegistration/P
 import PhotographerRegistrationStep3 from 'components/PhotographerRegistration/PhotographerRegistrationStep3';
 import PhotographerRegistrationStepFinish from 'components/PhotographerRegistration/PhotographerRegistrationStepFinish';
 
+import WelcomePhotographer from 'components/BecomeOurPhotographer/WelcomePhotographer';
 import Step1Welcome from 'components/BecomeOurPhotographer/Step1Welcome';
 import Step1GrabCityNew from './components/BecomeOurPhotographer/Step1GrabCityNew';
 import Step1GrabInterestingSelfIntroduction from 'components/BecomeOurPhotographer/Step1GrabInterestingSelfIntroduction';
@@ -55,11 +56,11 @@ const fetchCountriesAction = () => {
 const fetchCurrenciesRates = () => {
   return dispatch => {
     axios
-      .get('http://apilayer.net/api/live?access_key=1aa6b5189fe7e7dc51f1189fe02008b4&source=USD&format=1')
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/currencyExchangeRates`)
       .then(response => {
         dispatch({
           type: 'FETCH_CURRENCIES_RATES',
-          payload: response.data.quotes
+          payload: response.data.data
         });
       })
       .catch(error => {
@@ -141,6 +142,10 @@ const App = connect(state => state)(props => {
             <Route
               path="/photographer-portofolio-reviews"
               component={PortofolioReviews}
+            />
+            <Route
+              path="/welcome-photographer"
+              component={onlyLoggedOut(WelcomePhotographer)}
             />
             <Route
               path="/photographer-registration/s1"

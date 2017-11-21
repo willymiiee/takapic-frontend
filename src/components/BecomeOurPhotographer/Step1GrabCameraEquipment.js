@@ -13,19 +13,23 @@ import {dashify} from "../../helpers/helpers";
 import {submitCameraEquipment} from '../../store/actions/photographerServiceInfoActions';
 
 class Step1GrabCameraEquipment extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            languages: ['English', 'Japanese'],
-            speciality: ['Wedding', 'Snap'],
-            selected: {
-                bodies: [''],
-                lenses: [''],
-                languages: [],
-                speciality: [],
-            },
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      languages: [
+        'English', 'Thai', 'Vietnamese', 'Tagalog', 'Korean', 'Japanese', 'Mandarin', 'Burmese', 'Malay', 'Bahasa Indonesia',
+        'Spanish', 'Portuguese', 'Russian', 'German', 'French', 'Italian', 'Turkish', 'Polish', 'Ukrainian', 'Romanian', 'Dutch',
+        'Croatian', 'Hungarian', 'Greek', 'Czech', 'Swedish', 'Hindi', 'Arabic', 'Bengali', 'Punjabi', 'Tamil', 'Urdu', 'Gujarati', 'Persian'
+      ],
+      speciality: ['Wedding', 'Snap'],
+      selected: {
+        bodies: [''],
+        lenses: [''],
+        languages: [],
+        speciality: [],
+      },
+    };
+  }
 
     handleAddMoreBody = () => {
         let {selected} = this.state;

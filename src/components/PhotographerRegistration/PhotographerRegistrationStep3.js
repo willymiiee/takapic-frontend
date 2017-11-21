@@ -77,9 +77,11 @@ const PhoneNumberCollectFormik = Formik({
     phoneNumber: Yup.number().required('Please input phone number')
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    const phoneNumber = values.phoneNumberCountryCode + values.phoneNumber;
-    props.uploadPhonenumber(phoneNumber, props.reference);
-    setSubmitting(false);
+    setTimeout(() => {
+      const phoneNumber = values.phoneNumberCountryCode + values.phoneNumber;
+      props.uploadPhonenumber(phoneNumber, props.reference);
+      setSubmitting(false);
+    }, 1000);
   }
 })(PhoneNumberCollectForm);
 

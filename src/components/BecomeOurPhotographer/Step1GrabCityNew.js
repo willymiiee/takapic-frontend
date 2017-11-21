@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Formik } from 'formik';
 import Yup from 'yup';
 import Select from 'react-select';
@@ -15,6 +14,13 @@ const cityCollectAction = dataObject => {
       type: 'BECOME_OUR_PHOTOGRAPHER_PLACES_CHANGED',
       payload: dataObject
     });
+
+    dispatch({
+      type: 'USER_AUTH_UPDATE_METADATA',
+      payload: {
+        currency: dataObject.currency
+      }
+    })
   };
 };
 

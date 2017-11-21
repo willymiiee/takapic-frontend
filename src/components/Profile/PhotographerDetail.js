@@ -124,7 +124,8 @@ class PhotographerDetail extends Component {
             serviceReviews: {
               rating,
               impressions
-            }
+            },
+            packagesPrice
           }
         }
       } = this.props;
@@ -171,19 +172,24 @@ class PhotographerDetail extends Component {
               </a>
             </div>
 
-            <Slider {...settings}>
-              {
-                photosPortofolio.map((item, index) => <div key={`portofolio-photo-${index}`} style={{textAlign: 'center'}}>
-                  <img
-                    style={{display: 'inline-block'}}
-                    width="400"
-                    height="300"
-                    src={item.url}
-                    alt=""
-                  />
-                </div>)
-              }
-            </Slider>
+            {
+              photosPortofolio
+                ?
+                <Slider {...settings}>
+                  {
+                    photosPortofolio.map((item, index) => <div key={`portofolio-photo-${index}`} style={{textAlign: 'center'}}>
+                      <img
+                        style={{display: 'inline-block'}}
+                        width="400"
+                        height="300"
+                        src={item.url}
+                        alt=""
+                      />
+                    </div>)
+                  }
+                </Slider>
+                : null
+            }
 
             <button
               id="photographer-reservation-btn-2"
@@ -198,9 +204,11 @@ class PhotographerDetail extends Component {
                 <div className="close-popup-button">
                   <i className="fa fa-times" onClick={this.closeModal} />
                 </div>
-                <PhotographerDetailReservationForm
-                  photographerServiceInformation={this.props.photographerServiceInformation}
-                />
+                {
+                  packagesPrice ? <PhotographerDetailReservationForm
+                    photographerServiceInformation={this.props.photographerServiceInformation}
+                  /> : null
+                }
               </Modal.Body>
             </Modal>
 
@@ -255,7 +263,9 @@ class PhotographerDetail extends Component {
               </div>
 
               <div className="col-sm-6 col-md-5 margin-top-70">
-                <PhotographerDetailReservationForm/>
+                {
+                  packagesPrice ? <PhotographerDetailReservationForm/> : null
+                }
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose, withProps, lifecycle } from 'recompose';
-import _ from 'lodash';
+import get from 'lodash/get';
 import {
   withScriptjs,
   withGoogleMap,
@@ -51,7 +51,7 @@ const MapWithASearchBox = compose(
             position: place.geometry.location,
           }));
 
-          const nextCenter = _.get(
+          const nextCenter = get(
             nextMarkers,
             '0.position',
             this.state.center
@@ -69,10 +69,11 @@ const MapWithASearchBox = compose(
           });
         },
         handleSpecificLocation: event => {
-          this.setState({ specificLocation: event.target.value });
+          this.setState({ specificLocation: event.target.value.trim() });
         },
         handleAddition: () => {
-          const { generalLocation, specificLocation } = this.state;
+          const generalLocation = get(this.state, 'generalLocation', null);
+          const specificLocation = get(this.state, 'specificLocation', null);
           this.props.handleAddition({ generalLocation, specificLocation });
 
           this.setState({
@@ -81,8 +82,8 @@ const MapWithASearchBox = compose(
               lng: -87.624,
             },
             markers: [],
-            generalLocation: {},
-            specificLocation: ''
+            generalLocation: null,
+            specificLocation: null
           });
 
           document.getElementById('input1').value = '';
@@ -165,9 +166,9 @@ const MapWithASearchBox = compose(
           ADD +
         </button>
       </SearchBox>
-      {props.markers.map((marker, index) => (
-        <Marker key={index} position={marker.position} />
-      ))}
+      {
+        props.markers && props.markers.map((marker, index) => (<Marker key={index} position={marker.position} />))
+      }
     </div>
   </GoogleMap>
 ));
