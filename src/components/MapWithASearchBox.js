@@ -101,7 +101,7 @@ const MapWithASearchBox = compose(
     center={props.center}
     onBoundsChanged={props.onBoundsChanged}
   >
-    <div id="meeting-points" style={{ position: 'absolute', top: 0 }}>
+    <div className="row" id="meeting-points" style={{ position: 'absolute', top: 0 }}>
       <SearchBox
         key={1}
         ref={props.onSearchBoxMounted}
@@ -113,12 +113,11 @@ const MapWithASearchBox = compose(
           id="input1"
           type="text"
           placeholder="Place / location name"
+          className="input-place-location-name"
           style={{
             boxSizing: `border-box`,
             border: `1px solid transparent`,
-            width: `350px`,
             height: `32px`,
-            marginTop: `8px`,
             padding: `0 12px`,
             borderRadius: `3px`,
             boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
@@ -129,21 +128,16 @@ const MapWithASearchBox = compose(
         />
       </SearchBox>
       <SearchBox key={2} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
-        <div>
           <input
             id="input2"
-            className="form-control"
+            className="input-place-location-note"
             onChange={props.handleSpecificLocation}
             type="text"
             placeholder="Notes for this place / location"
             style={{
               boxSizing: `border-box`,
               border: `1px solid transparent`,
-              width: `450px`,
               height: `32px`,
-              marginTop: `8px`,
-              marginLeft: `20px`,
-              marginRight: `20px`,
               padding: `0 12px`,
               borderRadius: `3px`,
               boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
@@ -152,17 +146,15 @@ const MapWithASearchBox = compose(
               textOverflow: `ellipses`,
             }}
           />
-        </div>
       </SearchBox>
       <SearchBox key={3} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
         <button
           onClick={props.handleAddition}
-          className="button"
+          className="button btn-place-location"
           style={{
             boxSizing: `border-box`,
             border: `1px solid transparent`,
             height: `32px`,
-            marginTop: `8px`,
             padding: `0 12px`,
             borderRadius: `3px`,
             boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,

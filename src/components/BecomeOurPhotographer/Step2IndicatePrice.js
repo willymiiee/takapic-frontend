@@ -113,7 +113,7 @@ class Step2IndicatePrice extends Component {
                         <td>{td.packageName}</td>
                         <td>{td.requirement}</td>
                         <td>
-                          <FormGroup style={{ marginBottom: -15 }}>
+                          <FormGroup style={{ marginBottom: 0 }}>
                             <InputGroup>
                               <FormControl
                                 type="text"
@@ -148,19 +148,23 @@ class Step2IndicatePrice extends Component {
             </div>
           </div>
           <hr />
-          <Link
-            to="/become-our-photographer/welcome-2"
-            className="button button-white-no-shadow u"
-          >
-            Back
-          </Link>
-          <Link
-            to="/become-our-photographer/step-2-2"
-            className="button"
-            onClick={this.handleSubmit}
-          >
-            Next
-          </Link>
+          <div style={{overflow:'hidden'}}>
+            <Link
+                to="/become-our-photographer/step-2-2"
+                className="button"
+                onClick={this.handleSubmit}
+                style={{float:'right'}}
+            >
+              Next
+            </Link>
+            <Link
+                to="/become-our-photographer/welcome-2"
+                className="button button-white-no-shadow u"
+                style={{float:'right'}}
+            >
+              Back
+            </Link>
+          </div>
         </div>
       </Page>
     );

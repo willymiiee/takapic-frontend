@@ -93,105 +93,78 @@ class Step2SetupMeetingPointA extends Component {
       <Page>
         <div className="container" id="photographer-landing">
           <div className="steps steps-4">
-            <div />
-            <div />
-            <div className="active" />
-            <div />
+            <div/>
+            <div/>
+            <div className="active"/>
+            <div/>
           </div>
-          <hr />
-          <h3>Please choose three different meeting points</h3>
+
+          <br/>
+
           <div className="row">
-            <div className="col-lg-12">
-              {this.state.mapLoaded && (
-                <MapWithASearchBox
-                  handleAddition={this.handleAddition}
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
-                  loadingElement={<div style={{ height: `100%` }} />}
-                  containerElement={<div style={{ height: `400px` }} />}
-                  mapElement={<div style={{ height: `100%` }} />}
-                />
-              )}
+            <div className="col-md-8">
+              <h4>Please choose three different meeting points</h4>
+              {
+                this.state.mapLoaded && (
+                  <MapWithASearchBox
+                    handleAddition={this.handleAddition}
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div style={{height: `100%`}}/>}
+                    containerElement={<div style={{height: `400px`}}/>}
+                    mapElement={<div style={{height: `100%`}}/>}
+                  />)
+              }
             </div>
-            <div className="col-lg-12 margin-top-15">
-              <div className="container">
-                <h3>Your Created Point</h3>
-                {this.state.meetingPoints && this.state.meetingPoints.map((p, key) => (
+
+            <div className="col-md-4">
+              <h4>Your Created Point</h4>
+              <hr/>
+              {
+                this.state.meetingPoints.map((p, key) => (
                   <div key={key}>
                     {/* ini list number meeting point */}
-                    <div className="margin-top-30">
-                      <button
-                        type="button"
-                        className="btn btn-primary btn-circle btn-lg"
-                      >
-                        {key + 1}
-                      </button>
-                      <div id="line-number">
-                        <div
-                          className="margin-left-20"
-                          style={{ marginTop: '-8%' }}
-                        >
-                          <div
-                            style={{
-                              marginTop: '1%',
-                              marginBottom: '-5%',
-                              color: 'black',
-                              fontSize: '16px',
-                            }}
-                          >
-                            <b>{ p.generalLocation.meetingPointName }</b>
-                          </div>
-
-                          <br />
-
-                          <div style={{ fontSize: '16px' }}>
-                            {p.generalLocation.formattedAddress}
-                          </div>
-
-                          <div style={{ color: 'black', fontSize: '16px' }}>
-                            <p style={{ fontWeight: 'bold', color: '#999999', textDecoration: 'underline' }}>
-                              Place / location notes
-                            </p>
-
-                            <p style={{ margin: '-20px 0 0 0', padding: '0', color: '#999999' }}>
-                              { p.specificLocation || '-' }
-                              </p>
-                          </div>
-
-                          <div id="delete-button">
-                            <button
-                              className="delete-button"
-                              onClick={event => {
-                                let { meetingPoints } = this.state;
-                                meetingPoints = [
-                                  ...meetingPoints.slice(0, key),
-                                  ...meetingPoints.slice(key + 1),
-                                ];
-                                this.setState({ meetingPoints });
-                              }}
-                            >
-                              {' '}
-                              <strong>x</strong>{' '}
-                            </button>
-                          </div>
-                        </div>
+                    <div className="row">
+                      <div className="number-of-meetpoint col-xs-2">{key + 1}</div>
+                      <div className="detail-of-meetpoint col-xs-8">
+                        <stong>{p.generalLocation.meetingPointName}</stong>
+                        <p>{p.generalLocation.formattedAddress}</p>
+                        <h6>{p.specificLocation}</h6>
                       </div>
+                      <button
+                        className="delete-button col-xs-2"
+                        onClick={event => {
+                          let {meetingPoints} = this.state;
+                          meetingPoints = [
+                            ...meetingPoints.slice(0, key),
+                            ...meetingPoints.slice(key + 1),
+                          ];
+                          this.setState({meetingPoints});
+                        }}>
+                        <i className="fa fa-close"/>
+                      </button>
                     </div>
+                    <hr/>
                   </div>
-                ))}
-              </div>
+                ))
+              }
             </div>
           </div>
-          <hr />
-          <Link to="/become-our-photographer/step-2-2" className="button">
-            Back
-          </Link>
+          <hr/>
+          <div style={{overflow: 'hidden'}}>
 
+          </div>
           <Link
             to="/become-our-photographer/step-2-4"
             className="button"
             onClick={this.handleSubmit}
+            style={{float: 'right'}}
           >
             Next
+          </Link>
+          <Link
+            style={{float: 'right'}}
+            to="/become-our-photographer/step-2-2" className="button">
+            Back
           </Link>
         </div>
       </Page>

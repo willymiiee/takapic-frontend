@@ -19,8 +19,8 @@ const TopPhotographerSingle = props => {
         <img className="cover" alt="" src={photoProfileUrl} />
       </div>
 
-      <h3>{displayName}</h3>
-      <div>{`${countryName}, ${locationAdmLevel1}`}</div>
+      <h5 className="name-photograph">{displayName}</h5>
+      <div className="location-photograph">{`${countryName}, ${locationAdmLevel1}`}</div>
 
       <div className="ratings">
         <StarRatingComponent

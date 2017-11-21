@@ -115,7 +115,7 @@ class CityCollectForm extends Component {
           {errors.locationAdmLevel2 && touched.locationAdmLevel2 && <label className="control-label">{errors.locationAdmLevel2}</label>}
         </div>
 
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', float: 'right' }}>
           <Link
             to="/become-our-photographer/welcome-1"
             className="button button-white-no-shadow u"
@@ -192,21 +192,27 @@ class Step1GrabCityNew extends Component {
     return (
       <Page>
         <div className="container" id="photographer-landing">
-          <div className="steps steps-3">
-            <div className="active" />
-            <div />
-            <div />
-          </div>
-          <hr />
-          <h3>Which city do you live in?</h3>
           <div className="row">
-            <div className="col-sm-12">
-              <CityCollectFormik
-                countries={this.state.countries}
-                currencies={this.state.currencies}
-                cityCollectAction={this.props.cityCollectAction}
-                history={this.props.history}
-              />
+            <div className="col-md-10 col-md-offset-1">
+              <div className="card radius-0">
+                <div className="steps steps-3">
+                  <div className="active" />
+                  <div />
+                  <div />
+                </div>
+                <hr />
+                <h3>Which city do you live in?</h3>
+                <div className="row">
+                  <div className="col-sm-12">
+                    <CityCollectFormik
+                        countries={this.state.countries}
+                        currencies={this.state.currencies}
+                        cityCollectAction={this.props.cityCollectAction}
+                        history={this.props.history}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
