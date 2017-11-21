@@ -27,7 +27,7 @@ export default class User extends Component {
           <PhotosPortofolio/>
         </Tab>
         <Tab eventKey={5} title="Price Package">
-          <PricePackage/>
+          <PricePackage userMetadata={userMetadata}/>
         </Tab>
       </Tabs>
     );
