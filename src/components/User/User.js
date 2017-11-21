@@ -13,7 +13,7 @@ export default class User extends Component {
     const { user: { userMetadata } } = this.props;
 
     const tabsInstance = (
-      <Tabs defaultActiveKey={1} animation={false} id="noanim-tab-example">
+      <Tabs defaultActiveKey={1} animation={false}>
         <Tab eventKey={1} title="Basic Information">
           <BasicInformation userMetadata={userMetadata}/>
         </Tab>
