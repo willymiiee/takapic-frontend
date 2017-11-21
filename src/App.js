@@ -210,7 +210,7 @@ const App = connect(state => state)(props => {
               component={onlyLoggedIn(Step2Done)}
             />
             <Route
-              path="/user"
+              path="/me/edit"
               component={onlyLoggedIn(User)}
             />
             <Route path="*" component={NotFoundPage} />
