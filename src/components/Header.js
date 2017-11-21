@@ -25,7 +25,7 @@ class Header extends Component {
               <Link to="/how-it-works">How it works</Link>
               <Link to="/help">Help</Link>
               {userMetadata ? (
-                <Link to="/user/1">[ {userMetadata.displayName} ]</Link>
+                <Link to="/user">[ {userMetadata.displayName} ]</Link>
               ) : (
                 <Link to="/sign-in">Sign in</Link>
               )}

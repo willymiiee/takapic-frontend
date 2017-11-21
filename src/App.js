@@ -39,6 +39,8 @@ import Step2InitiatePortofolio from 'components/BecomeOurPhotographer/Step2Initi
 import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2SetupMeetingPointA';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
 
+import User from 'components/User/User';
+
 const fetchCountriesAction = () => {
   return dispatch => {
     const db = database.database();
@@ -206,6 +208,10 @@ const App = connect(state => state)(props => {
             <Route
               path="/become-our-photographer/step-2-5"
               component={onlyLoggedIn(Step2Done)}
+            />
+            <Route
+              path="/user"
+              component={onlyLoggedIn(User)}
             />
             <Route path="*" component={NotFoundPage} />
           </Switch>
