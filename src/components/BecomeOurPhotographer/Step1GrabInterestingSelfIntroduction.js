@@ -17,43 +17,48 @@ const Step1GrabInterestingSelfIntroduction = props => {
   return (
     <Page>
       <div className="container" id="photographer-landing">
-        <div className="steps steps-3">
-          <div />
-          <div className="active" />
-          <div />
-        </div>
-        <hr />
+        <div className="row">
+          <div className="col-md-10 col-md-offset-1">
+            <div className="card radius-0">
 
-        <h3>Tell travellers something interesting about yourself</h3>
+            <div className="steps steps-3">
+              <div />
+              <div className="active" />
+              <div />
+            </div>
+            <hr />
 
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-sm-8 col-lg-6">
-                <textarea
-                  name="selfDescription"
-                  defaultValue={values.selfDescription}
-                  onChange={handleChange}
-                />
+            <h3>Tell travellers something interesting about yourself</h3>
+
+            <form onSubmit={handleSubmit}>
+              <textarea
+                name="selfDescription"
+                defaultValue={values.selfDescription}
+                onChange={handleChange}
+                placeholder="I am.."
+              />
+
+              <div style={{overflow:'hidden'}}>
+                <button
+                  type="submit"
+                  className="button next-btn"
+                  style={{float:'right'}}
+                  disabled={isSubmitting}
+                >
+                  { isSubmitting ? 'Please wait...' : 'Next' }
+                </button>
+                <Link
+                    to="/become-our-photographer/step-1-1"
+                    className="button button-white-no-shadow u"
+                    style={{float:'right'}}
+                >
+                  Back
+                </Link>
+              </div>
+            </form>
             </div>
           </div>
-
-          <div className="buttonNextPrevCoupleWrapper">
-            <Link
-              to="/become-our-photographer/step-1-1"
-              className="button button-white-no-shadow u"
-            >
-              Back
-            </Link>
-
-            <button
-              type="submit"
-              className="button next-btn"
-              disabled={isSubmitting}
-            >
-              { isSubmitting ? 'Please wait...' : 'Next' }
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </Page>
   );

@@ -18,7 +18,7 @@ const CalculationTotal = props => {
 
     return (
       <span>
-        Total <i>{total}</i>
+        Total <span className="float-right">USD{total}</span>
       </span>
     );
   }
@@ -275,9 +275,9 @@ class PhotographerDetailReservationForm extends Component {
             >
               Reserve
             </button>
-            <div>
+            <div style={{color:'#999'}}>
               or<br />
-              <a href="">Contact to your photographer</a>
+              <a style={{color:'#999', textDecoration:'underline'}} href="#!">Contact to your photographer</a>
             </div>
           </div>
         </div>

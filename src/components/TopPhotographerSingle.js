@@ -14,9 +14,9 @@ const TopPhotographerSingle = props => {
   } = props.item;
 
   return (
-    <div>
+    <div style={{paddingLeft:'16px',paddingRight:'16px'}}>
       <div className="profile-picture">
-        <img className="cover" alt="" src={photoProfileUrl} />
+        <img className="cover circle-img border-smooth" alt="" src={photoProfileUrl} />
       </div>
 
       <h5 className="name-photograph">{displayName}</h5>
@@ -39,7 +39,7 @@ const TopPhotographerSingle = props => {
         />
       </div>
 
-      <div className="tags">
+      <div className="tags hide">
         {
           speciality && speciality.map((item, index) => <a key={`speciality-${index}`}>{item}</a>)
         }

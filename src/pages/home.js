@@ -235,9 +235,9 @@ class Home extends Component {
               </div>
             </div>
 
-            <h1 className="title margin-bottom-40">Themes</h1>
+            <h1 className="title margin-bottom-40 hide">Themes</h1>
 
-            <div className="row posters">
+            <div className="row posters hide">
               <div className="col-xs-6 col-sm-4">
                 <a className="poster grid" href="">
                   <div className="text">FAMILY</div>

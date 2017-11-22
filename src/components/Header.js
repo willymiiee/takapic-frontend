@@ -41,7 +41,7 @@ class Header extends Component {
               ) : null}
             </div>
           </div>
-          <div id="nav-search" className="search-toggle">
+          <div id="nav-search" className="search-toggle hide">
             <i className="fa fa-search" />
             <input type="text" placeholder="Anywhere, Anytime" />
           </div>
