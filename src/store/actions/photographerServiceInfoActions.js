@@ -1,6 +1,7 @@
+import axios from 'axios';
+import get from 'lodash/get';
 import { database } from '../../services/firebase';
 import history from '../../services/history';
-import get from 'lodash/get';
 
 export const selfDescription = description => {
   return dispatch => {
@@ -78,6 +79,23 @@ export const submitCameraEquipment = params => {
           type: 'SUBMIT_CAMERA_EQUIPMENT_ERROR',
           error,
         });
+      });
+  };
+};
+
+export const fetchPhotographerServiceInformation = (uid) => {
+  return dispatch => {
+    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_LOADING' });
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/${uid}`)
+      .then(response => {
+        dispatch({
+          type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS',
+          payload: response.data.data,
+        });
+      })
+      .catch(error => {
+        console.log(error.message);
       });
   };
 };

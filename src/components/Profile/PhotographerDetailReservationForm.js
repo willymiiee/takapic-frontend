@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import { reservationInitializeAction } from "../../store/actions/reservationActions";
 
 const CalculationTotal = props => {
   const {
@@ -64,21 +65,40 @@ class PhotographerDetailReservationForm extends Component {
   show = _ => _;
 
   handleReserve = () => {
-    if (this.state.reservation.total < 1) {
-      const {
-        photographerServiceInformation: {data: { totalReservationPriceInitiate }},
-      } = this.props;
-      console.log('Total = ', totalReservationPriceInitiate);
-    } else {
-      console.log('Total = ', this.state.reservation.total);
-    }
-    console.log(this.state);
-    // this.props.history.push('/booking');
+    const {
+      photographerServiceInformation: { data: { userMetadata: { uid } } },
+      reservationInitializeAction
+    } = this.props;
+
+    const {
+      reservation: {
+        startingDate,
+        startingTime,
+        photographerFee,
+        serviceFee,
+        credit,
+        total
+      }
+    } = this.state;
+
+    const information = {
+      packageSelectedIndex: 0,
+      startDateTime: startingDate + ' ' + startingTime,
+      photographerFee,
+      serviceFee: Math.round(this.state.reservation.photographerFee * serviceFee),
+      credit,
+      total
+    };
+
+    reservationInitializeAction(information);
+    this.props.history.push(`/booking/${uid}`);
   };
 
   calculateTotal(indexValue) {
     const { packagesPrice, reservation: { credit, serviceFee } } = this.state;
-    return Math.round(credit + parseInt(packagesPrice[indexValue].price) + packagesPrice[indexValue].price * serviceFee);
+    let calculate = Math.round(parseInt(packagesPrice[indexValue].price) + packagesPrice[indexValue].price * serviceFee);
+    calculate = calculate - credit;
+    return calculate;
   }
 
   choosePackage = (event, value) => {
@@ -152,7 +172,19 @@ class PhotographerDetailReservationForm extends Component {
       const convertedPrice = Math.round(item.price / USDRates);
       return { ...item, price: convertedPrice };
     });
-    this.setState({ packagesPrice: packagesPriceConvertPrice });
+
+    const { reservation: { credit, serviceFee } } = this.state;
+    let calcTotal = Math.round(parseInt(packagesPriceConvertPrice[0].price) + packagesPriceConvertPrice[0].price * serviceFee);
+    calcTotal = calcTotal - credit;
+
+    this.setState({
+      packagesPrice: packagesPriceConvertPrice,
+      reservation: {
+        ...this.state.reservation,
+        photographerFee: packagesPriceConvertPrice[0].price,
+        total: calcTotal
+      }
+    });
   }
 
   componentDidMount() {
@@ -291,6 +323,10 @@ const mapStateToProps = state => ({
   currenciesRates: state.currenciesRates
 });
 
+const mapDispatchToProps = dispatch => ({
+  reservationInitializeAction: information => dispatch(reservationInitializeAction(information))
+});
+
 export default withRouter(
-  connect(mapStateToProps)(PhotographerDetailReservationForm)
+  connect(mapStateToProps, mapDispatchToProps)(PhotographerDetailReservationForm)
 );

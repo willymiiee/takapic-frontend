@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import get from 'lodash/get';
 import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
-import photographerDetail from './photographerDetailReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
 import photographerServiceInfoStep2 from './photographerServiceInfoReducersStep2';
 
@@ -65,12 +64,47 @@ const currenciesRates = (state = {}, action) => {
   return state;
 };
 
+const reservation = (state = {}, action) => {
+  switch (action.type) {
+    case 'RESERVATION_INITIALIZE':
+      return {
+        packageSelectedIndex: action.payload.packageSelectedIndex,
+        startDateTime: action.payload.startDateTime,
+        photographerFee: action.payload.photographerFee,
+        serviceFee: action.payload.serviceFee,
+        credit: action.payload.credit,
+        total: action.payload.total
+      };
+
+    case 'RESERVATION_PAYMENT':
+      return {
+        ...state,
+        meetingPoints: {
+          type: '-',
+          detail: {}
+        },
+        message: '-',
+        payment: {
+          billingCountry: '',
+          method: ''
+        },
+        passengers: {
+          adults: 0,
+          childrens: 0,
+          infants: 0
+        }
+      };
+
+    default:
+      return state;
+  }
+};
+
 
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
   userInitProfile,
-  photographerDetail,
   photographerServiceInfo,
   photographerServiceInfoStep2,
   photographerPhotosPortofolio,
@@ -78,6 +112,7 @@ const rootReducer = combineReducers({
   homepageData,
   countries,
   currenciesRates,
+  reservation,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

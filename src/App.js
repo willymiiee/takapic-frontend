@@ -57,17 +57,15 @@ const fetchCountriesAction = () => {
 
 const fetchCurrenciesRates = () => {
   return dispatch => {
-    axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/currencyExchangeRates`)
-      .then(response => {
-        dispatch({
-          type: 'FETCH_CURRENCIES_RATES',
-          payload: response.data.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
+    const db = database.database();
+    const ratesRef = db.ref('/currency_exchange_rates');
+    ratesRef.once('value', snapshot => {
+      const rates = snapshot.val();
+      dispatch({
+        type: 'FETCH_CURRENCIES_RATES',
+        payload: rates
       });
+    });
   };
 };
 
