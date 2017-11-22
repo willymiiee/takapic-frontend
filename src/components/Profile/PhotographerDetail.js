@@ -120,7 +120,7 @@ class PhotographerDetail extends Component {
             },
             photosPortofolio,
             selfDescription,
-            speciality,
+            // speciality,
             serviceReviews: {
               rating,
               impressions
@@ -132,9 +132,10 @@ class PhotographerDetail extends Component {
 
       const settings = {
         customPaging: function (i) {
+          const item = photosPortofolio[i];
           return (
             <a>
-              <img src={`/images/photo/0${i + 1}.jpg`}/>
+              <img src={item.url}/>
             </a>
           );
         },
