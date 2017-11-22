@@ -116,7 +116,7 @@ class Step2SetupMeetingPointA extends Component {
               }
             </div>
 
-            <div className="col-md-4">
+            <div className="col-md-4 create-point-wrapper">
               <h4>Your Created Point</h4>
               <hr/>
               {
@@ -148,24 +148,28 @@ class Step2SetupMeetingPointA extends Component {
                 ))
               }
             </div>
-          </div>
-          <hr/>
-          <div style={{overflow: 'hidden'}}>
+
+            <div style={{ clear: 'both' }}/>
 
           </div>
-          <Link
-            to="/become-our-photographer/step-2-4"
-            className="button"
-            onClick={this.handleSubmit}
-            style={{float: 'right'}}
-          >
-            Next
-          </Link>
-          <Link
-            style={{float: 'right'}}
-            to="/become-our-photographer/step-2-2" className="button">
-            Back
-          </Link>
+
+          <div style={{ marginTop: '60px' }}>
+            <hr />
+            <Link
+              to="/become-our-photographer/step-2-4"
+              className="button"
+              onClick={this.handleSubmit}
+              style={{float: 'right'}}
+            >
+              Next
+            </Link>
+
+            <Link
+              style={{float: 'right'}}
+              to="/become-our-photographer/step-2-2" className="button">
+              Back
+            </Link>
+          </div>
         </div>
       </Page>
     );

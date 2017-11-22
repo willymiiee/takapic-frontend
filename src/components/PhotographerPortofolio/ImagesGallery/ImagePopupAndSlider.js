@@ -19,7 +19,7 @@ class ImagePopupAndSlider extends Component {
           <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
-              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg"
+              src="https://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg"
               alt=""
               className="center-block"
             />
@@ -35,9 +35,9 @@ class ImagePopupAndSlider extends Component {
                 </span>
               </a>
             </figcaption>
-            <figcaption className="theme-info">
+            {/*<figcaption className="theme-info">
               <span># Family</span>
-            </figcaption>
+            </figcaption>*/}
           </div>
         </figure>
 
@@ -45,7 +45,7 @@ class ImagePopupAndSlider extends Component {
           <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
-              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg"
+              src="https://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg"
               alt=""
               className="center-block"
             />
@@ -61,9 +61,9 @@ class ImagePopupAndSlider extends Component {
                 </span>
               </a>
             </figcaption>
-            <figcaption className="theme-info">
+            {/*<figcaption className="theme-info">
               <span># Family</span>
-            </figcaption>
+            </figcaption>*/}
           </div>
         </figure>
 
@@ -71,7 +71,7 @@ class ImagePopupAndSlider extends Component {
           <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
-              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg"
+              src="https://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg"
               alt=""
               className="center-block"
             />
@@ -87,9 +87,9 @@ class ImagePopupAndSlider extends Component {
                 </span>
               </a>
             </figcaption>
-            <figcaption className="theme-info">
+            {/*<figcaption className="theme-info">
               <span># Family</span>
-            </figcaption>
+            </figcaption>*/}
           </div>
         </figure>
 
@@ -97,7 +97,7 @@ class ImagePopupAndSlider extends Component {
           <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
-              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg"
+              src="https://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg"
               alt=""
               className="center-block"
             />
@@ -113,9 +113,9 @@ class ImagePopupAndSlider extends Component {
                 </span>
               </a>
             </figcaption>
-            <figcaption className="theme-info">
+            {/*<figcaption className="theme-info">
               <span># Family</span>
-            </figcaption>
+            </figcaption>*/}
           </div>
         </figure>
 
@@ -123,7 +123,7 @@ class ImagePopupAndSlider extends Component {
           <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
-              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg"
+              src="https://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg"
               alt=""
               className="center-block"
             />
@@ -139,9 +139,9 @@ class ImagePopupAndSlider extends Component {
                 </span>
               </a>
             </figcaption>
-            <figcaption className="theme-info">
+            {/*<figcaption className="theme-info">
               <span># Family</span>
-            </figcaption>
+            </figcaption>*/}
           </div>
         </figure>
 
@@ -149,7 +149,7 @@ class ImagePopupAndSlider extends Component {
           <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
-              src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg"
+              src="https://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg"
               alt=""
               className="center-block"
             />
@@ -165,9 +165,9 @@ class ImagePopupAndSlider extends Component {
                 </span>
               </a>
             </figcaption>
-            <figcaption className="theme-info">
+            {/*<figcaption className="theme-info">
               <span># Family</span>
-            </figcaption>
+            </figcaption>*/}
           </div>
         </figure>
       </Slider>

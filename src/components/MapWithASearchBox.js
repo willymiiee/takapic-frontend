@@ -95,49 +95,30 @@ const MapWithASearchBox = compose(
   withScriptjs,
   withGoogleMap
 )(props => (
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={15}
-    center={props.center}
-    onBoundsChanged={props.onBoundsChanged}
-  >
-    <div className="row" id="meeting-points" style={{ position: 'absolute', top: 0 }}>
-      <SearchBox
-        key={1}
-        ref={props.onSearchBoxMounted}
-        bounds={props.bounds}
-        controlPosition={google.maps.ControlPosition.TOP_LEFT}
-        onPlacesChanged={props.onPlacesChanged}
-      >
-        <input
-          id="input1"
-          type="text"
-          placeholder="Place / location name"
-          className="input-place-location-name"
-          style={{
-            boxSizing: `border-box`,
-            border: `1px solid transparent`,
-            height: `32px`,
-            padding: `0 12px`,
-            borderRadius: `3px`,
-            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `16px`,
-            outline: `none`,
-            textOverflow: `ellipses`,
-          }}
-        />
-      </SearchBox>
-      <SearchBox key={2} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
+  <div>
+    <GoogleMap
+      ref={props.onMapMounted}
+      defaultZoom={15}
+      center={props.center}
+      onBoundsChanged={props.onBoundsChanged}
+    >
+      <div className="row" id="meeting-points">
+        <SearchBox
+          key={1}
+          ref={props.onSearchBoxMounted}
+          bounds={props.bounds}
+          controlPosition={google.maps.ControlPosition.TOP_LEFT}
+          onPlacesChanged={props.onPlacesChanged}
+        >
           <input
-            id="input2"
-            className="input-place-location-note"
-            onChange={props.handleSpecificLocation}
+            id="input1"
             type="text"
-            placeholder="Notes for this place / location"
+            placeholder="Place / location name"
+            className="input-place-location-name"
             style={{
               boxSizing: `border-box`,
               border: `1px solid transparent`,
-              height: `32px`,
+              height: `40px`,
               padding: `0 12px`,
               borderRadius: `3px`,
               boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
@@ -146,31 +127,54 @@ const MapWithASearchBox = compose(
               textOverflow: `ellipses`,
             }}
           />
-      </SearchBox>
-      <SearchBox key={3} controlPosition={google.maps.ControlPosition.TOP_LEFT}>
-        <button
-          onClick={props.handleAddition}
-          className="button btn-place-location"
-          style={{
-            boxSizing: `border-box`,
-            border: `1px solid transparent`,
-            height: `32px`,
-            padding: `0 12px`,
-            borderRadius: `3px`,
-            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-            fontSize: `15px`,
-            outline: `none`,
-            textOverflow: `ellipses`,
-          }}
-        >
-          ADD +
-        </button>
-      </SearchBox>
-      {
-        props.markers && props.markers.map((marker, index) => (<Marker key={index} position={marker.position} />))
-      }
+        </SearchBox>
+
+        {
+          props.markers && props.markers.map((marker, index) => (<Marker key={index} position={marker.position} />))
+        }
+      </div>
+    </GoogleMap>
+
+    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+      <input
+        id="input2"
+        className="form-control"
+        onChange={props.handleSpecificLocation}
+        type="text"
+        placeholder="Notes for this place / location"
+        style={{
+          border: `1px solid transparent`,
+          height: `40px`,
+          padding: `0 12px`,
+          margin: '10px 0 0 0',
+          borderRadius: `3px`,
+          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+          fontSize: `16px`,
+          outline: `none`,
+          textOverflow: `ellipses`,
+        }}
+      />
+
+      <button
+        onClick={props.handleAddition}
+        className="button"
+        style={{
+          border: `1px solid transparent`,
+          height: `40px`,
+          padding: `0 12px`,
+          margin: '10px 0 0 10px',
+          borderRadius: `3px`,
+          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+          fontSize: `15px`,
+          outline: `none`,
+          textOverflow: `ellipses`,
+        }}
+      >
+        Add
+      </button>
     </div>
-  </GoogleMap>
+
+  </div>
 ));
 
 export default MapWithASearchBox;

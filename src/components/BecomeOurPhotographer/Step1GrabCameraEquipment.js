@@ -21,7 +21,7 @@ class Step1GrabCameraEquipment extends Component {
         'Spanish', 'Portuguese', 'Russian', 'German', 'French', 'Italian', 'Turkish', 'Polish', 'Ukrainian', 'Romanian', 'Dutch',
         'Croatian', 'Hungarian', 'Greek', 'Czech', 'Swedish', 'Hindi', 'Arabic', 'Bengali', 'Punjabi', 'Tamil', 'Urdu', 'Gujarati', 'Persian'
       ],
-      speciality: ['Wedding', 'Snap'],
+      // speciality: ['Wedding', 'Snap'],
       selected: {
         bodies: [''],
         lenses: [''],
@@ -62,12 +62,12 @@ class Step1GrabCameraEquipment extends Component {
         this.setState({selected});
     };
 
-    handleSpeciality = value => {
+    /*handleSpeciality = value => {
         const {selected} = this.state;
         const speciality = value.map(item => item.value);
         selected.speciality = speciality;
         this.setState({selected});
-    };
+    };*/
 
     handleSubmit = event => {
         event.preventDefault();
@@ -75,8 +75,7 @@ class Step1GrabCameraEquipment extends Component {
         if (
             this.notEmpty(bodies) &&
             this.notEmpty(lenses) &&
-            this.notEmpty(languages) &&
-            this.notEmpty(speciality)
+            this.notEmpty(languages)
         ) {
             const {
                 photographerServiceInfo: {location, selfDescription},
@@ -169,15 +168,17 @@ class Step1GrabCameraEquipment extends Component {
                                     }))}
                                     onValuesChange={this.handleLanguages}
                                 />
-                                <h3>Speciality</h3>
-                                <MultiSelect
+
+                                {/*<h3>Speciality</h3>*/}
+
+                                {/*<MultiSelect
                                     placeholder="Select your speciality"
                                     options={this.state.speciality.map(item => ({
                                         label: item,
                                         value: item,
                                     }))}
                                     onValuesChange={this.handleSpeciality}
-                                />
+                                />*/}
                                 <hr/>
                                 <div style={{overflow:'hidden'}}>
                                     <Link

@@ -3460,6 +3460,9 @@ PHASE 1 BOP - New Photographer Account Register
         top: 137px !important;
         width: 94% !important;
     }
+    .create-point-wrapper {
+        margin-top: 65px;
+    }
 }
 
 @media (min-width: 1024px) {
@@ -3481,7 +3484,7 @@ PHASE 1 BOP - New Photographer Account Register
 
 @media (min-width: 1200px){
     .input-place-location-name {
-        width: 34% !important;
+        width: 79% !important;
     }
 }
 

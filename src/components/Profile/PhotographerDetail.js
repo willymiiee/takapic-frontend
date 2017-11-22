@@ -217,15 +217,18 @@ class PhotographerDetail extends Component {
                   <h3 className="has-dot">About Me</h3>
                   <div className="has-border">
                     <h1>{ displayName }</h1>
+
                     <h4>{ locationMerge }</h4>
+
                     <p>
                       { nl2br(selfDescription) }
                     </p>
-                    <div className="tags margin-bottom-15">
+
+                    {/*<div className="tags margin-bottom-15">
                       {
                         speciality.map((item, index) => <a key={`speciality-item-${index}`}>#{ item }</a>)
                       }
-                    </div>
+                    </div>*/}
                   </div>
 
                   <h3 className="has-dot">Reviews</h3>

@@ -51,7 +51,7 @@ export const submitCameraEquipment = params => {
         languages,
         location,
         selfDescription,
-        speciality,
+        // speciality,
         serviceReviews: {
           rating: {
             label: 'Common',

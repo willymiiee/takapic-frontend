@@ -235,47 +235,6 @@ class Home extends Component {
               </div>
             </div>
 
-            <h1 className="title margin-bottom-40 hide">Themes</h1>
-
-            <div className="row posters hide">
-              <div className="col-xs-6 col-sm-4">
-                <a className="poster grid" href="">
-                  <div className="text">FAMILY</div>
-                  <img src="images/theme/shubham-sharma-224917.jpg" alt=""/>
-                </a>
-              </div>
-              <div className="col-xs-6 col-sm-4">
-                <a className="poster grid" href="">
-                  <div className="text">COUPLE</div>
-                  <img src="images/theme/tord-sollie-865.jpg" alt=""/>
-                </a>
-              </div>
-              <div className="col-xs-6 col-sm-4">
-                <a className="poster grid" href="">
-                  <div className="text">OUTDOOR</div>
-                  <img src="images/theme/chris-herath-182666.jpg" alt=""/>
-                </a>
-              </div>
-              <div className="col-xs-6 col-sm-4">
-                <a className="poster grid" href="">
-                  <div className="text">FOOD</div>
-                  <img src="images/theme/brooke-lark-158022.jpg" alt=""/>
-                </a>
-              </div>
-              <div className="col-xs-6 col-sm-4">
-                <a className="poster grid" href="">
-                  <div className="text">WEDDING</div>
-                  <img src="images/theme/anne-edgar-119371.jpg" alt=""/>
-                </a>
-              </div>
-              <div className="col-xs-6 col-sm-4">
-                <a className="poster grid" href="">
-                  <div className="text">PROFILE</div>
-                  <img src="images/theme/autumn-goodman-242825.jpg" alt=""/>
-                </a>
-              </div>
-            </div>
-
             <h1 className="title margin-bottom-50">Top Photographers</h1>
             { topPhotographers && <TopPhotographers topPhotographers={topPhotographers}/> }
 
