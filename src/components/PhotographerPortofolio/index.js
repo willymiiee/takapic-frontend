@@ -25,8 +25,8 @@ export default class PhotographerPortofolio extends Component {
                   <Link to="/photographer-portofolio/1">
                     <b>Gallery</b>
                   </Link>
-                  <Link to="/photographer-portofolio-about">About Me</Link>
-                  <Link to="/photographer-portofolio-reviews">Reviews</Link>
+                  <Link style={{marginTop:'6px'}} to="/photographer-portofolio-about">About Me</Link>
+                  <Link style={{marginTop:'6px'}} to="/photographer-portofolio-reviews">Reviews</Link>
                 </div>
                 <Link
                   to="/photographer/2"

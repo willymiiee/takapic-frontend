@@ -16,7 +16,7 @@ class ImagePopupAndSlider extends Component {
     return (
       <Slider {...settings}>
         <figure className="cap-bot">
-          <h3 className="text-center">I'm the title of image below</h3>
+          <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
               src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg"
@@ -42,7 +42,7 @@ class ImagePopupAndSlider extends Component {
         </figure>
 
         <figure className="cap-bot">
-          <h3 className="text-center">I'm the title of image below</h3>
+          <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
               src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg"
@@ -68,7 +68,7 @@ class ImagePopupAndSlider extends Component {
         </figure>
 
         <figure className="cap-bot">
-          <h3 className="text-center">I'm the title of image below</h3>
+          <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
               src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg"
@@ -94,7 +94,7 @@ class ImagePopupAndSlider extends Component {
         </figure>
 
         <figure className="cap-bot">
-          <h3 className="text-center">I'm the title of image below</h3>
+          <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
               src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg"
@@ -120,7 +120,7 @@ class ImagePopupAndSlider extends Component {
         </figure>
 
         <figure className="cap-bot">
-          <h3 className="text-center">I'm the title of image below</h3>
+          <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
               src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg"
@@ -146,7 +146,7 @@ class ImagePopupAndSlider extends Component {
         </figure>
 
         <figure className="cap-bot">
-          <h3 className="text-center">I'm the title of image below</h3>
+          <h3 className="text-center hide">I'm the title of image below</h3>
           <div className="img-container">
             <img
               src="http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg"

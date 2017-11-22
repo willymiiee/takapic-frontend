@@ -163,7 +163,7 @@ class PhotographerDetail extends Component {
                 />
               </div>
               <h2>{displayName}</h2>
-              <h4>{locationMerge}</h4>
+              <p>{locationMerge}</p>
               <a
                 href="/photographer-portofolio/1"
                 className="button button-white"
@@ -179,9 +179,8 @@ class PhotographerDetail extends Component {
                   {
                     photosPortofolio.map((item, index) => <div key={`portofolio-photo-${index}`} style={{textAlign: 'center'}}>
                       <img
+                          className="img-photographer-detail"
                         style={{display: 'inline-block'}}
-                        width="400"
-                        height="300"
                         src={item.url}
                         alt=""
                       />
@@ -213,12 +212,12 @@ class PhotographerDetail extends Component {
             </Modal>
 
             <div className="row">
-              <div className="col-sm-6 col-md-7 margin-top-70">
+              <div className="col-sm-6 col-md-6 margin-top-70">
                 <div id="photographer-info">
                   <h3 className="has-dot">About Me</h3>
                   <div className="has-border">
                     <h1>{ displayName }</h1>
-                    <h3>{ locationMerge }</h3>
+                    <h4>{ locationMerge }</h4>
                     <p>
                       { nl2br(selfDescription) }
                     </p>
@@ -231,10 +230,10 @@ class PhotographerDetail extends Component {
 
                   <h3 className="has-dot">Reviews</h3>
                   <div className="has-border">
-                    <div style={{marginBottom: 30}}>
-                      <h3 style={{color: '#666'}}>
+                    <div className="ratings-star" style={{marginBottom: 30}}>
+                      <h4 >
                         { rating.label }
-                      </h3>
+                      </h4>
                       <ReactRating
                         rate={ rating.value }
                         total={5}
@@ -262,7 +261,7 @@ class PhotographerDetail extends Component {
                 </div>
               </div>
 
-              <div className="col-sm-6 col-md-5 margin-top-70">
+              <div className="col-sm-6 col-md-5 col-md-offset-1 margin-top-70">
                 {
                   packagesPrice ? <PhotographerDetailReservationForm/> : null
                 }
