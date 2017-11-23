@@ -65,7 +65,7 @@ class User extends Component{
           <BasicInformation userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} state={this.state}/>
         </Tab>
         <Tab eventKey={2} title="Camera Equipment">
-          <CameraEquipment />
+          <CameraEquipment photographerServiceInformation={photographerServiceInformation} />
         </Tab>
         <Tab eventKey={3} title="Meeting Points">
           <MeetingPoints />
