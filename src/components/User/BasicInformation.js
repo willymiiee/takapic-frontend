@@ -1,31 +1,74 @@
-import React, { Component } from 'react'
-import Select from 'react-select';
-import { Form, FormGroup, Col, ControlLabel, FormControl, Image } from 'react-bootstrap'
-import {ReactSelectize, MultiSelect} from 'react-selectize';
-import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import React, { Component } from "react";
+import Select from "react-select";
+import {
+  Form,
+  FormGroup,
+  Col,
+  ControlLabel,
+  FormControl,
+  Image
+} from "react-bootstrap";
+import { ReactSelectize, MultiSelect } from "react-selectize";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 export default class BasicInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
       languages: [
-        'English', 'Thai', 'Vietnamese', 'Tagalog', 'Korean', 'Japanese', 'Mandarin', 'Burmese', 'Malay', 'Bahasa Indonesia',
-        'Spanish', 'Portuguese', 'Russian', 'German', 'French', 'Italian', 'Turkish', 'Polish', 'Ukrainian', 'Romanian', 'Dutch',
-        'Croatian', 'Hungarian', 'Greek', 'Czech', 'Swedish', 'Hindi', 'Arabic', 'Bengali', 'Punjabi', 'Tamil', 'Urdu', 'Gujarati', 'Persian'
+        "English",
+        "Thai",
+        "Vietnamese",
+        "Tagalog",
+        "Korean",
+        "Japanese",
+        "Mandarin",
+        "Burmese",
+        "Malay",
+        "Bahasa Indonesia",
+        "Spanish",
+        "Portuguese",
+        "Russian",
+        "German",
+        "French",
+        "Italian",
+        "Turkish",
+        "Polish",
+        "Ukrainian",
+        "Romanian",
+        "Dutch",
+        "Croatian",
+        "Hungarian",
+        "Greek",
+        "Czech",
+        "Swedish",
+        "Hindi",
+        "Arabic",
+        "Bengali",
+        "Punjabi",
+        "Tamil",
+        "Urdu",
+        "Gujarati",
+        "Persian"
       ],
-      speciality: ['Wedding', 'Snap'],
+      specialities: ["Wedding", "Snap"],
       countryCode: this.props.userMetadata.country,
-      continent: '',
+      continent: "",
       cityOptions: [],
       locationAdmLevel1: this.props.userMetadata.locationAdmLevel1,
       locationAdmLevel2: this.props.userMetadata.locationAdmLevel2,
+      selected: {
+        languages:
+          this.props.photographerServiceInformation.data.languages || [],
+        specialities: this.props.photographerServiceInformation.data.speciality || [],
+      }
     };
   }
 
   _handleSelectCountry = selectChoice => {
     this.setState({
       countryCode: selectChoice.value,
-      continent: selectChoice.continent,
+      continent: selectChoice.continent
     });
 
     if (selectChoice.value !== this.state.countryCode) {
@@ -36,8 +79,8 @@ export default class BasicInformation extends Component {
   _resetCity = () => {
     this.setState({
       cityOptions: [],
-      locationAdmLevel1: '',
-      locationAdmLevel2: '',
+      locationAdmLevel1: "",
+      locationAdmLevel2: ""
     });
   };
 
@@ -47,33 +90,57 @@ export default class BasicInformation extends Component {
     }
 
     const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
-    return fetch(`${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state.continent}&kwd=${input}`)
+    return fetch(
+      `${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state
+        .continent}&kwd=${input}`
+    )
       .then(response => response.json())
       .then(result => {
-        this.setState({ cityOptions: result.data })
+        this.setState({ cityOptions: result.data });
       });
   };
 
   _handleSelectCity = selectChoice => {
-    if (typeof selectChoice[0] !== 'undefined') {
+    if (typeof selectChoice[0] !== "undefined") {
       this.setState({
         locationAdmLevel1: selectChoice[0].adm1,
-        locationAdmLevel2: selectChoice[0].value,
+        locationAdmLevel2: selectChoice[0].value
       });
     }
   };
 
+  _handleSelectLanguages = value => {
+    const { selected } = this.state;
+    const languages = value.map(item => item.value);
+    selected.languages = languages;
+    this.setState({ selected });
+  };
+
+  _handleSelectSpecialities = value => {
+    const { selected } = this.state;
+    const specialities = value.map(item => item.value);
+    selected.specialities = specialities;
+    this.setState({ selected });
+  };
+
   render() {
-    let { userMetadata, photographerServiceInformation, countries, state } = this.props
+    let {
+      userMetadata,
+      photographerServiceInformation,
+      countries,
+      state
+    } = this.props;
 
     return (
       <Form horizontal>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-
-          </Col>
+          <Col componentClass={ControlLabel} sm={2} />
           <Col sm={6}>
-            <Image src={userMetadata.photoProfileUrl} circle style={{width:150}}/>
+            <Image
+              src={userMetadata.photoProfileUrl}
+              circle
+              style={{ width: 150 }}
+            />
           </Col>
         </FormGroup>
 
@@ -82,7 +149,11 @@ export default class BasicInformation extends Component {
             Name
           </Col>
           <Col sm={6}>
-            <FormControl type="text" placeholder="Enter Your Name" value={userMetadata.displayName} />
+            <FormControl
+              type="text"
+              placeholder="Enter Your Name"
+              value={userMetadata.displayName}
+            />
           </Col>
         </FormGroup>
 
@@ -104,7 +175,11 @@ export default class BasicInformation extends Component {
             Email
           </Col>
           <Col sm={6}>
-            <FormControl type="email" placeholder="Enter Your Email" value={userMetadata.email} />
+            <FormControl
+              type="email"
+              placeholder="Enter Your Email"
+              value={userMetadata.email}
+            />
           </Col>
         </FormGroup>
 
@@ -113,7 +188,11 @@ export default class BasicInformation extends Component {
             Phone Number
           </Col>
           <Col sm={6}>
-            <FormControl type="text" placeholder="Enter Your Phone Number" value={userMetadata.phoneNumber} />
+            <FormControl
+              type="text"
+              placeholder="Enter Your Phone Number"
+              value={userMetadata.phoneNumber}
+            />
           </Col>
         </FormGroup>
 
@@ -144,10 +223,16 @@ export default class BasicInformation extends Component {
               options={this.state.cityOptions}
               onSearch={this._getCities}
               onChange={this._handleSelectCity}
-              placeholder={this.state.countryCode ? 'Search and choose your city' : 'Please select a country first'}
+              placeholder={
+                this.state.countryCode ? (
+                  "Search and choose your city"
+                ) : (
+                  "Please select a country first"
+                )
+              }
               disabled={!this.state.countryCode}
               isLoading={true}
-              inputProps={{name: "city"}}
+              inputProps={{ name: "city" }}
             />
           </Col>
         </FormGroup>
@@ -157,13 +242,18 @@ export default class BasicInformation extends Component {
             Language Spoken
           </Col>
           <Col sm={6}>
-            <MultiSelect
-                placeholder="Select your language"
-                options={this.state.languages.map(item => ({
-                    label: item,
-                    value: item,
-                }))}
-                onValuesChange={this.handleLanguages}
+            <Select
+              placeholder="Select your language"
+              options={this.state.languages.map(item => ({
+                label: item,
+                value: item,
+                style: {
+                  margin: '5px 0px 5px 5px',
+                }
+              }))}
+              multi={true}
+              value={this.state.selected.languages}
+              onChange={this._handleSelectLanguages}
             />
           </Col>
         </FormGroup>
@@ -173,17 +263,21 @@ export default class BasicInformation extends Component {
             Specialities
           </Col>
           <Col sm={6}>
-            <MultiSelect
-                placeholder="Select your speciality"
-                options={this.state.speciality.map(item => ({
-                    label: item,
-                    value: item,
-                }))}
-                onValuesChange={this.handleSpeciality}
+            <Select
+              placeholder="Select your speciality"
+              options={this.state.specialities.map(item => ({
+                label: item,
+                value: item,
+                style: {
+                  margin: '5px 0px 5px 5px',
+                }
+              }))}
+              multi={true}
+              value={this.state.selected.specialities}
+              onChange={this._handleSelectSpecialities}
             />
           </Col>
         </FormGroup>
-
       </Form>
     );
   }
