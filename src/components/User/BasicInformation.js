@@ -179,19 +179,6 @@ export default class BasicInformation extends Component {
           </Col>
         </FormGroup>
 
-        <FormGroup controlId="formHorizontalEmail">
-          <Col componentClass={ControlLabel} sm={2}>
-            Email
-          </Col>
-          <Col sm={6}>
-            <FormControl
-              type="email"
-              placeholder="Enter Your Email"
-              value={userMetadata.email}
-            />
-          </Col>
-        </FormGroup>
-
         <FormGroup controlId="formHorizontalPhoneNumber">
           <Col componentClass={ControlLabel} sm={2}>
             Phone Number
