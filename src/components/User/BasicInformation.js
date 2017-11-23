@@ -63,6 +63,7 @@ export default class BasicInformation extends Component {
       },
       values: {
         name: this.props.userMetadata.displayName,
+        selfDescription: this.props.photographerServiceInformation.data.selfDescription
       }
     };
   }
@@ -70,6 +71,12 @@ export default class BasicInformation extends Component {
   _handleNameChange = event => {
     const { values } = this.state;
     values.name = event.target.value
+    this.setState({values});
+  }
+
+  _handleSelfDescriptionChange = event => {
+    const { values } = this.state;
+    values.selfDescription = event.target.value
     this.setState({values});
   }
 
@@ -174,7 +181,8 @@ export default class BasicInformation extends Component {
             <textarea
               name="selfDescription"
               placeholder="Enter Your Self Description"
-              value={photographerServiceInformation.selfDescription}
+              value={this.state.values.selfDescription}
+              onChange={this._handleSelfDescriptionChange}
             />
           </Col>
         </FormGroup>
