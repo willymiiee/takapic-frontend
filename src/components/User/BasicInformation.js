@@ -65,11 +65,9 @@ export default class BasicInformation extends Component {
         name: this.props.userMetadata.displayName,
       }
     };
-
-    this.handleNameChange = this.handleNameChange.bind(this);
   }
 
-  handleNameChange(event) {
+  _handleNameChange = event => {
     const { values } = this.state;
     values.name = event.target.value
     this.setState({values});
@@ -163,7 +161,7 @@ export default class BasicInformation extends Component {
               type="text"
               placeholder="Enter Your Name"
               value={this.state.values.name}
-              onChange={this.handleNameChange}
+              onChange={this._handleNameChange}
             />
           </Col>
         </FormGroup>
