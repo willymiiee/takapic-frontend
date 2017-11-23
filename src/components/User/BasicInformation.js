@@ -63,7 +63,8 @@ export default class BasicInformation extends Component {
       },
       values: {
         name: this.props.userMetadata.displayName,
-        selfDescription: this.props.photographerServiceInformation.data.selfDescription
+        selfDescription: this.props.photographerServiceInformation.data.selfDescription,
+        phoneNumber: this.props.userMetadata.phoneNumber
       }
     };
   }
@@ -77,6 +78,12 @@ export default class BasicInformation extends Component {
   _handleSelfDescriptionChange = event => {
     const { values } = this.state;
     values.selfDescription = event.target.value
+    this.setState({values});
+  }
+
+  _handlePhoneNumberChange = event => {
+    const { values } = this.state;
+    values.phoneNumber = event.target.value
     this.setState({values});
   }
 
@@ -195,7 +202,8 @@ export default class BasicInformation extends Component {
             <FormControl
               type="text"
               placeholder="Enter Your Phone Number"
-              value={userMetadata.phoneNumber}
+              value={this.state.values.phoneNumber}
+              onChange={this._handlePhoneNumberChange}
             />
           </Col>
         </FormGroup>
