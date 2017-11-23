@@ -8,7 +8,6 @@ import {
   FormControl,
   Image
 } from "react-bootstrap";
-import { ReactSelectize, MultiSelect } from "react-selectize";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 export default class BasicInformation extends Component {
@@ -61,8 +60,19 @@ export default class BasicInformation extends Component {
         languages:
           this.props.photographerServiceInformation.data.languages || [],
         specialities: this.props.photographerServiceInformation.data.speciality || [],
+      },
+      values: {
+        name: this.props.userMetadata.displayName,
       }
     };
+
+    this.handleNameChange = this.handleNameChange.bind(this);
+  }
+
+  handleNameChange(event) {
+    const { values } = this.state;
+    values.name = event.target.value
+    this.setState({values});
   }
 
   _handleSelectCountry = selectChoice => {
@@ -152,7 +162,8 @@ export default class BasicInformation extends Component {
             <FormControl
               type="text"
               placeholder="Enter Your Name"
-              value={userMetadata.displayName}
+              value={this.state.values.name}
+              onChange={this.handleNameChange}
             />
           </Col>
         </FormGroup>
