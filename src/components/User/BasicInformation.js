@@ -25,7 +25,7 @@ export default class BasicInformation extends Component {
   }
 
   render() {
-    let { userMetadata } = this.props
+    let { userMetadata, photographerServiceInformation } = this.props
 
     return (
       <Form horizontal>
@@ -55,6 +55,7 @@ export default class BasicInformation extends Component {
             <textarea
               name="selfDescription"
               placeholder="Enter Your Self Description"
+              value={photographerServiceInformation.selfDescription}
             />
           </Col>
         </FormGroup>
