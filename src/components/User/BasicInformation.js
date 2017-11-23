@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Select from 'react-select';
 import { Form, FormGroup, Col, ControlLabel, FormControl, Image } from 'react-bootstrap'
 import {ReactSelectize, MultiSelect} from 'react-selectize';
+import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 
 export default class BasicInformation extends Component {
   constructor(props) {
@@ -13,19 +14,57 @@ export default class BasicInformation extends Component {
         'Croatian', 'Hungarian', 'Greek', 'Czech', 'Swedish', 'Hindi', 'Arabic', 'Bengali', 'Punjabi', 'Tamil', 'Urdu', 'Gujarati', 'Persian'
       ],
       speciality: ['Wedding', 'Snap'],
-      selected: {
-        bodies: [''],
-        lenses: [''],
-        languages: [],
-        speciality: [],
-      },
-      countries: [],
-      cities: [],
+      countryCode: this.props.userMetadata.country,
+      continent: '',
+      cityOptions: [],
+      locationAdmLevel1: this.props.userMetadata.locationAdmLevel1,
+      locationAdmLevel2: this.props.userMetadata.locationAdmLevel2,
     };
   }
 
+  _handleSelectCountry = selectChoice => {
+    this.setState({
+      countryCode: selectChoice.value,
+      continent: selectChoice.continent,
+    });
+
+    if (selectChoice.value !== this.state.countryCode) {
+      this._resetCity();
+    }
+  };
+
+  _resetCity = () => {
+    this.setState({
+      cityOptions: [],
+      locationAdmLevel1: '',
+      locationAdmLevel2: '',
+    });
+  };
+
+  _getCities = input => {
+    if (!input) {
+      return;
+    }
+
+    const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
+    return fetch(`${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state.continent}&kwd=${input}`)
+      .then(response => response.json())
+      .then(result => {
+        this.setState({ cityOptions: result.data })
+      });
+  };
+
+  _handleSelectCity = selectChoice => {
+    if (typeof selectChoice[0] !== 'undefined') {
+      this.setState({
+        locationAdmLevel1: selectChoice[0].adm1,
+        locationAdmLevel2: selectChoice[0].value,
+      });
+    }
+  };
+
   render() {
-    let { userMetadata, photographerServiceInformation } = this.props
+    let { userMetadata, photographerServiceInformation, countries, state } = this.props
 
     return (
       <Form horizontal>
@@ -34,7 +73,7 @@ export default class BasicInformation extends Component {
 
           </Col>
           <Col sm={6}>
-            <Image src={userMetadata.photoProfileUrl} circle style={{width:150}} center/>
+            <Image src={userMetadata.photoProfileUrl} circle style={{width:150}}/>
           </Col>
         </FormGroup>
 
@@ -85,8 +124,10 @@ export default class BasicInformation extends Component {
           <Col sm={6}>
             <Select
               name="country"
-              options={this.props.countries}
+              value={this.state.countryCode}
+              options={state.countries}
               clearable={false}
+              onChange={this._handleSelectCountry}
             />
           </Col>
         </FormGroup>
@@ -96,10 +137,17 @@ export default class BasicInformation extends Component {
             City
           </Col>
           <Col sm={6}>
-            <Select
-              name="city"
-              options={this.props.cities}
-              clearable={false}
+            <AsyncTypeahead
+              selected={[this.state.locationAdmLevel2]}
+              multiple={false}
+              allowNew={false}
+              options={this.state.cityOptions}
+              onSearch={this._getCities}
+              onChange={this._handleSelectCity}
+              placeholder={this.state.countryCode ? 'Search and choose your city' : 'Please select a country first'}
+              disabled={!this.state.countryCode}
+              isLoading={true}
+              inputProps={{name: "city"}}
             />
           </Col>
         </FormGroup>

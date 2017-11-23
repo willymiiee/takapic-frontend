@@ -13,15 +13,47 @@ import PhotosPortofolio from "./PhotosPortofolio";
 import PricePackage from "./PricePackage";
 
 class User extends Component{
+  constructor() {
+    super();
+    this.state = {
+      countries: [],
+      currencies: {}
+    };
+  }
+
   componentWillMount() {
+    this.getPhotographerServiceInformation();
+    this.formatCountriesSource();
+  }
+
+  getPhotographerServiceInformation() {
     const {
-      photographerServiceInformation: { loading }
+      photographerServiceInformation: { loading }, user: { userMetadata }
     } = this.props;
 
     if (loading) {
-      const uid = this.props.user.userMetadata.uid;
+      const uid = userMetadata.uid;
       this.props.fetchPhotographerServiceInformation(uid);
     }
+  }
+
+  formatCountriesSource() {
+    const { countries: countriesSource } = this.props;
+    let countriesList = [];
+    let currenciesObjects = {};
+
+    for (let key in countriesSource) {
+      const countryCode = countriesSource[key]['iso3166alpha2'];
+      countriesList.push({
+        value: countryCode,
+        label: countriesSource[key].name,
+        continent: countriesSource[key].continent
+      });
+
+      currenciesObjects[countryCode] = countriesSource[key].currency_code;
+    }
+
+    this.setState({ countries: countriesList, currencies: currenciesObjects });
   }
 
   render() {
@@ -30,7 +62,7 @@ class User extends Component{
     const tabsInstance = (
       <Tabs defaultActiveKey={1} animation={false}>
         <Tab eventKey={1} title="Basic Information">
-          <BasicInformation userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} />
+          <BasicInformation userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} state={this.state}/>
         </Tab>
         <Tab eventKey={2} title="Camera Equipment">
           <CameraEquipment />
@@ -58,6 +90,7 @@ class User extends Component{
 
 const mapStateToProps = state => ({
   photographerServiceInformation: state.photographerServiceInformation,
+  countries: state.countries,
 });
 
 const mapDispatchToProps = dispatch => ({
