@@ -4,6 +4,7 @@ import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
 import photographerServiceInfoStep2 from './photographerServiceInfoReducersStep2';
+import profileUpdate from './profileUpdateReducers';
 
 const photographerPhotosPortofolio = (state = [], action) => {
   if (action.type === 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS') {
@@ -125,6 +126,7 @@ const rootReducer = combineReducers({
         return state;
     }
   },
+  profileUpdate,
 });
 
 export default rootReducer;

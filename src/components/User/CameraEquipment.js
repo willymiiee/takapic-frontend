@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux';
 import { Form, FormGroup, Col, ControlLabel, FormControl, Button } from 'react-bootstrap'
 
-export default class CameraEquipment extends Component {
+import {dashify} from "../../helpers/helpers";
+
+import {updateCameraEquipment} from '../../store/actions/profileUpdateActions';
+
+class CameraEquipment extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,6 +55,48 @@ export default class CameraEquipment extends Component {
       this.setState({selected});
   };
 
+  handleUpdate = event => {
+      event.preventDefault();
+      const {selected: {bodies, lenses}} = this.state;
+      if (
+          this.notEmpty(bodies) &&
+          this.notEmpty(lenses)
+      ) {
+          const {
+              photographerServiceInformation: {
+                data: {
+                  userMetadata: {
+                    accountProviderType,
+                    uid,
+                    email,
+                  }
+                }
+              }
+          } = this.props;
+
+          let reference = '';
+          if (accountProviderType === 'google.com') {
+              reference = 'googlecom-' + uid;
+          } else {
+              reference = dashify(email);
+          }
+
+          const params = {
+              reference,
+              bodies: bodies.filter(b => b !== ''),
+              lenses: lenses.filter(l => l !== ''),
+          };
+
+          updateCameraEquipment(params);
+      } else {
+          alert('Please complete the form');
+      }
+  };
+
+  notEmpty = arr => {
+      return arr.length > 0 && arr[0] !== '';
+  };
+
   render() {
     return (
       <Form horizontal>
@@ -86,7 +133,16 @@ export default class CameraEquipment extends Component {
             <Button onClick={this.handleAddMoreLense} style={{float:'right'}}>Add More</Button>
           </Col>
         </FormGroup>
+
+        <hr/>
+        <Button onClick={this.handleUpdate} style={{float:'right'}} className="button">Update</Button>
       </Form>
     );
   }
 }
+
+export default connect(
+    dispatch => ({
+        updateCameraEquipment: paramsObject => dispatch(updateCameraEquipment(paramsObject))
+    })
+)(CameraEquipment);
