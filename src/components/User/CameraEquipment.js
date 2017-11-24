@@ -11,8 +11,8 @@ class CameraEquipment extends Component {
     super(props);
     this.state = {
       selected: {
-        bodies: [''],
-        lenses: [''],
+        bodies: [],
+        lenses: [],
       },
     };
   }
@@ -25,8 +25,12 @@ class CameraEquipment extends Component {
     let {selected} = this.state;
     let cameraEquipment = this.props.photographerServiceInformation.data.cameraEquipment;
     if (cameraEquipment) {
-      selected.bodies = [...selected.bodies, cameraEquipment.body];
-      selected.lenses = [...selected.lenses, cameraEquipment.lens];
+      selected.bodies = cameraEquipment.body.map((item, key) => ([...selected.bodies, item]));
+      selected.lenses = cameraEquipment.lens.map((item, key) => ([...selected.lenses, item]));
+      this.setState({selected});
+    } else {
+      selected.bodies = [''];
+      selected.lenses = [''];
       this.setState({selected});
     }
   }
@@ -87,7 +91,7 @@ class CameraEquipment extends Component {
               lenses: lenses.filter(l => l !== ''),
           };
 
-          updateCameraEquipment(params);
+          this.props.updateCameraEquipment(params);
       } else {
           alert('Please complete the form');
       }
@@ -142,6 +146,7 @@ class CameraEquipment extends Component {
 }
 
 export default connect(
+    null,
     dispatch => ({
         updateCameraEquipment: paramsObject => dispatch(updateCameraEquipment(paramsObject))
     })

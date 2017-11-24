@@ -51,50 +51,73 @@ export default class BasicInformation extends Component {
         "Persian"
       ],
       specialities: ["Wedding", "Snap"],
-      countryCode: this.props.userMetadata.country,
+      countryCode: "",
       continent: "",
       cityOptions: [],
-      locationAdmLevel1: this.props.userMetadata.locationAdmLevel1,
-      locationAdmLevel2: this.props.userMetadata.locationAdmLevel2,
+      locationAdmLevel1: "",
+      locationAdmLevel2: "",
       selected: {
-        languages:
-          this.props.photographerServiceInformation.data.languages || [],
-        specialities: this.props.photographerServiceInformation.data.speciality || [],
+        languages: [],
+        specialities: []
       },
       values: {
-        name: this.props.userMetadata.displayName,
-        selfDescription: this.props.photographerServiceInformation.data.selfDescription,
-        phoneNumber: this.props.userMetadata.phoneNumber
+        name: "",
+        selfDescription: "",
+        phoneNumber: ""
       }
     };
   }
 
+  componentWillMount() {
+    const { userMetadata, photographerServiceInformation } = this.props;
+    const { selected, values } = this.state;
+
+    selected.languages = photographerServiceInformation.data.languages || [];
+    selected.specialities =
+      photographerServiceInformation.data.speciality || [];
+
+    values.name = userMetadata.displayName || "";
+    values.selfDescription =
+      photographerServiceInformation.data.selfDescription || "";
+    values.phoneNumber = userMetadata.phoneNumber || "";
+
+    this.setState({
+      countryCode: userMetadata.country || "",
+      locationAdmLevel1: userMetadata.locationAdmLevel1 || "",
+      locationAdmLevel2: userMetadata.locationAdmLevel2 || "",
+      selected,
+      values
+    });
+  }
+
   _handleNameChange = event => {
     const { values } = this.state;
-    values.name = event.target.value
-    this.setState({values});
-  }
+    values.name = event.target.value;
+    this.setState({ values });
+  };
 
   _handleSelfDescriptionChange = event => {
     const { values } = this.state;
-    values.selfDescription = event.target.value
-    this.setState({values});
-  }
+    values.selfDescription = event.target.value;
+    this.setState({ values });
+  };
 
   _handlePhoneNumberChange = event => {
     const { values } = this.state;
-    values.phoneNumber = event.target.value
-    this.setState({values});
-  }
+    values.phoneNumber = event.target.value;
+    this.setState({ values });
+  };
 
   _handleSelectCountry = selectChoice => {
-    this.setState({
-      countryCode: selectChoice.value,
-      continent: selectChoice.continent
-    });
+    if (selectChoice) {
+      this.setState({
+        countryCode: selectChoice.value,
+        continent: selectChoice.continent
+      });
 
-    if (selectChoice.value !== this.state.countryCode) {
-      this._resetCity();
+      if (selectChoice.value !== this.state.countryCode) {
+        this._resetCity();
+      }
     }
   };
 
@@ -108,17 +131,23 @@ export default class BasicInformation extends Component {
 
   _getCities = input => {
     if (!input) {
-      return;
+      return Promise.resolve({ options: [] });
     }
 
     const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
+    const options = [
+      { label: "one", value: 1 },
+      { label: "two", value: 2 },
+      { label: "three", value: 3 }
+    ];
     return fetch(
       `${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state
         .continent}&kwd=${input}`
     )
       .then(response => response.json())
-      .then(result => {
-        this.setState({ cityOptions: result.data });
+      .then(results => {
+        console.error(results);
+        return { options: options };
       });
   };
 
@@ -146,7 +175,7 @@ export default class BasicInformation extends Component {
   };
 
   render() {
-    let {
+    const {
       userMetadata,
       photographerServiceInformation,
       countries,
@@ -228,13 +257,13 @@ export default class BasicInformation extends Component {
             City
           </Col>
           <Col sm={6}>
-            <AsyncTypeahead
-              selected={[this.state.locationAdmLevel2]}
-              multiple={false}
-              allowNew={false}
-              options={this.state.cityOptions}
-              onSearch={this._getCities}
+            <Select.Async
+              multi={false}
+              value={this.state.locationAdmLevel2}
               onChange={this._handleSelectCity}
+              valueKey="id"
+              labelKey="city"
+              loadOptions={this._getCities}
               placeholder={
                 this.state.countryCode ? (
                   "Search and choose your city"
@@ -243,8 +272,6 @@ export default class BasicInformation extends Component {
                 )
               }
               disabled={!this.state.countryCode}
-              isLoading={true}
-              inputProps={{ name: "city" }}
             />
           </Col>
         </FormGroup>
@@ -260,7 +287,7 @@ export default class BasicInformation extends Component {
                 label: item,
                 value: item,
                 style: {
-                  margin: '5px 0px 5px 5px',
+                  margin: "5px 0px 5px 5px"
                 }
               }))}
               multi={true}
@@ -281,7 +308,7 @@ export default class BasicInformation extends Component {
                 label: item,
                 value: item,
                 style: {
-                  margin: '5px 0px 5px 5px',
+                  margin: "5px 0px 5px 5px"
                 }
               }))}
               multi={true}

@@ -2,9 +2,9 @@ import axios from "axios";
 import { database } from "../../services/firebase";
 
 export const updateCameraEquipment = params => {
-  const { reference, bodies, lenses } = params;
-
   return dispatch => {
+    const { reference, bodies, lenses } = params;
+
     dispatch({ type: "UPDATE_PROFILE_CAMERA_EQUIPMENT" });
     console.error("updated");
     const db = database.database();
