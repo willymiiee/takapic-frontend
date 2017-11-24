@@ -27,24 +27,33 @@ export default class PricePackage extends Component {
           price: 0
         },
       },
+      packagesPrice: []
     };
+  }
+
+  componentWillMount() {
+    const { photographerServiceInformation } = this.props
+
+    this.setState({
+      packagesPrice: photographerServiceInformation.data.packagesPrice
+    });
   }
 
   handleChange = (event, tr, index) => {
     event.preventDefault();
-    const { masterPackage } = this.state;
+    const { packagesPrice } = this.state;
     const key = tr[index].key;
 
     if (event.target.value !== '') {
-      masterPackage[key].price = event.target.value;
+      packagesPrice[key].price = event.target.value;
     }
 
-    this.setState({ masterPackage });
+    this.setState({ packagesPrice });
   };
 
   render() {
     let tr = [];
-    const n = this.state.masterPackage;
+    const n = this.state.packagesPrice;
     for (var key in n) {
       if (n.hasOwnProperty(key)) {
         var value = n[key];
@@ -77,6 +86,7 @@ export default class PricePackage extends Component {
                         <InputGroup>
                           <FormControl
                             type="text"
+                            value={td.price}
                             onChange={event =>
                               this.handleChange(event, tr, kk)}
                           />
