@@ -6,9 +6,9 @@ import {
   Col,
   ControlLabel,
   FormControl,
-  Image
+  Image,
+  Button
 } from "react-bootstrap";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 export default class BasicInformation extends Component {
   constructor(props) {
@@ -153,15 +153,17 @@ export default class BasicInformation extends Component {
   };
 
   _handleSelectCity = selectChoice => {
-    const { values } = this.state;
+    if (selectChoice) {
+      const { values } = this.state;
 
-    values.city.label = selectChoice.value;
-    values.city.value = selectChoice.value;
+      values.city.label = selectChoice.value;
+      values.city.value = selectChoice.value;
 
-    this.setState({
-      locationAdmLevel1: selectChoice.adm1,
-      locationAdmLevel2: selectChoice.value
-    });
+      this.setState({
+        locationAdmLevel1: selectChoice.adm1,
+        locationAdmLevel2: selectChoice.value
+      });
+    }
   };
 
   _handleSelectLanguages = value => {
@@ -322,6 +324,9 @@ export default class BasicInformation extends Component {
             />
           </Col>
         </FormGroup>
+
+        <hr/>
+        <Button onClick={this.handleUpdate} style={{float:'right'}} className="button">Update</Button>
       </Form>
     );
   }
