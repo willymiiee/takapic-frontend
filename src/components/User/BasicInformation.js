@@ -63,7 +63,11 @@ export default class BasicInformation extends Component {
       values: {
         name: "",
         selfDescription: "",
-        phoneNumber: ""
+        phoneNumber: "",
+        city: {
+          label: "",
+          value: ""
+        }
       }
     };
   }
@@ -80,6 +84,9 @@ export default class BasicInformation extends Component {
     values.selfDescription =
       photographerServiceInformation.data.selfDescription || "";
     values.phoneNumber = userMetadata.phoneNumber || "";
+    values.city.label = userMetadata.locationAdmLevel2 || "";
+    values.city.value = userMetadata.locationAdmLevel2 || "";
+
 
     this.setState({
       countryCode: userMetadata.country || "",
@@ -135,29 +142,26 @@ export default class BasicInformation extends Component {
     }
 
     const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
-    const options = [
-      { label: "one", value: 1 },
-      { label: "two", value: 2 },
-      { label: "three", value: 3 }
-    ];
     return fetch(
       `${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state
         .continent}&kwd=${input}`
     )
       .then(response => response.json())
       .then(results => {
-        console.error(results);
-        return { options: options };
+        return { options: results.data };
       });
   };
 
   _handleSelectCity = selectChoice => {
-    if (typeof selectChoice[0] !== "undefined") {
-      this.setState({
-        locationAdmLevel1: selectChoice[0].adm1,
-        locationAdmLevel2: selectChoice[0].value
-      });
-    }
+    const { values } = this.state;
+
+    values.city.label = selectChoice.value;
+    values.city.value = selectChoice.value;
+
+    this.setState({
+      locationAdmLevel1: selectChoice.adm1,
+      locationAdmLevel2: selectChoice.value
+    });
   };
 
   _handleSelectLanguages = value => {
@@ -259,10 +263,10 @@ export default class BasicInformation extends Component {
           <Col sm={6}>
             <Select.Async
               multi={false}
-              value={this.state.locationAdmLevel2}
+              value={this.state.values.city}
               onChange={this._handleSelectCity}
-              valueKey="id"
-              labelKey="city"
+              valueKey="value"
+              labelKey="label"
               loadOptions={this._getCities}
               placeholder={
                 this.state.countryCode ? (
@@ -272,6 +276,7 @@ export default class BasicInformation extends Component {
                 )
               }
               disabled={!this.state.countryCode}
+              filterOption={() => (true)}
             />
           </Col>
         </FormGroup>
