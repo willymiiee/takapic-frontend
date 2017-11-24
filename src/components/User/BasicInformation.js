@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {connect} from 'react-redux';
 import Select from "react-select";
 import {
   Form,
@@ -10,7 +11,11 @@ import {
   Button
 } from "react-bootstrap";
 
-export default class BasicInformation extends Component {
+import {dashify} from "../../helpers/helpers";
+
+import {updateBasicInformation} from '../../store/actions/profileUpdateActions';
+
+class BasicInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -180,6 +185,42 @@ export default class BasicInformation extends Component {
     this.setState({ selected });
   };
 
+  handleUpdate = event => {
+    event.preventDefault();
+    const {
+        photographerServiceInformation: {
+          data: {
+            userMetadata: {
+              accountProviderType,
+              uid,
+              email,
+            }
+          }
+        }
+    } = this.props;
+
+    const state = this.state
+
+    let reference = '';
+    if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+    } else {
+        reference = dashify(email);
+    }
+
+    const params = {
+        reference,
+        state
+    };
+
+    this.props.updateBasicInformation(params);
+
+  };
+
+  notEmpty = arr => {
+      return arr.length > 0 && arr[0] !== '';
+  };
+
   render() {
     const {
       userMetadata,
@@ -331,3 +372,10 @@ export default class BasicInformation extends Component {
     );
   }
 }
+
+export default connect(
+    null,
+    dispatch => ({
+        updateBasicInformation: paramsObject => dispatch(updateBasicInformation(paramsObject))
+    })
+)(BasicInformation);
