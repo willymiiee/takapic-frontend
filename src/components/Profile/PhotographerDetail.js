@@ -127,7 +127,8 @@ class PhotographerDetail extends Component {
             },
             packagesPrice
           }
-        }
+        },
+        currenciesRates
       } = this.props;
 
       const settings = {
@@ -205,7 +206,7 @@ class PhotographerDetail extends Component {
                   <i className="fa fa-times" onClick={this.closeModal} />
                 </div>
                 {
-                  packagesPrice ? <PhotographerDetailReservationForm
+                  packagesPrice && currenciesRates ? <PhotographerDetailReservationForm
                     photographerServiceInformation={this.props.photographerServiceInformation}
                   /> : null
                 }
@@ -267,7 +268,7 @@ class PhotographerDetail extends Component {
 
               <div className="col-sm-6 col-md-5 col-md-offset-1 margin-top-70">
                 {
-                  packagesPrice ? <PhotographerDetailReservationForm/> : null
+                  packagesPrice && currenciesRates ? <PhotographerDetailReservationForm/> : null
                 }
               </div>
             </div>

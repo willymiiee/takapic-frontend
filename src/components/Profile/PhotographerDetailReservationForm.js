@@ -82,7 +82,7 @@ class PhotographerDetailReservationForm extends Component {
     } = this.state;
 
     const information = {
-      packageSelectedIndex: 0,
+      packageSelectedIndex: this.state.reservation.package.value,
       startDateTime: startingDate + ' ' + startingTime,
       photographerFee,
       serviceFee: Math.round(this.state.reservation.photographerFee * serviceFee),

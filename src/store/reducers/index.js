@@ -58,7 +58,7 @@ const countries = (state = {}, action) => {
   return state;
 };
 
-const currenciesRates = (state = {}, action) => {
+const currenciesRates = (state = null, action) => {
   if (action.type === 'FETCH_CURRENCIES_RATES') {
     return action.payload;
   }
@@ -80,21 +80,11 @@ const reservation = (state = {}, action) => {
     case 'RESERVATION_PAYMENT':
       return {
         ...state,
-        meetingPoints: {
-          type: '-',
-          detail: {}
-        },
-        message: '-',
-        payment: {
-          billingCountry: '',
-          method: ''
-        },
-        passengers: {
-          adults: 0,
-          childrens: 0,
-          infants: 0
-        }
+        ...action.payload
       };
+
+    case 'RESERVATION_FETCH':
+      return { ...state, ...action.payload };
 
     default:
       return state;
