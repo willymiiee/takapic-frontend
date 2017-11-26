@@ -55,7 +55,6 @@ class BasicInformation extends Component {
         "Gujarati",
         "Persian"
       ],
-      specialities: ["Wedding", "Snap"],
       countryCode: "",
       continent: "",
       cityOptions: [],
@@ -63,7 +62,6 @@ class BasicInformation extends Component {
       locationAdmLevel2: "",
       selected: {
         languages: [],
-        specialities: []
       },
       values: {
         name: "",
@@ -82,8 +80,6 @@ class BasicInformation extends Component {
     const { selected, values } = this.state;
 
     selected.languages = photographerServiceInformation.data.languages || [];
-    selected.specialities =
-      photographerServiceInformation.data.speciality || [];
 
     values.name = userMetadata.displayName || "";
     values.selfDescription =
@@ -175,13 +171,6 @@ class BasicInformation extends Component {
     const { selected } = this.state;
     const languages = value.map(item => item.value);
     selected.languages = languages;
-    this.setState({ selected });
-  };
-
-  _handleSelectSpecialities = value => {
-    const { selected } = this.state;
-    const specialities = value.map(item => item.value);
-    selected.specialities = specialities;
     this.setState({ selected });
   };
 
@@ -341,27 +330,6 @@ class BasicInformation extends Component {
               multi={true}
               value={this.state.selected.languages}
               onChange={this._handleSelectLanguages}
-            />
-          </Col>
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalSpecialities">
-          <Col componentClass={ControlLabel} sm={2}>
-            Specialities
-          </Col>
-          <Col sm={6}>
-            <Select
-              placeholder="Select your speciality"
-              options={this.state.specialities.map(item => ({
-                label: item,
-                value: item,
-                style: {
-                  margin: "5px 0px 5px 5px"
-                }
-              }))}
-              multi={true}
-              value={this.state.selected.specialities}
-              onChange={this._handleSelectSpecialities}
             />
           </Col>
         </FormGroup>
