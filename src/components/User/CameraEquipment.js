@@ -89,8 +89,8 @@ class CameraEquipment extends Component {
               reference,
               bodies: bodies.filter(b => b !== '').map(b => {return Array.isArray(b) ? b[0] : b}),
               lenses: lenses.filter(l => l !== '').map(l => {return Array.isArray(l) ? l[0] : l}),
+              uid: uid
           };
-
           this.props.updateCameraEquipment(params);
       } else {
           alert('Please complete the form');

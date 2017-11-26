@@ -17,7 +17,7 @@ class User extends Component{
     super();
     this.state = {
       countries: [],
-      currencies: {}
+      currencies: {},
     };
   }
 
@@ -57,15 +57,15 @@ class User extends Component{
   }
 
   render() {
-    const { user: { userMetadata }, photographerServiceInformation } = this.props;
+    const { user: { userMetadata }, photographerServiceInformation, activeTab } = this.props;
 
     const tabsInstance = (
-      <Tabs defaultActiveKey={1} animation={false}>
+      <Tabs defaultActiveKey={activeTab} animation={false}>
         <Tab eventKey={1} title="Basic Information">
           <BasicInformation userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} state={this.state}/>
         </Tab>
         <Tab eventKey={2} title="Camera Equipment">
-          <CameraEquipment photographerServiceInformation={photographerServiceInformation} />
+          <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
         </Tab>
         <Tab eventKey={3} title="Meeting Points">
           <MeetingPoints />
@@ -91,6 +91,7 @@ class User extends Component{
 const mapStateToProps = state => ({
   photographerServiceInformation: state.photographerServiceInformation,
   countries: state.countries,
+  activeTab: state.profileUpdate.activeTab,
 });
 
 const mapDispatchToProps = dispatch => ({

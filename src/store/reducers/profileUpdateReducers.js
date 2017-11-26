@@ -1,6 +1,7 @@
 const initialState = {
-  loading: false,
-  loaded: false
+  loading: true,
+  loaded: false,
+  activeTab: 1,
 };
 
 const profileUpdate = (state = initialState, action) => {
@@ -19,6 +20,8 @@ const profileUpdate = (state = initialState, action) => {
       return { ...state, loading: false, loaded: true, ...action.payload };
     case 'UPDATE_PROFILE_CAMERA_EQUIPMENT_ERROR':
       return { loading: false, loaded: true, error: action.error };
+    case 'UPDATE_ACTIVE_TAB':
+      return { ...state, activeTab: action.payload }
     default:
       return state;
   }
