@@ -18,6 +18,7 @@ class User extends Component{
     this.state = {
       countries: [],
       currencies: {},
+      meetingPoint: null
     };
   }
 
@@ -26,7 +27,7 @@ class User extends Component{
     this.formatCountriesSource();
   }
 
-  getPhotographerServiceInformation() {
+  getPhotographerServiceInformation = () => {
     const {
       photographerServiceInformation: { loading }, user: { userMetadata }
     } = this.props;
@@ -37,7 +38,7 @@ class User extends Component{
     }
   }
 
-  formatCountriesSource() {
+  formatCountriesSource = () => {
     const { countries: countriesSource } = this.props;
     let countriesList = [];
     let currenciesObjects = {};
@@ -56,11 +57,17 @@ class User extends Component{
     this.setState({ countries: countriesList, currencies: currenciesObjects });
   }
 
+  handleSelectedTab = (activeTab) => {
+    if (activeTab === 3) {
+      this.setState({ meetingPoint: <MeetingPoints /> })
+    }
+  }
+
   render() {
     const { user: { userMetadata }, photographerServiceInformation, activeTab } = this.props;
 
     const tabsInstance = (
-      <Tabs defaultActiveKey={activeTab} animation={false}>
+      <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
         <Tab eventKey={1} title="Basic Information">
           <BasicInformation userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} state={this.state}/>
         </Tab>
@@ -68,7 +75,7 @@ class User extends Component{
           <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
         </Tab>
         <Tab eventKey={3} title="Meeting Points">
-          <MeetingPoints />
+          {this.state.meetingPoint}
         </Tab>
         <Tab eventKey={4} title="Photos Portofolio">
           <PhotosPortofolio />
