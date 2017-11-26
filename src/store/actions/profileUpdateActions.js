@@ -1,4 +1,3 @@
-import axios from "axios";
 import { database } from "../../services/firebase";
 import { fetchPhotographerServiceInformation } from './photographerServiceInfoActions'
 

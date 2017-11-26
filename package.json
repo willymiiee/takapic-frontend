@@ -51,6 +51,7 @@
     "redux-thunk": "^2.2.0",
     "rmc-date-picker": "^6.0.0",
     "slick-carousel": "^1.8.1",
+    "uuid": "^3.1.0",
     "yup": "^0.23.0"
   },
   "devDependencies": {

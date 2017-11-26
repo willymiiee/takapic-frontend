@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import get from 'lodash/get';
+import forEach from 'lodash/forEach';
+import orderBy from 'lodash/orderBy';
 import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
@@ -20,18 +22,49 @@ const photographerServiceInformation = (state = { loading: true, data: {} }, act
     return { data: {}, loading: true };
 
   } else if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
-    const packagesPrice = get(action.payload, 'packagesPrice', false);
+    const packagesPriceXYZ = get(action.payload, 'packagesPrice', false);
+    let newPackagesPriceList = [];
+    forEach(packagesPriceXYZ, (value, key) => {
+      newPackagesPriceList.push({
+        ...value,
+        id: key
+      });
+    });
+
+    const sortedList = orderBy(newPackagesPriceList, ['price'], ['asc']);
+    let newPackagesPriceObjects = {};
+    sortedList.forEach(item => {
+      newPackagesPriceObjects[item.id] = {
+        packageName: item.packageName,
+        price: item.price,
+        requirement: item.requirement
+      };
+    });
+
+    const newPayloadData= {
+      ...action.payload,
+      packagesPrice: newPackagesPriceObjects,
+      meetingPoints: {
+        '0000': '--- Choose ---',
+        ...action.payload.meetingPoints
+      }
+    };
+
+
+    const packagesPrice = get(newPayloadData, 'packagesPrice', false);
     let totalReservationPriceInitiate = 0;
 
     if (packagesPrice) {
-      const priceMin = parseInt(action.payload.packagesPrice[0].price);
-      const credit = 0;
-      totalReservationPriceInitiate = Math.round(credit + priceMin + priceMin * 0.15);
+      const packagesPriceObjKeys = Object.keys(packagesPrice);
+      const priceOfFirstPackage = packagesPrice[packagesPriceObjKeys[0]].price;
+      // eslint-disable-next-line
+      const priceMin = parseInt(priceOfFirstPackage);
+      totalReservationPriceInitiate = Math.round(priceMin + priceMin * 0.15);
     }
 
     return {
       data: {
-        ...action.payload,
+        ...newPayloadData,
         totalReservationPriceInitiate
       },
       loading: false,

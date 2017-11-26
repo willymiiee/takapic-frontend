@@ -131,12 +131,14 @@ class PhotographerDetail extends Component {
         currenciesRates
       } = this.props;
 
+      const photosPortofolioObjKeys = Object.keys(photosPortofolio);
+
       const settings = {
-        customPaging: function (i) {
-          const item = photosPortofolio[i];
+        customPaging: function (idx) {
+          const item = photosPortofolio[photosPortofolioObjKeys[idx]];
           return (
             <a>
-              <img src={item.url}/>
+              <img src={item.url} alt="This is an alt text"/>
             </a>
           );
         },
@@ -164,8 +166,8 @@ class PhotographerDetail extends Component {
                   alt=""
                 />
               </div>
-              <h2>{displayName}</h2>
-              <p>{locationMerge}</p>
+              <h2>{ displayName }</h2>
+              <p>{ locationMerge }</p>
               <a
                 href="/photographer-portofolio/1"
                 className="button button-white"
@@ -179,14 +181,16 @@ class PhotographerDetail extends Component {
                 ?
                 <Slider {...settings}>
                   {
-                    photosPortofolio.map((item, index) => <div key={`portofolio-photo-${index}`} style={{textAlign: 'center'}}>
-                      <img
+                    Object.keys(photosPortofolio).map((item, index) => (
+                      <div key={`portofolio-photo-${index}`} style={{textAlign: 'center'}}>
+                        <img
                           className="img-photographer-detail"
-                        style={{display: 'inline-block'}}
-                        src={item.url}
-                        alt=""
-                      />
-                    </div>)
+                          style={{display: 'inline-block'}}
+                          src={photosPortofolio[item].url}
+                          alt=""
+                        />
+                      </div>
+                    ))
                   }
                 </Slider>
                 : null
@@ -247,21 +251,21 @@ class PhotographerDetail extends Component {
 
                     <div id="photographer-stats">
                       {
-                        impressions.map((item, key) => (
-                        <div style={{padding: 10}} key={key}>
-                          <CircularProgressbar
-                            percentage={item.value * 100}
-                            initialAnimation
-                          />
-                          <b>{item.label}</b>
-                        </div>
-                      ))
+                        Object.keys(impressions).map((item, key) => (
+                          <div style={{padding: 10}} key={key}>
+                            <CircularProgressbar
+                              percentage={impressions[item].value * 100}
+                              initialAnimation
+                            />
+                            <b>{impressions[item].label}</b>
+                          </div>
+                        ))
                       }
                     </div>
                   </div>
 
                   <h3 className="has-dot">
-                    Comments <span className="thin">(38)</span>
+                    Comments <span className="thin">(0)</span>
                   </h3>
                 </div>
               </div>

@@ -11,7 +11,7 @@ export default class PortofolioAbout extends Component {
             className="photographer-portofolio-container"
           >
             <div id="photographer-portofolio-about-photo">
-              <img src="images/takapic-bg.jpeg" className="cover" />
+              <img src="images/takapic-bg.jpeg" className="cover" alt="This is an alt text" />
             </div>
             <ul>
               <li>

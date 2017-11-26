@@ -1,5 +1,6 @@
 import axios from 'axios';
 import get from 'lodash/get';
+import uuidv4 from 'uuid/v4';
 import { database } from '../../services/firebase';
 import history from '../../services/history';
 
@@ -41,15 +42,28 @@ export const submitCameraEquipment = params => {
     currency
   } = params;
 
+  let bodiesObject = {};
+  let lensesObject = {};
+  let languagesObject = {};
+  bodies.forEach(item => bodiesObject[uuidv4()] = item);
+  lenses.forEach(item => lensesObject[uuidv4()] = item);
+  languages.forEach(item => languagesObject[uuidv4()] = item);
+
   return dispatch => {
     dispatch({ type: 'SUBMIT_CAMERA_EQUIPMENT' });
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
     const metadataRef = ref.child(reference);
+
+    let impressionsObject = {};
+    impressionsObject[uuidv4()] = { label: 'Friendly', value: 0.5 };
+    impressionsObject[uuidv4()] = { label: 'Skillful', value: 0.5 };
+    impressionsObject[uuidv4()] = { label: 'Comprehensive', value: 0.5 };
+
     metadataRef
       .update({
-        cameraEquipment: { body: bodies, lens: lenses },
-        languages,
+        cameraEquipment: { body: bodiesObject, lens: lensesObject },
+        languages: languagesObject,
         location,
         selfDescription,
         // speciality,
@@ -58,11 +72,7 @@ export const submitCameraEquipment = params => {
             label: 'Common',
             value: 3
           },
-          impressions: [
-            { label: 'Friendly', value: 0.5 },
-            { label: 'Skillful', value: 0.5 },
-            { label: 'Comprehensive', value: 0.5 }
-          ]
+          impressions: impressionsObject
         }
       })
       .then(() => {

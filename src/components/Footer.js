@@ -64,23 +64,6 @@ class Footer extends Component {
                   <Link to="/">Privacy Policy</Link>
                 </li>
               </ul>
-              <ul className="footer-links">
-                <li>
-                  <Link to="/">About Us</Link>
-                </li>
-                <li>
-                  <Link to="/">How it Works</Link>
-                </li>
-                <li>
-                  <Link to="/">Packages</Link>
-                </li>
-                <li>
-                  <Link to="/">FAQs</Link>
-                </li>
-                <li>
-                  <Link to="/">Privacy Policy</Link>
-                </li>
-              </ul>
             </div>
             <div className="col-sm-3">
               <h4>Contact Us</h4>

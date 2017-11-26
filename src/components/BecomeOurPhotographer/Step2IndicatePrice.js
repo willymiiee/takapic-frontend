@@ -45,7 +45,8 @@ class Step2IndicatePrice extends Component {
     const key = tr[index].key;
 
     if (event.target.value !== '') {
-      masterPackage[key].price = event.target.value;
+      // eslint-disable-next-line
+      masterPackage[key].price = parseInt(event.target.value);
     }
 
     this.setState({ masterPackage });

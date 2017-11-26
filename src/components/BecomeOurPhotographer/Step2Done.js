@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import uuidv4 from 'uuid/v4';
 import { database } from '../../services/firebase';
 import { dashify } from '../../helpers/helpers';
 
-import Page from 'components/Page';
+import Page from '../Page';
 
 const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
   return dispatch => {
@@ -13,7 +14,9 @@ const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
     const ref = db.ref('/photographer_service_information');
     const item = ref.child(reference);
 
-    item.update({ photosPortofolio: data });
+    let photosInfoObject = {};
+    data.forEach(item => photosInfoObject[uuidv4()] = item);
+    item.update({ photosPortofolio: photosInfoObject });
   };
 };
 
