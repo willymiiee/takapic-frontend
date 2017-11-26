@@ -59,7 +59,7 @@ class User extends Component{
 
   handleSelectedTab = (activeTab) => {
     if (activeTab === 3) {
-      this.setState({ meetingPoint: <MeetingPoints /> })
+      this.setState({ meetingPoint: <MeetingPoints photographerServiceInformation={this.props.photographerServiceInformation} /> })
     }
   }
 

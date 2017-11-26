@@ -13,16 +13,31 @@ export default class MeetingPoints extends Component {
     };
   }
 
+  componentWillMount() {
+    this.setLocalState();
+  }
+
   componentDidMount() {
     this.setState({ mapLoaded: true });
   }
 
+  setLocalState = () => {
+    const { photographerServiceInformation : { data } } = this.props
+    let { meetingPoints } = this.state
+
+    meetingPoints = data.meetingPoints;
+
+    this.setState({meetingPoints});
+  }
+
   handleAddition = params => {
-    const generalLocation = get(params, 'generalLocation');
+    let generalLocation = get(params, 'generalLocation');
     const specificLocation = get(params, 'specificLocation', '-');
 
     if (generalLocation && this.state.meetingPoints.length < 3) {
-      const meetingPoints = [...this.state.meetingPoints, { generalLocation, specificLocation }];
+      let meetingPointsLocal = Object.assign(generalLocation, {placeLocationNotes: specificLocation})
+      const meetingPoints = [...this.state.meetingPoints, meetingPointsLocal];
+      console.error(meetingPoints);
       this.setState({ meetingPoints });
     }
   };
@@ -55,9 +70,9 @@ export default class MeetingPoints extends Component {
                 <div className="row">
                   <div className="number-of-meetpoint col-xs-2">{key + 1}</div>
                   <div className="detail-of-meetpoint col-xs-8">
-                    <stong>{p.generalLocation.meetingPointName}</stong>
-                    <p>{p.generalLocation.formattedAddress}</p>
-                    <h6>{p.specificLocation}</h6>
+                    <stong>{p.meetingPointName}</stong>
+                    <p>{p.formattedAddress}</p>
+                    <h6>{p.placeLocationNotes}</h6>
                   </div>
                   <button
                     className="delete-button col-xs-2"
