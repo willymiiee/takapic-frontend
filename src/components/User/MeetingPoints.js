@@ -24,7 +24,9 @@ export default class MeetingPoints extends Component {
     const { photographerServiceInformation : { data } } = this.props
     let { meetingPoints } = this.state
 
-    meetingPoints = data.meetingPoints;
+    meetingPoints = Object.keys(data.meetingPoints)
+      .filter(x => x !== "0000")
+      .map(item => (data.meetingPoints[item]));
 
     this.setState({meetingPoints});
   }
