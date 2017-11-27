@@ -78,7 +78,7 @@ class User extends Component{
           {this.state.meetingPoint}
         </Tab>
         <Tab eventKey={4} title="Photos Portofolio">
-          <PhotosPortofolio />
+          <PhotosPortofolio photographerServiceInformation={photographerServiceInformation}/>
         </Tab>
         <Tab eventKey={5} title="Price Package">
           <PricePackage userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} />

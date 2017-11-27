@@ -5,11 +5,22 @@ export default class PhotosPortofolio extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      photosPortofolio: [],
       selectedPhotos: [],
       loading: false,
       loaded: false,
       percentages: []
     };
+  }
+
+  componentWillMount() {
+    const { photographerServiceInformation: { data } } = this.props;
+
+    if (data.photosPortofolio) {
+      this.setState({
+        photosPortofolio: Object.keys(data.photosPortofolio).map(item => (data.photosPortofolio[item])),
+      })
+    }
   }
 
   handleUpload = event => {
@@ -42,8 +53,18 @@ export default class PhotosPortofolio extends Component {
     this.setState({ selectedPhotos });
   };
 
+  handleRemoveFromFirebase = (event, index) => {
+    let { photosPortofolio } = this.state;
+    photosPortofolio = [
+      ...photosPortofolio.slice(0, index),
+      ...photosPortofolio.slice(index + 1),
+    ];
+    this.setState({ photosPortofolio });
+  }
+
   render() {
-    const { selectedPhotos } = this.state;
+    const { selectedPhotos, photosPortofolio } = this.state;
+
     return (
       <div className="row">
         <div className="col-sm-7 margin-top-15 margin-bottom-30">
@@ -63,6 +84,42 @@ export default class PhotosPortofolio extends Component {
               Browse images
             </button>
             <div id="photo-preview">
+              {photosPortofolio.map((photo, key) => (
+                <div>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                    }}
+                  />
+                  {this.props.loading && (
+                    <ProgressBar
+                      striped
+                      bsStyle="success"
+                      now={
+                        this.props.percentages[
+                          key
+                        ]
+                      }
+                      style={{
+                        position: 'absolute',
+                        top: 70,
+                        width: '100%',
+                      }}
+                    />
+                  )}
+                  <img src={photo.url} alt="This is the alt text" />
+                  {!this.props.loading && (
+                    <i
+                      title="Remove Photo"
+                      onClick={event => this.handleRemoveFromFirebase(event, key)}
+                    />
+                  )}
+                </div>
+              ))}
               {selectedPhotos.map((photo, key) => (
                 <div>
                   <div
