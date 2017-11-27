@@ -61,7 +61,7 @@ class BasicInformation extends Component {
       locationAdmLevel1: "",
       locationAdmLevel2: "",
       selected: {
-        languages: [],
+        languages: {},
       },
       values: {
         name: "",
@@ -76,26 +76,29 @@ class BasicInformation extends Component {
   }
 
   componentWillMount() {
-    const { userMetadata, photographerServiceInformation } = this.props;
+    const { photographerServiceInformation, photographerServiceInformation : { data : { userMetadata } } } = this.props;
     const { selected, values } = this.state;
 
-    selected.languages = photographerServiceInformation.data.languages || [];
+    if (photographerServiceInformation && userMetadata) {
+      selected.languages = photographerServiceInformation.data.languages || {};
 
-    values.name = userMetadata.displayName || "";
-    values.selfDescription =
+      values.name = userMetadata.displayName || "";
+      values.selfDescription =
       photographerServiceInformation.data.selfDescription || "";
-    values.phoneNumber = userMetadata.phoneNumber || "";
-    values.city.label = userMetadata.locationAdmLevel2 || "";
-    values.city.value = userMetadata.locationAdmLevel2 || "";
+      values.phoneNumber = userMetadata.phoneNumber || "";
+      values.city.label = userMetadata.locationAdmLevel2 || "";
+      values.city.value = userMetadata.locationAdmLevel2 || "";
 
 
-    this.setState({
-      countryCode: userMetadata.country || "",
-      locationAdmLevel1: userMetadata.locationAdmLevel1 || "",
-      locationAdmLevel2: userMetadata.locationAdmLevel2 || "",
-      selected,
-      values
-    });
+      this.setState({
+        countryCode: userMetadata.country || "",
+        locationAdmLevel1: userMetadata.locationAdmLevel1 || "",
+        locationAdmLevel2: userMetadata.locationAdmLevel2 || "",
+        selected,
+        values
+      });
+    }
+
   }
 
   _handleNameChange = event => {
@@ -216,6 +219,8 @@ class BasicInformation extends Component {
       state
     } = this.props;
 
+    const { languages, selected } = this.state
+
     return (
       <Form horizontal>
         <FormGroup>
@@ -318,7 +323,7 @@ class BasicInformation extends Component {
           <Col sm={6}>
             <Select
               placeholder="Select your language"
-              options={this.state.languages.map(item => ({
+              options={languages.map(item => ({
                 label: item,
                 value: item,
                 style: {
@@ -326,7 +331,7 @@ class BasicInformation extends Component {
                 }
               }))}
               multi={true}
-              value={this.state.selected.languages}
+              value={Object.keys(selected.languages).map(item => (selected.languages[item]))}
               onChange={this._handleSelectLanguages}
             />
           </Col>
