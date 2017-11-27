@@ -69,7 +69,7 @@ class User extends Component{
     const tabsInstance = (
       <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
         <Tab eventKey={1} title="Basic Information">
-          <BasicInformation userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} state={this.state}/>
+          <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
         </Tab>
         <Tab eventKey={2} title="Camera Equipment">
           <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>

@@ -61,9 +61,10 @@ class BasicInformation extends Component {
       locationAdmLevel1: "",
       locationAdmLevel2: "",
       selected: {
-        languages: {},
+        languages: [],
       },
       values: {
+        photoProfileUrl: "",
         name: "",
         selfDescription: "",
         phoneNumber: "",
@@ -80,15 +81,15 @@ class BasicInformation extends Component {
     const { selected, values } = this.state;
 
     if (photographerServiceInformation && userMetadata) {
-      selected.languages = photographerServiceInformation.data.languages || {};
+      this._setStateLanguage();
 
+      values.photoProfileUrl = userMetadata.photoProfileUrl || "";
       values.name = userMetadata.displayName || "";
       values.selfDescription =
       photographerServiceInformation.data.selfDescription || "";
       values.phoneNumber = userMetadata.phoneNumber || "";
       values.city.label = userMetadata.locationAdmLevel2 || "";
       values.city.value = userMetadata.locationAdmLevel2 || "";
-
 
       this.setState({
         countryCode: userMetadata.country || "",
@@ -99,6 +100,18 @@ class BasicInformation extends Component {
       });
     }
 
+  }
+
+  _setStateLanguage = () => {
+    const { photographerServiceInformation } = this.props;
+    const { selected } = this.state;
+    let languages = photographerServiceInformation.data.languages;
+    if (languages) {
+      selected.languages = Object.keys(languages).map(item => (languages[item]));
+      this.setState({
+        selected
+      })
+    }
   }
 
   _handleNameChange = event => {
@@ -202,7 +215,8 @@ class BasicInformation extends Component {
 
     const params = {
         reference,
-        state
+        state,
+        uid,
     };
 
     this.props.updateBasicInformation(params);
@@ -219,7 +233,7 @@ class BasicInformation extends Component {
       state
     } = this.props;
 
-    const { languages, selected } = this.state
+    const { languages, selected, values } = this.state
 
     return (
       <Form horizontal>
@@ -227,7 +241,7 @@ class BasicInformation extends Component {
           <Col componentClass={ControlLabel} sm={2} />
           <Col sm={6}>
             <Image
-              src={userMetadata.photoProfileUrl}
+              src={values.photoProfileUrl}
               circle
               style={{ width: 150 }}
             />
@@ -242,7 +256,7 @@ class BasicInformation extends Component {
             <FormControl
               type="text"
               placeholder="Enter Your Name"
-              value={this.state.values.name}
+              value={values.name}
               onChange={this._handleNameChange}
             />
           </Col>
@@ -256,7 +270,7 @@ class BasicInformation extends Component {
             <textarea
               name="selfDescription"
               placeholder="Enter Your Self Description"
-              value={this.state.values.selfDescription}
+              value={values.selfDescription}
               onChange={this._handleSelfDescriptionChange}
             />
           </Col>
@@ -270,7 +284,7 @@ class BasicInformation extends Component {
             <FormControl
               type="text"
               placeholder="Enter Your Phone Number"
-              value={this.state.values.phoneNumber}
+              value={values.phoneNumber}
               onChange={this._handlePhoneNumberChange}
             />
           </Col>
@@ -298,7 +312,7 @@ class BasicInformation extends Component {
           <Col sm={6}>
             <Select.Async
               multi={false}
-              value={this.state.values.city}
+              value={values.city}
               onChange={this._handleSelectCity}
               valueKey="value"
               labelKey="label"
@@ -331,7 +345,7 @@ class BasicInformation extends Component {
                 }
               }))}
               multi={true}
-              value={Object.keys(selected.languages).map(item => (selected.languages[item]))}
+              value={selected.languages}
               onChange={this._handleSelectLanguages}
             />
           </Col>

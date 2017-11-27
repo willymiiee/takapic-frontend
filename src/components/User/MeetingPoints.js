@@ -36,7 +36,6 @@ export default class MeetingPoints extends Component {
     if (generalLocation && this.state.meetingPoints.length < 3) {
       let meetingPointsLocal = Object.assign(generalLocation, {placeLocationNotes: specificLocation})
       const meetingPoints = [...this.state.meetingPoints, meetingPointsLocal];
-      console.error(meetingPoints);
       this.setState({ meetingPoints });
     }
   };
