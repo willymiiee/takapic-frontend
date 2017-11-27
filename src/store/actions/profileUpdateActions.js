@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import uuidv4 from 'uuid/v4';
 import { database } from "../../services/firebase";
 import { fetchPhotographerServiceInformation } from './photographerServiceInfoActions'
@@ -143,6 +144,89 @@ export const updateMeetingPoints = params => {
           error
         });
       });
+  };
+}
+
+export const uploadPhotosPortfolio = params => {
+  const { reference, state: { selectedPhotos, photosPortofolio } } = params;
+  return dispatch => {
+    let files = selectedPhotos;
+    let percentages = files.map(f => 0);
+    let tasks = [];
+    let dataImages = [];
+
+    dispatch({ type: "UPDATE_PHOTOS_PORTOFOLIO" });
+    dispatch(setActiveTab(4));
+
+    for (let i in files) {
+    
+      const fullDirectory = `pictures/portofolio-photos/${reference}`;
+      const imageFile = files[i].file;
+      let storageRef = firebase
+        .storage()
+        .ref(fullDirectory + '/' + imageFile.name);
+
+      //Upload file
+      tasks = [...tasks, storageRef.put(imageFile)];
+      tasks[i].on(
+        'state_changed',
+        function progress(snapshot) {
+          let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          percentages[i] = percentage;
+          dispatch({
+            type: 'UPLOAD_IMAGE_PHOTOS_PORTOFOLIO',
+            percentages,
+          });
+        },
+        function error(err) {},
+        // eslint-disable-next-line
+        function complete() {
+          let downloadURL = tasks[i].snapshot.downloadURL;
+          let payload = {
+            url: downloadURL,
+            theme: '-',
+          }
+          dataImages = [...dataImages, payload];
+        }
+      );
+    }
+
+    return Promise.all(tasks).then(
+      () => {
+        dispatch(updatePhotosPortfolio(params, dataImages));
+      },
+      () => {
+      }
+    );
+  };
+};
+
+export const updatePhotosPortfolio = (params, dataImages) => {
+  const { reference, state: {photosPortofolio} } = params
+  return dispatch => {
+    const db = database.database();
+    const ref = db.ref('/photographer_service_information');
+    const item = ref.child(reference);
+
+    let photosInfoObject = {};
+    photosPortofolio.forEach(item => photosInfoObject[uuidv4()] = item);
+    dataImages.forEach(item => photosInfoObject[uuidv4()] = item);
+    item.update({
+      photosPortofolio: photosInfoObject
+    })
+    .then(() => {
+      dispatch({
+        type: "UPDATE_PHOTOS_PORTOFOLIO_SUCCESS",
+        payload: { status: "OK", message: "Data updated" }
+      });
+      dispatch(fetchPhotographerServiceInformation(params.uid))
+    })
+    .catch(error => {
+      dispatch({
+        type: "UPDATE_PHOTOS_PORTOFOLIO_ERROR",
+        error
+      });
+    });
   };
 }
 

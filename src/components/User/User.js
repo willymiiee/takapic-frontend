@@ -64,7 +64,7 @@ class User extends Component{
   }
 
   render() {
-    const { user: { userMetadata }, photographerServiceInformation, activeTab } = this.props;
+    const { user: { userMetadata }, photographerServiceInformation, activeTab, profile } = this.props;
 
     const tabsInstance = (
       <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
@@ -78,7 +78,7 @@ class User extends Component{
           {this.state.meetingPoint}
         </Tab>
         <Tab eventKey={4} title="Photos Portofolio">
-          <PhotosPortofolio photographerServiceInformation={photographerServiceInformation}/>
+          <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
         </Tab>
         <Tab eventKey={5} title="Price Package">
           <PricePackage userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} />
@@ -99,6 +99,7 @@ const mapStateToProps = state => ({
   photographerServiceInformation: state.photographerServiceInformation,
   countries: state.countries,
   activeTab: state.profileUpdate.activeTab,
+  profile: state.profileUpdate,
 });
 
 const mapDispatchToProps = dispatch => ({

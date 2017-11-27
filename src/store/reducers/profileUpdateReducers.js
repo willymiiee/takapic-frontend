@@ -1,7 +1,8 @@
 const initialState = {
-  loading: true,
+  loading: false,
   loaded: false,
   activeTab: 1,
+  percentages: [],
 };
 
 const profileUpdate = (state = initialState, action) => {
@@ -31,6 +32,17 @@ const profileUpdate = (state = initialState, action) => {
       delete state.error;
       return { ...state, loading: false, loaded: true, ...action.payload };
     case 'UPDATE_PROFILE_MEETING_POINT_ERROR':
+      return { loading: false, loaded: true, error: action.error };
+    case 'UPDATE_PHOTOS_PORTOFOLIO':
+      return { loading: true, loaded: false };
+    case 'UPLOAD_IMAGE_PHOTOS_PORTFOLIO':
+      return {
+        percentages: action.percentages,
+      };
+    case 'UPDATE_PHOTOS_PORTOFOLIO_SUCCESS':
+      delete state.error;
+      return { ...state, loading: false, loaded: true, ...action.payload };
+    case 'UPDATE_PHOTOS_PORTOFOLIO_ERROR':
       return { loading: false, loaded: true, error: action.error };
     case 'UPDATE_ACTIVE_TAB':
       return { ...state, activeTab: action.payload }
