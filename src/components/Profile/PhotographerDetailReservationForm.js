@@ -20,7 +20,7 @@ const CalculationTotal = props => {
 
     return (
       <span>
-        Total <span className="float-right">USD{total}</span>
+        Total <span className="float-right">USD {total}</span>
       </span>
     );
   }
