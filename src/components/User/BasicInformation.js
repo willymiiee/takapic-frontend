@@ -55,11 +55,15 @@ class BasicInformation extends Component {
         "Gujarati",
         "Persian"
       ],
-      countryCode: "",
-      continent: "",
+      location: {
+        countryCode: "",
+        countryName: "",
+        continent: "",
+        locationAdmLevel1: "",
+        locationAdmLevel2: "",
+        locationMerge: "",
+      },
       cityOptions: [],
-      locationAdmLevel1: "",
-      locationAdmLevel2: "",
       selected: {
         languages: [],
       },
@@ -77,29 +81,30 @@ class BasicInformation extends Component {
   }
 
   componentWillMount() {
-    const { photographerServiceInformation, photographerServiceInformation : { data : { userMetadata } } } = this.props;
-    const { selected, values } = this.state;
+    const { photographerServiceInformation, photographerServiceInformation : { data : { userMetadata, selfDescription } } } = this.props;
+    const { location, selected, values } = this.state;
 
     if (photographerServiceInformation && userMetadata) {
       this._setStateLanguage();
 
+      location.countryCode = photographerServiceInformation.data.location.country || "";
+      location.countryName = photographerServiceInformation.data.location.countryName || "";
+      location.locationAdmLevel1 = photographerServiceInformation.data.location.locationAdmLevel1 || "";
+      location.locationAdmLevel2 = photographerServiceInformation.data.location.locationAdmLevel2 || "";
+      location.locationMerge = photographerServiceInformation.data.location.locationMerge
+
       values.photoProfileUrl = userMetadata.photoProfileUrl || "";
       values.name = userMetadata.displayName || "";
-      values.selfDescription =
-      photographerServiceInformation.data.selfDescription || "";
+      values.selfDescription = selfDescription || "";
       values.phoneNumber = userMetadata.phoneNumber || "";
-      values.city.label = userMetadata.locationAdmLevel2 || "";
-      values.city.value = userMetadata.locationAdmLevel2 || "";
+      values.city.label = location.locationAdmLevel2 || "";
+      values.city.value = location.locationAdmLevel2 || "";
 
       this.setState({
-        countryCode: userMetadata.country || "",
-        locationAdmLevel1: userMetadata.locationAdmLevel1 || "",
-        locationAdmLevel2: userMetadata.locationAdmLevel2 || "",
-        selected,
+        location,
         values
       });
     }
-
   }
 
   _setStateLanguage = () => {
@@ -133,23 +138,35 @@ class BasicInformation extends Component {
   };
 
   _handleSelectCountry = selectChoice => {
-    if (selectChoice) {
-      this.setState({
-        countryCode: selectChoice.value,
-        continent: selectChoice.continent
-      });
+    const { location } = this.state;
 
-      if (selectChoice.value !== this.state.countryCode) {
+    if (selectChoice) {
+
+      if (selectChoice.value !== location.countryCode) {
         this._resetCity();
       }
+
+      location.countryCode = selectChoice.value;
+      location.countryName = selectChoice.label
+      location.continent = selectChoice.continent;
+
+      this.setState({ location });
     }
   };
 
   _resetCity = () => {
+    const { location, values } = this.state
+
+    location.locationAdmLevel1 = "";
+    location.locationAdmLevel2 = "";
+    location.locationMerge = "";
+
+    values.city.label = "";
+    values.city.value = "";
+
     this.setState({
       cityOptions: [],
-      locationAdmLevel1: "",
-      locationAdmLevel2: ""
+      location,
     });
   };
 
@@ -160,7 +177,7 @@ class BasicInformation extends Component {
 
     const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
     return fetch(
-      `${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state
+      `${urlApi}?countryCode=${this.state.location.countryCode}&continent=${this.state.location
         .continent}&kwd=${input}`
     )
       .then(response => response.json())
@@ -171,14 +188,17 @@ class BasicInformation extends Component {
 
   _handleSelectCity = selectChoice => {
     if (selectChoice) {
-      const { values } = this.state;
+      const { location, values } = this.state;
 
       values.city.label = selectChoice.value;
       values.city.value = selectChoice.value;
 
+      location.locationAdmLevel1 = selectChoice.adm1;
+      location.locationAdmLevel2 = selectChoice.value;
+      location.locationMerge = location.locationAdmLevel2 + ', ' + location.locationAdmLevel1 + ', ' + location.countryName;
+
       this.setState({
-        locationAdmLevel1: selectChoice.adm1,
-        locationAdmLevel2: selectChoice.value
+        location, values
       });
     }
   };
@@ -233,7 +253,7 @@ class BasicInformation extends Component {
       state
     } = this.props;
 
-    const { languages, selected, values } = this.state
+    const { languages, location, selected, values } = this.state
 
     return (
       <Form horizontal>
@@ -297,7 +317,7 @@ class BasicInformation extends Component {
           <Col sm={6}>
             <Select
               name="country"
-              value={this.state.countryCode}
+              value={location.countryCode}
               options={state.countries}
               clearable={false}
               onChange={this._handleSelectCountry}
@@ -318,13 +338,13 @@ class BasicInformation extends Component {
               labelKey="label"
               loadOptions={this._getCities}
               placeholder={
-                this.state.countryCode ? (
+                location.countryCode ? (
                   "Search and choose your city"
                 ) : (
                   "Please select a country first"
                 )
               }
-              disabled={!this.state.countryCode}
+              disabled={!location.countryCode}
               filterOption={() => (true)}
             />
           </Col>
