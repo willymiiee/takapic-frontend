@@ -119,6 +119,10 @@ a.button:hover {
     -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
 }
+.button-white:hover{
+    color: white;
+    background-color: black
+}
 
 button.button-white-no-shadow {
     background: transparent;
@@ -925,7 +929,7 @@ button.u:hover {
 
 #reservation-starting-time {
     position: relative;
-    margin-right: 32px;
+    /*margin-right: 32px;*/
 }
 
 #reservation-date {

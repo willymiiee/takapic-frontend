@@ -27,9 +27,9 @@ class Footer extends Component {
                 className="selectpicker margin-bottom-10"
               >
                 <option value="en-US">English</option>
-                <option value="id-ID">Indonesia</option>
+                <option value="id-ID">Mandarin</option>
               </select>
-              <select className="selectpicker">
+              <select className="selectpicker hide">
                 <option>Dollar</option>
                 <option>Rupiah</option>
               </select>
