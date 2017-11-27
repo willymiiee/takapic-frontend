@@ -24,6 +24,11 @@ export const updateBasicInformationUser = params => {
       .update({
         displayName: state.values.name,
         phoneNumber: state.values.phoneNumber,
+        country: state.location.country,
+        countryName: state.location.countryName,
+        locationAdmLevel1: state.location.locationAdmLevel1,
+        locationAdmLevel2: state.location.locationAdmLevel2,
+        locationMerge: state.location.locationMerge,
       })
       .then(() => {
         dispatch({
@@ -58,6 +63,7 @@ export const updateBasicInformationPhotographer = params => {
       .update({
         selfDescription: state.values.selfDescription,
         languages: languagesObject,
+        location: state.location,
       })
       .then(() => {
         dispatch({

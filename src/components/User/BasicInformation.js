@@ -56,7 +56,7 @@ class BasicInformation extends Component {
         "Persian"
       ],
       location: {
-        countryCode: "",
+        country: "",
         countryName: "",
         continent: "",
         locationAdmLevel1: "",
@@ -87,7 +87,7 @@ class BasicInformation extends Component {
     if (photographerServiceInformation && userMetadata) {
       this._setStateLanguage();
 
-      location.countryCode = photographerServiceInformation.data.location.country || "";
+      location.country = photographerServiceInformation.data.location.country || "";
       location.countryName = photographerServiceInformation.data.location.countryName || "";
       location.locationAdmLevel1 = photographerServiceInformation.data.location.locationAdmLevel1 || "";
       location.locationAdmLevel2 = photographerServiceInformation.data.location.locationAdmLevel2 || "";
@@ -142,13 +142,13 @@ class BasicInformation extends Component {
 
     if (selectChoice) {
 
-      if (selectChoice.value !== location.countryCode) {
+      if (selectChoice.value !== location.country) {
         this._resetCity();
       }
 
-      location.countryCode = selectChoice.value;
+      location.country = selectChoice.value;
       location.countryName = selectChoice.label
-      location.continent = selectChoice.continent;
+      location.continent = selectChoice.continent || "";
 
       this.setState({ location });
     }
@@ -177,7 +177,7 @@ class BasicInformation extends Component {
 
     const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
     return fetch(
-      `${urlApi}?countryCode=${this.state.location.countryCode}&continent=${this.state.location
+      `${urlApi}?countryCode=${this.state.location.country}&continent=${this.state.location
         .continent}&kwd=${input}`
     )
       .then(response => response.json())
@@ -317,7 +317,7 @@ class BasicInformation extends Component {
           <Col sm={6}>
             <Select
               name="country"
-              value={location.countryCode}
+              value={location.country}
               options={state.countries}
               clearable={false}
               onChange={this._handleSelectCountry}
@@ -338,13 +338,13 @@ class BasicInformation extends Component {
               labelKey="label"
               loadOptions={this._getCities}
               placeholder={
-                location.countryCode ? (
+                location.country ? (
                   "Search and choose your city"
                 ) : (
                   "Please select a country first"
                 )
               }
-              disabled={!location.countryCode}
+              disabled={!location.country}
               filterOption={() => (true)}
             />
           </Col>
