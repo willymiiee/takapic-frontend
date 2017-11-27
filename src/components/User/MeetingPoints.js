@@ -1,9 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import { Button } from "react-bootstrap";
 import get from 'lodash/get';
 
-import MapWithASearchBox from './../MapWithASearchBox'
+import MapWithASearchBox from './../MapWithASearchBox';
+import {dashify} from "../../helpers/helpers";
 
-export default class MeetingPoints extends Component {
+import {updateMeetingPoints} from '../../store/actions/profileUpdateActions';
+
+class MeetingPoints extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,57 +47,103 @@ export default class MeetingPoints extends Component {
     }
   };
 
+  handleUpdate = event => {
+    event.preventDefault();
+    const {
+        photographerServiceInformation: {
+          data: {
+            userMetadata: {
+              accountProviderType,
+              uid,
+              email,
+            }
+          }
+        }
+    } = this.props;
+
+    const state = this.state
+
+    let reference = '';
+    if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+    } else {
+        reference = dashify(email);
+    }
+
+    const params = {
+        reference,
+        state,
+        uid,
+    };
+
+    this.props.updateMeetingPoints(params);
+
+  };
+
   render() {
 
     return (
       <div className="row">
-        <div className="col-md-8">
-          <h4>Please choose three different meeting points</h4>
-          {
-            this.state.mapLoaded && (
-              <MapWithASearchBox
-                handleAddition={this.handleAddition}
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div style={{height: `100%`}}/>}
-                containerElement={<div style={{height: `400px`}}/>}
-                mapElement={<div style={{height: `100%`}}/>}
-              />)
-          }
-        </div>
+        <div className="row">
+          <div className="col-md-8">
+            <h4>Please choose three different meeting points</h4>
+            {
+              this.state.mapLoaded && (
+                <MapWithASearchBox
+                  handleAddition={this.handleAddition}
+                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
+                  loadingElement={<div style={{height: `100%`}}/>}
+                  containerElement={<div style={{height: `400px`}}/>}
+                  mapElement={<div style={{height: `100%`}}/>}
+                />)
+            }
+          </div>
 
-        <div className="col-md-4">
-          <h4>Your Created Point</h4>
-          <hr/>
-          {
-            this.state.meetingPoints.map((p, key) => (
-              <div key={key}>
-                {/* ini list number meeting point */}
-                <div className="row">
-                  <div className="number-of-meetpoint col-xs-2">{key + 1}</div>
-                  <div className="detail-of-meetpoint col-xs-8">
-                    <stong>{p.meetingPointName}</stong>
-                    <p>{p.formattedAddress}</p>
-                    <h6>{p.placeLocationNotes}</h6>
+          <div className="col-md-4">
+            <h4>Your Created Point</h4>
+            <hr/>
+            {
+              this.state.meetingPoints.map((p, key) => (
+                <div key={key}>
+                  {/* ini list number meeting point */}
+                  <div className="row">
+                    <div className="number-of-meetpoint col-xs-2">{key + 1}</div>
+                    <div className="detail-of-meetpoint col-xs-8">
+                      <stong>{p.meetingPointName}</stong>
+                      <p>{p.formattedAddress}</p>
+                      <h6>{p.placeLocationNotes}</h6>
+                    </div>
+                    <button
+                      className="delete-button col-xs-2"
+                      onClick={event => {
+                        let {meetingPoints} = this.state;
+                        meetingPoints = [
+                          ...meetingPoints.slice(0, key),
+                          ...meetingPoints.slice(key + 1),
+                        ];
+                        this.setState({meetingPoints});
+                      }}>
+                      <i className="fa fa-close"/>
+                    </button>
                   </div>
-                  <button
-                    className="delete-button col-xs-2"
-                    onClick={event => {
-                      let {meetingPoints} = this.state;
-                      meetingPoints = [
-                        ...meetingPoints.slice(0, key),
-                        ...meetingPoints.slice(key + 1),
-                      ];
-                      this.setState({meetingPoints});
-                    }}>
-                    <i className="fa fa-close"/>
-                  </button>
+                  <hr/>
                 </div>
-                <hr/>
-              </div>
-            ))
-          }
+              ))
+            }
+          </div>
+        </div>
+        <div className="row" style={{ marginTop: '60px' }}>
+          <hr/>
+          <Button onClick={this.handleUpdate} style={{float:'right'}} className="button">Update</Button>
         </div>
       </div>
     );
   }
 }
+
+export default connect(
+    null,
+    dispatch => ({
+        updateMeetingPoints: paramsObject => dispatch(updateMeetingPoints(paramsObject))
+    })
+)(MeetingPoints);

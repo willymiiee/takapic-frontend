@@ -111,6 +111,41 @@ export const updateCameraEquipment = (params) => {
   };
 };
 
+export const updateMeetingPoints = params => {
+  return dispatch => {
+    const { reference, state } = params;
+    let meetingPoints = {};
+
+    if (state.meetingPoints) {
+      state.meetingPoints.forEach(item => meetingPoints[uuidv4()] = item);
+    }
+
+    dispatch({ type: "UPDATE_PROFILE_MEETING_POINT" });
+    dispatch(setActiveTab(3));
+
+    const db = database.database();
+    const ref = db.ref("/photographer_service_information");
+    const metadataRef = ref.child(reference);
+    metadataRef
+      .update({
+        meetingPoints: meetingPoints
+      })
+      .then(() => {
+        dispatch({
+          type: "UPDATE_PROFILE_MEETING_POINT_SUCCESS",
+          payload: { status: "OK", message: "Data updated" }
+        });
+        dispatch(fetchPhotographerServiceInformation(params.uid))
+      })
+      .catch(error => {
+        dispatch({
+          type: "UPDATE_PROFILE_MEETING_POINT_ERROR",
+          error
+        });
+      });
+  };
+}
+
 export const setActiveTab = (tabNumber) => {
   return {
     type: 'UPDATE_ACTIVE_TAB',

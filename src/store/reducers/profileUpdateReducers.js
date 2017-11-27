@@ -25,6 +25,13 @@ const profileUpdate = (state = initialState, action) => {
       return { ...state, loading: false, loaded: true, ...action.payload };
     case 'UPDATE_PROFILE_CAMERA_EQUIPMENT_ERROR':
       return { loading: false, loaded: true, error: action.error };
+    case 'UPDATE_PROFILE_MEETING_POINT':
+      return { loading: true, loaded: false };
+    case 'UPDATE_PROFILE_MEETING_POINT_SUCCESS':
+      delete state.error;
+      return { ...state, loading: false, loaded: true, ...action.payload };
+    case 'UPDATE_PROFILE_MEETING_POINT_ERROR':
+      return { loading: false, loaded: true, error: action.error };
     case 'UPDATE_ACTIVE_TAB':
       return { ...state, activeTab: action.payload }
     default:
