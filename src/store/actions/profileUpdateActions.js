@@ -3,7 +3,7 @@ import uuidv4 from 'uuid/v4';
 import { database } from "../../services/firebase";
 import { fetchPhotographerServiceInformation } from './photographerServiceInfoActions'
 
-export const updateBasicInformation = params => {
+export const updateBasicInformation = (params) => {
   return dispatch => {
     dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION" });
     dispatch(setActiveTab(1));
@@ -12,7 +12,7 @@ export const updateBasicInformation = params => {
   }
 };
 
-export const updateBasicInformationUser = params => {
+export const updateBasicInformationUser = (params) => {
   return dispatch => {
     const { reference, state } = params;
 
@@ -46,7 +46,7 @@ export const updateBasicInformationUser = params => {
   };
 };
 
-export const updateBasicInformationPhotographer = params => {
+export const updateBasicInformationPhotographer = (params) => {
   return dispatch => {
     const { reference, state } = params;
 
@@ -112,7 +112,7 @@ export const updateCameraEquipment = (params) => {
   };
 };
 
-export const updateMeetingPoints = params => {
+export const updateMeetingPoints = (params) => {
   return dispatch => {
     const { reference, state } = params;
     let meetingPoints = {};
@@ -147,7 +147,7 @@ export const updateMeetingPoints = params => {
   };
 }
 
-export const uploadPhotosPortfolio = params => {
+export const uploadPhotosPortfolio = (params) => {
   const { reference, state: { selectedPhotos, photosPortofolio } } = params;
   return dispatch => {
     let files = selectedPhotos;
@@ -159,7 +159,7 @@ export const uploadPhotosPortfolio = params => {
     dispatch(setActiveTab(4));
 
     for (let i in files) {
-    
+
       const fullDirectory = `pictures/portofolio-photos/${reference}`;
       const imageFile = files[i].file;
       let storageRef = firebase
@@ -227,6 +227,41 @@ export const updatePhotosPortfolio = (params, dataImages) => {
         error
       });
     });
+  };
+}
+
+export const updatePackagesPrice = (params) => {
+  return dispatch => {
+    const { reference, state } = params;
+
+    let packagesPrice = {};
+    if (state.packagesPrice) {
+      state.packagesPrice.forEach(item => state.packagesPrice[uuidv4()] = item);
+    }
+
+    dispatch({ type: "UPDATE_PROFILE_PACKAGES_PRICE" });
+    dispatch(setActiveTab(5));
+
+    const db = database.database();
+    const ref = db.ref("/photographer_service_information");
+    const metadataRef = ref.child(reference);
+    metadataRef
+      .update({
+        packagesPrice: packagesPrice,
+      })
+      .then(() => {
+        dispatch({
+          type: "UPDATE_PROFILE_PACKAGES_PRICE_SUCCESS",
+          payload: { status: "OK", message: "Data updated" }
+        });
+        dispatch(fetchPhotographerServiceInformation(params.uid));
+      })
+      .catch(error => {
+        dispatch({
+          type: "UPDATE_PROFILE_PACKAGES_PRICE_ERROR",
+          error
+        });
+      });
   };
 }
 

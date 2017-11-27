@@ -10,7 +10,7 @@ import BasicInformation from "./BasicInformation";
 import CameraEquipment from "./CameraEquipment";
 import MeetingPoints from "./MeetingPoints";
 import PhotosPortofolio from "./PhotosPortofolio";
-import PricePackage from "./PricePackage";
+import PackagesPrice from "./PackagesPrice";
 
 class User extends Component{
   constructor() {
@@ -65,7 +65,7 @@ class User extends Component{
 
   render() {
     const { user: { userMetadata }, photographerServiceInformation, activeTab, profile } = this.props;
-
+    console.error(photographerServiceInformation);
     const tabsInstance = (
       <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
         <Tab eventKey={1} title="Basic Information">
@@ -81,7 +81,7 @@ class User extends Component{
           <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
         </Tab>
         <Tab eventKey={5} title="Price Package">
-          <PricePackage userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} />
+          <PackagesPrice userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} />
         </Tab>
       </Tabs>
     );
