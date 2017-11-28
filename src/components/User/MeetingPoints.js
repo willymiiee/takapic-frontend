@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import uuidv4 from 'uuid/v4';
 import { Button } from "react-bootstrap";
 import get from 'lodash/get';
 
@@ -44,7 +45,8 @@ class MeetingPoints extends Component {
     const specificLocation = get(params, 'specificLocation', '-');
 
     if (generalLocation && this.state.meetingPoints.length < 3) {
-      let meetingPointsLocal = Object.assign(generalLocation, {placeLocationNotes: specificLocation})
+      let uuid = uuidv4()
+      let meetingPointsLocal = Object.assign(generalLocation, {placeLocationNotes: specificLocation, id: uuid}, )
       const meetingPoints = [...this.state.meetingPoints, meetingPointsLocal];
       this.setState({ meetingPoints });
     }
@@ -84,7 +86,6 @@ class MeetingPoints extends Component {
   };
 
   render() {
-
     return (
       <div className="row">
         <div className="row">

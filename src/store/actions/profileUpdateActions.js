@@ -110,11 +110,6 @@ export const updateCameraEquipment = (params) => {
 export const updateMeetingPoints = (params) => {
   return dispatch => {
     const { reference, state } = params;
-    let meetingPoints = {};
-
-    if (state.meetingPoints) {
-      state.meetingPoints.forEach(item => meetingPoints[uuidv4()] = item);
-    }
 
     dispatch({ type: "UPDATE_PROFILE_MEETING_POINT" });
     dispatch(setActiveTab(3));
@@ -124,7 +119,7 @@ export const updateMeetingPoints = (params) => {
     const metadataRef = ref.child(reference);
     metadataRef
       .update({
-        meetingPoints: meetingPoints
+        meetingPoints: state.meetingPoints
       })
       .then(() => {
         dispatch({
