@@ -85,7 +85,6 @@ class BasicInformation extends Component {
     const { location, selected, values } = this.state;
 
     if (photographerServiceInformation && userMetadata) {
-      this._setStateLanguage();
 
       location.country = photographerServiceInformation.data.location.country || "";
       location.countryName = photographerServiceInformation.data.location.countryName || "";
@@ -100,22 +99,13 @@ class BasicInformation extends Component {
       values.city.label = location.locationAdmLevel2 || "";
       values.city.value = location.locationAdmLevel2 || "";
 
+      selected.languages = photographerServiceInformation.data.languages || [];
+
       this.setState({
         location,
-        values
-      });
-    }
-  }
-
-  _setStateLanguage = () => {
-    const { photographerServiceInformation } = this.props;
-    const { selected } = this.state;
-    let languages = photographerServiceInformation.data.languages;
-    if (languages) {
-      selected.languages = Object.keys(languages).map(item => (languages[item]));
-      this.setState({
+        values,
         selected
-      })
+      });
     }
   }
 

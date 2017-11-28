@@ -50,11 +50,6 @@ export const updateBasicInformationPhotographer = (params) => {
   return dispatch => {
     const { reference, state } = params;
 
-    let languagesObject = {};
-    if (state.selected.languages) {
-      state.selected.languages.forEach(item => languagesObject[uuidv4()] = item);
-    }
-
     dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION_PHOTOGRAPHER" });
 
     const db = database.database();
@@ -63,7 +58,7 @@ export const updateBasicInformationPhotographer = (params) => {
     metadataRef
       .update({
         selfDescription: state.values.selfDescription,
-        languages: languagesObject,
+        languages: state.selected.languages,
         location: state.location,
       })
       .then(() => {
