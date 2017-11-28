@@ -192,17 +192,16 @@ export const uploadPhotosPortfolio = (params) => {
 };
 
 export const updatePhotosPortfolio = (params, dataImages) => {
-  const { reference, state: {photosPortofolio} } = params
+  let { reference, state: {photosPortofolio} } = params
   return dispatch => {
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
     const item = ref.child(reference);
 
-    let photosInfoObject = {};
-    photosPortofolio.forEach(item => photosInfoObject[uuidv4()] = item);
-    dataImages.forEach(item => photosInfoObject[uuidv4()] = item);
+    photosPortofolio = photosPortofolio.concat(dataImages);
+
     item.update({
-      photosPortofolio: photosInfoObject
+      photosPortofolio: photosPortofolio
     })
     .then(() => {
       dispatch({
