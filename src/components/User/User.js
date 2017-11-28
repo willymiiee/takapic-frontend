@@ -65,7 +65,7 @@ class User extends Component{
 
   render() {
     const { user: { userMetadata }, photographerServiceInformation, activeTab, profile } = this.props;
-    
+
     const tabsInstance = (
       <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
         <Tab eventKey={1} title="Basic Information">
@@ -80,8 +80,8 @@ class User extends Component{
         <Tab eventKey={4} title="Photos Portofolio">
           <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
         </Tab>
-        <Tab eventKey={5} title="Price Package">
-          <PackagesPrice userMetadata={userMetadata} photographerServiceInformation={photographerServiceInformation} />
+        <Tab eventKey={5} title="Packages Price">
+          <PackagesPrice photographerServiceInformation={photographerServiceInformation} />
         </Tab>
       </Tabs>
     );

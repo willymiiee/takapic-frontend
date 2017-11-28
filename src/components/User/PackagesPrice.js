@@ -32,17 +32,39 @@ class PackagesPrice extends Component {
           price: 0
         },
       },
-      packagesPrice: []
+      packagesPrice: [],
+      currency: "USD",
     };
   }
 
   componentWillMount() {
+    this.setStatePackagePrice();
+    this.setStateCurrency();
+  }
+
+  setStatePackagePrice = () => {
     const { photographerServiceInformation : { data } } = this.props
 
     if (data.packagesPrice) {
-      let packagesPrice = Object.keys(data.packagesPrice).map(item => (data.packagesPrice[item]));
+      let packagesPrice = data.packagesPrice;
       this.setState({
         packagesPrice: packagesPrice
+      })
+    }
+  }
+
+  setStateCurrency = () => {
+    const {
+      photographerServiceInformation : {
+        data : {
+          userMetadata
+        }
+      }
+    } = this.props
+
+    if (userMetadata) {
+      this.setState({
+        currency: userMetadata.currency
       })
     }
   }
@@ -102,8 +124,6 @@ class PackagesPrice extends Component {
       }
     }
 
-    const { userMetadata: { currency } } = this.props;
-
     return (
       <div className="row">
         <div className="row">
@@ -132,7 +152,7 @@ class PackagesPrice extends Component {
                                 this.handleChange(event, tr, kk)}
                             />
                             <InputGroup.Button style={{ padding: 10 }}>
-                              <p>{ currency }</p>
+                              <p>{ this.state.currency }</p>
                             </InputGroup.Button>
                           </InputGroup>
                         </FormGroup>

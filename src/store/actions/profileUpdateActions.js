@@ -223,10 +223,7 @@ export const updatePackagesPrice = (params) => {
   return dispatch => {
     const { reference, state } = params;
 
-    let packagesPrice = {};
-    if (state.packagesPrice) {
-      state.packagesPrice.forEach(item => state.packagesPrice[uuidv4()] = item);
-    }
+    let packagesPrice = Object.keys(state.packagesPrice).map(item => (state.packagesPrice[item]));
 
     dispatch({ type: "UPDATE_PROFILE_PACKAGES_PRICE" });
     dispatch(setActiveTab(5));
