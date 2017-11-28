@@ -8,83 +8,65 @@ import {
   Table,
 } from 'react-bootstrap';
 import { setPricing } from '../../store/actions/photographerServiceInfoActionsStep2';
-import Page from 'components/Page';
+import Page from '../Page';
 
 class Step2IndicatePrice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      masterPackage: {
-        PKG1: {
+      masterPackages: [
+        {
+          id: 'PKG1',
           packageName: '1 hour',
           requirement: 'Minimum 30 photos',
           price: 0
         },
-        PKG2: {
+        {
+          id: 'PKG2',
           packageName: '2 hours',
           requirement: 'Minimum 60 photos',
           price: 0
         },
-        PKG3: {
+        {
+          id: 'PKG3',
           packageName: '4 hours',
           requirement: 'Minimum 120 photos',
           price: 0
         },
-        PKG4: {
+        {
+          id: 'PKG4',
           packageName: '8 hours',
           requirement: 'Minimum 200 photos',
           price: 0
-        },
-      },
+        }
+      ]
     };
   }
 
-  handleChange = (event, tr, index) => {
+  handleChange = (event, itemId) => {
     event.preventDefault();
-    const { masterPackage } = this.state;
-    const key = tr[index].key;
-
-    if (event.target.value !== '') {
-      masterPackage[key].price = event.target.value;
-    }
-
-    this.setState({ masterPackage });
+    const { masterPackages } = this.state;
+    const newMasterPackages = masterPackages.map(item => {
+      if (item.id === itemId) {
+        return Object.assign({}, item, {
+          // eslint-disable-next-line
+          price: parseInt(event.target.value)
+        });
+      }
+      return item;
+    });
+    this.setState({ masterPackages: newMasterPackages });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    let invalid = false;
-    const n = this.state.masterPackage;
-    for (var key in n) {
-      if (n.hasOwnProperty(key)) {
-        var value = n[key];
-        if (value.price === 0) {
-          invalid = true;
-        }
-      }
-    }
-
-    if (invalid) {
-      alert('Please complete the form!');
-    } else {
-      this.props.setPricing({ detailMasterPackage: this.state.masterPackage });
-      this.props.history.push('/become-our-photographer/step-2-2');
-    }
+    this.props.setPricing({ detailMasterPackage: this.state.masterPackages });
+    this.props.history.push('/become-our-photographer/step-2-2');
   };
 
   render() {
-    let tr = [];
-    const n = this.state.masterPackage;
-    for (var key in n) {
-      if (n.hasOwnProperty(key)) {
-        var value = n[key];
-        value.key = key;
-        tr.push(value);
-      }
-    }
-
     const { user: { userMetadata: { currency } } } = this.props;
-
+    const { masterPackages } = this.state;
     return (
       <Page>
         <div className="container" id="photographer-landing">
@@ -107,28 +89,28 @@ class Step2IndicatePrice extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {tr.map((td, kk) => {
-                    return (
-                      <tr key={kk}>
-                        <td>{td.packageName}</td>
-                        <td>{td.requirement}</td>
-                        <td>
-                          <FormGroup style={{ marginBottom: 0 }}>
-                            <InputGroup>
-                              <FormControl
-                                type="text"
-                                onChange={event =>
-                                  this.handleChange(event, tr, kk)}
-                              />
-                              <InputGroup.Button style={{ padding: 10 }}>
-                                <p>{ currency }</p>
-                              </InputGroup.Button>
-                            </InputGroup>
-                          </FormGroup>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {
+                    masterPackages.map((item, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{ item.packageName }</td>
+                          <td>{ item.requirement }</td>
+                          <td>
+                            <FormGroup style={{ marginBottom: 0 }}>
+                              <InputGroup>
+                                <FormControl
+                                  type="text"
+                                  value={item.price}
+                                  onChange={event => this.handleChange(event, item.id)}
+                                />
+                                <InputGroup.Button style={{ padding: 10 }}><p>{ currency }</p></InputGroup.Button>
+                              </InputGroup>
+                            </FormGroup>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
                 </tbody>
               </Table>
             </div>

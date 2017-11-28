@@ -65,7 +65,7 @@ export const submitUploadPhotosPortfolio = params => {
     for (let i in files) {
       const fullDirectory = `pictures/portofolio-photos/${reference}`;
       const imageFile = files[i].file;
-      var storageRef = firebase
+      let storageRef = firebase
         .storage()
         .ref(fullDirectory + '/' + imageFile.name);
 
@@ -74,7 +74,7 @@ export const submitUploadPhotosPortfolio = params => {
       tasks[i].on(
         'state_changed',
         function progress(snapshot) {
-          var percentage =
+          let percentage =
             snapshot.bytesTransferred / snapshot.totalBytes * 100;
           percentages[i] = percentage;
           dispatch({
@@ -84,8 +84,9 @@ export const submitUploadPhotosPortfolio = params => {
           });
         },
         function error(err) {},
+        // eslint-disable-next-line
         function complete() {
-          var downloadURL = tasks[i].snapshot.downloadURL;
+          let downloadURL = tasks[i].snapshot.downloadURL;
           dispatch({
             type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS',
             payload: {
@@ -97,11 +98,11 @@ export const submitUploadPhotosPortfolio = params => {
       );
     }
     return Promise.all(tasks).then(
-      data => {
+      () => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_SUCCESS' });
         history.push('/become-our-photographer/step-2-5');
       },
-      error => {
+      () => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ERROR' });
       }
     );

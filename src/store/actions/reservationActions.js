@@ -1,13 +1,11 @@
 import { database } from "../../services/firebase";
 
-const fakeTravellerId = 'googlecom-123-456';
-
-export const fetchReservationAction = () => {
+export const fetchReservationAction = travellerId => {
   return dispatch => {
     database
       .database()
       .ref('/reservations')
-      .child(fakeTravellerId)
+      .child(travellerId)
       .once('value')
       .then(snapshot => {
         const data = snapshot.val();
@@ -22,10 +20,10 @@ export const fetchReservationAction = () => {
   };
 };
 
-export const reservationInitializeAction = information => {
+export const reservationInitializeAction = (travellerId, information) => {
   return dispatch => {
     const db = database.database();
-    const reservationRefChild = db.ref('/reservations').child(fakeTravellerId);
+    const reservationRefChild = db.ref('/reservations').child(travellerId);
     reservationRefChild.set(information);
 
     dispatch({
@@ -35,10 +33,10 @@ export const reservationInitializeAction = information => {
   };
 };
 
-export const reservationPaymentAction = data => {
+export const reservationPaymentAction = (travellerId, data) => {
   return dispatch => {
     const db = database.database();
-    const reservationRefChild = db.ref('/reservations').child(fakeTravellerId);
+    const reservationRefChild = db.ref('/reservations').child(travellerId);
     reservationRefChild.update(data);
 
     dispatch({

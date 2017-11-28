@@ -16,31 +16,30 @@ class Header extends Component {
           <div id="nav-menu">
             <i className="fa fa-bars" />
             <div>
-              {userMetadata ? null : (
-                <Link to="/welcome-photographer">
-                  Become our photographer
-                </Link>
-              )}
+              {
+                userMetadata ? null : (<Link to="/welcome-photographer">Become our photographer</Link>)
+              }
 
               <Link to="/how-it-works">How it works</Link>
-              <Link to="/help">Help</Link>
-              {userMetadata ? (
-                <Link to="/me/edit">[ {userMetadata.displayName} ]</Link>
-              ) : (
-                <Link to="/sign-in">Sign in</Link>
-              )}
-              {userMetadata ? (
-                <a
-                  onClick={evt => {
-                    evt.preventDefault();
-                    logout();
-                  }}
-                >
-                  Sign out
-                </a>
-              ) : null}
+
+              {
+                userMetadata
+                  ? <Link to="/me/edit">[ {userMetadata.displayName} ]</Link>
+                  : <Link to="/sign-in">Sign in</Link>
+              }
+
+              {
+                !userMetadata ? <Link to="/traveller-registration">Sign Up</Link> : null
+              }
+
+              {
+                userMetadata
+                  ? (<a onClick={evt => { evt.preventDefault();logout() }}>Sign out</a>)
+                  : null
+              }
             </div>
           </div>
+
           <div id="nav-search" className="search-toggle hide">
             <i className="fa fa-search" />
             <input type="text" placeholder="Anywhere, Anytime" />

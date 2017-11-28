@@ -46,7 +46,6 @@ export const userSignupByEmailPassword = (
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function(result) {
-        const user = database.auth()
         result.sendEmailVerification();
         createUserMetadata('email', result.uid, email, userType, displayName)
           .then(() => {
@@ -135,7 +134,7 @@ export const userSignupByGoogle = userType => {
       .signInWithPopup(googleAuthProvider)
       .then(result => {
         const uid = result.user.uid;
-        const reference = 'googlecom' + '-' + uid;
+        const reference = 'googlecom-' + uid;
         const displayName = result.user.displayName;
 
         createUserMetadata('google.com', uid, reference, userType, displayName)
@@ -219,10 +218,10 @@ export const loggingIn = (email, password) => {
               refreshToken: user.refreshToken
             };
 
-            // dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-            // fetchUserMetadata('email', email, dispatch);
+            dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+            fetchUserMetadata('email', email, dispatch);
 
-            if (!user.emailVerified) {
+            /*if (!user.emailVerified) {
               dispatch({
                 type: 'USER_AUTH_LOGIN_ERROR',
                 payload: { message: 'User not verified.' },
@@ -230,7 +229,7 @@ export const loggingIn = (email, password) => {
             } else {
               dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
               fetchUserMetadata('email', email, dispatch);
-            }
+            }*/
           }
         });
       })

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import qs from 'qs';
 import { lifecycle, compose } from 'recompose';
@@ -38,7 +37,8 @@ import Step2DateAvailability from 'components/BecomeOurPhotographer/Step2DateAva
 import Step2InitiatePortofolio from 'components/BecomeOurPhotographer/Step2InitiatePortofolio';
 import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2SetupMeetingPointA';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
-
+import TravellerRegistration from 'components/Traveller/TravellerRegistration';
+import ReservationCreatedDetail from 'components/User/ReservationCreatedDetail';
 import User from 'components/User/User';
 
 const fetchCountriesAction = () => {
@@ -74,6 +74,7 @@ store.dispatch(fetchCountriesAction());
 store.dispatch(fetchCurrenciesRates());
 
 const redirect = props => {
+  console.log(props);
   props.replace(
     qs.parse(props.location.search.replace('?', '')).from ||
       qs.parse(props.location.search.replace('?', '')).to ||
@@ -127,10 +128,12 @@ const App = connect(state => state)(props => {
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/booking" component={PhotographerBooking} />
+            <Route path="/booking" component={onlyLoggedIn(PhotographerBooking)} />
             <Route path="/sign-in" component={SignIn} />
             <Route path="/photographer/:uuid" component={PhotographerDetail} />
+            <Route path="/me/reservations/:reservationid" component={onlyLoggedIn(ReservationCreatedDetail)} />
             <Route path="/search" component={Search} />
+            <Route path="/traveller-registration" component={TravellerRegistration} />
             <Route
               path="/photographer-portofolio/:id"
               component={PortofolioContent}

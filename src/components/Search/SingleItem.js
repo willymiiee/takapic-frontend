@@ -43,7 +43,7 @@ class SingleItem extends Component {
             <Link
               className="photographer-link"
               to={{
-                pathname: '/photographer/' + '123',
+                pathname: '/photographer/123',
                 state: { date: '' },
               }}
             >

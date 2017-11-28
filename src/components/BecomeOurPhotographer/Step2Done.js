@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { database } from '../../services/firebase';
 import { dashify } from '../../helpers/helpers';
 
-import Page from 'components/Page';
+import Page from '../Page';
 
 const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
   return dispatch => {

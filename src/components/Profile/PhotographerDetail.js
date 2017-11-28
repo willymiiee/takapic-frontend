@@ -136,7 +136,7 @@ class PhotographerDetail extends Component {
           const item = photosPortofolio[i];
           return (
             <a>
-              <img src={item.url}/>
+              <img src={item.url} alt="This an alt text"/>
             </a>
           );
         },

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import get from 'lodash/get';
 import { userAuth, userSignup } from './userReducers';
 import { userInitProfile } from './userInitProfileReducers';
 import photographerServiceInfo from './photographerServiceInfoReducers';
@@ -20,20 +19,8 @@ const photographerServiceInformation = (state = { loading: true, data: {} }, act
     return { data: {}, loading: true };
 
   } else if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS') {
-    const packagesPrice = get(action.payload, 'packagesPrice', false);
-    let totalReservationPriceInitiate = 0;
-
-    if (packagesPrice) {
-      const priceMin = parseInt(action.payload.packagesPrice[0].price);
-      const credit = 0;
-      totalReservationPriceInitiate = Math.round(credit + priceMin + priceMin * 0.15);
-    }
-
     return {
-      data: {
-        ...action.payload,
-        totalReservationPriceInitiate
-      },
+      data: action.payload,
       loading: false,
     };
   }
@@ -68,14 +55,7 @@ const currenciesRates = (state = null, action) => {
 const reservation = (state = {}, action) => {
   switch (action.type) {
     case 'RESERVATION_INITIALIZE':
-      return {
-        packageSelectedIndex: action.payload.packageSelectedIndex,
-        startDateTime: action.payload.startDateTime,
-        photographerFee: action.payload.photographerFee,
-        serviceFee: action.payload.serviceFee,
-        credit: action.payload.credit,
-        total: action.payload.total
-      };
+      return action.payload;
 
     case 'RESERVATION_PAYMENT':
       return {

@@ -65,6 +65,7 @@ class PhotographerRegistrationStep2 extends Component {
                       <img
                         src={imagePreviewUrl}
                         className="center-block img-circle img-profile"
+                        alt="This is alt text"
                       />
                     )}
                   </div>

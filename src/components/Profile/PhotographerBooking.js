@@ -5,8 +5,10 @@ import { Formik } from 'formik';
 // import Yup from 'yup';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 import ReactRating from 'react-rating-float';
 import { Button, Col, Panel, Row } from 'react-bootstrap';
+import Select from 'react-select';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { fetchReservationAction, reservationPaymentAction } from "../../store/actions/reservationActions";
 
@@ -23,9 +25,11 @@ const BookingForm = props => {
     meetingPointChangeHandler
   } = props;
 
+  const meetingPointsList = meetingPoints.map(item => ({ value: item.id, label: item.meetingPointName }));
+
   const _meetingPointChangeHandler = selectChoice => {
-    setFieldValue('meetingPointSelectedValue', selectChoice.target.value);
-    meetingPointChangeHandler(selectChoice.target.value);
+    setFieldValue('meetingPointSelectedValue', selectChoice.value);
+    meetingPointChangeHandler(selectChoice.value);
   };
 
   return (
@@ -76,16 +80,15 @@ const BookingForm = props => {
 
         <h4>Q2. Preferred meeting point with your photographer</h4>
 
-        <select name="meetingPointSelectedValue" value={values.meetingPointSelectedValue} onChange={_meetingPointChangeHandler}>
-          {
-            meetingPoints && meetingPoints.map((item, index) => {
-              const placeDisplay = item.meetingPointName + ' - ' + item.placeLocationNotes || '';
-              return (
-                <option key={index} value={index}>{ placeDisplay }</option>
-              );
-            })
-          }
-        </select>
+        <Select
+          name="meetingPointSelectedValue"
+          options={meetingPointsList}
+          value={values.meetingPointSelectedValue}
+          onChange={_meetingPointChangeHandler}
+          clearable={false}
+          multi={false}
+          placeholder="--- Choose ---"
+        />
 
         <h4>
           <strong>Say Hello To Your Photographer</strong>
@@ -144,23 +147,14 @@ const BookingForm = props => {
 
 const BookingFormFormik = Formik({
   mapPropsToValues: props => {
-    const {
-      reservation: {
-        packageSelectedIndex,
-        message,
-        payment: { billingCountry, method: paymentMethod },
-        passengers: { adults, childrens, infants }
-      }
-    } = props;
-
     return {
-      meetingPointSelectedValue: packageSelectedIndex,
-      messageToPhotographer: message,
-      billingCountry: billingCountry,
-      paymentMethod: paymentMethod,
-      numberOfAdults: adults,
-      numberOfChildren: childrens,
-      numberOfInfants: infants
+      meetingPointSelectedValue: get(props, 'reservation.meetingPoints.id', ''),
+      messageToPhotographer: get(props, 'reservation.message', ''),
+      billingCountry: get(props, 'reservation.payment.billingCountry', ''),
+      paymentMethod: get(props, 'reservation.payment.method', ''),
+      numberOfAdults: get(props, 'reservation.passengers.adults', 0),
+      numberOfChildren: get(props, 'reservation.passengers.childrens', 0),
+      numberOfInfants: get(props, 'reservation.passengers.infants', 0)
     };
   },
   handleSubmit: (values, { props, setSubmitting }) => {
@@ -168,7 +162,8 @@ const BookingFormFormik = Formik({
       const data = {
         meetingPoints: {
           type: 'defined',
-          detail: props.meetingPoints[values.meetingPointSelectedValue]
+          id: values.meetingPointSelectedValue,
+          detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
         },
         message: values.messageToPhotographer,
         payment: {
@@ -182,7 +177,7 @@ const BookingFormFormik = Formik({
         }
       };
 
-      props.reservationPaymentAction(data);
+      props.reservationPaymentAction(props.travellerId, data);
       setSubmitting(false);
     }, 1000);
   }
@@ -192,10 +187,7 @@ class PhotographerBooking extends Component {
   constructor() {
     super();
     this.state = {
-      meetingPoints: {
-        type: '-',
-        detail: {}
-      },
+      meetingPoints: null,
       message: '-',
       payment: {
         billingCountry: '',
@@ -220,7 +212,14 @@ class PhotographerBooking extends Component {
     }
 
     if (isEmpty(this.props.reservation)) {
-      this.props.fetchReservationAction();
+      this.props.fetchReservationAction(this.props.user.uid);
+    }
+  }
+
+  componentDidMount() {
+    if (!isEmpty(this.props.reservation)) {
+      const meetingPointsFromStore = get(this.props, 'reservation.meetingPoints');
+      this.setState({ meetingPoints: meetingPointsFromStore });
     }
   }
 
@@ -234,8 +233,9 @@ class PhotographerBooking extends Component {
     this.setState({
       ...this.state,
       meetingPoints: {
+        id: value,
         type: 'defined',
-        detail: meetingPoints[value]
+        detail: meetingPoints.filter(item => item.id === value)[0]
       }
     });
   };
@@ -258,7 +258,7 @@ class PhotographerBooking extends Component {
           }
         },
         reservation: {
-          packageSelectedIndex,
+          packageId,
           startDateTime,
           photographerFee,
           serviceFee,
@@ -267,13 +267,32 @@ class PhotographerBooking extends Component {
         }
       } = this.props;
 
-      const hours = parseInt(packagesPrice[packageSelectedIndex].packageName.replace(/hours?/i, '').trim());
+      const packageSelected = packagesPrice.filter(item => item.id === packageId)[0];
+
+      // eslint-disable-next-line
+      const hours = parseInt(packageSelected.packageName.replace(/hours?/i, '').trim());
       const startDateAndTimeDisplay = moment(startDateTime).format('MMMM Do YYYY HH:mm a');
       const toEndTime = moment(startDateTime).add(hours, 'h').format('HH:mm a');
 
-      const {
-        meetingPoints: { type: meetingPointType, detail: meetingPointDetail }
-      } = this.state;
+      const meetingPointDetail = get(this.state, 'meetingPoints.detail');
+      let meetingPlaceDisplay = null;
+
+      if (!meetingPointDetail) {
+        const meetingPointsFromStore = get(this.props, 'reservation.meetingPoints.detail', null);
+        if (meetingPointsFromStore) {
+          meetingPlaceDisplay = <p>{ meetingPointsFromStore.meetingPointName + ' - ' + meetingPointsFromStore.placeLocationNotes }</p>
+        } else {
+          meetingPlaceDisplay = <p>{`-`}</p>
+        }
+      } else {
+        meetingPlaceDisplay = <p>
+          {
+            !isEmpty(meetingPointDetail) && meetingPointDetail.hasOwnProperty('meetingPointName')
+              ? meetingPointDetail.meetingPointName + ' - ' + meetingPointDetail.placeLocationNotes
+              : '-'
+          }
+        </p>
+      }
 
       return (
         <Page>
@@ -282,6 +301,7 @@ class PhotographerBooking extends Component {
             <Row>
               <Col sm={6} md={7}>
                 <BookingFormFormik
+                  travellerId={this.props.user.uid}
                   reservation={this.props.reservation}
                   meetingPoints={meetingPoints}
                   meetingPointChangeHandler={this.meetingPointChangeHandler}
@@ -306,12 +326,13 @@ class PhotographerBooking extends Component {
 
                   <ul>
                     {
-                      impressions.map((item, key) => (
-                        <li key={key}>
-                          <span style={{ fontWeight: 'bold' }}>{ item.label }: </span> { item.value * 100 }%
+                      impressions && impressions.map((item, index) => (
+                        <li key={index}>
+                          <span style={{ fontWeight: 'bold' }}>
+                            { item.label }: </span> { item.value * 100 }%
                         </li>
                       ))
-                      }
+                    }
                   </ul>
 
                   <h4>
@@ -325,13 +346,7 @@ class PhotographerBooking extends Component {
                   <h4>
                     <strong>Meeting Place</strong>
                   </h4>
-                  <p>
-                    {
-                      !isEmpty(meetingPointDetail)
-                        ? meetingPointDetail.meetingPointName + ' - ' + meetingPointDetail.placeLocationNotes
-                        : '-'
-                    }
-                  </p>
+                  { meetingPlaceDisplay }
 
                   <h4>Payment Summary</h4>
                   <p>
@@ -362,14 +377,15 @@ class PhotographerBooking extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.userAuth,
   photographerServiceInformation: state.photographerServiceInformation,
   reservation: state.reservation
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid)),
-  fetchReservationAction: () => dispatch(fetchReservationAction()),
-  reservationPaymentAction: data => dispatch(reservationPaymentAction(data))
+  fetchReservationAction: travellerId => dispatch(fetchReservationAction(travellerId)),
+  reservationPaymentAction: (travellerId, data) => dispatch(reservationPaymentAction(travellerId, data))
 });
 
 export default withRouter(

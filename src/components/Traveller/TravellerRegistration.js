@@ -7,11 +7,11 @@ import {
   userSignupByFacebook,
   userSignupByGoogle
 } from '../../store/actions/userActions';
-import { USER_PHOTOGRAPHER } from '../../services/userTypes';
+import { USER_TRAVELLER } from '../../services/userTypes';
 
 import Page from '../Page';
 
-const PhotographerRegisterStep1Form = props => {
+const TravellerRegistrationForm = props => {
   const {
     values,
     errors,
@@ -109,7 +109,7 @@ const equalTo = (msg) => {
 
 Yup.addMethod(Yup.string, 'equalTo', equalTo);
 
-const PhotographerRegisterStep1Formik = Formik({
+const TravellerRegistrationFormik = Formik({
   mapPropsToValues: props => ({
     completeName: props.filledValues.completeName,
     email: props.filledValues.email,
@@ -124,25 +124,25 @@ const PhotographerRegisterStep1Formik = Formik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     setTimeout(() => {
-      props.userSignupByEmailPassword(values.email, values.password, values.completeName, USER_PHOTOGRAPHER);
+      props.userSignupByEmailPassword(values.email, values.password, values.completeName, USER_TRAVELLER);
       setSubmitting(false);
-    }, 2000);
+    }, 1000);
   }
-})(PhotographerRegisterStep1Form);
+})(TravellerRegistrationForm);
 
-class PhotographerRegistrationStep1 extends Component {
+class TravellerRegistration extends Component {
   constructor() {
     super();
     this.signUpFacebook = this.signUpFacebook.bind(this);
     this.signUpGoogle = this.signUpGoogle.bind(this);
   }
 
-  signUpFacebook(evt) {
-    this.props.userSignupByFacebook(USER_PHOTOGRAPHER);
+  signUpFacebook() {
+    this.props.userSignupByFacebook(USER_TRAVELLER);
   }
 
-  signUpGoogle(evt) {
-    this.props.userSignupByGoogle(USER_PHOTOGRAPHER);
+  signUpGoogle() {
+    this.props.userSignupByGoogle(USER_TRAVELLER);
   }
 
   render() {
@@ -158,13 +158,12 @@ class PhotographerRegistrationStep1 extends Component {
           <div className="panel setup-content" id="step-1">
             <div className="panel-body">
               <h2 className="text-center">
-                Register as a takapic photographer
+                Hii Traveller!
               </h2>
 
               <div className="text-center social-media-signup">
                 <p>
-                  You can register to be our photographer using your existing
-                  Facebook or Gmail account
+                  You can sign up  using your existing Facebook or Gmail account
                 </p>
 
                 <div className="social-media-btn">
@@ -195,7 +194,7 @@ class PhotographerRegistrationStep1 extends Component {
 
               </div>
 
-              <PhotographerRegisterStep1Formik
+              <TravellerRegistrationFormik
                 userSignupByEmailPassword={this.props.userSignupByEmailPassword}
                 message={this.props.message}
                 filledValues={this.props.filledValues}
@@ -224,4 +223,4 @@ export default connect(
     userSignupByFacebook: userType => dispatch(userSignupByFacebook(userType)),
     userSignupByGoogle: userType => dispatch(userSignupByGoogle(userType))
   })
-)(PhotographerRegistrationStep1);
+)(TravellerRegistration);

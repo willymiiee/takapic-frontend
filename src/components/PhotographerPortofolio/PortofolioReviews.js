@@ -17,6 +17,7 @@ export default class PortofolioReviews extends Component {
                     <img
                       src="images/photographer/white-photography-ideas.jpg"
                       className="cover"
+                      alt="This an alt text"
                     />
                   </div>
                 </div>
@@ -49,6 +50,7 @@ export default class PortofolioReviews extends Component {
                     <img
                       src="images/photographer/white-photography-ideas.jpg"
                       className="cover"
+                      alt="This is an alt text"
                     />
                   </div>
                 </div>
@@ -81,6 +83,7 @@ export default class PortofolioReviews extends Component {
                     <img
                       src="images/photographer/white-photography-ideas.jpg"
                       className="cover"
+                      alt="This an alt text"
                     />
                   </div>
                 </div>
@@ -113,6 +116,7 @@ export default class PortofolioReviews extends Component {
                     <img
                       src="images/photographer/white-photography-ideas.jpg"
                       className="cover"
+                      alt="This is an alt text"
                     />
                   </div>
                 </div>

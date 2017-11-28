@@ -10,7 +10,7 @@ export default class PhotographerPortofolio extends Component {
           <div className="row">
             <div className="col-sm-3 margin-top-50">
               <div id="photographer-portofolio-left">
-                <img src="/images/photographer/outlook-photography-jobs-2.jpg" />
+                <img src="/images/photographer/outlook-photography-jobs-2.jpg" alt="Outlook photography jobs" />
                 <h3>Dana Kim</h3>
                 <h5>Seoul, Korea</h5>
                 <div className="ratings">

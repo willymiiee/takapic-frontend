@@ -35,22 +35,6 @@ class Step2SetupMeetingPointA extends Component {
       } = this.props;
 
       let { meetingPoints } = this.state;
-      let packagesPrice = [];
-
-      for (let key in detailMasterPackage) {
-        if (detailMasterPackage.hasOwnProperty(key)) {
-          let value = detailMasterPackage[key];
-          packagesPrice = [
-            ...packagesPrice,
-            {
-              packageName: value.packageName,
-              price: value.price,
-              requirement: value.requirement,
-            },
-          ];
-        }
-      }
-
       meetingPoints = meetingPoints.map(p => {
         return {
           lat: p.generalLocation.lat,
@@ -70,7 +54,7 @@ class Step2SetupMeetingPointA extends Component {
 
       const params = {
         reference,
-        packagesPrice,
+        packagesPrice: detailMasterPackage,
         meetingPoints,
         notAvailableDates
       };

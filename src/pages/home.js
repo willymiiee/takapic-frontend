@@ -218,19 +218,19 @@ class Home extends Component {
               <div className="col-xs-4">
                 <a className="poster" href="">
                   <div className="text">BALI</div>
-                  <img src="images/location/bali.jpg" alt=""/>
+                  <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
                 </a>
               </div>
               <div className="col-xs-4">
-                <a className="poster" href="">
+                <a className="poster" href="/">
                   <div className="text">SEOUL</div>
-                  <img src="images/location/seoul.jpg" alt=""/>
+                  <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
                 </a>
               </div>
               <div className="col-xs-4">
-                <a className="poster" href="">
+                <a className="poster" href="/">
                   <div className="text">PARIS</div>
-                  <img src="images/location/paris.jpg" alt=""/>
+                  <img src="images/location/paris.jpg" alt="Featured destination - Paris"/>
                 </a>
               </div>
             </div>
