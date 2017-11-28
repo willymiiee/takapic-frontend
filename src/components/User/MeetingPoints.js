@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Form, FormGroup, Col, ControlLabel, FormControl } from 'react-bootstrap'
 import get from 'lodash/get';
 
 import MapWithASearchBox from './../MapWithASearchBox'

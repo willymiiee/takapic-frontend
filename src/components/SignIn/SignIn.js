@@ -22,8 +22,10 @@ const SignIn = props => {
 
   return (
     <Page>
-      <div className="container" id="sign-in-main-custom">
-        <div className="row">
+      <div
+        className="container"
+        id="sign-in-main-custom">
+        <div classname="row">
           <div className="col-md-6 col-md-offset-3 col-xs-12">
             <div className="panel card radius-0 padding-16">
               <div className="panel-body">
@@ -79,8 +81,8 @@ const SignIn = props => {
                         <label style={{color: 'red'}}>{errors.password}</label>}
 
                         <span className="lost_password">
-                          <a href="/">Lost Your Password?</a>
-                        </span>
+                      <a href="#">Lost Your Password?</a>
+                    </span>
                       </p>
 
                       <div className="form-row">

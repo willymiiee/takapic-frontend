@@ -36,7 +36,6 @@ const PhotographerRegisterStep1Form = props => {
             onChange={handleChange}
             className="form-control"
             placeholder="Enter your complete name"
-            autoComplete="off"
           />
           {errors.completeName && touched.completeName && <label className="control-label">{errors.completeName}</label>}
         </div>
@@ -50,7 +49,6 @@ const PhotographerRegisterStep1Form = props => {
             onChange={handleChange}
             className="form-control"
             placeholder="Enter your valid email address"
-            autoComplete="off"
           />
           {errors.email && touched.email && <label className="control-label">{errors.email}</label>}
         </div>
@@ -64,7 +62,6 @@ const PhotographerRegisterStep1Form = props => {
             onChange={handleChange}
             className="form-control lalalalilili"
             placeholder="Choose a password"
-            autoComplete="off"
           />
           {errors.password && touched.password && <label className="control-label">{errors.password}</label>}
         </div>
@@ -78,7 +75,6 @@ const PhotographerRegisterStep1Form = props => {
             onChange={handleChange}
             className="form-control"
             placeholder="Confirm / retype your password"
-            autoComplete="off"
           />
           {errors.passwordConfirm && touched.passwordConfirm && <label className="control-label">{errors.passwordConfirm}</label>}
         </div>

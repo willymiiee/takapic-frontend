@@ -14,7 +14,6 @@ const CalculationTotal = props => {
   } = props;
 
   if (!loading && packagesPrice) {
-    // eslint-disable-next-line
     let total = reservationCredit + parseInt(packagesPrice[reservationPackageValue].price);
     total = Math.round(total + packagesPrice[reservationPackageValue].price * reservationServiceFee);
 
@@ -29,10 +28,8 @@ const CalculationTotal = props => {
 
 const StartServicePrice = props => {
   const { loading, packagesPrice } = props;
-  const keys = Object.keys(packagesPrice);
   if (!loading && packagesPrice) {
-    // eslint-disable-next-line
-    const prices = keys.map(item => parseInt(packagesPrice[item].price));
+    const prices = packagesPrice.map(item => parseInt(item.price));
     const minPrice = prices.reduce((a, b) => Math.min(a, b));
 
     return (
@@ -53,7 +50,7 @@ class PhotographerDetailReservationForm extends Component {
         startingDate: null,
         startingTime: null,
         package: {
-          value: '000',
+          value: 0,
           opened: false,
         },
         photographerFee: 0,
@@ -99,9 +96,7 @@ class PhotographerDetailReservationForm extends Component {
 
   calculateTotal(indexValue) {
     const { packagesPrice, reservation: { credit, serviceFee } } = this.state;
-    // eslint-disable-next-line
-    const price = parseInt(packagesPrice[indexValue].price);
-    let calculate = Math.round(price + price * serviceFee);
+    let calculate = Math.round(parseInt(packagesPrice[indexValue].price) + packagesPrice[indexValue].price * serviceFee);
     calculate = calculate - credit;
     return calculate;
   }
@@ -172,31 +167,22 @@ class PhotographerDetailReservationForm extends Component {
       currenciesRates
     } = this.props;
 
-    let packagesPriceConvertPriceObjects = {};
-
-    Object.keys(packagesPrice).forEach(item => {
+    const packagesPriceConvertPrice = packagesPrice.map(item => {
       const USDRates = currenciesRates['USD' + currency];
-      const convertedPrice = Math.round(packagesPrice[item].price / USDRates);
-      packagesPriceConvertPriceObjects[item] = { ...packagesPrice[item], price: convertedPrice };
+      const convertedPrice = Math.round(item.price / USDRates);
+      return { ...item, price: convertedPrice };
     });
 
-    const keys = Object.keys(packagesPriceConvertPriceObjects);
-    // eslint-disable-next-line
-    const firstPackagePrice = parseInt(packagesPriceConvertPriceObjects[keys[0]].price);
     const { reservation: { credit, serviceFee } } = this.state;
-    let calcTotal = Math.round(firstPackagePrice + firstPackagePrice * serviceFee);
+    let calcTotal = Math.round(parseInt(packagesPriceConvertPrice[0].price) + packagesPriceConvertPrice[0].price * serviceFee);
     calcTotal = calcTotal - credit;
 
     this.setState({
-      packagesPrice: packagesPriceConvertPriceObjects,
+      packagesPrice: packagesPriceConvertPrice,
       reservation: {
         ...this.state.reservation,
-        photographerFee: firstPackagePrice,
-        total: calcTotal,
-        package: {
-          value: keys[0],
-          opened: false,
-        }
+        photographerFee: packagesPriceConvertPrice[0].price,
+        total: calcTotal
       }
     });
   }
@@ -255,13 +241,13 @@ class PhotographerDetailReservationForm extends Component {
               style={{ display: this.state.reservation.package.opened ? 'block' : 'none' }}
             >
               {
-                !loading && Object.keys(packagesPriceProcessed).map(item => (
+                !loading && packagesPriceProcessed.map((data, key) => (
                   <i
-                    className={ packageValueItem === item ? ('active') : ('') }
-                    onClick={event => this.choosePackage(event, item)}
-                    key={item}
+                    className={ packageValueItem === key ? ('active') : ('') }
+                    onClick={event => this.choosePackage(event, key)}
+                    key={key}
                   >
-                    { packagesPriceProcessed[item].packageName }
+                    { data.packageName }
                   </i>
                 ))
               }

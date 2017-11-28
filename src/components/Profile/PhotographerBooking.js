@@ -5,7 +5,6 @@ import { Formik } from 'formik';
 // import Yup from 'yup';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-import get from 'lodash/get';
 import ReactRating from 'react-rating-float';
 import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
@@ -79,17 +78,11 @@ const BookingForm = props => {
 
         <select name="meetingPointSelectedValue" value={values.meetingPointSelectedValue} onChange={_meetingPointChangeHandler}>
           {
-            meetingPoints && Object.keys(meetingPoints).map(item => {
-              let placeDisplay = meetingPoints[item].meetingPointName + ' - ' + meetingPoints[item].placeLocationNotes || '';
-              if (item === '0000') {
-                return (
-                  <option key={item} value={item}>{ meetingPoints[item] }</option>
-                );
-              } else {
-                return (
-                  <option key={item} value={item}>{ placeDisplay }</option>
-                );
-              }
+            meetingPoints && meetingPoints.map((item, index) => {
+              const placeDisplay = item.meetingPointName + ' - ' + item.placeLocationNotes || '';
+              return (
+                <option key={index} value={index}>{ placeDisplay }</option>
+              );
             })
           }
         </select>
@@ -151,14 +144,23 @@ const BookingForm = props => {
 
 const BookingFormFormik = Formik({
   mapPropsToValues: props => {
+    const {
+      reservation: {
+        packageSelectedIndex,
+        message,
+        payment: { billingCountry, method: paymentMethod },
+        passengers: { adults, childrens, infants }
+      }
+    } = props;
+
     return {
-      meetingPointSelectedValue: get(props, 'reservation.meetingPoints.uuid', '0000'),
-      messageToPhotographer: get(props, 'reservation.message', ''),
-      billingCountry: get(props, 'reservation.payment.billingCountry', ''),
-      paymentMethod: get(props, 'reservation.payment.method', ''),
-      numberOfAdults: get(props, 'reservation.passengers.adults', 0),
-      numberOfChildren: get(props, 'reservation.passengers.childrens', 0),
-      numberOfInfants: get(props, 'reservation.passengers.infants', 0)
+      meetingPointSelectedValue: packageSelectedIndex,
+      messageToPhotographer: message,
+      billingCountry: billingCountry,
+      paymentMethod: paymentMethod,
+      numberOfAdults: adults,
+      numberOfChildren: childrens,
+      numberOfInfants: infants
     };
   },
   handleSubmit: (values, { props, setSubmitting }) => {
@@ -166,7 +168,6 @@ const BookingFormFormik = Formik({
       const data = {
         meetingPoints: {
           type: 'defined',
-          uuid: values.meetingPointSelectedValue,
           detail: props.meetingPoints[values.meetingPointSelectedValue]
         },
         message: values.messageToPhotographer,
@@ -223,21 +224,6 @@ class PhotographerBooking extends Component {
     }
   }
 
-  componentDidMount() {
-    if (!isEmpty(this.props.reservation)) {
-      const mpDefault = {
-        meetingPoints: {
-          type: '-',
-          detail: {}
-        }
-      };
-      const meetingPointsFromStore = get(this.props, 'reservation.meetingPoints', mpDefault);
-      this.setState({
-        meetingPoints: meetingPointsFromStore
-      });
-    }
-  }
-
   meetingPointChangeHandler = value => {
     const {
       photographerServiceInformation: {
@@ -281,33 +267,13 @@ class PhotographerBooking extends Component {
         }
       } = this.props;
 
-      // eslint-disable-next-line
       const hours = parseInt(packagesPrice[packageSelectedIndex].packageName.replace(/hours?/i, '').trim());
       const startDateAndTimeDisplay = moment(startDateTime).format('MMMM Do YYYY HH:mm a');
       const toEndTime = moment(startDateTime).add(hours, 'h').format('HH:mm a');
 
       const {
-        meetingPoints: { detail: meetingPointDetail }
+        meetingPoints: { type: meetingPointType, detail: meetingPointDetail }
       } = this.state;
-
-      let meetingPlaceDisplay = null;
-
-      if (isEmpty(meetingPointDetail)) {
-        const meetingPointsFromStore = get(this.props, 'reservation.meetingPoints.detail', null);
-        if (meetingPointsFromStore) {
-          meetingPlaceDisplay = <p>{ meetingPointsFromStore.meetingPointName + ' - ' + meetingPointsFromStore.placeLocationNotes }</p>
-        } else {
-          meetingPlaceDisplay = <p>{`-`}</p>
-        }
-      } else {
-        meetingPlaceDisplay = <p>
-          {
-            !isEmpty(meetingPointDetail) && meetingPointDetail.hasOwnProperty('meetingPointName')
-              ? meetingPointDetail.meetingPointName + ' - ' + meetingPointDetail.placeLocationNotes
-              : '-'
-          }
-        </p>
-      }
 
       return (
         <Page>
@@ -340,10 +306,9 @@ class PhotographerBooking extends Component {
 
                   <ul>
                     {
-                      Object.keys(impressions).map(item => (
-                        <li key={item}>
-                          <span style={{ fontWeight: 'bold' }}>
-                            { impressions[item].label }: </span> { impressions[item].value * 100 }%
+                      impressions.map((item, key) => (
+                        <li key={key}>
+                          <span style={{ fontWeight: 'bold' }}>{ item.label }: </span> { item.value * 100 }%
                         </li>
                       ))
                       }
@@ -360,7 +325,13 @@ class PhotographerBooking extends Component {
                   <h4>
                     <strong>Meeting Place</strong>
                   </h4>
-                  { meetingPlaceDisplay }
+                  <p>
+                    {
+                      !isEmpty(meetingPointDetail)
+                        ? meetingPointDetail.meetingPointName + ' - ' + meetingPointDetail.placeLocationNotes
+                        : '-'
+                    }
+                  </p>
 
                   <h4>Payment Summary</h4>
                   <p>

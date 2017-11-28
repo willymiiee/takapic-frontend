@@ -14,24 +14,20 @@ const createUserMetadata = async (accountProviderType, uid, reference, userType,
     const child = db.ref('/user_metadata').child(dashify(referenceFix));
     const result_data = await child.once('value');
     const data = await result_data.val();
-    let initialMetadata = {
-      uid,
-      accountProviderType,
-      email: reference === 'google.com' ? '-' : reference,
-      userType,
-      firstLogin: true,
-      displayName
-    };
-
-    if (userType === USER_PHOTOGRAPHER) {
-      initialMetadata.phoneNumber = '-';
-      initialMetadata.defaultDisplayPictureUrl = '-';
-      initialMetadata.priceStartFrom = 0;
-      initialMetadata.rating = 0;
-    }
 
     if (data === null) {
-      await child.set(initialMetadata);
+      await child.set({
+        uid,
+        accountProviderType,
+        email: reference === 'google.com' ? '-' : reference,
+        userType,
+        firstLogin: true,
+        displayName,
+        phoneNumber: '-',
+        rating: 0,
+        priceStartFrom: 0,
+        defaultDisplayPictureUrl: '-',
+      });
       return true;
     }
   } catch (error) {
@@ -50,13 +46,13 @@ export const userSignupByEmailPassword = (
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function(result) {
+        const user = database.auth()
         result.sendEmailVerification();
         createUserMetadata('email', result.uid, email, userType, displayName)
           .then(() => {
 
             // Logout Implicitly
-            database
-              .auth()
+            database.auth()
               .signOut()
               .then(() => {
                 console.log('Logout implicitly');
@@ -139,7 +135,7 @@ export const userSignupByGoogle = userType => {
       .signInWithPopup(googleAuthProvider)
       .then(result => {
         const uid = result.user.uid;
-        const reference = 'googlecom-' + uid;
+        const reference = 'googlecom' + '-' + uid;
         const displayName = result.user.displayName;
 
         createUserMetadata('google.com', uid, reference, userType, displayName)
@@ -223,10 +219,10 @@ export const loggingIn = (email, password) => {
               refreshToken: user.refreshToken
             };
 
-            dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-            fetchUserMetadata('email', email, dispatch);
+            // dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+            // fetchUserMetadata('email', email, dispatch);
 
-            /*if (!user.emailVerified) {
+            if (!user.emailVerified) {
               dispatch({
                 type: 'USER_AUTH_LOGIN_ERROR',
                 payload: { message: 'User not verified.' },
@@ -234,7 +230,7 @@ export const loggingIn = (email, password) => {
             } else {
               dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
               fetchUserMetadata('email', email, dispatch);
-            }*/
+            }
           }
         });
       })

@@ -24,12 +24,12 @@ class ImagePopupAndSlider extends Component {
               className="center-block"
             />
             <figcaption className="action-btn">
-              <a title="Share">
+              <a href="#" title="Share">
                 <span className="share-icon">
                   <i className="fa fa-share-alt" aria-hidden="true" />
                 </span>
               </a>
-              <a title="Like">
+              <a href="#" title="Like">
                 <span className="favorite-icon">
                   <i className="fa fa-heart-o" aria-hidden="true" />
                 </span>
@@ -50,12 +50,12 @@ class ImagePopupAndSlider extends Component {
               className="center-block"
             />
             <figcaption className="action-btn">
-              <a title="Share">
+              <a href="#" title="Share">
                 <span className="share-icon">
                   <i className="fa fa-share-alt" aria-hidden="true" />
                 </span>
               </a>
-              <a title="Like">
+              <a href="#" title="Like">
                 <span className="favorite-icon">
                   <i className="fa fa-heart-o" aria-hidden="true" />
                 </span>
@@ -76,12 +76,12 @@ class ImagePopupAndSlider extends Component {
               className="center-block"
             />
             <figcaption className="action-btn">
-              <a title="Share">
+              <a href="#" title="Share">
                 <span className="share-icon">
                   <i className="fa fa-share-alt" aria-hidden="true" />
                 </span>
               </a>
-              <a title="Like">
+              <a href="#" title="Like">
                 <span className="favorite-icon">
                   <i className="fa fa-heart-o" aria-hidden="true" />
                 </span>
@@ -102,12 +102,12 @@ class ImagePopupAndSlider extends Component {
               className="center-block"
             />
             <figcaption className="action-btn">
-              <a title="Share">
+              <a href="#" title="Share">
                 <span className="share-icon">
                   <i className="fa fa-share-alt" aria-hidden="true" />
                 </span>
               </a>
-              <a title="Like">
+              <a href="#" title="Like">
                 <span className="favorite-icon">
                   <i className="fa fa-heart-o" aria-hidden="true" />
                 </span>
@@ -128,12 +128,12 @@ class ImagePopupAndSlider extends Component {
               className="center-block"
             />
             <figcaption className="action-btn">
-              <a title="Share">
+              <a href="#" title="Share">
                 <span className="share-icon">
                   <i className="fa fa-share-alt" aria-hidden="true" />
                 </span>
               </a>
-              <a title="Like">
+              <a href="#" title="Like">
                 <span className="favorite-icon">
                   <i className="fa fa-heart-o" aria-hidden="true" />
                 </span>
@@ -154,12 +154,12 @@ class ImagePopupAndSlider extends Component {
               className="center-block"
             />
             <figcaption className="action-btn">
-              <a title="Share">
+              <a href="#" title="Share">
                 <span className="share-icon">
                   <i className="fa fa-share-alt" aria-hidden="true" />
                 </span>
               </a>
-              <a title="Like">
+              <a href="#" title="Like">
                 <span className="favorite-icon">
                   <i className="fa fa-heart-o" aria-hidden="true" />
                 </span>

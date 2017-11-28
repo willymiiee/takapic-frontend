@@ -130,7 +130,7 @@ class Step2IntiatePortofolio extends Component {
                           }}
                         />
                       )}
-                      <img src={photo.reader} alt="This is the alt text" />
+                      <img src={photo.reader} />
                       {!this.props.photographerServiceInfoStep2.loading && (
                         <i
                           title="Remove Photo"

@@ -90,7 +90,7 @@ export default class PhotosPortofolio extends Component {
                       }}
                     />
                   )}
-                  <img src={photo.reader} alt="This is the alt text" />
+                  <img src={photo.reader} />
                   {!this.props.loading && (
                     <i
                       title="Remove Photo"

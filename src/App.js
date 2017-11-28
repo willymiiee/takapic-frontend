@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import qs from 'qs';
 import { lifecycle, compose } from 'recompose';
@@ -37,7 +38,6 @@ import Step2DateAvailability from 'components/BecomeOurPhotographer/Step2DateAva
 import Step2InitiatePortofolio from 'components/BecomeOurPhotographer/Step2InitiatePortofolio';
 import Step2SetupMeetingPointA from 'components/BecomeOurPhotographer/Step2SetupMeetingPointA';
 import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
-import TravellerRegistration from 'components/Traveller/TravellerRegistration';
 
 import User from 'components/User/User';
 
@@ -131,7 +131,6 @@ const App = connect(state => state)(props => {
             <Route path="/sign-in" component={SignIn} />
             <Route path="/photographer/:uuid" component={PhotographerDetail} />
             <Route path="/search" component={Search} />
-            <Route path="/traveller-registration" component={TravellerRegistration} />
             <Route
               path="/photographer-portofolio/:id"
               component={PortofolioContent}

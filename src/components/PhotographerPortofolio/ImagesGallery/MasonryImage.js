@@ -12,6 +12,7 @@ const MasonryImage = props => {
   return (
     <div>
       <a
+        href="#"
         className="cv-MasonryGallery-figure"
         style={{ width: width }}
         onClick={evt => openFunc(evt, indexItem)}

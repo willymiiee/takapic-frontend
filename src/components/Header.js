@@ -23,22 +23,22 @@ class Header extends Component {
               )}
 
               <Link to="/how-it-works">How it works</Link>
-
-              {
-                userMetadata
-                  ? <Link to="/me/edit">[ {userMetadata.displayName} ]</Link>
-                  : <Link to="/sign-in">Sign in</Link>
-              }
-
-              {
-                !userMetadata ? <Link to="/traveller-registration">Sign Up</Link> : null
-              }
-
-              {
-                userMetadata
-                  ? (<a onClick={evt => { evt.preventDefault();logout() }}>Sign out</a>)
-                  : null
-              }
+              <Link to="/help">Help</Link>
+              {userMetadata ? (
+                <Link to="/me/edit">[ {userMetadata.displayName} ]</Link>
+              ) : (
+                <Link to="/sign-in">Sign in</Link>
+              )}
+              {userMetadata ? (
+                <a
+                  onClick={evt => {
+                    evt.preventDefault();
+                    logout();
+                  }}
+                >
+                  Sign out
+                </a>
+              ) : null}
             </div>
           </div>
           <div id="nav-search" className="search-toggle hide">

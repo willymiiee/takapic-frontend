@@ -213,6 +213,8 @@ class BasicInformation extends Component {
   render() {
     const {
       userMetadata,
+      photographerServiceInformation,
+      countries,
       state
     } = this.props;
 

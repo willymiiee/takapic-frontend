@@ -1,6 +1,5 @@
 import firebase from 'firebase';
 import moment from 'moment';
-import uuidv4 from 'uuid/v4';
 import { database } from '../../services/firebase';
 import history from './../../services/history';
 
@@ -29,23 +28,18 @@ export const setMeetingPoint = params => {
     const ref = db.ref('/photographer_service_information');
     const metadataRef = ref.child(reference);
 
-    const notAvailableDatesObjects = {};
+    const notAvailableDatesFormattedList = [];
     notAvailableDates.forEach(item => {
-      notAvailableDatesObjects[uuidv4()] = moment(item).format('YYYY-MM-DD');
+      notAvailableDatesFormattedList.push(moment(item).format('YYYY-MM-DD'));
     });
-
-    let meetingPointsObjects = {};
-    let packagesPriceObjects = {};
-    meetingPoints.forEach(item => meetingPointsObjects[uuidv4()] = item);
-    packagesPrice.forEach(item => packagesPriceObjects[uuidv4()] = item);
 
     metadataRef
       .update({
-        packagesPrice: packagesPriceObjects,
-        meetingPoints: meetingPointsObjects,
-        notAvailableDates: notAvailableDatesObjects
+        packagesPrice,
+        meetingPoints,
+        notAvailableDates: notAvailableDatesFormattedList
       })
-      .then(() => {
+      .then(result => {
         updateUserMetadataPriceStartFrom(reference, packagesPrice[0].price);
         dispatch({
           type: 'SUBMIT_MEETING_POINT_SUCCESS',
@@ -71,7 +65,7 @@ export const submitUploadPhotosPortfolio = params => {
     for (let i in files) {
       const fullDirectory = `pictures/portofolio-photos/${reference}`;
       const imageFile = files[i].file;
-      let storageRef = firebase
+      var storageRef = firebase
         .storage()
         .ref(fullDirectory + '/' + imageFile.name);
 
@@ -80,7 +74,8 @@ export const submitUploadPhotosPortfolio = params => {
       tasks[i].on(
         'state_changed',
         function progress(snapshot) {
-          let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          var percentage =
+            snapshot.bytesTransferred / snapshot.totalBytes * 100;
           percentages[i] = percentage;
           dispatch({
             type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO',
@@ -89,9 +84,8 @@ export const submitUploadPhotosPortfolio = params => {
           });
         },
         function error(err) {},
-        // eslint-disable-next-line
         function complete() {
-          let downloadURL = tasks[i].snapshot.downloadURL;
+          var downloadURL = tasks[i].snapshot.downloadURL;
           dispatch({
             type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS',
             payload: {
@@ -103,11 +97,11 @@ export const submitUploadPhotosPortfolio = params => {
       );
     }
     return Promise.all(tasks).then(
-      () => {
+      data => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_SUCCESS' });
         history.push('/become-our-photographer/step-2-5');
       },
-      () => {
+      error => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ERROR' });
       }
     );

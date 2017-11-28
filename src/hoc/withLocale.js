@@ -14,13 +14,13 @@ const locales = [
   },
 ];
 
-/*let savedLocale = null;
+let savedLocale = null;
 
 try {
   savedLocale = JSON.parse(localStorage.getItem('locale'));
 } catch (ignored) {
   //ignored
-}*/
+}
 
 const withLocale = WrappedComponent =>
   connect(
