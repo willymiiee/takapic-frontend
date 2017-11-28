@@ -25,8 +25,8 @@ class CameraEquipment extends Component {
     let {selected} = this.state;
     let cameraEquipment = this.props.photographerServiceInformation.data.cameraEquipment;
     if (cameraEquipment) {
-      selected.bodies = cameraEquipment.body.map((item, key) => ([...selected.bodies, item]));
-      selected.lenses = cameraEquipment.lens.map((item, key) => ([...selected.lenses, item]));
+      selected.bodies = cameraEquipment.body;
+      selected.lenses = cameraEquipment.lens;
       this.setState({selected});
     } else {
       selected.bodies = [''];
