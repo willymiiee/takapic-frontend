@@ -76,7 +76,8 @@ class BasicInformation extends Component {
         city: {
           label: "",
           value: ""
-        }
+        },
+        currency: "",
       }
     };
   }
@@ -146,9 +147,11 @@ class BasicInformation extends Component {
   };
 
   _handleSelectCountry = selectChoice => {
-    const { location } = this.state;
+    const { location, values } = this.state;
+    const { state : { currencies } } = this.props;
 
     if (selectChoice) {
+      const currency = currencies[selectChoice.value];
 
       if (selectChoice.value !== location.country) {
         this._resetCity();
@@ -158,7 +161,9 @@ class BasicInformation extends Component {
       location.countryName = selectChoice.label
       location.continent = selectChoice.continent || "";
 
-      this.setState({ location });
+      values.currency = currency;
+
+      this.setState({ location, values });
     }
   };
 
@@ -172,9 +177,12 @@ class BasicInformation extends Component {
     values.city.label = "";
     values.city.value = "";
 
+    values.currency = "";
+
     this.setState({
       cityOptions: [],
       location,
+      values,
     });
   };
 

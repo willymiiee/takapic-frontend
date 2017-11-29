@@ -74,6 +74,7 @@ export const updateBasicInformationUser = (params) => {
         phoneNumber: state.values.phoneNumber,
         country: state.location.country,
         countryName: state.location.countryName,
+        currency: state.values.currency,
         locationAdmLevel1: state.location.locationAdmLevel1,
         locationAdmLevel2: state.location.locationAdmLevel2,
         locationMerge: state.location.locationMerge,
