@@ -177,7 +177,7 @@ const BookingFormFormik = Formik({
         }
       };
 
-      props.reservationPaymentAction(props.travellerId, data);
+      props.reservationPaymentAction(props.reservation.reservationId, data);
       setSubmitting(false);
     }, 1000);
   }
@@ -206,13 +206,14 @@ class PhotographerBooking extends Component {
       photographerServiceInformation: { loading }
     } = this.props;
 
+    const { photographerId, reservationId } = this.props.match.params;
+
     if (loading) {
-      const uid = window.location.pathname.split('/')[2];
-      this.props.fetchPhotographerServiceInformation(uid);
+      this.props.fetchPhotographerServiceInformation(photographerId);
     }
 
     if (isEmpty(this.props.reservation)) {
-      this.props.fetchReservationAction(this.props.user.uid);
+      this.props.fetchReservationAction(reservationId);
     }
   }
 
@@ -301,7 +302,6 @@ class PhotographerBooking extends Component {
             <Row>
               <Col sm={6} md={7}>
                 <BookingFormFormik
-                  travellerId={this.props.user.uid}
                   reservation={this.props.reservation}
                   meetingPoints={meetingPoints}
                   meetingPointChangeHandler={this.meetingPointChangeHandler}
@@ -384,8 +384,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid)),
-  fetchReservationAction: travellerId => dispatch(fetchReservationAction(travellerId)),
-  reservationPaymentAction: (travellerId, data) => dispatch(reservationPaymentAction(travellerId, data))
+  fetchReservationAction: reservationId => dispatch(fetchReservationAction(reservationId)),
+  reservationPaymentAction: (reservationId, data) => dispatch(reservationPaymentAction(reservationId, data))
 });
 
 export default withRouter(

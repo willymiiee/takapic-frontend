@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+import uuidv4 from 'uuid/v4';
 import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
 import { dashify } from "../../helpers/helpers";
 
@@ -37,6 +38,7 @@ class Step2SetupMeetingPointA extends Component {
       let { meetingPoints } = this.state;
       meetingPoints = meetingPoints.map(p => {
         return {
+          id: uuidv4(),
           lat: p.generalLocation.lat,
           long: p.generalLocation.long,
           meetingPointName: p.generalLocation.meetingPointName,

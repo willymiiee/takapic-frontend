@@ -20,10 +20,10 @@ export const fetchReservationAction = travellerId => {
   };
 };
 
-export const reservationInitializeAction = (travellerId, information) => {
+export const reservationInitializeAction = (reservationId, information) => {
   return dispatch => {
     const db = database.database();
-    const reservationRefChild = db.ref('/reservations').child(travellerId);
+    const reservationRefChild = db.ref('/reservations').child(reservationId);
     reservationRefChild.set(information);
 
     dispatch({
@@ -33,10 +33,10 @@ export const reservationInitializeAction = (travellerId, information) => {
   };
 };
 
-export const reservationPaymentAction = (travellerId, data) => {
+export const reservationPaymentAction = (reservationId, data) => {
   return dispatch => {
     const db = database.database();
-    const reservationRefChild = db.ref('/reservations').child(travellerId);
+    const reservationRefChild = db.ref('/reservations').child(reservationId);
     reservationRefChild.update(data);
 
     dispatch({

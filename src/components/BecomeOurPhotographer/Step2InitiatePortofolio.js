@@ -5,7 +5,7 @@ import { ProgressBar } from 'react-bootstrap';
 import { dashify } from "../../helpers/helpers";
 import { submitUploadPhotosPortfolio } from '../../store/actions/photographerServiceInfoActionsStep2';
 
-import Page from 'components/Page';
+import Page from '../Page';
 
 
 class Step2IntiatePortofolio extends Component {

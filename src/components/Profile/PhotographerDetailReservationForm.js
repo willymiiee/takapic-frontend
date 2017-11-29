@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import shortid from 'shortid';
 import { reservationInitializeAction } from "../../store/actions/reservationActions";
 import{ RESERVATION_REQUESTED } from "../../services/userTypes";
 
@@ -50,7 +51,7 @@ class PhotographerDetailReservationForm extends Component {
 
     if (travellerId) {
       const {
-        photographerServiceInformation: {data: {userMetadata: {uid}}},
+        photographerServiceInformation: { data: {userMetadata: { uid: photographerId } } },
         reservationInitializeAction
       } = this.props;
 
@@ -66,7 +67,13 @@ class PhotographerDetailReservationForm extends Component {
         }
       } = this.state;
 
+      let reservationId = shortid.generate();
+      reservationId = reservationId.toUpperCase();
+
       const information = {
+        reservationId,
+        travellerId,
+        photographerId,
         packageId,
         startDateTime: startingDate + ' ' + startingTime,
         photographerFee,
@@ -76,8 +83,8 @@ class PhotographerDetailReservationForm extends Component {
         status: RESERVATION_REQUESTED
       };
 
-      reservationInitializeAction(travellerId, information);
-      this.props.history.push(`/booking/${uid}`);
+      reservationInitializeAction(reservationId, information);
+      this.props.history.push(`/booking/${photographerId}/${reservationId}`);
 
     } else {
       this.props.history.push('/sign-in');

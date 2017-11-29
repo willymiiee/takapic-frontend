@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import moment from 'moment';
+import uuidv4 from 'uuid/v4';
 import { database } from '../../services/firebase';
 import history from './../../services/history';
 
@@ -87,9 +88,12 @@ export const submitUploadPhotosPortfolio = params => {
         // eslint-disable-next-line
         function complete() {
           let downloadURL = tasks[i].snapshot.downloadURL;
+          let fileName =
           dispatch({
             type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS',
             payload: {
+              id: uuidv4(),
+              fileName: imageFile.name,
               url: downloadURL,
               theme: '-',
             },

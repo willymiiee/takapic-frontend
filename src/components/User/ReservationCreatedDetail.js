@@ -1,10 +1,33 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux';
+import { database } from "../../services/firebase";
 
 import './ReservationCreatedDetail.css';
 import Page from '../Page';
 
 class ReservationCreatedDetail extends Component {
+  constructor() {
+    super();
+    this.state = {
+      messages: null
+    }
+  }
+
+  componentDidMount() {
+    const db = database.database();
+    const ref = db.ref('messages')
+      .orderByChild('reference')
+      .startAt("INBOX-UID")
+      .on('value', snapshot => {
+        this.setState({ messages: snapshot.val() });
+      });
+  }
+
+  showMeTheState = evt => {
+    evt.preventDefault();
+    console.log(this.state);
+  };
+
   render() {
     return (
       <Page>
@@ -17,7 +40,11 @@ class ReservationCreatedDetail extends Component {
 
                 <div className="reservation-photographer-info">
                   <div className="profile-picture">
-                    <img className="cover circle-img border-smooth" alt="This is an alt text" src="https://firebasestorage.googleapis.com/v0/b/takapic-project.appspot.com/o/pictures%2Fuser-photo-profile%2Ftahubulat4-getnada-com.jpg?alt=media&amp;token=203868d5-32da-4e22-894c-669be47ee396"/>
+                    <img
+                      className="cover circle-img border-smooth"
+                      alt="This is an alt text"
+                      src="https://firebasestorage.googleapis.com/v0/b/takapic-project.appspot.com/o/pictures%2Fuser-photo-profile%2Ftahubulat4-getnada-com.jpg?alt=media&token=55a3066e-d5ee-4da8-925c-43e784011a54"
+                    />
                   </div>
 
                   <div className="info-item-text">
@@ -71,20 +98,24 @@ class ReservationCreatedDetail extends Component {
 
             <div className="right-reservation-messages-wrapper">
               <div className="card bg-white-trans">
-                <div className="messages-list">
-                  <blockquote className="example-twitter" cite="https://twitter.com/necolas/status/9880187933">
-                    <p>Takes me longer to write up blog posts on experiments or projects than to create them in the first place.</p>
-                  </blockquote>
 
-                  <blockquote className="example-twitter" cite="https://twitter.com/necolas/status/9880187933">
-                    <p>Takes me longer to write up blog posts on experiments or projects than to create them in the first place.</p>
-                  </blockquote>
+                <div className="messages-list">
+                  {
+                    this.state.messages && Object.keys(this.state.messages).map(item => {
+                      return (
+                        <blockquote className="example-twitter" cite="https://twitter.com/necolas/status/9880187933">
+                          <p>{ this.state.messages[item].message }</p>
+                        </blockquote>
+                      )
+                    })
+                  }
                 </div>
 
                 <div>
-                  <textarea>Haloo</textarea>
-                  <button type="button">Send</button>
+                  <textarea defaultValue="Halooo"/>
+                  <button type="button" onClick={this.showMeTheState}>Send</button>
                 </div>
+
               </div>
             </div>
           </div>

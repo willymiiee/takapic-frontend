@@ -128,7 +128,7 @@ const App = connect(state => state)(props => {
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/booking" component={onlyLoggedIn(PhotographerBooking)} />
+            <Route path="/booking/:photographerId/:reservationId" component={onlyLoggedIn(PhotographerBooking)} />
             <Route path="/sign-in" component={SignIn} />
             <Route path="/photographer/:uuid" component={PhotographerDetail} />
             <Route path="/me/reservations/:reservationid" component={onlyLoggedIn(ReservationCreatedDetail)} />
