@@ -83,10 +83,17 @@ class BasicInformation extends Component {
   }
 
   componentWillMount() {
-    const { photographerServiceInformation, photographerServiceInformation : { data : { userMetadata, selfDescription } } } = this.props;
+    const {
+      photographerServiceInformation,
+      photographerServiceInformation : {
+        data : { userMetadata, selfDescription }
+      },
+      state: { currencies }
+    } = this.props;
     const { location, selected, values } = this.state;
 
     if (photographerServiceInformation && userMetadata) {
+      const currency = currencies[photographerServiceInformation.data.location.country];
 
       location.country = photographerServiceInformation.data.location.country || "";
       location.countryName = photographerServiceInformation.data.location.countryName || "";
@@ -100,6 +107,7 @@ class BasicInformation extends Component {
       values.phoneNumber = userMetadata.phoneNumber || "";
       values.city.label = location.locationAdmLevel2 || "";
       values.city.value = location.locationAdmLevel2 || "";
+      values.currency = currency;
 
       selected.languages = photographerServiceInformation.data.languages || [];
 
