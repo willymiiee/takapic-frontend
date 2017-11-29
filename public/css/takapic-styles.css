@@ -3742,11 +3742,42 @@ PORTOFOLIO CONTENT SLIDER
 }
 
 .slick-dots {
-    bottom: -45px !important;
+    position: static !important;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    margin-top:10px !important;
+}
+
+.slick-dots li img {
+    height:80px !important;
+    -webkit-transition: all 500ms;
+    -moz-transition: all 500ms;
+    -ms-transition: all 500ms;
+    -o-transition: all 500ms;
+    transition: all 500ms;
+    filter: grayscale(50%);
 }
 
 .slick-dots li {
-    opacity: 0.5;
+    position: static !important;
+    opacity: 0.6;
+    display: inline !important;
+    margin: 0px !important;
+}
+
+.slick-dots li.slick-active {
+    opacity: 1 !important;
+}
+.slick-dots li.slick-active a img{
+    background: darkgray;
+    padding:6px;
+    -webkit-transition: all 500ms;
+    -moz-transition: all 500ms;
+    -ms-transition: all 500ms;
+    -o-transition: all 500ms;
+    transition: all 500ms;
+    filter: grayscale(0%);
 }
 
 .img-container {
