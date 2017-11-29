@@ -145,7 +145,7 @@ class PhotosPortofolio extends Component {
                   </div>
                 ))}
                 {selectedPhotos.map((photo, key) => (
-                  <div>
+                  <div key={key}>
                     <div
                       style={{
                         position: 'absolute',

@@ -173,6 +173,8 @@ export const uploadPhotosPortfolio = (params) => {
         function complete() {
           let downloadURL = tasks[i].snapshot.downloadURL;
           let payload = {
+            id: uuidv4(),
+            fileName: imageFile.name,
             url: downloadURL,
             theme: '-',
           }
