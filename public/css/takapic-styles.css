@@ -3280,12 +3280,12 @@ PHASE 1 BOP - New Photographer Account Register
     cursor: pointer;
 }
 
-#photographer-landing .setup-content .browse-profile-btn span {
+.browse-profile-btn span {
     font-size: 16px;
     cursor: pointer;
 }
 
-#photographer-landing .setup-content .input-profile-name {
+.input-profile-name {
     margin-left: 12px;
     color: #aaa;
     font-size: 18px;
@@ -3302,13 +3302,13 @@ PHASE 1 BOP - New Photographer Account Register
     opacity: 0;
 }
 
-#photographer-landing .setup-content .browse-profile-holder {
+.browse-profile-holder {
     border-radius: 40px;
     padding: 0px;
     border: solid 1px #aaa;
 }
 
-#photographer-landing .setup-content .browse-profile-btn {
+.browse-profile-btn {
     position: relative;
     cursor: pointer;
     display: inline-block;
@@ -3319,7 +3319,7 @@ PHASE 1 BOP - New Photographer Account Register
     border-radius: 20px;
 }
 
-#photographer-landing .setup-content .browse-profile-btn:hover {
+.browse-profile-btn:hover {
     background: #000;
     cursor: pointer !important;
 }

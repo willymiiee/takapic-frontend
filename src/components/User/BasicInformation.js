@@ -69,6 +69,7 @@ class BasicInformation extends Component {
       },
       values: {
         photoProfileUrl: "",
+        fileImage: false,
         name: "",
         selfDescription: "",
         phoneNumber: "",
@@ -107,6 +108,23 @@ class BasicInformation extends Component {
         selected
       });
     }
+  }
+
+  browsePhotoProfile = event => {
+    event.preventDefault();
+    this.imageSelectedAction(event.target.files[0]);
+  }
+
+  imageSelectedAction = fileObject => {
+    let { values } = this.state;
+    let fileReader = new FileReader();
+
+    fileReader.onloadend = () => {
+      values.fileImage = fileObject;
+      values.photoProfileUrl = fileReader.result;
+      this.setState({ values });
+    };
+    fileReader.readAsDataURL(fileObject);
   }
 
   _handleNameChange = event => {
@@ -250,11 +268,36 @@ class BasicInformation extends Component {
         <FormGroup>
           <Col componentClass={ControlLabel} sm={2} />
           <Col sm={6}>
-            <Image
-              src={values.photoProfileUrl}
-              circle
-              style={{ width: 150 }}
-            />
+            <div id="profile-dragarea">
+              <div
+                id="filedrag-photo"
+                className="center-block img-responsive">
+                <div className="ph">
+                  {values.photoProfileUrl && (
+                    <img
+                      src={values.photoProfileUrl}
+                      className="center-block img-circle img-profile"
+                      alt="This is alt text"
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="browse-profile-holder" style={{ marginTop: '10px' }}>
+              <div className="browse-profile-btn">
+                <span>Browse</span>
+                <input
+                  className="input-file choose-file"
+                  id="btn-choose-profile"
+                  type="file"
+                  name=""
+                  onChange={this.browsePhotoProfile}
+                />
+              </div>
+              <div className="input-profile-name">
+                { values.fileImage ? values.fileImage.name : 'Choose file' }
+              </div>
+            </div>
           </Col>
         </FormGroup>
 

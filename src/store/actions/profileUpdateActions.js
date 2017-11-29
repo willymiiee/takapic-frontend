@@ -7,9 +7,56 @@ export const updateBasicInformation = (params) => {
   return dispatch => {
     dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION" });
     dispatch(setActiveTab(1));
+
+    // Update Photo Profile when file exist
+    if (params.state.values.fileImage) {
+      dispatch(updatePhotoProfile(params));
+      dispatch(fetchPhotographerServiceInformation(params.uid));
+    }
+
     dispatch(updateBasicInformationUser(params));
     dispatch(updateBasicInformationPhotographer(params));
   }
+};
+
+const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(reference);
+
+  userRef.update({ photoProfileUrl });
+};
+
+export const updatePhotoProfile = (params) => {
+  return dispatch => {
+    let { reference, state } = params
+    let { values: { fileImage, name } } = state
+
+    let fileExt = '.jpg';
+    if (fileImage.type === 'image/jpeg') {
+      fileExt = '.jpg';
+    } else if (fileImage.type === 'image/png') {
+      fileExt = '.png';
+    }
+
+    const storageRef = database.storage().ref();
+    const photoPath = `pictures/user-photo-profile/${reference}${fileExt}`;
+    const pictureRef = storageRef.child(photoPath);
+
+    pictureRef
+      .put(fileImage, { contentType: fileImage.type })
+      .then(snapshot => {
+        const downloadURL = snapshot.downloadURL;
+
+        database.auth().currentUser.updateProfile({
+          displayName: name,
+          photoURL: downloadURL,
+        });
+
+        updateUserMetadataPhotoProfile(reference, downloadURL);
+
+      })
+  };
 };
 
 export const updateBasicInformationUser = (params) => {
