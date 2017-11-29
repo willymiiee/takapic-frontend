@@ -3750,7 +3750,7 @@ PORTOFOLIO CONTENT SLIDER
 }
 
 .slick-dots li img {
-    height:100px !important;
+    height:80px !important;
     -webkit-transition: all 500ms;
     -moz-transition: all 500ms;
     -ms-transition: all 500ms;
@@ -3771,7 +3771,7 @@ PORTOFOLIO CONTENT SLIDER
 }
 .slick-dots li.slick-active a img{
     background: darkgray;
-    padding:10px;
+    padding:6px;
     -webkit-transition: all 500ms;
     -moz-transition: all 500ms;
     -ms-transition: all 500ms;
