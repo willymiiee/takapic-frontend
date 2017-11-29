@@ -23,8 +23,14 @@ class User extends Component{
   }
 
   componentWillMount() {
+    const { activeTab } = this.props;
+
     this.getPhotographerServiceInformation();
     this.formatCountriesSource();
+
+    if (activeTab === 3) {
+      this.handleSelectedTab(activeTab); 
+    }
   }
 
   getPhotographerServiceInformation = () => {
