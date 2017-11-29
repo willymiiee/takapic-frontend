@@ -46,7 +46,7 @@ class Footer extends Component {
               </div>
             </div>
             <div className="col-sm-5 margin-bottom-30">
-              <h4>TakaPic</h4>
+              <h4>Takapic</h4>
               <ul className="footer-links">
                 <li>
                   <Link to="/">About Us</Link>
@@ -63,10 +63,12 @@ class Footer extends Component {
                 <li>
                   <Link to="/">Privacy Policy</Link>
                 </li>
+                <li>
+                  <Link to="/">Contact Us</Link>
+                </li>
               </ul>
             </div>
             <div className="col-sm-3">
-              <h4>Contact Us</h4>
               <div id="footer-social">
                 <Link to="/">
                   <i className="fa fa-facebook-official" />

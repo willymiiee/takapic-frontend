@@ -158,7 +158,7 @@ class TravellerRegistration extends Component {
           <div className="panel setup-content" id="step-1">
             <div className="panel-body">
               <h2 className="text-center">
-                Hii Traveller!
+                Hi Traveller!
               </h2>
 
               <div className="text-center social-media-signup">
