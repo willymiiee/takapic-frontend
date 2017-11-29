@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Tabs, Tab } from "react-bootstrap";
+import history from '../../services/history';
 
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 
@@ -29,7 +30,7 @@ class User extends Component{
     this.formatCountriesSource();
 
     if (activeTab === 3) {
-      this.handleSelectedTab(activeTab); 
+      this.handleSelectedTab(activeTab);
     }
   }
 
@@ -38,9 +39,11 @@ class User extends Component{
       photographerServiceInformation: { loading }, user: { userMetadata }
     } = this.props;
 
-    if (loading) {
+    if (userMetadata.userType === "photographer") {
       const uid = userMetadata.uid;
       this.props.fetchPhotographerServiceInformation(uid);
+    } else {
+      history.push('/');
     }
   }
 
