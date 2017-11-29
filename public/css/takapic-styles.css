@@ -3742,7 +3742,7 @@ PORTOFOLIO CONTENT SLIDER
 }
 
 .slick-dots {
-    bottom: -80px;
+    bottom: -45px !important;
 }
 
 .slick-dots li {

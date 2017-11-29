@@ -29,7 +29,7 @@ class Header extends Component {
               }
 
               {
-                !userMetadata ? <Link to="/traveller-registration">Sign Up</Link> : null
+                !userMetadata ? <Link to="/traveller-registration">Sign up</Link> : null
               }
 
               {
