@@ -6,6 +6,7 @@ import history from '../../services/history';
 
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 
+import Animator from '../common/Animator';
 import Page from "../Page";
 import BasicInformation from "./BasicInformation";
 import CameraEquipment from "./CameraEquipment";
@@ -39,11 +40,13 @@ class User extends Component{
       photographerServiceInformation: { loading }, user: { userMetadata }
     } = this.props;
 
-    if (userMetadata.userType === "photographer") {
-      const uid = userMetadata.uid;
-      this.props.fetchPhotographerServiceInformation(uid);
-    } else {
-      history.push('/');
+    if (loading) {
+      if (userMetadata.userType === "photographer") {
+        const uid = userMetadata.uid;
+        this.props.fetchPhotographerServiceInformation(uid);
+      } else {
+        history.push('/');
+      }
     }
   }
 
@@ -97,6 +100,7 @@ class User extends Component{
 
     return (
       <Page>
+        {(photographerServiceInformation.loading || profile.loading) ? <Animator/> : null}
         <div className="hidden-xs padding-bottom-60" />
         <div className="container">{tabsInstance}</div>
       </Page>
