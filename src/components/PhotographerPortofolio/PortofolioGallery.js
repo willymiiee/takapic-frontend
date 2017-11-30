@@ -49,7 +49,7 @@ export default class PortofolioGallery extends Component {
             <Modal show={this.state.showModal} onHide={this.close}>
               <Modal.Header closeButton />
               <Modal.Body>
-                <ImagePopupAndSlider initialSlide={this.state.initialSlide} />
+                <ImagePopupAndSlider state={this.state} />
               </Modal.Body>
             </Modal>
           </div>

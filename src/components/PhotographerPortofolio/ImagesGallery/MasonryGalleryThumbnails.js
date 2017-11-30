@@ -24,13 +24,11 @@ class MasonryGalleryThumbnails extends Component {
     this.state = { images: [] };
 
     Promise.all(this.props.images.map(load))
-      .then(ratios => ratios.sort(descentOrder))
       .then(orderRatios => this.setState({ images: orderRatios }));
   }
 
   render() {
     const { openFunc } = this.props;
-    const widest = this.state.images.length ? this.state.images[0].ratio : null;
     return (
       <div>
         <div className="cv-MasonryGallery">
@@ -40,7 +38,7 @@ class MasonryGalleryThumbnails extends Component {
                 key={index}
                 src={image.url}
                 ratio={image.ratio}
-                widest={widest}
+                widest={image.ratio}
                 openFunc={openFunc}
                 indexItem={index}
               />
