@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 export default class PortofolioAbout extends Component {
   render() {
+    const { data } = this.props;
+
     return (
       <div className="col-sm-9 margin-top-50">
         <div
@@ -12,11 +14,7 @@ export default class PortofolioAbout extends Component {
             <li>
               <h3>About Me</h3>
               <p className="l-h-22 about-content">
-                Aaron Smith was born and raised in Kansas City. His creative
-                interest first began when he turned his bedroom walls into a
-                drawing board. A few years after picking up his first
-                skateboard he picked up his first camera. Both of them blended
-                together and it shaped his photography into what it is today.
+                {data.selfDescription}
               </p>
             </li>
             <li>

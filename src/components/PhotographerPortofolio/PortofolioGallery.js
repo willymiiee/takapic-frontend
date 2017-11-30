@@ -8,11 +8,21 @@ export default class PortofolioGallery extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      images: [],
       showModal: false,
       initialSlide: 0,
     };
 
     this.close = this.close.bind(this);
+  }
+
+  componentWillMount() {
+    const { data: { photosPortofolio } } = this.props
+    let images = Object.keys(photosPortofolio).map(item => (photosPortofolio[item].url));
+
+    this.setState({
+      images: images,
+    })
   }
 
   close() {
@@ -25,14 +35,7 @@ export default class PortofolioGallery extends Component {
   };
 
   render() {
-    const images = [
-      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/01.jpg',
-      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/02.jpg',
-      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/03.jpg',
-      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/04.jpg',
-      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/05.jpg',
-      'http://res.cloudinary.com/okaprinarjaya/image/upload/v1507620490/takapic/06.jpg',
-    ];
+    const { images } = this.state
 
     return (
       <div className="col-sm-9 margin-top-50">

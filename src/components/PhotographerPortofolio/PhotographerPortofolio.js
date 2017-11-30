@@ -81,10 +81,10 @@ class PhotographerPortofolio extends Component {
 
     const { activeMenu } = this.state;
 
-    let mainContent = <Gallery/>;
+    let mainContent = <Gallery data={data} />;
 
     if (activeMenu === "aboutMe") {
-      mainContent = <About/>;
+      mainContent = <About data={data}/>;
     }
 
     if (!loading) {
