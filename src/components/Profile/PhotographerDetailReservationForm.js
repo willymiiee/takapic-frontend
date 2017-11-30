@@ -172,8 +172,6 @@ class PhotographerDetailReservationForm extends Component {
       return { ...item, price: convertedPrice };
     });
 
-    console.error(packagesPriceConvertPrice);
-
     const { reservation: { credit, serviceFee, package: { value: packageId } } } = this.state;
     const firstPackagePick = packagesPriceConvertPrice.filter(item => item.id === packageId)[0];
     // eslint-disable-next-line

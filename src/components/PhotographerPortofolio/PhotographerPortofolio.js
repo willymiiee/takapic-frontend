@@ -74,6 +74,28 @@ class PhotographerPortofolio extends Component {
     })
   }
 
+  getRating = () => {
+    const {
+      photographerServiceInformation: { loading, data }
+    } = this.props;
+
+    let ratings = [];
+    let stars = data.serviceReviews.rating.value;
+    let starsO = Math.round(5 - stars);
+    for (var i = 0; i < stars; i++) {
+      ratings.push(
+        <i className="fa fa-star" />
+      )
+    }
+    for (var i = 0; i < starsO; i++) {
+      ratings.push(
+        <i className="fa fa-star-o" />
+      )
+    }
+
+    return ratings;
+  }
+
   render() {
     const {
       photographerServiceInformation: { loading, data }, currenciesRates
@@ -102,11 +124,7 @@ class PhotographerPortofolio extends Component {
                   <h3>{data.userMetadata.displayName}</h3>
                   <h5>{data.userMetadata.locationMerge}</h5>
                   <div className="ratings">
-                    <i className="fa fa-star" />
-                    <i className="fa fa-star" />
-                    <i className="fa fa-star" />
-                    <i className="fa fa-star-half-o" />
-                    <i className="fa fa-star-o" />
+                    {this.getRating()}
                   </div>
                   <hr />
                   <div className="a-block">
