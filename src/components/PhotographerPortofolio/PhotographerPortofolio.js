@@ -110,30 +110,12 @@ class PhotographerPortofolio extends Component {
                   </div>
                   <hr />
                   <div className="a-block">
-                    <div id="gallery" onClick={this.handleMenuClick}>
+                    <div id="gallery" onClick={this.handleMenuClick} style={{cursor: 'pointer'}}>
                       Gallery
                     </div>
-                    <div id="aboutMe" onClick={this.handleMenuClick}>
+                    <div id="aboutMe" onClick={this.handleMenuClick} style={{cursor: 'pointer'}}>
                       About Me
                     </div>
-
-                  </div>
-                  <Link
-                    to="/photographer/2"
-                    className="button w-100 margin-top-30 margin-bottom-15"
-                    >
-                      Contact
-                    </Link>
-                  <h3>Share</h3>
-                  <div id="photographer-portofolio-share">
-                    <i className="fa fa-facebook-official" />
-                    <i className="fa fa-google-plus" />
-                    <i className="fa fa-weibo" />
-                  </div>
-                  <hr />
-                  <div className="a-block">
-                    <a href>Go to Takapic Home</a>
-                    <a href>Edit this page</a>
                   </div>
                 </div>
               </div>
