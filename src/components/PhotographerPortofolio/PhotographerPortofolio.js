@@ -76,18 +76,22 @@ class PhotographerPortofolio extends Component {
 
   render() {
     const {
-      photographerServiceInformation: { loading, data }
+      photographerServiceInformation: { loading, data }, currenciesRates
     } = this.props;
-
     const { activeMenu } = this.state;
 
-    let mainContent = <Gallery data={data} />;
+    if (!loading && currenciesRates && data) {
+      const convertedPackagesPrice = data.packagesPrice.map(item => {
+        const USDRates = currenciesRates['USD' + data.userMetadata.currency];
+        const convertedPrice = Math.round(item.price / USDRates);
+        return { ...item, price: convertedPrice };
+      });
 
-    if (activeMenu === "aboutMe") {
-      mainContent = <About data={data}/>;
-    }
+      let mainContent = <Gallery data={data} />;
+      if (activeMenu === "aboutMe") {
+        mainContent = <About data={data} convertedPackagesPrice={convertedPackagesPrice}/>;
+      }
 
-    if (!loading) {
       return (
         <Page>
           <div className="container" id="photographer-portofolio">
