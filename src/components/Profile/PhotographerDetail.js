@@ -15,6 +15,8 @@ import Animator from '../common/Animator';
 import Page from '../Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';
 
+const uid = window.location.pathname.split('/')[2];
+
 const fetchPhotographerServiceInformation = () => {
   return dispatch => {
     dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_LOADING' });
@@ -167,7 +169,7 @@ class PhotographerDetail extends Component {
               <h2>{displayName}</h2>
               <p>{locationMerge}</p>
               <a
-                href="/photographer-portofolio/1"
+                href={`/photographer-portofolio/${uid}`}
                 className="button button-white"
               >
                 Go to Portofolio

@@ -135,7 +135,7 @@ const App = connect(state => state)(props => {
             <Route path="/search" component={Search} />
             <Route path="/traveller-registration" component={TravellerRegistration} />
             <Route
-              path="/photographer-portofolio/:id"
+              path="/photographer-portofolio/:uid"
               component={PortofolioContent}
             />
             <Route
