@@ -11,11 +11,9 @@ import store from 'store';
 import Animator from 'components/common/Animator';
 import ScrollToTop from 'components/common/ScrollToTop';
 import Home from 'pages/home';
+import PhotographerPortofolio from 'components/PhotographerPortofolio/PhotographerPortofolio';
 import PhotographerBooking from 'components/Profile/PhotographerBooking';
 import PhotographerDetail from 'components/Profile/PhotographerDetail';
-import PortofolioContent from 'components/PhotographerPortofolio/PortofolioContent';
-import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
-import PortofolioReviews from 'components/PhotographerPortofolio/PortofolioReviews';
 import Search from 'components/Search/Search';
 import NotFoundPage from 'pages/not-found';
 import SignIn from './components/SignIn/SignIn';
@@ -136,15 +134,7 @@ const App = connect(state => state)(props => {
             <Route path="/traveller-registration" component={TravellerRegistration} />
             <Route
               path="/photographer-portofolio/:uid"
-              component={PortofolioContent}
-            />
-            <Route
-              path="/photographer-portofolio-about"
-              component={PortofolioAbout}
-            />
-            <Route
-              path="/photographer-portofolio-reviews"
-              component={PortofolioReviews}
+              component={PhotographerPortofolio}
             />
             <Route
               path="/welcome-photographer"

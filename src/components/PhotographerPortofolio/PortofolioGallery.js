@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 
-import PhotographerPortofolio from 'components/PhotographerPortofolio';
 import MasonryGalleryThumbnails from './ImagesGallery/MasonryGalleryThumbnails';
 import ImagePopupAndSlider from './ImagesGallery/ImagePopupAndSlider';
 
-export default class PortofolioContent extends Component {
+export default class PortofolioGallery extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,25 +35,23 @@ export default class PortofolioContent extends Component {
     ];
 
     return (
-      <PhotographerPortofolio>
-        <div className="col-sm-9 margin-top-50">
-          <div
-            id="photographer-portofolio-gallery"
-            className="photographer-portofolio-container"
-          >
-            <div className="masonry-container">
-              <MasonryGalleryThumbnails images={images} openFunc={this.open} />
+      <div className="col-sm-9 margin-top-50">
+        <div
+          id="photographer-portofolio-gallery"
+          className="photographer-portofolio-container"
+        >
+          <div className="masonry-container">
+            <MasonryGalleryThumbnails images={images} openFunc={this.open} />
 
-              <Modal show={this.state.showModal} onHide={this.close}>
-                <Modal.Header closeButton />
-                <Modal.Body>
-                  <ImagePopupAndSlider initialSlide={this.state.initialSlide} />
-                </Modal.Body>
-              </Modal>
-            </div>
+            <Modal show={this.state.showModal} onHide={this.close}>
+              <Modal.Header closeButton />
+              <Modal.Body>
+                <ImagePopupAndSlider initialSlide={this.state.initialSlide} />
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
-      </PhotographerPortofolio>
+      </div>
     );
   }
 }
