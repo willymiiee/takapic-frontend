@@ -45,9 +45,11 @@ const countries = (state = {}, action) => {
   return state;
 };
 
-const currenciesRates = (state = null, action) => {
-  if (action.type === 'FETCH_CURRENCIES_RATES') {
-    return action.payload;
+const currenciesRates = (state = { fetchCurrenciesRatesLoading: false }, action) => {
+  if (action.type === 'FETCH_CURRENCIES_RATES_LOADING') {
+    return { ...state, fetchCurrenciesRatesLoading: true };
+  } else if (action.type === 'FETCH_CURRENCIES_RATES') {
+    return { ...action.payload, fetchCurrenciesRatesLoading: false };
   }
   return state;
 };
@@ -71,6 +73,13 @@ const reservation = (state = {}, action) => {
   }
 };
 
+const photographerListings = (state = [], action) => {
+  if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING') {
+    return action.payload;
+  }
+  return state;
+};
+
 
 const rootReducer = combineReducers({
   userAuth,
@@ -84,6 +93,7 @@ const rootReducer = combineReducers({
   countries,
   currenciesRates,
   reservation,
+  photographerListings,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

@@ -1,24 +1,55 @@
 import React, { Component } from 'react';
-import SearchResult from './SearchResult';
 import queryString from 'query-string';
-import DateTime from 'react-datetime';
 import moment from 'moment';
 import axios from 'axios';
-import Page from 'components/Page';
-import Autocomplete from 'react-autocomplete';
+import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+import { connect } from 'react-redux';
+import { fetchCurrenciesRates } from "../../store/actions/photographerServiceInfoActions";
+
+import Page from '../Page';
+import SearchResult from './SearchResult';
+
+const convertPrices = (data, currenciesRates) => {
+  return data.map(item => {
+    const USDRates = currenciesRates['USD' + item.currency];
+    const convertedPrice = Math.round(item.priceStartFrom / USDRates);
+    return { ...item, priceStartFrom: convertedPrice };
+  });
+};
+
+const fetchPhotographerListings = (searchInfo, currenciesRates) => {
+  return dispatch => {
+    let { destination, date } = queryString.parse(searchInfo);
+    const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
+
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .then(response => {
+        const data = convertPrices(response.data.data, currenciesRates);
+        dispatch({
+          type: 'FETCH_PHOTOGRAPHERS_LISTING',
+          payload: data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
 
 class Search extends Component {
   constructor(props) {
     super(props);
+    const searchQs = queryString.parse(this.props.location.search);
+    const { destination, date } = searchQs;
+
     this.state = {
-      items: [],
       search: {
-        destination: '',
-        date: '',
-      },
-      cities: [],
+        destination: !destination ? null : { label: destination },
+        date: !date ? null : moment(date),
+      }
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   switchResultView = viewType => {
@@ -35,36 +66,58 @@ class Search extends Component {
     }
   };
 
-  onSearchChange(key, event) {
-    let value = '';
-    if (key === 'date') {
-      value = event.format('MM-DD-YYYY');
-    } else {
-      value = event.target.value;
-    }
-
-    this.setState({
-      search: Object.assign({}, this.state.search, { [key]: value }),
-    });
-  }
-
-  handleSubmit(e) {
-    let { destination, date } = this.state.search;
+  handleSearchSubmit = (e) => {
     e.preventDefault();
+
+    let { destination, date } = this.state.search;
+    const destinationValStr = !destination ? '' : destination.label;
+    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+
     this.props.history.push({
       pathname: '/search/',
-      search: 'destination=' + destination + '&date=' + date,
-      state: {
-        referrer: '/',
-        search: this.state.search,
-      },
+      search: 'destination=' + destinationValStr + '&date=' + dateValStr
     });
-    window.location.reload(true);
+
+    window.location.reload();
+  };
+
+  handleSearchDestinationChange = value => {
+    this.setState({ search: { ...this.state.search, destination: value } });
+  };
+
+  handleSearchDateChange = date => {
+    this.setState({ search: { ...this.state.search, date } });
+  };
+
+  retrieveLocations(input) {
+    if (!input) {
+      return Promise.resolve({ options: [] });
+    }
+    return axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/locations?keyword=${input}`)
+      .then(response => {
+        return { options: response.data.data };
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  setDefaultSearchInformation() {
+    //
   }
 
   componentWillMount() {
-    let search = queryString.parse(this.props.location.search);
-    this.setState({ search: search });
+    const searchQs = queryString.parse(this.props.location.search);
+    const { destination, date } = searchQs;
+    this.setState({
+      ...this.state.search,
+      destination: { label: destination },
+      date: moment(date)
+    });
+    console.log('oka oka oka', searchQs)
+
+    this.props.fetchCurrenciesRates();
   }
 
   componentDidMount() {
@@ -77,123 +130,96 @@ class Search extends Component {
         window.$('#landing-page-search').removeClass('focus');
       });
 
-    // Fetch photographers
-    let { destination, date } = queryString.parse(this.props.location.search);
-    const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
-
-    axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
-      .then(response => {
-        this.setState({ items: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const { location: { search }, currenciesRates } = this.props;
+    console.log('currenciesRates', currenciesRates);
+    if (!currenciesRates.fetchCurrenciesRatesLoading) {
+      this.props.fetchPhotographerListings(search, currenciesRates);
+    }
   }
 
   render() {
-    let yesterday = moment().subtract(1, 'day');
-    let valid = function(current) {
-      return current.isAfter(yesterday);
-    };
-    return (
-      <Page>
-        <div className="container">
-          <div id="landing-page-top" className="srp">
-            <div id="landing-page-search" className="srp">
-              <Autocomplete
-                inputProps={{ placeholder: 'Destination' }}
-                items={this.state.cities}
-                menuStyle={{
-                  borderRadius: '3px',
-                  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                  background: 'white',
-                  padding: '2px 0',
-                  position: 'fixed',
-                  overflow: 'auto',
-                  maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
-                  color: '#333',
-                }}
-                getItemValue={item => item}
-                renderItem={(item, highlighted) => (
-                  <div
-                    style={{
-                      backgroundColor: highlighted ? '#eee' : 'transparent',
-                      padding: '2px 6px',
-                      fontSize: '14px',
-                    }}
-                  >
-                    {item}
-                  </div>
-                )}
-                value={this.state.search.destination}
-                onChange={e => {
-                  this.setState({
-                    search: Object.assign({}, this.state.search, {
-                      destination: e.target.value,
-                    }),
-                  });
-                  axios
-                    .get('/tes/cities.json')
-                    .then(res => {
-                      let cities = res.data.cities;
-                      this.setState({ cities });
-                    })
-                    .catch(error => console.log(error));
-                }}
-                onSelect={value => {
-                  this.setState({
-                    search: Object.assign({}, this.state.search, {
-                      destination: value,
-                    }),
-                  });
-                }}
-                wrapperStyle={{}}
-              />
-              <DateTime
-                value={this.state.search.date}
-                onChange={this.onSearchChange.bind(this, 'date')}
-                inputProps={{ placeholder: 'Date' }}
-                timeFormat={false}
-                dateFormat="MM-DD-YYYY"
-                isValidDate={valid}
-              />
-              <button className="button" onClick={this.handleSubmit}>
-                <i className="fa fa-search" />
-                <span>Search</span>
-              </button>
-            </div>
-          </div>
+    if (this.props.currenciesRates && this.props.photographerListings) {
+      let yesterday = moment().subtract(1, 'day');
+      let valid = function (current) {
+        return current.isAfter(yesterday);
+      };
 
-          <div id="result-filter">
-            <div>
-              <div>
-                Price Range<div className="hidden">: $14 USD - $15 USD+</div>
-                <i className="fa fa-caret-down margin-left-5" />
+      return (
+        <Page>
+          <div className="container">
+            <div id="landing-page-top" className="srp">
+              <div className="search-box-custom-again">
+                <div className="search-box-destination">
+                  <Select.Async
+                    multi={false}
+                    value={this.state.search.destination}
+                    onChange={this.handleSearchDestinationChange}
+                    valueKey="label"
+                    labelKey="label"
+                    loadOptions={this.retrieveLocations}
+                    placeholder="Choose your destination"
+                  />
+                </div>
+
+                <div className="search-box-date">
+                  <DatePicker
+                    dateFormat="MMMM Do YYYY"
+                    selected={this.state.search.date}
+                    onChange={this.handleSearchDateChange}
+                    placeholderText="Choose a date"
+                  />
+                </div>
+
+                <div className="search-box-submit">
+                  <button className="button" onClick={this.handleSearchSubmit}>
+                    <i className="fa fa-search"/>
+                    <span>Search</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div id="result-view">
-            <i
-              id="result-view-grid"
-              className="fa fa-th-large active"
-              title="Grid View"
-              onClick={() => this.switchResultView('grid')}
-            />
-            <i
-              id="result-view-list"
-              className="fa fa-th-list"
-              title="List View"
-              onClick={() => this.switchResultView('list')}
-            />
-          </div>
+            {/*<div id="result-filter">
+              <div>
+                <div>
+                  Price Range<div className="hidden">: $14 USD - $15 USD+</div>
+                  <i className="fa fa-caret-down margin-left-5" />
+                </div>
+              </div>
+            </div>*/}
 
-          <SearchResult items={this.state.items} />
-        </div>
-      </Page>
-    );
+            <div id="result-view">
+              <i
+                id="result-view-grid"
+                className="fa fa-th-large active"
+                title="Grid View"
+                onClick={() => this.switchResultView('grid')}
+              />
+              <i
+                id="result-view-list"
+                className="fa fa-th-list"
+                title="List View"
+                onClick={() => this.switchResultView('list')}
+              />
+            </div>
+
+
+            { !this.props.currenciesRates.fetchCurrenciesRatesLoading ? <SearchResult items={this.props.photographerListings} rates={this.props.currenciesRates}/> : null }
+          </div>
+        </Page>
+      );
+    }
+    return null;
   }
 }
 
-export default Search;
+export default connect(
+  state => ({
+    photographerListings: state.photographerListings,
+    currenciesRates: state.currenciesRates
+  }),
+  dispatch => ({
+    fetchPhotographerListings: (searchInfo, currenciesRates) => dispatch(fetchPhotographerListings(searchInfo, currenciesRates)),
+    fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
+  })
+)(Search);

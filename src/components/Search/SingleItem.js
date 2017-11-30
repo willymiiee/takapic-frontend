@@ -68,7 +68,7 @@ class SingleItem extends Component {
           />
         </div>
         <div className="price">
-          from<b>${priceStartFrom}</b>
+          from <strong>USD { priceStartFrom }</strong>
         </div>
       </div>
     );

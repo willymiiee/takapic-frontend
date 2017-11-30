@@ -306,10 +306,10 @@ class PhotographerDetailReservationForm extends Component {
             >
               Reserve
             </button>
-            <div style={{color:'#999'}}>
+            {/*<div style={{color:'#999'}}>
               or<br />
               <a style={{color:'#999', textDecoration:'underline'}} href="/">Contact to your photographer</a>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>

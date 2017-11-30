@@ -263,7 +263,7 @@ class PhotographerDetail extends Component {
                   </div>
 
                   <h3 className="has-dot">
-                    Comments <span className="thin">(38)</span>
+                    Comments <span className="thin">(0)</span>
                   </h3>
                 </div>
               </div>

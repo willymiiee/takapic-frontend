@@ -28,9 +28,6 @@ export default connect(state => ({ user: state.userAuth }))(
                     <p>
                       Location, Short Descripton, Equipment, Language, Speciality
                     </p>
-                    <button className="button button-white-no-shadow u">
-                      Change
-                    </button>
                   </div>
                   <div className="card margin-top-40 bg-white-trans">
                     <h4>

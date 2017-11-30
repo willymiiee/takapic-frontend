@@ -11,6 +11,7 @@ class SearchResult extends Component {
   }
 
   render() {
+    console.log(this.props.rates);
     if (!this.props.items) {
       return (
         <div>

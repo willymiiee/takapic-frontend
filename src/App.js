@@ -53,23 +53,8 @@ const fetchCountriesAction = () => {
   }
 };
 
-const fetchCurrenciesRates = () => {
-  return dispatch => {
-    const db = database.database();
-    const ratesRef = db.ref('/currency_exchange_rates');
-    ratesRef.once('value', snapshot => {
-      const rates = snapshot.val();
-      dispatch({
-        type: 'FETCH_CURRENCIES_RATES',
-        payload: rates
-      });
-    });
-  };
-};
-
 store.dispatch({ type: 'USER_AUTH_LOADING_AUTH' });
 store.dispatch(fetchCountriesAction());
-store.dispatch(fetchCurrenciesRates());
 
 const redirect = props => {
   console.log(props);

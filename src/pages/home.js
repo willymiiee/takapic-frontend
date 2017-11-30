@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import DateTime from 'react-datetime';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import axios from 'axios';
-import Autocomplete from 'react-autocomplete';
+import Select from 'react-select';
 import intl from 'react-intl-universal';
 import store from '../store';
 
+import '../react-date-picker-custom.css';
 import TopPhotographers from '../components/TopPhotographers';
 import Page from '../components/Page';
 
@@ -34,39 +35,45 @@ class Home extends Component {
     super(props);
     this.state = {
       search: {
-        destination: '',
-        date: '',
-      },
-      cities: [],
+        destination: null,
+        date: null
+      }
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  onSearchChange(key, event) {
-    let value = '';
-    if (key === 'date') {
-      value = event.format('MM-DD-YYYY');
-    } else {
-      value = event.target.value;
-    }
-
-    this.setState({
-      search: Object.assign({}, this.state.search, { [key]: value }),
-    });
-  }
-
-  handleSubmit(e) {
-    let { destination, date } = this.state.search;
+  handleSearchSubmit = (e) => {
     e.preventDefault();
+
+    let { destination, date } = this.state.search;
+    const destinationValStr = !destination ? '' : destination.label;
+    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+
     this.props.history.push({
       pathname: '/search/',
-      search: 'destination=' + destination + '&date=' + date,
-      state: {
-        referrer: '/',
-        search: this.state.search,
-      },
+      search: 'destination=' + destinationValStr + '&date=' + dateValStr
     });
+  };
+
+  handleSearchDestinationChange = value => {
+    this.setState({ search: { ...this.state.search, destination: value } });
+  };
+
+  handleSearchDateChange = date => {
+    this.setState({ search: { ...this.state.search, date } });
+  };
+
+  retrieveLocations(input) {
+    if (!input) {
+      return Promise.resolve({ options: [] });
+    }
+    return axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/locations?keyword=${input}`)
+      .then(response => {
+        return { options: response.data.data };
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   componentDidMount() {
@@ -79,7 +86,7 @@ class Home extends Component {
     if (loadingHomepageData) {
       store.dispatch(fetchHomepageData());
     } else {
-      var bgSlide = window.$('#bg-slide');
+      let bgSlide = window.$('#bg-slide');
 
       window.$('.search-toggle').click(function() {
         window.$('#landing-page-search').slideToggle();
@@ -87,7 +94,7 @@ class Home extends Component {
 
       setInterval(function() {
         window.$('#bg-slide > img:first').appendTo(bgSlide);
-      }, 6000);
+      }, 1000);
     }
   }
 
@@ -109,6 +116,7 @@ class Home extends Component {
       let valid = function (current) {
         return current.isAfter(yesterday);
       };
+
       return (
         <Page>
           <div id="bg-slide">
@@ -116,95 +124,41 @@ class Home extends Component {
             <img src="/images/hero_1.jpg" alt=""/>
             <img src="/images/hero_2.jpg" alt=""/>
           </div>
+
           <div className="container">
             <div id="landing-page-top">
               <img src="/images/takapic-logo/CL small w.png" alt=""/>
-              <h1>{intl.get('TAGLINE')}</h1>
-              <p>{intl.get('SUBHEADER')}</p>
-              <div id="landing-page-search">
-                <span>
-                  <i className="fa fa-chevron-up search-toggle"/>
-                  <a href="">Clear all</a>
-                </span>
-                <Autocomplete
-                    inputProps={{ placeholder: 'Destination' }}
-                    items={this.state.cities}
-                    menuStyle={{
-                        borderRadius: '3px',
-                        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                        background: 'white',
-                        padding: '2px 0',
-                        position: 'fixed',
-                        overflow: 'auto',
-                        maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
-                        color: '#333',
-                    }}
-                    wrapperStyle = {{
-                        display: 'inline-block',
-                        position: 'relative',
-                    }}
-                    renderMenu = {(items, value) =>
-                        (
-                            <div className="dopdown-react-holder" style={
-                                {
-                                    borderRadius: '3px',
-                                    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                                    background: 'white',
-                                    padding: '2px 0',
-                                    fontSize: '90%',
-                                    position: 'absolute',
-                                    width: '100%',
-                                    overflow: 'auto',
-                                }
-                            } children={items}/>
-                        )}
-                    getItemValue={item => item}
-                    renderItem={(item, highlighted) => (
-                        <div
-                            style={{
-                                backgroundColor: highlighted ? '#eee' : 'transparent',
-                                padding: '2px 6px',
-                                fontSize: '14px',
-                            }}
-                        >
-                            {item}
-                        </div>
-                    )}
+              <h1>{ intl.get('TAGLINE') }</h1>
+              <p>{ intl.get('SUBHEADER') }</p>
+
+              <div className="search-box-custom-again" style={{ marginTop: '90px'}}>
+                <div className="search-box-destination">
+                  <Select.Async
+                    multi={false}
                     value={this.state.search.destination}
-                    onChange={e => {
-                        this.setState({
-                            search: Object.assign({}, this.state.search, {
-                                destination: e.target.value,
-                            }),
-                        });
-                        axios
-                            .get('/tes/cities.json')
-                            .then(res => {
-                                let cities = res.data.cities;
-                                this.setState({ cities });
-                            })
-                            .catch(error => console.log(error));
-                    }}
-                    onSelect={value => {
-                        this.setState({
-                            search: Object.assign({}, this.state.search, {
-                                destination: value,
-                            }),
-                        });
-                    }}
-                />
-                <DateTime
-                  value={this.state.search.date}
-                  onChange={this.onSearchChange.bind(this, 'date')}
-                  inputProps={{placeholder: 'Date'}}
-                  timeFormat={false}
-                  dateFormat="MM-DD-YYYY"
-                  isValidDate={valid}
-                />
-                <button className="button" onClick={this.handleSubmit}>
-                  <i className="fa fa-search"/>
-                  <span>Search</span>
-                </button>
+                    onChange={this.handleSearchDestinationChange}
+                    valueKey="label"
+                    labelKey="label"
+                    loadOptions={this.retrieveLocations}
+                    placeholder="Choose your destination"
+                  />
+                </div>
+
+                <div className="search-box-date">
+                  <DatePicker
+                    dateFormat="MMMM Do YYYY"
+                    selected={this.state.search.date}
+                    onChange={this.handleSearchDateChange}
+                    placeholderText="Choose a date"
+                  />
+                </div>
+
+                <div className="search-box-submit">
+                  <button className="button" onClick={this.handleSearchSubmit}>
+                    <i className="fa fa-search"/>
+                    <span>Search</span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -221,12 +175,14 @@ class Home extends Component {
                   <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
                 </a>
               </div>
+
               <div className="col-xs-4">
                 <a className="poster" href="/">
                   <div className="text">SEOUL</div>
                   <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
                 </a>
               </div>
+
               <div className="col-xs-4">
                 <a className="poster" href="/">
                   <div className="text">PARIS</div>
@@ -236,9 +192,13 @@ class Home extends Component {
             </div>
 
             <h1 className="title margin-bottom-50">Top Photographers</h1>
-            { topPhotographers && <TopPhotographers topPhotographers={topPhotographers}/> }
+
+            {
+              topPhotographers && <TopPhotographers topPhotographers={topPhotographers}/>
+            }
 
             <h1 className="title">Why be a Takapic traveller?</h1>
+
             <div className="row icons-container">
               <div className="col-sm-4">
                 <div className="icon-box-2 with-line">
@@ -250,6 +210,7 @@ class Home extends Component {
                   </p>
                 </div>
               </div>
+
               <div className="col-sm-4">
                 <div className="icon-box-2 with-line">
                   <i className="im im-icon-Camera-5"/>
@@ -261,6 +222,7 @@ class Home extends Component {
                   </p>
                 </div>
               </div>
+
               <div className="col-sm-4">
                 <div className="icon-box-2">
                   <i className="im im-icon-Checked-User"/>
