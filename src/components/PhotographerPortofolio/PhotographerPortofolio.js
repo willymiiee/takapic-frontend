@@ -82,14 +82,17 @@ class PhotographerPortofolio extends Component {
     let ratings = [];
     let stars = data.serviceReviews.rating.value;
     let starsO = Math.round(5 - stars);
+    let key = 0;
     for (var i = 0; i < stars; i++) {
+      key++;
       ratings.push(
-        <i className="fa fa-star" />
+        <i key={key} className="fa fa-star" />
       )
     }
     for (var i = 0; i < starsO; i++) {
+      key++;
       ratings.push(
-        <i className="fa fa-star-o" />
+        <i key={key} className="fa fa-star-o" />
       )
     }
 
