@@ -113,12 +113,12 @@ const App = connect(state => state)(props => {
             <Route exact path="/" component={Home} />
             <Route path="/booking/:photographerId/:reservationId" component={onlyLoggedIn(PhotographerBooking)} />
             <Route path="/sign-in" component={SignIn} />
-            <Route path="/photographer/:uuid" component={PhotographerDetail} />
+            <Route path="/photographer/:photographerId" component={PhotographerDetail} />
             <Route path="/me/reservations/:reservationid" component={onlyLoggedIn(ReservationCreatedDetail)} />
             <Route path="/search" component={Search} />
             <Route path="/traveller-registration" component={TravellerRegistration} />
             <Route
-              path="/photographer-portofolio/:uid"
+              path="/photographer-portofolio/:photographerId"
               component={PhotographerPortofolio}
             />
             <Route

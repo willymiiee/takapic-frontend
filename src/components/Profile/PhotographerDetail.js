@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import { withRouter, Link } from 'react-router-dom';
 import store from '../../store';
 import history from '../../services/history';
 import ReactRating from 'react-rating-float';
@@ -9,32 +8,12 @@ import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
 import { Modal } from 'react-bootstrap';
 import { nl2br } from "../../helpers/helpers";
-import { fetchCurrenciesRates } from "../../store/actions/photographerServiceInfoActions";
+import { fetchCurrenciesRates, fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 
 import './../../react-slick.min.css';
 import Animator from '../common/Animator';
 import Page from '../Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';
-
-const uid = window.location.pathname.split('/')[2];
-
-const fetchPhotographerServiceInformation = () => {
-  return dispatch => {
-    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_LOADING' });
-    const uid = window.location.pathname.split('/')[2];
-    axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/${uid}`)
-      .then(response => {
-        dispatch({
-          type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS',
-          payload: response.data.data,
-        });
-      })
-      .catch(error => {
-        console.log(error.message);
-      });
-  };
-};
 
 const resetData = () => {
   return dispatch => {
@@ -43,7 +22,7 @@ const resetData = () => {
 };
 
 history.listen((location, action) => {
-  if (location.pathname.includes('/photographer')) {
+  if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
     store.dispatch(resetData());
   }
 });
@@ -102,7 +81,8 @@ class PhotographerDetail extends Component {
       });
 
     } else {
-      this.props.fetchPhotographerServiceInformation();
+      const { match: { params: { photographerId } } } = this.props;
+      this.props.fetchPhotographerServiceInformation(photographerId);
     }
   }
 
@@ -124,6 +104,7 @@ class PhotographerDetail extends Component {
         photographerServiceInformation: {
           data: {
             userMetadata: {
+              uid: photographerId,
               displayName,
               locationMerge,
               photoProfileUrl
@@ -176,12 +157,12 @@ class PhotographerDetail extends Component {
               </div>
               <h2>{displayName}</h2>
               <p>{locationMerge}</p>
-              <a
-                href={`/photographer-portofolio/${uid}`}
+              <Link
+                to={`/photographer-portofolio/${photographerId}`}
                 className="button button-white"
               >
                 Go to Portofolio
-              </a>
+              </Link>
             </div>
 
             {
@@ -299,7 +280,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPhotographerServiceInformation: () => dispatch(fetchPhotographerServiceInformation()),
+  fetchPhotographerServiceInformation: photographerId => dispatch(fetchPhotographerServiceInformation(photographerId)),
   fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
 });
 

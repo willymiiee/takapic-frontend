@@ -1,47 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
-
-import store from '../../store';
-import history from '../../services/history';
-import { fetchCurrenciesRates } from "../../store/actions/photographerServiceInfoActions";
+import { fetchCurrenciesRates, fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 
 import Animator from '../common/Animator';
 import Page from '../Page';
 import Gallery from './PortofolioGallery';
 import About from './PortofolioAbout';
-
-const uid = window.location.pathname.split('/')[2];
-
-const fetchPhotographerServiceInformation = () => {
-  return dispatch => {
-    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_LOADING' });
-    axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/${uid}`)
-      .then(response => {
-        dispatch({
-          type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS',
-          payload: response.data.data,
-        });
-      })
-      .catch(error => {
-        console.log(error.message);
-      });
-  };
-};
-
-const resetData = () => {
-  return dispatch => {
-    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET' })
-  };
-};
-
-history.listen((location, action) => {
-  if (location.pathname.includes('/photographer-portofolio')) {
-    store.dispatch(resetData());
-  }
-});
 
 class PhotographerPortofolio extends Component {
   constructor() {
@@ -49,7 +14,7 @@ class PhotographerPortofolio extends Component {
 
     this.state = {
       activeMenu: "gallery",
-    }
+    };
 
     this.handleMenuClick = this.handleMenuClick.bind(this);
   }
@@ -71,12 +36,13 @@ class PhotographerPortofolio extends Component {
     } = this.props;
 
     if (loading) {
-      this.props.fetchPhotographerServiceInformation();
+      const { match: { params: { photographerId } } } = this.props;
+      this.props.fetchPhotographerServiceInformation(photographerId);
     }
   };
 
   handleMenuClick = (event) => {
-    const {id} = event.target;
+    const { id } = event.target;
     this.setState({
       activeMenu: id
     })
@@ -169,7 +135,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPhotographerServiceInformation: () => dispatch(fetchPhotographerServiceInformation()),
+  fetchPhotographerServiceInformation: photographerId => dispatch(fetchPhotographerServiceInformation(photographerId)),
   fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
 });
 
