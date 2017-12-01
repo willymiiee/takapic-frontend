@@ -7,7 +7,7 @@ import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 import ReactRating from 'react-rating-float';
-import { Button, Col, Panel, Row } from 'react-bootstrap';
+import { Col, Panel, Row } from 'react-bootstrap';
 import Select from 'react-select';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { fetchReservationAction, reservationPaymentAction } from "../../store/actions/reservationActions";
@@ -96,10 +96,10 @@ const BookingForm = props => {
 
         <textarea name="messageToPhotographer" onChange={handleChange} value={values.messageToPhotographer} />
 
-        <Button className="pull-right">Next</Button>
+        {/*<Button className="pull-right">Next</Button>*/}
       </Panel>
 
-      <Panel
+      {/*<Panel
         collapsible
         expanded={true}
         header="2. Payment"
@@ -132,7 +132,7 @@ const BookingForm = props => {
           <option value="empty">--- Choose ---</option>
           <option value="credit_card">Credit card</option>
         </select>
-      </Panel>
+      </Panel>*/}
 
       <button
         type="submit"
@@ -167,8 +167,8 @@ const BookingFormFormik = Formik({
         },
         message: values.messageToPhotographer,
         payment: {
-          billingCountry: values.billingCountry,
-          method: values.paymentMethod
+          billingCountry: values.billingCountry || '-',
+          method: values.paymentMethod || '-'
         },
         passengers: {
           adults: values.numberOfAdults,
@@ -190,8 +190,8 @@ class PhotographerBooking extends Component {
       meetingPoints: null,
       message: '-',
       payment: {
-        billingCountry: '',
-        method: ''
+        billingCountry: '-',
+        method: '-'
       },
       passengers: {
         adults: 0,

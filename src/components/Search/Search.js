@@ -9,16 +9,9 @@ import { fetchCurrenciesRates } from "../../store/actions/photographerServiceInf
 
 import Page from '../Page';
 import SearchResult from './SearchResult';
+import Animator from '../common/Animator';
 
-const convertPrices = (data, currenciesRates) => {
-  return data.map(item => {
-    const USDRates = currenciesRates['USD' + item.currency];
-    const convertedPrice = Math.round(item.priceStartFrom / USDRates);
-    return { ...item, priceStartFrom: convertedPrice };
-  });
-};
-
-const fetchPhotographerListings = (searchInfo, currenciesRates) => {
+const fetchPhotographerListings = searchInfo => {
   return dispatch => {
     let { destination, date } = queryString.parse(searchInfo);
     const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
@@ -26,10 +19,9 @@ const fetchPhotographerListings = (searchInfo, currenciesRates) => {
     axios
       .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
       .then(response => {
-        const data = convertPrices(response.data.data, currenciesRates);
         dispatch({
           type: 'FETCH_PHOTOGRAPHERS_LISTING',
-          payload: data
+          payload: response.data.data
         });
       })
       .catch(error => {
@@ -103,21 +95,11 @@ class Search extends Component {
       });
   }
 
-  setDefaultSearchInformation() {
-    //
-  }
-
   componentWillMount() {
-    const searchQs = queryString.parse(this.props.location.search);
-    const { destination, date } = searchQs;
-    this.setState({
-      ...this.state.search,
-      destination: { label: destination },
-      date: moment(date)
-    });
-    console.log('oka oka oka', searchQs)
-
-    this.props.fetchCurrenciesRates();
+    const keys = Object.keys(this.props.currenciesRates);
+    if (keys.length < 2) {
+      this.props.fetchCurrenciesRates();
+    }
   }
 
   componentDidMount() {
@@ -130,20 +112,13 @@ class Search extends Component {
         window.$('#landing-page-search').removeClass('focus');
       });
 
-    const { location: { search }, currenciesRates } = this.props;
-    console.log('currenciesRates', currenciesRates);
-    if (!currenciesRates.fetchCurrenciesRatesLoading) {
-      this.props.fetchPhotographerListings(search, currenciesRates);
+    if (this.props.photographerListings.length < 1) {
+      this.props.fetchPhotographerListings(this.props.location.search);
     }
   }
 
   render() {
     if (this.props.currenciesRates && this.props.photographerListings) {
-      let yesterday = moment().subtract(1, 'day');
-      let valid = function (current) {
-        return current.isAfter(yesterday);
-      };
-
       return (
         <Page>
           <div className="container">
@@ -204,7 +179,13 @@ class Search extends Component {
             </div>
 
 
-            { !this.props.currenciesRates.fetchCurrenciesRatesLoading ? <SearchResult items={this.props.photographerListings} rates={this.props.currenciesRates}/> : null }
+            {
+              this.props.photographerListings.length > 0 && !this.props.currenciesRates.fetchCurrenciesRatesLoading
+                ? <SearchResult
+                  listings={this.props.photographerListings}
+                  currenciesRates={this.props.currenciesRates}/>
+                : <Animator/>
+            }
           </div>
         </Page>
       );
@@ -219,7 +200,7 @@ export default connect(
     currenciesRates: state.currenciesRates
   }),
   dispatch => ({
-    fetchPhotographerListings: (searchInfo, currenciesRates) => dispatch(fetchPhotographerListings(searchInfo, currenciesRates)),
+    fetchPhotographerListings: searchInfo => dispatch(fetchPhotographerListings(searchInfo)),
     fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
   })
 )(Search);

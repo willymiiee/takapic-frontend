@@ -18,7 +18,7 @@ export default class PortofolioAbout extends Component {
 
     let contentPackagePrices = []
     packagePrices.forEach((price, key) => {
-      contentPackagePrices.push(<p key={key}>${price}</p>);
+      contentPackagePrices.push(<p key={key}>USD {price}</p>);
     });
 
     let contentPackageHours = []

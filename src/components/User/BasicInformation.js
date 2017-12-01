@@ -7,7 +7,6 @@ import {
   Col,
   ControlLabel,
   FormControl,
-  Image,
   Button
 } from "react-bootstrap";
 
@@ -273,11 +272,10 @@ class BasicInformation extends Component {
 
   render() {
     const {
-      userMetadata,
       state
     } = this.props;
 
-    const { languages, location, selected, values } = this.state
+    const { languages, location, selected, values } = this.state;
 
     return (
       <Form horizontal>

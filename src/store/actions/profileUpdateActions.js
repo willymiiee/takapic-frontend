@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import uuidv4 from 'uuid/v4';
 import { database } from "../../services/firebase";
+import { updateUserMetadataPriceStartFrom } from "./photographerServiceInfoActionsStep2";
 import { fetchPhotographerServiceInformation } from './photographerServiceInfoActions'
 
 export const updateBasicInformation = (params) => {
@@ -186,7 +187,7 @@ export const updateMeetingPoints = (params) => {
 }
 
 export const uploadPhotosPortfolio = (params) => {
-  const { reference, state: { selectedPhotos, photosPortofolio } } = params;
+  const { reference, state: { selectedPhotos } } = params;
   return dispatch => {
     let files = selectedPhotos;
     let percentages = files.map(f => 0);
@@ -290,6 +291,7 @@ export const updatePackagesPrice = (params) => {
           type: "UPDATE_PROFILE_PACKAGES_PRICE_SUCCESS",
           payload: { status: "OK", message: "Data updated" }
         });
+        updateUserMetadataPriceStartFrom(reference, packagesPrice[0].price);
         dispatch(fetchPhotographerServiceInformation(params.uid));
       })
       .catch(error => {

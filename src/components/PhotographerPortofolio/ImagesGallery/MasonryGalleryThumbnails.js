@@ -11,13 +11,6 @@ const load = url => {
   });
 };
 
-const descentOrder = (a, b) => {
-  const ratioA = a.ratio;
-  const ratioB = b.ratio;
-
-  return ratioA === ratioB ? 0 : ratioA < ratioB ? 1 : -1;
-};
-
 class MasonryGalleryThumbnails extends Component {
   constructor(props) {
     super(props);

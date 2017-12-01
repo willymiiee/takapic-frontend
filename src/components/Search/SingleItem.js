@@ -22,12 +22,14 @@ class SingleItem extends Component {
       photoProfileUrl,
       priceStartFrom,
       uid,
+      defaultDisplayPictureUrl,
+      rating
     } = this.props.item;
 
     return (
       <div onClick={() => this.toDetail(uid)}>
         <div className="photo">
-          <img src="/images/photo/01.jpg" alt="" />
+          <img src={defaultDisplayPictureUrl} alt="" />
         </div>
         <div className="photographer">
           <div>
@@ -54,7 +56,7 @@ class SingleItem extends Component {
         <div className="ratings">
           <StarRatingComponent
             name="rating"
-            value={5}
+            value={rating}
             starCount={5}
             editing={false}
             starColor="#ffff66"

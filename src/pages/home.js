@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 import axios from 'axios';
 import Select from 'react-select';
 import intl from 'react-intl-universal';
@@ -111,11 +110,6 @@ class Home extends Component {
           topPhotographers
         }
       } = this.props;
-
-      let yesterday = moment().subtract(1, 'day');
-      let valid = function (current) {
-        return current.isAfter(yesterday);
-      };
 
       return (
         <Page>

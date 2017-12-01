@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 import store from '../../store';
 import history from '../../services/history';
+import { fetchCurrenciesRates } from "../../store/actions/photographerServiceInfoActions";
 
 import Animator from '../common/Animator';
-import Page from 'components/Page';
+import Page from '../Page';
 import Gallery from './PortofolioGallery';
 import About from './PortofolioAbout';
 
@@ -54,6 +55,13 @@ class PhotographerPortofolio extends Component {
   }
 
   componentWillMount() {
+    const keys = Object.keys(this.props.currenciesRates);
+    if (keys.length < 2) {
+      this.props.fetchCurrenciesRates();
+    }
+  }
+
+  componentDidMount() {
     this.fetchPhotographerInformation();
   }
 
@@ -65,31 +73,31 @@ class PhotographerPortofolio extends Component {
     if (loading) {
       this.props.fetchPhotographerServiceInformation();
     }
-  }
+  };
 
   handleMenuClick = (event) => {
     const {id} = event.target;
     this.setState({
       activeMenu: id
     })
-  }
+  };
 
   getRating = () => {
     const {
-      photographerServiceInformation: { loading, data }
+      photographerServiceInformation: { data }
     } = this.props;
 
     let ratings = [];
     let stars = data.serviceReviews.rating.value;
     let starsO = Math.round(5 - stars);
     let key = 0;
-    for (var i = 0; i < stars; i++) {
+    for (let i = 0; i < stars; i++) {
       key++;
       ratings.push(
         <i key={key} className="fa fa-star" />
       )
     }
-    for (var i = 0; i < starsO; i++) {
+    for (let j = 0; j < starsO; j++) {
       key++;
       ratings.push(
         <i key={key} className="fa fa-star-o" />
@@ -97,15 +105,17 @@ class PhotographerPortofolio extends Component {
     }
 
     return ratings;
-  }
+  };
 
   render() {
     const {
-      photographerServiceInformation: { loading, data }, currenciesRates
+      photographerServiceInformation: { loading }, currenciesRates
     } = this.props;
+
     const { activeMenu } = this.state;
 
-    if (!loading && currenciesRates && data) {
+    if (!loading && !currenciesRates.fetchCurrenciesRatesLoading) {
+      const { photographerServiceInformation: { data } } = this.props;
       const convertedPackagesPrice = data.packagesPrice.map(item => {
         const USDRates = currenciesRates['USD' + data.userMetadata.currency];
         const convertedPrice = Math.round(item.price / USDRates);
@@ -123,7 +133,7 @@ class PhotographerPortofolio extends Component {
             <div className="row">
               <div className="col-sm-3 margin-top-50">
                 <div id="photographer-portofolio-left">
-                  <img src={data.userMetadata.photoProfileUrl} />
+                  <img src={data.userMetadata.photoProfileUrl} alt="This is a photographer face" />
                   <h3>{data.userMetadata.displayName}</h3>
                   <h5>{data.userMetadata.locationMerge}</h5>
                   <div className="ratings">
@@ -159,7 +169,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPhotographerServiceInformation: () => dispatch(fetchPhotographerServiceInformation())
+  fetchPhotographerServiceInformation: () => dispatch(fetchPhotographerServiceInformation()),
+  fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
 });
 
 export default withRouter(

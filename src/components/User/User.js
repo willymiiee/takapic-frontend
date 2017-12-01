@@ -76,7 +76,7 @@ class User extends Component{
   }
 
   render() {
-    const { user: { userMetadata }, photographerServiceInformation, activeTab, profile } = this.props;
+    const { photographerServiceInformation, activeTab, profile } = this.props;
 
     const tabsInstance = (
       <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>

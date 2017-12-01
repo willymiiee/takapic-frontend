@@ -1,8 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Formik} from 'formik';
+import { connect } from 'react-redux';
+import { Formik } from 'formik';
 import Yup from 'yup';
-import {loggingIn} from '../../store/actions/userActions';
+import { loggingIn, userSignupByFacebook, userSignupByGoogle } from '../../store/actions/userActions';
+import { USER_TRAVELLER } from "../../services/userTypes";
 
 import Page from '../Page';
 
@@ -32,6 +33,30 @@ const SignIn = props => {
                 <div className="mfp-content">
                   <div className="small-dialog-header">
                     <h3>Sign In</h3>
+                  </div>
+
+                  <div className="social-media-login-sign-in">
+                    <button
+                      type="button"
+                      className="btn-sign-in-facebook"
+                      onClick={() => props.userSignupByFacebook(USER_TRAVELLER)}
+                    >
+                      <img
+                        src="https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png"
+                        alt="Facebook login"
+                      />Facebook
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btn-sign-in-gmail"
+                      onClick={() => props.userSignupByGoogle(USER_TRAVELLER)}
+                    >
+                      <img
+                        src="http://pngimg.com/uploads/gmail_logo/gmail_logo_PNG5.png"
+                        alt=""
+                      />Gmail
+                    </button>
                   </div>
 
                   <div className="sign-in-form style-1">
@@ -130,5 +155,7 @@ export default connect(
   }),
   dispatch => ({
     loggingIn: (email, password) => dispatch(loggingIn(email, password)),
+    userSignupByFacebook: userType => dispatch(userSignupByFacebook(userType)),
+    userSignupByGoogle: userType => dispatch(userSignupByGoogle(userType))
   })
 )(SignInFormik);

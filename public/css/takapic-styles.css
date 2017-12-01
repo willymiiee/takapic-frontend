@@ -1306,7 +1306,7 @@ button.u:hover {
 }
 
 #photographer-portofolio-package .package .package-detail {
-    width: 100px;
+    width: 150px;
     float: left;
 }
 
@@ -4024,4 +4024,41 @@ figcaption.action-btn a .fa {
     flex-grow: 1;
     text-align: center;
   }
+}
+
+.set-default-photo-profile-manager {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  font-size: 14px;
+  cursor: pointer;
+  width: 128px;
+  height: 25px;
+  color: #fff;
+}
+
+.social-media-login-sign-in {
+  text-align: center;
+}
+.social-media-login-sign-in button {
+  background-color: #fff;
+  padding: 0 8px;
+  height: 32px;
+}
+
+.social-media-login-sign-in img {
+  max-height: 20px;
+  margin-right: 4px;
+}
+
+.social-media-login-sign-in .btn-sign-in-facebook {
+  color: #3b5998;
+  border: 1px solid #3b5998;
+  margin-right: 4px;
+}
+
+.social-media-login-sign-in .btn-sign-in-gmail {
+  color: #dd4b39;
+  border: 1px solid #dd4b39;
 }

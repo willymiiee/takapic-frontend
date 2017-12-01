@@ -2,33 +2,31 @@ import React, { Component } from 'react';
 import SingleItem from './SingleItem';
 
 class SearchResult extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      data: [],
-      loading: false,
+      listings: []
     };
   }
 
-  render() {
-    console.log(this.props.rates);
-    if (!this.props.items) {
-      return (
-        <div>
-          <img
-            style={{ margin: 'auto', display: 'block' }}
-            src="images/ajax-loader.gif"
-            alt=""
-          />
-        </div>
-      );
-    }
+  componentWillMount() {
+    const { listings, currenciesRates } = this.props;
+    const listingsConvertedPrice = listings.map(item => {
+      const USDRates = currenciesRates['USD' + item.currency];
+      const convertedPrice = Math.round(item.priceStartFrom / USDRates);
+      return { ...item, priceStartFrom: convertedPrice };
+    });
+    this.setState({ listings: listingsConvertedPrice });
+  }
 
+  render() {
     return (
       <div id="result" className="grid-view-lalala">
-        {this.props.items.map((item, index) => (
-          <SingleItem key={index} item={item} />
-        ))}
+        {
+          this.state.listings.map((item, index) => (
+            <SingleItem key={index} item={item} />
+          ))
+        }
       </div>
     );
   }

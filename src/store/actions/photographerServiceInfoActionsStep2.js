@@ -4,12 +4,20 @@ import uuidv4 from 'uuid/v4';
 import { database } from '../../services/firebase';
 import history from './../../services/history';
 
-const updateUserMetadataPriceStartFrom = (reference, price) => {
+export const updateUserMetadataPriceStartFrom = (reference, price) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(reference);
 
   userRef.update({ priceStartFrom: price });
+};
+
+export const updateUserMetadataDefaultDisplayPicture = (reference, picture) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(reference);
+
+  userRef.update({ defaultDisplayPictureUrl: picture });
 };
 
 export const setPricing = payload => {
@@ -88,7 +96,6 @@ export const submitUploadPhotosPortfolio = params => {
         // eslint-disable-next-line
         function complete() {
           let downloadURL = tasks[i].snapshot.downloadURL;
-          let fileName =
           dispatch({
             type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS',
             payload: {

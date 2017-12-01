@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { ProgressBar, Button } from 'react-bootstrap';
 
 import { dashify } from "../../helpers/helpers";
-
 import { uploadPhotosPortfolio } from '../../store/actions/profileUpdateActions';
+import { updateUserMetadataDefaultDisplayPicture } from "../../store/actions/photographerServiceInfoActionsStep2";
 
 class PhotosPortofolio extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ class PhotosPortofolio extends Component {
       selectedPhotos: [],
       loading: false,
       loaded: false,
-      percentages: []
+      percentages: [],
+      defaultDisplayPictureUrl: ''
     };
   }
 
@@ -24,6 +25,7 @@ class PhotosPortofolio extends Component {
     if (data.photosPortofolio) {
       this.setState({
         photosPortofolio: Object.keys(data.photosPortofolio).map(item => (data.photosPortofolio[item])),
+        defaultDisplayPictureUrl: data.userMetadata.defaultDisplayPictureUrl
       })
     }
   }
@@ -56,6 +58,38 @@ class PhotosPortofolio extends Component {
       ...selectedPhotos.slice(index + 1),
     ];
     this.setState({ selectedPhotos });
+  };
+
+  handleSetAsDefault = (event, pictureUrl, index) => {
+    event.preventDefault();
+    const {
+      photographerServiceInformation: {
+        data: {
+          userMetadata: {
+            accountProviderType,
+            uid,
+            email,
+          }
+        }
+      }
+    } = this.props;
+    let { photosPortofolio } = this.state;
+
+    let reference = '';
+    if (accountProviderType === 'google.com') {
+      reference = 'googlecom-' + uid;
+    } else {
+      reference = dashify(email);
+    }
+    updateUserMetadataDefaultDisplayPicture(reference, pictureUrl);
+    const newPhotosPortofolio = photosPortofolio.map((item, indexEuy) => {
+      if (index === indexEuy) {
+        return { ...item, defaultPicture: true };
+      } else {
+        return { ...item, defaultPicture: false };
+      }
+    });
+    this.setState({ photosPortofolio: newPhotosPortofolio });
   };
 
   handleRemoveFromFirebase = (event, index) => {
@@ -101,7 +135,7 @@ class PhotosPortofolio extends Component {
   };
 
   render() {
-    const { selectedPhotos, photosPortofolio } = this.state;
+    const { selectedPhotos, photosPortofolio, defaultDisplayPictureUrl } = this.state;
     const { profile } = this.props;
 
     return (
@@ -142,6 +176,21 @@ class PhotosPortofolio extends Component {
                         onClick={event => this.handleRemoveFromFirebase(event, key)}
                       />
                     )}
+
+                    {
+                      defaultDisplayPictureUrl === photo.url || photo.defaultPicture === true
+                        ? <span className="set-default-photo-profile-manager">Default photo</span>
+                        : (
+                          <a
+                            className="set-default-photo-profile-manager"
+                            title="Set this photo as default photo display"
+                            data-
+                            onClick={event => this.handleSetAsDefault(event, photo.url, key)}
+                          >
+                            Set as default
+                          </a>
+                        )
+                    }
                   </div>
                 ))}
                 {selectedPhotos.map((photo, key) => (
@@ -171,13 +220,14 @@ class PhotosPortofolio extends Component {
                         }}
                       />
                     )}
+
                     <img src={photo.reader} alt="This is the alt text" />
-                    {!profile.loading && (
-                      <i
-                        title="Remove Photo"
-                        onClick={event => this.handleRemove(event, key)}
-                      />
-                    )}
+
+                    {
+                      !profile.loading && (
+                        <i title="Remove Photo" onClick={event => this.handleRemove(event, key)}/>
+                      )
+                    }
                   </div>
                 ))}
               </div>
@@ -209,8 +259,8 @@ class PhotosPortofolio extends Component {
 }
 
 export default connect(
-    null,
-    dispatch => ({
-        uploadPhotosPortfolio: paramsObject => dispatch(uploadPhotosPortfolio(paramsObject))
-    })
+  null,
+  dispatch => ({
+      uploadPhotosPortfolio: paramsObject => dispatch(uploadPhotosPortfolio(paramsObject))
+  })
 )(PhotosPortofolio);

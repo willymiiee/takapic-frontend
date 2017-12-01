@@ -15,9 +15,9 @@ class ReservationCreatedDetail extends Component {
 
   componentDidMount() {
     const db = database.database();
-    const ref = db.ref('messages')
+    db.ref('messages')
       .orderByChild('reference')
-      .startAt("INBOX-UID")
+      .equalTo("RKKV-GHGG")
       .on('value', snapshot => {
         this.setState({ messages: snapshot.val() });
       });
