@@ -103,15 +103,6 @@ class Search extends Component {
   }
 
   componentDidMount() {
-    window
-      .$('#landing-page-search > div > input')
-      .focus(function() {
-        window.$('#landing-page-search').addClass('focus');
-      })
-      .blur(function() {
-        window.$('#landing-page-search').removeClass('focus');
-      });
-
     if (this.props.photographerListings.length < 1) {
       this.props.fetchPhotographerListings(this.props.location.search);
     }

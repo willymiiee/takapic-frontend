@@ -139,13 +139,14 @@ class Step2IndicatePrice extends Component {
             >
               Next
             </Link>
-            <Link
+
+            {/*<Link
                 to="/become-our-photographer/welcome-2"
                 className="button button-white-no-shadow u"
                 style={{float:'right'}}
             >
               Back
-            </Link>
+            </Link>*/}
           </div>
         </div>
       </Page>

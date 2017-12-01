@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Formik } from 'formik';
 import Yup from 'yup';
 import Select from 'react-select';
@@ -116,13 +116,6 @@ class CityCollectForm extends Component {
         </div>
 
         <div style={{ display: 'flex', float: 'right' }}>
-          <Link
-            to="/become-our-photographer/welcome-1"
-            className="button button-white-no-shadow u"
-          >
-            Back
-          </Link>
-
           <button
             type="submit"
             className="button next-btn"

@@ -150,11 +150,11 @@ class Step2SetupMeetingPointA extends Component {
               Next
             </Link>
 
-            <Link
+            {/*<Link
               style={{float: 'right'}}
               to="/become-our-photographer/step-2-2" className="button">
               Back
-            </Link>
+            </Link>*/}
           </div>
         </div>
       </Page>

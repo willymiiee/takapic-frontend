@@ -86,12 +86,13 @@ class Step2DateAvailability extends Component {
                   style={{float:'right'}}>
               Next
             </Link>
-            <Link
+
+            {/*<Link
               to="/become-our-photographer/step-2-1"
               className="button button-white-no-shadow u"
               style={{float:'right'}}>
               Back
-            </Link>
+            </Link>*/}
           </div>
         </div>
       </Page>

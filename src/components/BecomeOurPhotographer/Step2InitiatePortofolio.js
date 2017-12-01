@@ -158,19 +158,22 @@ class Step2IntiatePortofolio extends Component {
               </div>
             </div>
           </div>
+
           <hr />
-          <Link
+
+          {/*<Link
             to="/become-our-photographer/step-2-3"
             className="button button-white-no-shadow u"
           >
             Back
-          </Link>
+          </Link>*/}
+
           <Link
             to="/become-our-photographer/step-2-5"
-            className="button"
+            className="button pull-right"
             onClick={this.handleSubmit}
           >
-            Next
+            Done
           </Link>
         </div>
       </Page>

@@ -371,7 +371,7 @@ button.u:hover {
     font-size: 28px;
 }
 
-#landing-page-search {
+/*#landing-page-search {
     background: #fff;
     width: 85%;
     margin: 5vw auto;
@@ -432,7 +432,7 @@ button.u:hover {
 
 #landing-page-search > .button > .fa {
     display: none;
-}
+}*/
 
 .loc-autocomplete {
     background: #fff;

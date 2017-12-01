@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { selfDescription } from '../../store/actions/photographerServiceInfoActions';
 
 import Page from '../Page';
@@ -47,13 +47,13 @@ const Step1GrabInterestingSelfIntroduction = props => {
                 >
                   { isSubmitting ? 'Please wait...' : 'Next' }
                 </button>
-                <Link
+                {/*<Link
                     to="/become-our-photographer/step-1-1"
                     className="button button-white-no-shadow u"
                     style={{float:'right'}}
                 >
                   Back
-                </Link>
+                </Link>*/}
               </div>
             </form>
             </div>

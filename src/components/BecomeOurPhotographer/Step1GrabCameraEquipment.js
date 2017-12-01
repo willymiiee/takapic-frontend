@@ -172,13 +172,13 @@ class Step1GrabCameraEquipment extends Component {
                 {/*<h3>Speciality</h3>*/}
 
                 {/*<MultiSelect
-                                    placeholder="Select your speciality"
-                                    options={this.state.speciality.map(item => ({
-                                        label: item,
-                                        value: item,
-                                    }))}
-                                    onValuesChange={this.handleSpeciality}
-                                />*/}
+                    placeholder="Select your speciality"
+                    options={this.state.speciality.map(item => ({
+                        label: item,
+                        value: item,
+                    }))}
+                    onValuesChange={this.handleSpeciality}
+                />*/}
                 <hr/>
                 <div style={{overflow: 'hidden'}}>
                   <Link
@@ -189,13 +189,14 @@ class Step1GrabCameraEquipment extends Component {
                   >
                     Done
                   </Link>
-                  <Link
+
+                  {/*<Link
                     to="/become-our-photographer/step-1-2"
                     className="button button-white-no-shadow u"
                     style={{float: 'right'}}
                   >
                     Back
-                  </Link>
+                  </Link>*/}
                 </div>
               </div>
             </div>

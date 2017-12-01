@@ -84,155 +84,142 @@ class Home extends Component {
 
     if (loadingHomepageData) {
       store.dispatch(fetchHomepageData());
-    } else {
-      let bgSlide = window.$('#bg-slide');
-
-      window.$('.search-toggle').click(function() {
-        window.$('#landing-page-search').slideToggle();
-      });
-
-      setInterval(function() {
-        window.$('#bg-slide > img:first').appendTo(bgSlide);
-      }, 1000);
     }
+
+    let bgSlide = window.$('#bg-slide');
+    setInterval(function() {
+      window.$('#bg-slide > img:first').appendTo(bgSlide);
+    }, 6000);
   }
 
   render() {
     const {
       homepageData: {
-        loading: loadingHomepageData
+        loading: loadingHomepageData,
+        topPhotographers
       }
     } = this.props;
 
-    if (!loadingHomepageData) {
-      const {
-        homepageData: {
-          topPhotographers
-        }
-      } = this.props;
+    return (
+      <Page>
+        <div id="bg-slide">
+          <img src="/images/insung-yoon-259475.jpg" alt="This is an alt text"/>
+          <img src="/images/hero_1.jpg" alt="This is an alt text"/>
+          <img src="/images/hero_2.jpg" alt="This is an alt text"/>
+        </div>
 
-      return (
-        <Page>
-          <div id="bg-slide">
-            <img src="/images/insung-yoon-259475.jpg" alt=""/>
-            <img src="/images/hero_1.jpg" alt=""/>
-            <img src="/images/hero_2.jpg" alt=""/>
-          </div>
+        <div className="container">
+          <div id="landing-page-top">
+            <img src="/images/takapic-logo/CL small w.png" alt="This is an alt text"/>
+            <h1>{ intl.get('TAGLINE') }</h1>
+            <p>{ intl.get('SUBHEADER') }</p>
 
-          <div className="container">
-            <div id="landing-page-top">
-              <img src="/images/takapic-logo/CL small w.png" alt=""/>
-              <h1>{ intl.get('TAGLINE') }</h1>
-              <p>{ intl.get('SUBHEADER') }</p>
-
-              <div className="search-box-custom-again" style={{ marginTop: '90px'}}>
-                <div className="search-box-destination">
-                  <Select.Async
-                    multi={false}
-                    value={this.state.search.destination}
-                    onChange={this.handleSearchDestinationChange}
-                    valueKey="label"
-                    labelKey="label"
-                    loadOptions={this.retrieveLocations}
-                    placeholder="Choose your destination"
-                  />
-                </div>
-
-                <div className="search-box-date">
-                  <DatePicker
-                    dateFormat="MMMM Do YYYY"
-                    selected={this.state.search.date}
-                    onChange={this.handleSearchDateChange}
-                    placeholderText="Choose a date"
-                  />
-                </div>
-
-                <div className="search-box-submit">
-                  <button className="button" onClick={this.handleSearchSubmit}>
-                    <i className="fa fa-search"/>
-                    <span>Search</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <h1 className="title margin-bottom-40">Featured Destination</h1>
-
-            <div className="text-right margin-bottom-10">
-              <Link to="/">See All</Link>
-            </div>
-
-            <div className="row posters">
-              <div className="col-xs-4">
-                <a className="poster" href="">
-                  <div className="text">BALI</div>
-                  <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
-                </a>
+            <div className="search-box-custom-again" style={{ marginTop: '90px'}}>
+              <div className="search-box-destination">
+                <Select.Async
+                  multi={false}
+                  value={this.state.search.destination}
+                  onChange={this.handleSearchDestinationChange}
+                  valueKey="label"
+                  labelKey="label"
+                  loadOptions={this.retrieveLocations}
+                  placeholder="Choose your destination"
+                />
               </div>
 
-              <div className="col-xs-4">
-                <a className="poster" href="/">
-                  <div className="text">SEOUL</div>
-                  <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
-                </a>
+              <div className="search-box-date">
+                <DatePicker
+                  dateFormat="MMMM Do YYYY"
+                  selected={this.state.search.date}
+                  onChange={this.handleSearchDateChange}
+                  placeholderText="Choose a date"
+                />
               </div>
 
-              <div className="col-xs-4">
-                <a className="poster" href="/">
-                  <div className="text">PARIS</div>
-                  <img src="images/location/paris.jpg" alt="Featured destination - Paris"/>
-                </a>
-              </div>
-            </div>
-
-            <h1 className="title margin-bottom-50">Top Photographers</h1>
-
-            {
-              topPhotographers && <TopPhotographers topPhotographers={topPhotographers}/>
-            }
-
-            <h1 className="title">Why be a Takapic traveller?</h1>
-
-            <div className="row icons-container">
-              <div className="col-sm-4">
-                <div className="icon-box-2 with-line">
-                  <i className="im im-icon-Map2"/>
-                  <h3>Travel like a local</h3>
-                  <p>
-                    Local photographers will guide you to the best locations in
-                    their city so you will not feel like a tourist
-                  </p>
-                </div>
-              </div>
-
-              <div className="col-sm-4">
-                <div className="icon-box-2 with-line">
-                  <i className="im im-icon-Camera-5"/>
-                  <h3>Capture your precious moments</h3>
-                  <p>
-                    Forget about selfies and photos taken by random strangers. You
-                    will be in the hands of a talented photographer with a
-                    creative eye ready to capture your best travel memories
-                  </p>
-                </div>
-              </div>
-
-              <div className="col-sm-4">
-                <div className="icon-box-2">
-                  <i className="im im-icon-Checked-User"/>
-                  <h3>Trust and Safety</h3>
-                  <p>
-                    Only verified photographers are registered and you can view
-                    ratings and reviews left by travellers like you!
-                  </p>
-                </div>
+              <div className="search-box-submit">
+                <button className="button" onClick={this.handleSearchSubmit}>
+                  <i className="fa fa-search"/>
+                  <span>Search</span>
+                </button>
               </div>
             </div>
           </div>
-        </Page>
-      );
-    }
-    return null;
+
+          <h1 className="title margin-bottom-40">Featured Destination</h1>
+
+          <div className="text-right margin-bottom-10">
+            <Link to="/">See All</Link>
+          </div>
+
+          <div className="row posters">
+            <div className="col-xs-4">
+              <a className="poster" href="">
+                <div className="text">BALI</div>
+                <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
+              </a>
+            </div>
+
+            <div className="col-xs-4">
+              <a className="poster" href="/">
+                <div className="text">SEOUL</div>
+                <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
+              </a>
+            </div>
+
+            <div className="col-xs-4">
+              <a className="poster" href="/">
+                <div className="text">PARIS</div>
+                <img src="images/location/paris.jpg" alt="Featured destination - Paris"/>
+              </a>
+            </div>
+          </div>
+
+          <h1 className="title margin-bottom-50">Top Photographers</h1>
+
+          {
+            topPhotographers && !loadingHomepageData ? <TopPhotographers topPhotographers={topPhotographers}/> : null
+          }
+
+          <h1 className="title">Why be a Takapic traveller?</h1>
+
+          <div className="row icons-container">
+            <div className="col-sm-4">
+              <div className="icon-box-2 with-line">
+                <i className="im im-icon-Map2"/>
+                <h3>Travel like a local</h3>
+                <p>
+                  Local photographers will guide you to the best locations in
+                  their city so you will not feel like a tourist
+                </p>
+              </div>
+            </div>
+
+            <div className="col-sm-4">
+              <div className="icon-box-2 with-line">
+                <i className="im im-icon-Camera-5"/>
+                <h3>Capture your precious moments</h3>
+                <p>
+                  Forget about selfies and photos taken by random strangers. You
+                  will be in the hands of a talented photographer with a
+                  creative eye ready to capture your best travel memories
+                </p>
+              </div>
+            </div>
+
+            <div className="col-sm-4">
+              <div className="icon-box-2">
+                <i className="im im-icon-Checked-User"/>
+                <h3>Trust and Safety</h3>
+                <p>
+                  Only verified photographers are registered and you can view
+                  ratings and reviews left by travellers like you!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Page>
+    );
   }
 }
 
