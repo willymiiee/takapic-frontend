@@ -76,6 +76,8 @@ const reservation = (state = {}, action) => {
 const photographerListings = (state = [], action) => {
   if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING') {
     return action.payload;
+  } else if (action.type === 'EMPTY_PHOTOGRAPHER_LISTINGS') {
+    return [];
   }
   return state;
 };

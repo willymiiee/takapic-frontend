@@ -38,6 +38,7 @@ class Home extends Component {
         date: null
       }
     };
+    this.interval = null;
   }
 
   handleSearchSubmit = (e) => {
@@ -87,9 +88,13 @@ class Home extends Component {
     }
 
     let bgSlide = window.$('#bg-slide');
-    setInterval(function() {
+    this.interval = setInterval(function() {
       window.$('#bg-slide > img:first').appendTo(bgSlide);
     }, 6000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {

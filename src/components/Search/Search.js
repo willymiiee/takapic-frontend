@@ -30,6 +30,12 @@ const fetchPhotographerListings = searchInfo => {
   };
 };
 
+const resetListings = () => {
+  return dispatch => {
+    dispatch({ type: 'EMPTY_PHOTOGRAPHER_LISTINGS' });
+  };
+};
+
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -106,6 +112,10 @@ class Search extends Component {
     if (this.props.photographerListings.length < 1) {
       this.props.fetchPhotographerListings(this.props.location.search);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetListings();
   }
 
   render() {
@@ -192,6 +202,7 @@ export default connect(
   }),
   dispatch => ({
     fetchPhotographerListings: searchInfo => dispatch(fetchPhotographerListings(searchInfo)),
-    fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
+    fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates()),
+    resetListings: () => dispatch(resetListings())
   })
 )(Search);
