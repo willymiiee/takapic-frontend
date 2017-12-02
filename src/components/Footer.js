@@ -45,30 +45,33 @@ class Footer extends Component {
                 </a>
               </div>
             </div>
-            <div className="col-sm-5 margin-bottom-30">
+            <div className="col-sm-5 col-sm-offset-1 margin-bottom-30">
               <h4>Takapic</h4>
               <ul className="footer-links">
                 <li>
-                  <Link to="/">About Us</Link>
+                  <Link to="/about-us">About Us</Link>
                 </li>
                 <li>
-                  <Link to="/">How it Works</Link>
+                  <Link to="/how-it-works">How it Works</Link>
                 </li>
                 <li>
-                  <Link to="/">Packages</Link>
+                  <Link to="/packages">Packages</Link>
                 </li>
                 <li>
-                  <Link to="/">FAQs</Link>
+                  <Link to="/photographer-faq">Photographer FAQs</Link>
                 </li>
                 <li>
-                  <Link to="/">Privacy Policy</Link>
+                  <Link to="/traveller-faq">Traveller FAQs</Link>
                 </li>
                 <li>
-                  <Link to="/">Contact Us</Link>
+                  <Link to="/privacy-policy">Privacy Policy</Link>
+                </li>
+                <li>
+                  <Link to="/contact-us">Contact Us</Link>
                 </li>
               </ul>
             </div>
-            <div className="col-sm-3">
+            <div className="col-sm-2">
               <div id="footer-social">
                 <Link to="/">
                   <i className="fa fa-facebook-official" />

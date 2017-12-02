@@ -38,6 +38,13 @@ import Step2Done from 'components/BecomeOurPhotographer/Step2Done';
 import TravellerRegistration from 'components/Traveller/TravellerRegistration';
 import ReservationCreatedDetail from 'components/User/ReservationCreatedDetail';
 import User from 'components/User/User';
+import PhotographerFaq from 'components/About/PhotographerFaq';
+import PrivacyPolicy from "./components/About/PrivacyPolicy";
+import TravellerFaq from "./components/About/TravellerFaq";
+import AboutUs from "./components/About/AboutUs";
+import Packages from "./components/About/Packages";
+import ContactUs from "./components/About/ContactUs";
+import HowItWorks from "./components/About/HowItWorks";
 
 const fetchCountriesAction = () => {
   return dispatch => {
@@ -189,6 +196,27 @@ const App = connect(state => state)(props => {
               path="/me/edit"
               component={onlyLoggedIn(User)}
             />
+            <Route
+                path="/traveller-faq"
+                component={TravellerFaq}/>
+            <Route
+                path="/privacy-policy"
+                component={PrivacyPolicy}/>
+            <Route
+                path="/about-us"
+                component={AboutUs}/>
+            <Route
+                path="/packages"
+                component={Packages}/>
+            <Route
+                path="/contact-us"
+                component={ContactUs}/>
+            <Route
+                path="/photographer-faq"
+                component={PhotographerFaq}/>
+            <Route
+                path="/how-it-works"
+                component={HowItWorks}/>
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </ScrollToTop>

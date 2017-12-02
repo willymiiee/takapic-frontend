@@ -1570,11 +1570,23 @@ img.cover {
 }
 
 .card {
-    padding: 20px 30px;
-    border-radius: 16px;
-    -webkit-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+  padding: 20px 30px;
+  border-radius: 16px;
+  -webkit-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.panel-body .smooth-card{
+  margin-bottom:20px;
+}
+
+.smooth-card {
+  padding: 20px 30px;
+  border-radius: 16px;
+  -webkit-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
 .card-popup {
@@ -3963,9 +3975,13 @@ figcaption.action-btn a .fa {
   text-align: left;
 }
 
+.search-box-custom-again .Select-placeholder {
+  color: #808080;
+}
+
 .search-box-custom-again .search-box-destination {
   flex-grow: 10;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .search-box-custom-again .search-box-date {
@@ -3976,16 +3992,28 @@ figcaption.action-btn a .fa {
 
 .search-box-custom-again .search-box-date input {
   border: none;
-  height: 40px;
+  height: 44px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  padding:0 10px !important;
+  color: #aaa;
 }
 
 .search-box-custom-again .search-box-submit {
   flex-grow: 1;
   text-align: right;
 }
+.search-box-submit button {
+  margin-right: 4px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container{
+  display: block !important;
+}
+
 
 @media (max-width: 480px) {
   .search-box-custom-again {
@@ -3999,7 +4027,7 @@ figcaption.action-btn a .fa {
     background-color: #fff;
     border-color: #d9d9d9 #ccc #b3b3b3;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #eee;
     border-spacing: 0;
     border-collapse: separate;
   }
@@ -4015,9 +4043,7 @@ figcaption.action-btn a .fa {
   }
 
   .search-box-custom-again .search-box-date input {
-    border: 1px solid #dbdbdb;
-    box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.06);
-    width: 345px;
+    border: 1px solid #eee;
   }
 
   .search-box-custom-again .search-box-submit {
@@ -4061,4 +4087,87 @@ figcaption.action-btn a .fa {
 .social-media-login-sign-in .btn-sign-in-gmail {
   color: #dd4b39;
   border: 1px solid #dd4b39;
+}
+
+
+.content-faq{
+    font-size: 15px;
+    line-height: 23px;
+    padding: 16px;
+    background: #f8f8f8;
+    border-radius: 7px;
+    text-align: justify;
+}
+.title-faq{
+    border-left: solid 3px #7abbff;
+    padding: 6px 0 6px 10px;
+    margin-bottom: 20px;
+}
+.table-content {
+    font-size: 13px;
+}
+.table-content th {
+    background: #eee;
+    font-size: 14px;
+    padding: 6px;
+    padding-left: 10px;
+}
+.no-box-shadow{
+    -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
+    box-shadow: 0 0px 0px rgba(0,0,0,0);
+}
+.contact-us-select .react-selectize.root-node{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+.contact-us-select .react-selectize.default.root-node.multi-select .react-selectize-control{
+    border: none !important;
+}
+.contact-us-input input, .contact-us-input textarea{
+    background-color: rgba(255,255,255,0.85);
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+.contact-us-input {
+    margin-top: 30px;
+    text-align: left;
+}
+.left-align{
+  text-align: left;
+}
+.justify-align{
+  text-align: justify;
+}
+.icon-box-2 i{
+  background-color: transparent;
+  margin-bottom:0px;
+}
+.icon-box-2 h3{
+  margin-bottom:10px;
+}
+.how-it-works-icon:hover{
+  background: #EEEEEE;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.how-it-works{
+  margin-top:50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+.how-it-works span{
+  text-align: center;
+  font-size: 23px;
+  line-height: 34px;
+  position: relative;
+  top: 50%;
+  display: block;
+  vertical-align: middle;
+  font-style: italic;
+  font-weight: lighter;
+  color: #999999;
 }
