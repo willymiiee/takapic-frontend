@@ -83,7 +83,7 @@ class BasicInformation extends Component {
   componentWillMount() {
     const { photographerServiceInformation: { data } } = this.props;
 
-    if (size(data) < 2) {
+    if (size(data) < 3) {
       const { photographerServiceInformation: { data: { userMetadata } } } = this.props;
       const { values } = this.state;
 

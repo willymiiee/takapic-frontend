@@ -8,8 +8,8 @@ const TopPhotographerSingle = props => {
     countryName,
     locationAdmLevel1,
     photoProfileUrl,
-    speciality,
-    serviceReviews,
+    rating,
+    // speciality,
     uid
   } = props.item;
 
@@ -25,7 +25,7 @@ const TopPhotographerSingle = props => {
       <div className="ratings">
         <StarRatingComponent
           name="rating"
-          value={serviceReviews || 0}
+          value={rating}
           starCount={5}
           editing={false}
           starColor="#707070"
@@ -39,11 +39,11 @@ const TopPhotographerSingle = props => {
         />
       </div>
 
-      <div className="tags hide">
+      {/*<div className="tags hide">
         {
           speciality && speciality.map((item, index) => <a key={`speciality-${index}`}>{item}</a>)
         }
-      </div>
+      </div>*/}
 
       <Link className="button" to={`/photographer/${uid}`}>
         Detail

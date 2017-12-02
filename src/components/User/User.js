@@ -76,7 +76,7 @@ class User extends Component{
   };
 
   render() {
-    if (this.props.photographerServiceInformation.loading) {
+    if (this.props.photographerServiceInformation.loading || this.props.profile.loading) {
       return (<Animator/>);
     } else {
       const {photographerServiceInformation, activeTab, profile} = this.props;

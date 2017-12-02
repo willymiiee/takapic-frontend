@@ -47,7 +47,36 @@ class PackagesPrice extends Component {
       let packagesPrice = data.packagesPrice;
       this.setState({
         packagesPrice: packagesPrice
-      })
+      });
+
+    } else {
+      const initialPackagesPrice = [
+        {
+          id: 'PKG1',
+          packageName: '1 hour',
+          requirement: 'Minimum 30 photos',
+          price: 0
+        },
+        {
+          id: 'PKG2',
+          packageName: '2 hours',
+          requirement: 'Minimum 60 photos',
+          price: 0
+        },
+        {
+          id: 'PKG3',
+          packageName: '4 hours',
+          requirement: 'Minimum 120 photos',
+          price: 0
+        },
+        {
+          id: 'PKG4',
+          packageName: '8 hours',
+          requirement: 'Minimum 200 photos',
+          price: 0
+        }
+      ];
+      this.setState({ packagesPrice: initialPackagesPrice });
     }
   };
 

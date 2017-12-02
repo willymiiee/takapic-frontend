@@ -52,18 +52,7 @@ export const submitCameraEquipment = params => {
         languages,
         location,
         selfDescription,
-        // speciality,
-        serviceReviews: {
-          rating: {
-            label: 'Common',
-            value: 3
-          },
-          impressions: [
-            { label: 'Friendly', value: 0.5 },
-            { label: 'Skillful', value: 0.5 },
-            { label: 'Comprehensive', value: 0.5 }
-          ]
-        }
+        // speciality
       })
       .then(() => {
         dispatch({

@@ -2,6 +2,28 @@ import { database, facebookAuthProvider, googleAuthProvider } from '../../servic
 import history from '../../services/history';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
+const initialiazePhotographerProfileData = uid => {
+  const initialProfileData = {
+    serviceReviews: {
+      rating: {
+        label: 'Common',
+        value: 3
+      },
+      impressions: [
+        { label: 'Friendly', value: 0.5 },
+        { label: 'Skillful', value: 0.5 },
+        { label: 'Comprehensive', value: 0.5 }
+      ]
+    }
+  };
+
+  database
+    .database()
+    .ref('photographer_service_information')
+    .child(uid)
+    .set(initialProfileData);
+};
+
 const createUserMetadata = async (uid, email, userType, displayName) => {
   try {
     const db = database.database();
@@ -20,7 +42,7 @@ const createUserMetadata = async (uid, email, userType, displayName) => {
       };
 
       if (userType === USER_PHOTOGRAPHER) {
-        metaData.rating = 0;
+        metaData.rating = 3;
         metaData.priceStartFrom = 0;
         metaData.defaultDisplayPictureUrl = '-';
       }
@@ -50,6 +72,9 @@ export const userSignupByEmailPassword = (
 
         createUserMetadata(result.uid, email, userType, displayName)
           .then(() => {
+            if (userType === USER_PHOTOGRAPHER) {
+              initialiazePhotographerProfileData(result.uid);
+            }
 
             // Logout Implicitly
             database.auth()
