@@ -1,95 +1,161 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Page from 'components/Page';
+import get from 'lodash/get';
+import uuidv4 from 'uuid/v4';
 import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
+import { dashify } from "../../helpers/helpers";
+
+import MapWithASearchBox from './../MapWithASearchBox';
+import Page from '../Page';
 
 class Step2SetupMeetingPointA extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      meetingPoints: [],
+      mapLoaded: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ mapLoaded: true });
+  }
+
   handleSubmit = event => {
     event.preventDefault();
-    const {
-      photographerServiceInfoStep2: { detailMasterPackage },
-      user: { email },
-    } = this.props;
-    const n = detailMasterPackage;
-    let packagesPrice = [];
-    console.log('n', n);
-    for (var key in n) {
-      // check also if property is not inherited from prototype
-      if (n.hasOwnProperty(key)) {
-        var value = n[key];
-        packagesPrice = [
-          ...packagesPrice,
-          {
-            currency: value.currency,
-            packageName: value.packageName,
-            price: value.price,
-            requirement: value.requirement,
-          },
-        ];
+    let { meetingPoints } = this.state;
+    if (meetingPoints.length < 1) {
+      alert('Please create at least one meeting point. You cannot leave this empty');
+      return false;
+    } else {
+      const {
+        photographerServiceInfoStep2: { detailMasterPackage },
+        user: {uid, email, userMetadata: { accountProviderType }},
+        userInitProfile: { notAvailableDates }
+      } = this.props;
+
+      let { meetingPoints } = this.state;
+      meetingPoints = meetingPoints.map(p => {
+        return {
+          id: uuidv4(),
+          lat: p.generalLocation.lat,
+          long: p.generalLocation.long,
+          meetingPointName: p.generalLocation.meetingPointName,
+          placeLocationNotes: p.specificLocation || '-',
+          formattedAddress: p.generalLocation.formattedAddress
+        };
+      });
+
+      let reference = '';
+      if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+      } else {
+        reference = dashify(email);
       }
+
+      const params = {
+        reference,
+        packagesPrice: detailMasterPackage,
+        meetingPoints,
+        notAvailableDates
+      };
+      this.props.setMeetingPoint(params);
     }
-    const params = {
-      email,
-      packagesPrice,
-    };
-    console.log(params);
-    this.props.setMeetingPoint(params);
+  };
+
+  handleAddition = params => {
+    const generalLocation = get(params, 'generalLocation');
+    const specificLocation = get(params, 'specificLocation', '-');
+
+    if (generalLocation && this.state.meetingPoints.length < 3) {
+      const meetingPoints = [...this.state.meetingPoints, { generalLocation, specificLocation }];
+      this.setState({ meetingPoints });
+    }
   };
 
   render() {
-    console.log(this.props.photographerServiceInfoStep2);
     return (
       <Page>
         <div className="container" id="photographer-landing">
           <div className="steps steps-4">
-            <div />
-            <div />
-            <div className="active" />
-            <div />
+            <div/>
+            <div/>
+            <div className="active"/>
+            <div/>
           </div>
-          <hr />
-          <h3>Please choose three different meeting points</h3>
+
+          <br/>
+
           <div className="row">
-            <div className="col-lg-7 margin-top-15 margin-bottom-30">
-              <div id="meeting-points">
-                <div>
-                  <input type="text" />
-                  <input type="text" />
-                  <Link
-                    to="/become-our-photographer/step-2-4"
-                    className="button"
-                  >
-                    Confirm
-                  </Link>
-                </div>
-              </div>
+            <div className="col-md-8">
+              <h4>Please choose three different meeting points</h4>
+              {
+                this.state.mapLoaded && (
+                  <MapWithASearchBox
+                    handleAddition={this.handleAddition}
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div style={{height: `100%`}}/>}
+                    containerElement={<div style={{height: `400px`}}/>}
+                    mapElement={<div style={{height: `100%`}}/>}
+                  />)
+              }
             </div>
-            <div className="col-lg-5 margin-top-15 margin-bottom-30">
-              <div className="card tips">
-                <b>Why important to set the meeting points</b>
-                <p>
-                  The information will be shown to the costumers when they book.
-                </p>
-                <b>Tips for setting meeting points</b>
-                <p>Blah blah.</p>
-              </div>
+
+            <div className="col-md-4 create-point-wrapper">
+              <h4>Your Created Point</h4>
+              <hr/>
+              {
+                this.state.meetingPoints.map((p, key) => (
+                  <div key={key}>
+                    {/* ini list number meeting point */}
+                    <div className="row">
+                      <div className="number-of-meetpoint col-xs-2">{key + 1}</div>
+                      <div className="detail-of-meetpoint col-xs-8">
+                        <stong>{p.generalLocation.meetingPointName}</stong>
+                        <p>{p.generalLocation.formattedAddress}</p>
+                        <h6>{p.specificLocation}</h6>
+                      </div>
+                      <button
+                        className="delete-button col-xs-2"
+                        onClick={event => {
+                          let {meetingPoints} = this.state;
+                          meetingPoints = [
+                            ...meetingPoints.slice(0, key),
+                            ...meetingPoints.slice(key + 1),
+                          ];
+                          this.setState({meetingPoints});
+                        }}>
+                        <i className="fa fa-close"/>
+                      </button>
+                    </div>
+                    <hr/>
+                  </div>
+                ))
+              }
             </div>
+
+            <div style={{ clear: 'both' }}/>
+
           </div>
-          <hr />
-          <Link
-            to="/become-our-photographer/step-2-2"
-            className="button button-white-no-shadow u"
-          >
-            Back
-          </Link>
-          <Link
-            to="/become-our-photographer/step-2-4"
-            className="button"
-            onClick={this.handleSubmit}
-          >
-            Next
-          </Link>
+
+          <div style={{ marginTop: '60px' }}>
+            <hr />
+            <Link
+              to="/become-our-photographer/step-2-4"
+              className="button"
+              onClick={this.handleSubmit}
+              style={{float: 'right'}}
+            >
+              Next
+            </Link>
+
+            {/*<Link
+              style={{float: 'right'}}
+              to="/become-our-photographer/step-2-2" className="button">
+              Back
+            </Link>*/}
+          </div>
         </div>
       </Page>
     );
@@ -99,12 +165,13 @@ class Step2SetupMeetingPointA extends Component {
 const mapStateToProps = state => ({
   user: state.userAuth,
   photographerServiceInfoStep2: state.photographerServiceInfoStep2,
+  userInitProfile: state.userInitProfile
 });
 
 const mapDispatchToProps = dispatch => ({
   setMeetingPoint: payload => dispatch(setMeetingPoint(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  Step2SetupMeetingPointA
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Step2SetupMeetingPointA)
 );

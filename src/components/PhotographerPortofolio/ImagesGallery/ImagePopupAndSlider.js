@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 
 class ImagePopupAndSlider extends Component {
   render() {
-    const { initialSlide } = this.props;
+    const { state: { initialSlide, images } } = this.props;
     const settings = {
       dots: false,
       infinite: true,
@@ -13,37 +13,24 @@ class ImagePopupAndSlider extends Component {
       initialSlide: initialSlide,
     };
 
+    let figures = []
+    images.forEach((image,key) => {
+      figures.push(
+        <figure key={key} className="cap-bot">
+          <div className="img-container">
+            <img
+              src={image}
+              alt=""
+              className="center-block"
+            />
+          </div>
+        </figure>
+      );
+    })
+
     return (
       <Slider {...settings}>
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/02.jpg" alt="" className="center-block" />
-        </div>
-
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/04.jpg" alt="" className="center-block" />
-        </div>
-
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/06.jpg" alt="" className="center-block" />
-        </div>
-
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/01.jpg" alt="" className="center-block" />
-        </div>
-
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/05.jpg" alt="" className="center-block" />
-        </div>
-
-        <div>
-          <h3 className="text-center">I'm the title of image below</h3>
-          <img src="/images/photo/03.jpg" alt="" className="center-block" />
-        </div>
+        {figures}
       </Slider>
     );
   }

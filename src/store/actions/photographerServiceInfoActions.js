@@ -1,7 +1,7 @@
-import { database } from 'services/firebase';
+import axios from 'axios';
+import get from 'lodash/get';
+import { database } from '../../services/firebase';
 import history from '../../services/history';
-import { dashify } from '../../helpers/helpers';
-// import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
 export const selfDescription = description => {
   return dispatch => {
@@ -12,34 +12,66 @@ export const selfDescription = description => {
   };
 };
 
+const updateUserMetadataLocationAndSpeciality = (reference, location, speciality, currency) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(reference);
+  const updateData = {
+    country: get(location, 'country', '-'),
+    countryName: get(location, 'countryName', ''),
+    locationAdmLevel1: get(location, 'locationAdmLevel1', '-'),
+    locationAdmLevel2: get(location, 'locationAdmLevel2', '-'),
+    locationMerge: get(location, 'locationMerge', '-'),
+    currency,
+    speciality
+  };
+
+  userRef.update(updateData);
+};
+
 export const submitCameraEquipment = params => {
   const {
-    email,
+    reference,
     bodies,
     lenses,
     languages,
     speciality,
     location,
     selfDescription,
+    currency
   } = params;
+
   return dispatch => {
     dispatch({ type: 'SUBMIT_CAMERA_EQUIPMENT' });
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
-    const metadataRef = ref.child(dashify(email));
+    const metadataRef = ref.child(reference);
     metadataRef
       .update({
         cameraEquipment: { body: bodies, lens: lenses },
         languages,
         location,
         selfDescription,
-        speciality,
+        // speciality,
+        serviceReviews: {
+          rating: {
+            label: 'Common',
+            value: 3
+          },
+          impressions: [
+            { label: 'Friendly', value: 0.5 },
+            { label: 'Skillful', value: 0.5 },
+            { label: 'Comprehensive', value: 0.5 }
+          ]
+        }
       })
-      .then(result => {
+      .then(() => {
         dispatch({
           type: 'SUBMIT_CAMERA_EQUIPMENT_SUCCESS',
           payload: { status: 'OK', message: 'Data saved' },
         });
+
+        updateUserMetadataLocationAndSpeciality(reference, location, speciality, currency);
         history.push('/become-our-photographer/welcome-2');
       })
       .catch(error => {
@@ -48,5 +80,40 @@ export const submitCameraEquipment = params => {
           error,
         });
       });
+  };
+};
+
+export const fetchPhotographerServiceInformation = (uid) => {
+  return dispatch => {
+    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_LOADING' });
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/${uid}`)
+      .then(response => {
+        dispatch({
+          type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS',
+          payload: response.data.data,
+        });
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  };
+};
+
+export const fetchCurrenciesRates = () => {
+  return dispatch => {
+    dispatch({
+      type: 'FETCH_CURRENCIES_RATES_LOADING'
+    });
+
+    const db = database.database();
+    const ratesRef = db.ref('/currency_exchange_rates');
+    ratesRef.once('value', snapshot => {
+      const rates = snapshot.val();
+      dispatch({
+        type: 'FETCH_CURRENCIES_RATES',
+        payload: rates
+      });
+    });
   };
 };

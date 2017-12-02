@@ -1,72 +1,87 @@
 import React, { Component } from 'react';
-import PhotographerPortofolio from 'components/PhotographerPortofolio';
 
 export default class PortofolioAbout extends Component {
   render() {
+    const { data, convertedPackagesPrice } = this.props;
+    let packagePrices = convertedPackagesPrice.map(m => { return m.price });
+    let packageHours = convertedPackagesPrice.map(m => { return m.packageName })
+
+    let contentCameraEquipmentBodies = [];
+    data.cameraEquipment.body.forEach((body, key) => {
+      contentCameraEquipmentBodies.push(<li key={key}>{body}</li>);
+    });
+
+    let contentCameraEquipmentLenses = [];
+    data.cameraEquipment.lens.forEach((lens, key) => {
+      contentCameraEquipmentLenses.push(<li key={key}>{lens}</li>);
+    });
+
+    let contentPackagePrices = []
+    packagePrices.forEach((price, key) => {
+      contentPackagePrices.push(<p key={key}>USD {price}</p>);
+    });
+
+    let contentPackageHours = []
+    packageHours.forEach((hour, key) => {
+      contentPackageHours.push(<p key={key}>{hour}</p>);
+    });
+
     return (
-      <PhotographerPortofolio>
-        <div className="col-sm-9 margin-top-50">
-          <div
-            id="photographer-portofolio-about"
-            className="photographer-portofolio-container"
-          >
-            <div id="photographer-portofolio-about-photo">
-              <img src="images/takapic-bg.jpeg" className="cover" />
-            </div>
-            <ul>
-              <li>
-                <h3>About Me</h3>
-                <p className="l-h-22 about-content">
-                  Aaron Smith was born and raised in Kansas City. His creative
-                  interest first began when he turned his bedroom walls into a
-                  drawing board. A few years after picking up his first
-                  skateboard he picked up his first camera. Both of them blended
-                  together and it shaped his photography into what it is today.
-                </p>
-              </li>
-              <li>
-                <h3>Equipment</h3>
-                <div className="about-content">
-                  Canon 50D (Lens: EF17-40mm f4)
+      <div className="col-sm-9 margin-top-50">
+        <div
+          id="photographer-portofolio-about"
+          className="photographer-portofolio-container"
+        >
+          <ul>
+            <li>
+              <h3>About Me</h3>
+              <p className="l-h-22 about-content">
+                {data.selfDescription}
+              </p>
+            </li>
+            <li>
+              <h3>Equipment</h3>
+              <div className="about-content">
+                <ul>
+                  <li>
+                    <ul>
+                      <li><h3>Body</h3></li>
+                      <div className="about-content">
+                        {contentCameraEquipmentBodies}
+                      </div>
+                    </ul>
+                  </li>
+                  <li>
+                    <ul>
+                      <li><h3>Lens</h3></li>
+                      <div className="about-content">
+                        {contentCameraEquipmentLenses}
+                      </div>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <h3>Language</h3>
+              <div className="about-content">
+                {data.languages ? data.languages.join(', ') : ""}
+              </div>
+            </li>
+            <li id="photographer-portofolio-package">
+              <h3>Package</h3>
+              <div className="package">
+                <div className="package-detail hour">
+                  {contentPackageHours}
                 </div>
-              </li>
-              <li>
-                <h3>Language</h3>
-                <div className="about-content">English</div>
-              </li>
-              <li>
-                <h3>Experience</h3>
-                <div className="about-content">5 years</div>
-              </li>
-              <li id="photographer-portofolio-tags">
-                <h3>Speciality</h3>
-                <div className="about-content">
-                  <a href>Wedding,</a>
-                  <a href>Couple,</a>
-                  <a href>Family</a>
+                <div className="package-detail price">
+                  {contentPackagePrices}
                 </div>
-              </li>
-              <li id="photographer-portofolio-package">
-                <h3>Package</h3>
-                <div className="package">
-                  <div className="package-detail hour">
-                    <p>1 hour</p>
-                    <p>2 hours</p>
-                    <p>4 hours</p>
-                    <p>8 hours</p>
-                  </div>
-                  <div className="package-detail price">
-                    <p>$100</p>
-                    <p>$200</p>
-                    <p>$400</p>
-                    <p>$800</p>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
+              </div>
+            </li>
+          </ul>
         </div>
-      </PhotographerPortofolio>
+      </div>
     );
   }
 }

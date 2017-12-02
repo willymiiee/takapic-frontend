@@ -27,52 +27,51 @@ class Footer extends Component {
                 className="selectpicker margin-bottom-10"
               >
                 <option value="en-US">English</option>
-                <option value="id-ID">Indonesia</option>
+                <option value="id-ID">Mandarin</option>
               </select>
-              <select className="selectpicker">
+              <select className="selectpicker hide">
                 <option>Dollar</option>
                 <option>Rupiah</option>
               </select>
+              <div>
+                <a href="https://www.algolia.com/">
+                  <img
+                      style={{height: '17px'}}
+                    className="footer-logo"
+                    src="/images/search-by-algolia.png"
+                    alt=""
+                    target="_blank"
+                  />
+                </a>
+              </div>
             </div>
-            <div className="col-sm-5 margin-bottom-30">
-              <h4>TakaPic</h4>
+            <div className="col-sm-5 col-sm-offset-1 margin-bottom-30">
+              <h4>Takapic</h4>
               <ul className="footer-links">
                 <li>
-                  <Link to="/">About Us</Link>
+                  <Link to="/about-us">About Us</Link>
                 </li>
                 <li>
-                  <Link to="/">How it Works</Link>
+                  <Link to="/how-it-works">How it Works</Link>
                 </li>
                 <li>
-                  <Link to="/">Packages</Link>
+                  <Link to="/packages">Packages</Link>
                 </li>
                 <li>
-                  <Link to="/">FAQs</Link>
+                  <Link to="/photographer-faq">Photographer FAQs</Link>
                 </li>
                 <li>
-                  <Link to="/">Privacy Policy</Link>
-                </li>
-              </ul>
-              <ul className="footer-links">
-                <li>
-                  <Link to="/">About Us</Link>
+                  <Link to="/traveller-faq">Traveller FAQs</Link>
                 </li>
                 <li>
-                  <Link to="/">How it Works</Link>
+                  <Link to="/privacy-policy">Privacy Policy</Link>
                 </li>
                 <li>
-                  <Link to="/">Packages</Link>
-                </li>
-                <li>
-                  <Link to="/">FAQs</Link>
-                </li>
-                <li>
-                  <Link to="/">Privacy Policy</Link>
+                  <Link to="/contact-us">Contact Us</Link>
                 </li>
               </ul>
             </div>
-            <div className="col-sm-3">
-              <h4>Contact Us</h4>
+            <div className="col-sm-2">
               <div id="footer-social">
                 <Link to="/">
                   <i className="fa fa-facebook-official" />

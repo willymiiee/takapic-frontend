@@ -4,40 +4,59 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 
-class SingleResult extends Component {
-  toDetail() {
+class SingleItem extends Component {
+  constructor(props) {
+    super(props);
+    this.toDetail = this.toDetail.bind(this);
+  }
+
+  toDetail(id) {
     this.props.history.push({
-      pathname: '/photographer/' + this.props.id,
-      state: { date: this.props.date },
+      pathname: '/photographer/' + id,
     });
   }
 
   render() {
+    const {
+      displayName: name,
+      photoProfileUrl,
+      priceStartFrom,
+      uid,
+      defaultDisplayPictureUrl,
+      rating
+    } = this.props.item;
+
     return (
-      <div onClick={this.toDetail.bind(this)}>
+      <div onClick={() => this.toDetail(uid)}>
         <div className="photo">
-          <img src={this.props.img} alt="" />
+          <img src={defaultDisplayPictureUrl} alt="" />
         </div>
         <div className="photographer">
           <div>
-            <img src={this.props.pp} alt="" />
+            <img
+              src={
+                photoProfileUrl ||
+                '/images/photographer/outlook-photography-jobs-2.jpg'
+              }
+              alt=""
+            />
           </div>
           <h4>
             <Link
               className="photographer-link"
               to={{
-                pathname: '/photographer/' + this.props.id,
-                state: { date: this.props.date },
+                pathname: '/photographer/123',
+                state: { date: '' },
               }}
             >
-              {this.props.name}
+              {name}
             </Link>
           </h4>
         </div>
         <div className="ratings">
           <StarRatingComponent
             name="rating"
-            value={this.props.rating}
+            value={rating}
             starCount={5}
             editing={false}
             starColor="#ffff66"
@@ -51,27 +70,15 @@ class SingleResult extends Component {
           />
         </div>
         <div className="price">
-          from<b>$100</b>
+          from <strong>USD { priceStartFrom }</strong>
         </div>
       </div>
     );
   }
 }
 
-SingleResult.propTypes = {
-  name: PropTypes.string.isRequired,
-  pp: PropTypes.string,
-  img: PropTypes.string,
-  rating: PropTypes.number.isRequired,
-  basePrice: PropTypes.number,
-  id: PropTypes.any.isRequired,
-  date: PropTypes.string,
+SingleItem.propTypes = {
+  item: PropTypes.object.isRequired,
 };
 
-SingleResult.defaultProps = {
-  pp: '/images/photographer/outlook-photography-jobs-2.jpg',
-  img: '/images/photo/01.jpg',
-  date: '',
-};
-
-export default withRouter(SingleResult);
+export default withRouter(SingleItem);

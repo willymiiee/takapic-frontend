@@ -1,7 +1,24 @@
 import firebase from 'firebase';
-import { database } from 'services/firebase';
+import moment from 'moment';
+import uuidv4 from 'uuid/v4';
+import { database } from '../../services/firebase';
 import history from './../../services/history';
-import { dashify } from '../../helpers/helpers';
+
+export const updateUserMetadataPriceStartFrom = (reference, price) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(reference);
+
+  userRef.update({ priceStartFrom: price });
+};
+
+export const updateUserMetadataDefaultDisplayPicture = (reference, picture) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(reference);
+
+  userRef.update({ defaultDisplayPictureUrl: picture });
+};
 
 export const setPricing = payload => {
   return dispatch => {
@@ -12,21 +29,27 @@ export const setPricing = payload => {
   };
 };
 
-export const setDateAvailability = () => {};
-
 export const setMeetingPoint = params => {
-  const { email, packagesPrice } = params;
-
+  const { reference, packagesPrice, meetingPoints, notAvailableDates } = params;
   return dispatch => {
     dispatch({ type: 'SUBMIT_MEETING_POINT' });
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
-    const metadataRef = ref.child(dashify(email));
+    const metadataRef = ref.child(reference);
+
+    const notAvailableDatesFormattedList = [];
+    notAvailableDates.forEach(item => {
+      notAvailableDatesFormattedList.push(moment(item).format('YYYY-MM-DD'));
+    });
+
     metadataRef
       .update({
         packagesPrice,
+        meetingPoints,
+        notAvailableDates: notAvailableDatesFormattedList
       })
       .then(result => {
+        updateUserMetadataPriceStartFrom(reference, packagesPrice[0].price);
         dispatch({
           type: 'SUBMIT_MEETING_POINT_SUCCESS',
           payload: { status: 'OK', message: 'Data saved' },
@@ -43,22 +66,24 @@ export const setMeetingPoint = params => {
 };
 
 export const submitUploadPhotosPortfolio = params => {
-  const { email, files } = params;
+  const { reference, files } = params;
   return dispatch => {
     let percentages = files.map(f => 0);
     let tasks = [];
+
     for (let i in files) {
-      const fullDirectory = `pictures/portofolio-photos/${dashify(email)}`;
+      const fullDirectory = `pictures/portofolio-photos/${reference}`;
       const imageFile = files[i].file;
-      var storageRef = firebase
+      let storageRef = firebase
         .storage()
         .ref(fullDirectory + '/' + imageFile.name);
+
       //Upload file
       tasks = [...tasks, storageRef.put(imageFile)];
       tasks[i].on(
         'state_changed',
         function progress(snapshot) {
-          var percentage =
+          let percentage =
             snapshot.bytesTransferred / snapshot.totalBytes * 100;
           percentages[i] = percentage;
           dispatch({
@@ -68,17 +93,27 @@ export const submitUploadPhotosPortfolio = params => {
           });
         },
         function error(err) {},
+        // eslint-disable-next-line
         function complete() {
-          var downloadURL = tasks[i].snapshot.downloadURL;
+          let downloadURL = tasks[i].snapshot.downloadURL;
+          dispatch({
+            type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS',
+            payload: {
+              id: uuidv4(),
+              fileName: imageFile.name,
+              url: downloadURL,
+              theme: '-',
+            },
+          });
         }
       );
     }
     return Promise.all(tasks).then(
-      data => {
+      () => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_SUCCESS' });
         history.push('/become-our-photographer/step-2-5');
       },
-      error => {
+      () => {
         dispatch({ type: 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ERROR' });
       }
     );

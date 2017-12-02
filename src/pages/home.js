@@ -1,244 +1,196 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import TopPhotographer from 'components/TopPhotographer';
-import Page from 'components/Page';
-import DateTime from 'react-datetime';
-import moment from 'moment';
-
+import DatePicker from 'react-datepicker';
 import axios from 'axios';
-import Autocomplete from 'react-autocomplete';
-
+import Select from 'react-select';
 import intl from 'react-intl-universal';
-// import { login } from "../services/auth";
+import store from '../store';
+
+import '../react-date-picker-custom.css';
+import TopPhotographers from '../components/TopPhotographers';
+import Page from '../components/Page';
+
+const fetchHomepageData = () => {
+  return dispatch => {
+    const queryParams = 'filter[destination]=jakarta, indonesia&filter[date]=';
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .then(response => {
+        dispatch({
+          type: 'HOMEPAGE_FETCH_TOP_PHOTOGRAPHERS_SUCCESS',
+          payload: response.data.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+};
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       search: {
-        destination: '',
-        date: '',
-      },
-      cities: [],
+        destination: null,
+        date: null
+      }
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.interval = null;
   }
 
-  onSearchChange(key, event) {
-    let value = '';
-    if (key === 'date') {
-      value = event.format('MM-DD-YYYY');
-    } else {
-      value = event.target.value;
-    }
-
-    this.setState({
-      search: Object.assign({}, this.state.search, { [key]: value }),
-    });
-  }
-
-  handleSubmit(e) {
-    let { destination, date } = this.state.search;
+  handleSearchSubmit = (e) => {
     e.preventDefault();
-    this.props.history.push({
-      pathname: '/search',
-      search: 'destination=' + destination + '&date=' + date,
-      state: {
-        referrer: '/',
-        search: this.state.search,
-      },
-    });
-  }
 
-  getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    let { destination, date } = this.state.search;
+    const destinationValStr = !destination ? '' : destination.label;
+    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+
+    this.props.history.push({
+      pathname: '/search/',
+      search: 'destination=' + destinationValStr + '&date=' + dateValStr
+    });
+  };
+
+  handleSearchDestinationChange = value => {
+    this.setState({ search: { ...this.state.search, destination: value } });
+  };
+
+  handleSearchDateChange = date => {
+    this.setState({ search: { ...this.state.search, date } });
+  };
+
+  retrieveLocations(input) {
+    if (!input) {
+      return Promise.resolve({ options: [] });
+    }
+    return axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/locations?keyword=${input}`)
+      .then(response => {
+        return { options: response.data.data };
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   componentDidMount() {
-    var bgSlide = window.$('#bg-slide');
+    const {
+      homepageData: {
+        loading: loadingHomepageData
+      }
+    } = this.props;
 
-    window.$('.search-toggle').click(function() {
-      window.$('#landing-page-search').slideToggle();
-    });
+    if (loadingHomepageData) {
+      store.dispatch(fetchHomepageData());
+    }
 
-    setInterval(function() {
+    let bgSlide = window.$('#bg-slide');
+    this.interval = setInterval(function() {
       window.$('#bg-slide > img:first').appendTo(bgSlide);
     }, 6000);
+  }
 
-    /*if (this.getParameterByName('_l')) {
-      login();
-    }*/
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
-    let yesterday = moment().subtract(1, 'day');
-    let valid = function(current) {
-      return current.isAfter(yesterday);
-    };
+    const {
+      homepageData: {
+        loading: loadingHomepageData,
+        topPhotographers
+      }
+    } = this.props;
+
     return (
       <Page>
         <div id="bg-slide">
-          <img src="/images/insung-yoon-259475.jpg" alt="" />
-          <img src="/images/hero_1.jpg" alt="" />
-          <img src="/images/hero_2.jpg" alt="" />
+          <img src="/images/insung-yoon-259475.jpg" alt="This is an alt text"/>
+          <img src="/images/hero_1.jpg" alt="This is an alt text"/>
+          <img src="/images/hero_2.jpg" alt="This is an alt text"/>
         </div>
+
         <div className="container">
           <div id="landing-page-top">
-            <img src="/images/takapic-logo/CL small w.png" alt="" />
-            <h1>{intl.get('TAGLINE')}</h1>
-            <p>{intl.get('SUBHEADER')}</p>
-            <div id="landing-page-search">
-              <span>
-                <i className="fa fa-chevron-up search-toggle" />
-                <a href="">Clear all</a>
-              </span>
-              <Autocomplete
-                inputProps={{ placeholder: 'Destination' }}
-                items={this.state.cities}
-                menuStyle={{
-                  borderRadius: '3px',
-                  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                  background: 'white',
-                  padding: '2px 0',
-                  position: 'fixed',
-                  overflow: 'auto',
-                  maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
-                  color: '#333',
-                }}
-                getItemValue={item => item}
-                renderItem={(item, highlighted) => (
-                  <div
-                    style={{
-                      backgroundColor: highlighted ? '#eee' : 'transparent',
-                      padding: '2px 6px',
-                      fontSize: '14px',
-                    }}
-                  >
-                    {item}
-                  </div>
-                )}
-                value={this.state.search.destination}
-                onChange={e => {
-                  this.setState({
-                    search: Object.assign({}, this.state.search, {
-                      destination: e.target.value,
-                    }),
-                  });
-                  axios
-                    .get('/tes/cities.json')
-                    .then(res => {
-                      let cities = res.data.cities;
-                      this.setState({ cities });
-                      console.log(res.data);
-                    })
-                    .catch(error => console.log(error));
-                }}
-                onSelect={value => {
-                  this.setState({
-                    search: Object.assign({}, this.state.search, {
-                      destination: value,
-                    }),
-                  });
-                }}
-                wrapperStyle={{}}
-              />
-              <DateTime
-                value={this.state.search.date}
-                onChange={this.onSearchChange.bind(this, 'date')}
-                inputProps={{ placeholder: 'Date' }}
-                timeFormat={false}
-                dateFormat="MM-DD-YYYY"
-                isValidDate={valid}
-              />
-              <button className="button" onClick={this.handleSubmit}>
-                <i className="fa fa-search" />
-                <span>Search</span>
-              </button>
+            <img src="/images/takapic-logo/CL small w.png" alt="This is an alt text"/>
+            <h1>{ intl.get('TAGLINE') }</h1>
+            <p>{ intl.get('SUBHEADER') }</p>
+
+            <div className="search-box-custom-again" style={{ marginTop: '90px'}}>
+              <div className="search-box-destination">
+                <Select.Async
+                  multi={false}
+                  value={this.state.search.destination}
+                  onChange={this.handleSearchDestinationChange}
+                  valueKey="label"
+                  labelKey="label"
+                  loadOptions={this.retrieveLocations}
+                  placeholder="Choose your destination"
+                />
+              </div>
+
+              <div className="search-box-date">
+                <DatePicker
+                  dateFormat="MMMM Do YYYY"
+                  selected={this.state.search.date}
+                  onChange={this.handleSearchDateChange}
+                  placeholderText="Choose a date"
+                />
+              </div>
+
+              <div className="search-box-submit">
+                <button className="button" onClick={this.handleSearchSubmit}>
+                  <i className="fa fa-search"/>
+                  <span>Search</span>
+                </button>
+              </div>
             </div>
           </div>
+
           <h1 className="title margin-bottom-40">Featured Destination</h1>
+
           <div className="text-right margin-bottom-10">
-            <Link to="">See All</Link>
+            <Link to="/">See All</Link>
           </div>
+
           <div className="row posters">
             <div className="col-xs-4">
               <a className="poster" href="">
                 <div className="text">BALI</div>
-                <img src="images/location/bali.jpg" alt="" />
+                <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
               </a>
             </div>
-            <div className="col-xs-4">
-              <a className="poster" href="">
-                <div className="text">SEOUL</div>
-                <img src="images/location/seoul.jpg" alt="" />
-              </a>
-            </div>
-            <div className="col-xs-4">
-              <a className="poster" href="">
-                <div className="text">PARIS</div>
-                <img src="images/location/paris.jpg" alt="" />
-              </a>
-            </div>
-          </div>
 
-          <h1 className="title margin-bottom-40">Themes</h1>
-          <div className="text-right margin-bottom-10">
-            <Link to="">See All</Link>
-          </div>
-          <div className="row posters">
-            <div className="col-xs-6 col-sm-4">
-              <a className="poster grid" href="">
-                <div className="text">FAMILY</div>
-                <img src="images/theme/shubham-sharma-224917.jpg" alt="" />
+            <div className="col-xs-4">
+              <a className="poster" href="/">
+                <div className="text">SEOUL</div>
+                <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
               </a>
             </div>
-            <div className="col-xs-6 col-sm-4">
-              <a className="poster grid" href="">
-                <div className="text">COUPLE</div>
-                <img src="images/theme/tord-sollie-865.jpg" alt="" />
-              </a>
-            </div>
-            <div className="col-xs-6 col-sm-4">
-              <a className="poster grid" href="">
-                <div className="text">OUTDOOR</div>
-                <img src="images/theme/chris-herath-182666.jpg" alt="" />
-              </a>
-            </div>
-            <div className="col-xs-6 col-sm-4">
-              <a className="poster grid" href="">
-                <div className="text">FOOD</div>
-                <img src="images/theme/brooke-lark-158022.jpg" alt="" />
-              </a>
-            </div>
-            <div className="col-xs-6 col-sm-4">
-              <a className="poster grid" href="">
-                <div className="text">WEDDING</div>
-                <img src="images/theme/anne-edgar-119371.jpg" alt="" />
-              </a>
-            </div>
-            <div className="col-xs-6 col-sm-4">
-              <a className="poster grid" href="">
-                <div className="text">PROFILE</div>
-                <img src="images/theme/autumn-goodman-242825.jpg" alt="" />
+
+            <div className="col-xs-4">
+              <a className="poster" href="/">
+                <div className="text">PARIS</div>
+                <img src="images/location/paris.jpg" alt="Featured destination - Paris"/>
               </a>
             </div>
           </div>
 
           <h1 className="title margin-bottom-50">Top Photographers</h1>
-          <TopPhotographer />
+
+          {
+            topPhotographers && !loadingHomepageData ? <TopPhotographers topPhotographers={topPhotographers}/> : null
+          }
 
           <h1 className="title">Why be a Takapic traveller?</h1>
+
           <div className="row icons-container">
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">
-                <i className="im im-icon-Map2" />
+                <i className="im im-icon-Map2"/>
                 <h3>Travel like a local</h3>
                 <p>
                   Local photographers will guide you to the best locations in
@@ -246,9 +198,10 @@ class Home extends Component {
                 </p>
               </div>
             </div>
+
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">
-                <i className="im im-icon-Camera-5" />
+                <i className="im im-icon-Camera-5"/>
                 <h3>Capture your precious moments</h3>
                 <p>
                   Forget about selfies and photos taken by random strangers. You
@@ -257,9 +210,10 @@ class Home extends Component {
                 </p>
               </div>
             </div>
+
             <div className="col-sm-4">
               <div className="icon-box-2">
-                <i className="im im-icon-Checked-User" />
+                <i className="im im-icon-Checked-User"/>
                 <h3>Trust and Safety</h3>
                 <p>
                   Only verified photographers are registered and you can view
@@ -274,4 +228,8 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default connect(
+  state => ({
+    homepageData: state.homepageData
+  })
+)(Home);

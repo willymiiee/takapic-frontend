@@ -2,81 +2,71 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import {
-  Button,
   FormControl,
   FormGroup,
   InputGroup,
   Table,
 } from 'react-bootstrap';
 import { setPricing } from '../../store/actions/photographerServiceInfoActionsStep2';
-import Page from 'components/Page';
+import Page from '../Page';
 
 class Step2IndicatePrice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      masterPackage: {
-        PKG1: {
+      masterPackages: [
+        {
+          id: 'PKG1',
           packageName: '1 hour',
           requirement: 'Minimum 30 photos',
+          price: 0
         },
-        PKG2: {
+        {
+          id: 'PKG2',
           packageName: '2 hours',
           requirement: 'Minimum 60 photos',
+          price: 0
         },
-        PKG3: {
+        {
+          id: 'PKG3',
           packageName: '4 hours',
           requirement: 'Minimum 120 photos',
+          price: 0
         },
-        PKG4: {
+        {
+          id: 'PKG4',
           packageName: '8 hours',
           requirement: 'Minimum 200 photos',
-        },
-      },
+          price: 0
+        }
+      ]
     };
   }
-  handleChange = (event, tr, index) => {
+
+  handleChange = (event, itemId) => {
     event.preventDefault();
-    const { masterPackage } = this.state;
-    const key = tr[index].key;
-    masterPackage[key].price = event.target.value;
-    masterPackage[key].currency = this.props.user.userCurrency;
-    if (event.target.value === '') {
-      delete masterPackage[key].price;
-    }
-    this.setState({ masterPackage });
+    const { masterPackages } = this.state;
+    const newMasterPackages = masterPackages.map(item => {
+      if (item.id === itemId) {
+        return Object.assign({}, item, {
+          // eslint-disable-next-line
+          price: parseInt(event.target.value)
+        });
+      }
+      return item;
+    });
+    this.setState({ masterPackages: newMasterPackages });
   };
+
   handleSubmit = event => {
     event.preventDefault();
-    let invalid = false;
-    const n = this.state.masterPackage;
-    for (var key in n) {
-      // check also if property is not inherited from prototype
-      if (n.hasOwnProperty(key)) {
-        var value = n[key];
-        if (!value.price) {
-          invalid = true;
-        }
-      }
-    }
-    if (invalid) {
-      alert('Please complete the form!');
-    } else {
-      this.props.setPricing({ detailMasterPackage: this.state.masterPackage });
-      this.props.history.push('/become-our-photographer/step-2-2');
-    }
+    this.props.setPricing({ detailMasterPackage: this.state.masterPackages });
+    this.props.history.push('/become-our-photographer/step-2-2');
   };
+
   render() {
-    let tr = [];
-    const n = this.state.masterPackage;
-    for (var key in n) {
-      // check also if property is not inherited from prototype
-      if (n.hasOwnProperty(key)) {
-        var value = n[key];
-        value.key = key;
-        tr.push(value);
-      }
-    }
+    const { user: { userMetadata: { currency } } } = this.props;
+    const { masterPackages } = this.state;
     return (
       <Page>
         <div className="container" id="photographer-landing">
@@ -99,57 +89,65 @@ class Step2IndicatePrice extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {tr.map((td, kk) => {
-                    return (
-                      <tr key={kk}>
-                        <td>{td.packageName}</td>
-                        <td>{td.requirement}</td>
-                        <td>
-                          <FormGroup style={{ marginBottom: -15 }}>
-                            <InputGroup>
-                              <FormControl
-                                type="text"
-                                onChange={event =>
-                                  this.handleChange(event, tr, kk)}
-                              />
-                              <InputGroup.Button style={{ padding: 10 }}>
-                                <p>{this.props.user.userCurrency}</p>
-                              </InputGroup.Button>
-                            </InputGroup>
-                          </FormGroup>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {
+                    masterPackages.map((item, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{ item.packageName }</td>
+                          <td>{ item.requirement }</td>
+                          <td>
+                            <FormGroup style={{ marginBottom: 0 }}>
+                              <InputGroup>
+                                <FormControl
+                                  type="text"
+                                  value={item.price}
+                                  onChange={event => this.handleChange(event, item.id)}
+                                />
+                                <InputGroup.Button style={{ padding: 10 }}><p>{ currency }</p></InputGroup.Button>
+                              </InputGroup>
+                            </FormGroup>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
                 </tbody>
               </Table>
             </div>
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
               <div className="card tips">
-                <b>About Pricing</b>
+                <h3>About Pricing</h3>
                 <p>
-                  Explanation about our packages and standardised pricing
-                  policy. You can change it later.
+                  Packages are time-based and is the time you spend on the photoshoot. Please factor in
+                  some flexibility in timing when meeting your customer if they are not familiar with the location.
                 </p>
-                <b>Tips for pricing</b>
-                <p>Blah blah.</p>
+
+                <h3>Tips for pricing</h3>
+                <p>
+                  You can change your prices anytime you like depending on your schedule or free time.
+                </p>
               </div>
             </div>
           </div>
           <hr />
-          <Link
-            to="/become-our-photographer/welcome-2"
-            className="button button-white-no-shadow u"
-          >
-            Back
-          </Link>
-          <Link
-            to="/become-our-photographer/step-2-2"
-            className="button"
-            onClick={this.handleSubmit}
-          >
-            Next
-          </Link>
+          <div style={{overflow:'hidden'}}>
+            <Link
+                to="/become-our-photographer/step-2-2"
+                className="button"
+                onClick={this.handleSubmit}
+                style={{float:'right'}}
+            >
+              Next
+            </Link>
+
+            {/*<Link
+                to="/become-our-photographer/welcome-2"
+                className="button button-white-no-shadow u"
+                style={{float:'right'}}
+            >
+              Back
+            </Link>*/}
+          </div>
         </div>
       </Page>
     );

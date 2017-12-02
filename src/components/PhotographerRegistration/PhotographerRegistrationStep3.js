@@ -1,46 +1,133 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
+import { Formik } from 'formik';
+import Yup from 'yup';
+import { connect } from 'react-redux';
+import { database } from '../../services/firebase';
 import { uploadPhonenumber } from '../../store/actions/userInitProfileActions';
+import { dashify } from "../../helpers/helpers";
 
 import 'react-select/dist/react-select.css';
-import Page from 'components/Page';
+import Page from '../Page';
+
+const PhoneNumberCollectForm = props => {
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    setFieldValue,
+    countries
+  } = props;
+
+  const _handleSelect = selectChoice => {
+    setFieldValue('phoneNumberCountryCode', selectChoice.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Select
+        name="phoneNumberCountryCode"
+        value={values.phoneNumberCountryCode}
+        options={countries}
+        clearable={false}
+        onChange={_handleSelect}
+      />
+
+      <div className={`form-group ${errors.phoneNumber && touched.phoneNumber && 'has-error'}`}>
+        <div className="input-group">
+          <span className="input-group-addon">{ values.phoneNumberCountryCode === '' ? '-' : values.phoneNumberCountryCode }</span>
+          <input
+            type="text"
+            name="phoneNumber"
+            onChange={handleChange}
+            value={values.phoneNumber}
+            className="form-control"
+            placeholder="Enter Your Phone Number, exclude dial code"
+          />
+        </div>
+        {errors.phoneNumber && touched.phoneNumber && <label className="control-label">{errors.phoneNumber}</label>}
+      </div>
+
+      <button
+        type="submit"
+        className="button next-btn"
+        disabled={isSubmitting}
+      >
+        { isSubmitting ? 'Please wait...' : 'Next' }
+      </button>
+    </form>
+  );
+};
+
+PhoneNumberCollectForm.propTypes = {
+  countries: PropTypes.array.isRequired,
+  uploadPhonenumber: PropTypes.func.isRequired
+};
+
+const PhoneNumberCollectFormik = Formik({
+  mapPropsToValues: props => ({
+    phoneNumberCountryCode: '',
+    phoneNumber: ''
+  }),
+  validationSchema: Yup.object().shape({
+    phoneNumber: Yup.number().required('Please input phone number')
+  }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    setTimeout(() => {
+      const phoneNumber = values.phoneNumberCountryCode + values.phoneNumber;
+      props.uploadPhonenumber(phoneNumber, props.reference);
+      setSubmitting(false);
+    }, 1000);
+  }
+})(PhoneNumberCollectForm);
 
 class PhotographerRegistrationStep3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      countries: [],
       phonenumber_country_code: '',
       phonenumber: '',
     };
-
-    this.submitDataHandler = this.submitDataHandler.bind(this);
-    this.countryCodeChangeHandler = this.countryCodeChangeHandler.bind(this);
-    this.phonumberChangeHandler = this.phonumberChangeHandler.bind(this);
   }
 
-  submitDataHandler(evt) {
-    evt.preventDefault();
-    const phonenumber =
-      this.state.phonenumber_country_code + this.state.phonenumber;
-    this.props.uploadPhonenumber(phonenumber, this.props.user.email);
-  }
+  componentDidMount() {
+    const db = database.database();
+    const countriesRef = db.ref('/countries');
+    countriesRef.once('value', snapshot => {
+      const countriesSource = snapshot.val();
+      let countriesList = [];
+      for (let key in countriesSource) {
+        countriesList.push({
+          value: countriesSource[key].phone_dial_code,
+          label: `${countriesSource[key].name} (${countriesSource[key].phone_dial_code})`
+        });
+      }
 
-  countryCodeChangeHandler(value) {
-    this.setState({ phonenumber_country_code: value.value });
-  }
-
-  phonumberChangeHandler(evt) {
-    evt.preventDefault();
-    this.setState({ phonenumber: evt.target.value });
+      this.setState({ countries: countriesList });
+    });
   }
 
   render() {
-    const options = [
-      { value: '+62', label: 'Indonesia (+62)' },
-      { value: '+60', label: 'Malaysia (+60)' },
-      { value: '+61', label: 'Singapore (+61)' },
-    ];
+    const { countries } = this.state;
+    const {
+      user: {
+        uid,
+        email,
+        userMetadata: { accountProviderType }
+      }
+    } = this.props;
+
+    let reference = '';
+    if (accountProviderType === 'google.com') {
+      reference = 'googlecom-' + uid;
+    } else {
+      reference = dashify(email);
+    }
 
     return (
       <Page>
@@ -60,37 +147,12 @@ class PhotographerRegistrationStep3 extends Component {
                 alt=""
                 className="center-block"
               />
-              <div className="form-group">
-                <Select
-                  name="form-field-name"
-                  value={this.state.phonenumber_country_code}
-                  options={options}
-                  onChange={this.countryCodeChangeHandler}
-                />
-                <div className="input-group">
-                  <span className="input-group-addon">+62</span>
-                  <input
-                    type="text"
-                    onChange={this.phonumberChangeHandler}
-                    value={this.state.phonenumber}
-                    required="required"
-                    className="form-control"
-                    placeholder="Enter Your Phone Number"
-                  />
-                </div>
-              </div>
 
-              <button
-                type="button"
-                onClick={this.submitDataHandler}
-                className="button next-btn"
-              >
-                {this.props.isUploadingPhoneNumber ? (
-                  'Saving your phone number, please wait...'
-                ) : (
-                  'Next'
-                )}
-              </button>
+              <PhoneNumberCollectFormik
+                countries={countries}
+                uploadPhonenumber={this.props.uploadPhonenumber}
+                reference={reference}
+              />
             </div>
           </div>
         </div>
@@ -105,7 +167,7 @@ export default connect(
     isUploadingPhoneNumber: state.userInitProfile.isUploadingPhoneNumber,
   }),
   dispatch => ({
-    uploadPhonenumber: (phonenumber, email) =>
-      dispatch(uploadPhonenumber(phonenumber, email)),
+    uploadPhonenumber: (phonenumber, reference) =>
+      dispatch(uploadPhonenumber(phonenumber, reference)),
   })
 )(PhotographerRegistrationStep3);

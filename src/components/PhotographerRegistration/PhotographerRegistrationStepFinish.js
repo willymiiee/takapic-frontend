@@ -12,11 +12,14 @@ class PhotographerRegistrationStepFinish extends Component {
               <div className="wrapper">
                 <div className="inner-wrapper text-center">
                   <div className="text-wrapper">
+                    <div className="checkmail-icon">
+                      <i className="fa fa-check-circle fa-3x" />
+                    </div>
                     <h2>You're all set!</h2>
                     <p>You can now start your work on Takapic</p>
                     <Link
                       to="/become-our-photographer/welcome-1"
-                      className="btn btn-primary center-block"
+                      className="btn start-explore-btn center-block"
                       type="button"
                     >
                       Start Exploring

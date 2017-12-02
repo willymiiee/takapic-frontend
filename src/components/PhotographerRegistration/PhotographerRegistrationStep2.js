@@ -1,42 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { uploadPhotoProfile, imageSelectedAction } from '../../store/actions/userInitProfileActions';
+import { dashify } from "../../helpers/helpers";
 
-import { uploadPhotoProfile } from '../../store/actions/userInitProfileActions';
-
-import Page from 'components/Page';
+import Page from '../Page';
 
 class PhotographerRegistrationStep2 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: null,
-      imagePreviewUrl: '',
-    };
-
+  constructor() {
+    super();
     this.fileSelectChangeHandler = this.fileSelectChangeHandler.bind(this);
     this.uploadPhotoProfileHandler = this.uploadPhotoProfileHandler.bind(this);
   }
 
   fileSelectChangeHandler(evt) {
     evt.preventDefault();
-    let fileReader = new FileReader();
-    let file = evt.target.files[0];
-
-    fileReader.onloadend = () => {
-      this.setState({ file: file, imagePreviewUrl: fileReader.result });
-    };
-
-    fileReader.readAsDataURL(file);
+    this.props.imageSelectedAction(evt.target.files[0]);
   }
 
   uploadPhotoProfileHandler(evt) {
     evt.preventDefault();
-    const { user: { email, userMetadata: { displayName } } } = this.props;
+    const { userInitProfile: { file } } = this.props;
+    if (file) {
+      const {
+        user: {
+          uid,
+          email,
+          userMetadata: { displayName, accountProviderType }
+        }
+      } = this.props;
 
-    this.props.uploadPhotoProfile(this.state.file, email, displayName);
+      let reference = '';
+      if (accountProviderType === 'google.com') {
+        reference = 'googlecom-' + uid;
+      } else {
+        reference = dashify(email);
+      }
+      this.props.uploadPhotoProfile(file, reference, displayName);
+    } else {
+      alert('Please choose an image for your photo profile');
+    }
   }
 
   render() {
+    const { userInitProfile: { imagePreviewUrl, file } } = this.props;
     return (
       <Page>
         <div className="container" id="photographer-landing">
@@ -55,23 +61,30 @@ class PhotographerRegistrationStep2 extends Component {
                   className="center-block img-responsive"
                 >
                   <div className="ph">
-                    {this.state.imagePreviewUrl && (
+                    {imagePreviewUrl && (
                       <img
-                        src={this.state.imagePreviewUrl}
-                        className="center-block img-circle"
+                        src={imagePreviewUrl}
+                        className="center-block img-circle img-profile"
+                        alt="This is alt text"
                       />
                     )}
                   </div>
                 </div>
               </div>
-              <p className="text-center">or choose file</p>
-              <div className="form-group">
-                <input
-                  className="input-file"
-                  type="file"
-                  name=""
-                  onChange={this.fileSelectChangeHandler}
-                />
+              <div className="form-group browse-profile-holder">
+                <div className="browse-profile-btn">
+                  <span>Browse</span>
+                  <input
+                    className="input-file choose-file"
+                    id="btn-choose-profile"
+                    type="file"
+                    name=""
+                    onChange={this.fileSelectChangeHandler}
+                  />
+                </div>
+                <div className="input-profile-name">
+                  { file ? file.name : 'Choose file'}
+                </div>
               </div>
 
               <button
@@ -100,5 +113,6 @@ export default connect(
   dispatch => ({
     uploadPhotoProfile: (fileObject, email, displayName) =>
       dispatch(uploadPhotoProfile(fileObject, email, displayName)),
+    imageSelectedAction: fileObject => dispatch(imageSelectedAction(fileObject))
   })
 )(PhotographerRegistrationStep2);

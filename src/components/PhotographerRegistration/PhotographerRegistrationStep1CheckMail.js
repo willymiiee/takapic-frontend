@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Page from 'components/Page';
-import { compose, lifecycle } from 'recompose';
 
 class PhotographerRegistrationStep1CheckMail extends Component {
   render() {
@@ -16,7 +14,12 @@ class PhotographerRegistrationStep1CheckMail extends Component {
 
           <div className="panel setup-content" id="step-1">
             <div className="panel-body checkmail-wrapper">
-              <h2 className="text-center">Check your email</h2>
+              <div className="checkmail-icon">
+                <i className="fa fa-envelope fa-3x" />
+              </div>
+              <a className="no_decoration" target="_blank" href="https://mail.google.com/" rel="noopener noreferrer">
+                <h2 className="text-center">Check your email!</h2>
+              </a>
               <div className="checkmail-text text-center">
                 <p>Tap the link in the email we sent you.</p>
                 <p>

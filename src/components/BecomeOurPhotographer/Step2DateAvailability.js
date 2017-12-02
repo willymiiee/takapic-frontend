@@ -1,85 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import DayPicker, { DateUtils } from 'react-day-picker';
 import { Link } from 'react-router-dom';
-import Page from 'components/Page';
 
-export default class Step2DateAvailability extends Component {
-  componentDidMount() {
-    var schedule = [],
-      e_schedule = window.$('#schedule'),
-      e_scheduleInput = window.$('#schedule > input');
+import 'react-day-picker/lib/style.css';
+import Page from '../Page';
 
-    function html_scheduleTime() {
-      var time = [
-          '08:00',
-          '09:00',
-          '10:00',
-          '11:00',
-          '12:00',
-          '13:00',
-          '14:00',
-          '15:00',
-          '16:00',
-          '17:00',
-          '18:00',
-          '19:00',
-          '20:00',
-          '21:00',
-          '22:00',
-          '23:00',
-        ],
-        i = 0,
-        html = '<div id="schedule-time"><div><div>';
-      while (i < 9)
-        html +=
-          '<i' +
-          (schedule.indexOf(time[i]) === -1 ? '>' : ' class="active">') +
-          time[i++] +
-          '</i>';
-      html += '</div><div>';
-      while (i < 16)
-        html +=
-          '<i' +
-          (schedule.indexOf(time[i]) === -1 ? '>' : ' class="active">') +
-          time[i++] +
-          '</i>';
-      html += '</div></div></div>';
-      return html;
-    }
-
-    window.$(function() {
-      e_scheduleInput
-        .datepicker({
-          startDate: 'd',
-          multidate: true,
-        })
-        .on('show', function() {
-          window
-            .$('.datepicker.datepicker-dropdown.dropdown-menu')
-            .addClass('schedule')
-            .appendTo(e_schedule)
-            .css({ top: 0 })
-            .on('click', '#schedule-time i', function() {
-              window.$(this).toggleClass('active');
-            })
-            .find('#schedule-time')
-            .show();
-        })
-        .on('hide', function() {
-          window.$(this).datepicker('show');
-        })
-        .datepicker('show');
-
-      window
-        .$('.datepicker.datepicker-dropdown.dropdown-menu')
-        .prepend(html_scheduleTime());
-
-      window.$(window).resize(function() {
-        window
-          .$('.datepicker.datepicker-dropdown.dropdown-menu')
-          .css({ top: 0 });
-      });
+const selectedDaysAction = selectedDays => {
+  return dispatch => {
+    dispatch({
+      type: 'USER_INIT_PROFILE_SETUP_SCHEDULE_SUCCESS',
+      payload: selectedDays
     });
+  };
+};
+
+class Step2DateAvailability extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedDays: []
+    };
   }
+
+  dayClickHandle = (day, { selected }) => {
+    const { selectedDays } = this.state;
+    if (selected) {
+      const selectedIndex = selectedDays.findIndex(selectedDay => DateUtils.isSameDay(selectedDay, day));
+      selectedDays.splice(selectedIndex, 1);
+    } else {
+      selectedDays.push(day);
+    }
+    this.setState({ selectedDays });
+  };
+
+  nextStepHandle = () => {
+    this.props.selectedDaysAction(this.state.selectedDays);
+  };
 
   render() {
     return (
@@ -92,34 +49,62 @@ export default class Step2DateAvailability extends Component {
             <div />
           </div>
           <hr />
-          <h3>Please let travellers know when you are available for them</h3>
+
+          <h3>Please let travellers know when you are <strong>NOT</strong> available for them</h3>
+
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30">
-              <div id="schedule">
-                <input type="hidden" />
+              <div id="schedule" className="card tips">
+                <DayPicker
+                  selectedDays={this.state.selectedDays}
+                  onDayClick={this.dayClickHandle}
+                />
               </div>
             </div>
+
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
-              <div className="card tips">
-                <b>Why need to set your schedule</b>
-                <p>Blah blah blah blah.</p>
-                <b>Tips for scheduling</b>
-                <p>Blah blah.</p>
+              <div className="card tips" style={{height:'340px'}}>
+                <h3>About setting your schedule</h3>
+                <p>
+                  Please block out days which you are <strong>NOT</strong> available. The default setting is all days are
+                  open to customers.
+                </p>
+
+                <h3>Tips for Scheduling</h3>
+                <p>
+                  You can change your schedule anytime you like. It is good to update your schedule regularly to
+                  maximize your chances of customers choosing you.
+                </p>
               </div>
             </div>
           </div>
           <hr />
-          <Link
-            to="/become-our-photographer/step-2-1"
-            className="button button-white-no-shadow u"
-          >
-            Back
-          </Link>
-          <Link to="/become-our-photographer/step-2-3" className="button">
-            Next
-          </Link>
+          <div style={{overflow:'hidden'}}>
+            <Link to="/become-our-photographer/step-2-3"
+                  className="button"
+                  onClick={this.nextStepHandle}
+                  style={{float:'right'}}>
+              Next
+            </Link>
+
+            {/*<Link
+              to="/become-our-photographer/step-2-1"
+              className="button button-white-no-shadow u"
+              style={{float:'right'}}>
+              Back
+            </Link>*/}
+          </div>
         </div>
       </Page>
     );
   }
 }
+
+export default connect(
+  state => ({
+    userInitProfile: state.userInitProfile
+  }),
+  dispatch => ({
+    selectedDaysAction: selectedDays => dispatch(selectedDaysAction(selectedDays))
+  })
+)(Step2DateAvailability);
