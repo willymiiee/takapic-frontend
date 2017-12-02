@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ProgressBar } from 'react-bootstrap';
-import { dashify } from "../../helpers/helpers";
 import { submitUploadPhotosPortfolio } from '../../store/actions/photographerServiceInfoActionsStep2';
 
 import Page from '../Page';
@@ -53,21 +52,10 @@ class Step2IntiatePortofolio extends Component {
       alert('Please choose and upload photos.');
     } else {
       const {
-        user: {
-          uid,
-          email,
-          userMetadata: { accountProviderType }
-        }
+        user: { uid }
       } = this.props;
 
-      let reference = '';
-      if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-      } else {
-        reference = dashify(email);
-      }
-
-      const params = { reference, files: selectedPhotos };
+      const params = { reference: uid, files: selectedPhotos };
       this.props.submitUploadPhotosPortfolio(params);
     }
   };
@@ -104,7 +92,7 @@ class Step2IntiatePortofolio extends Component {
                 </button>
                 <div id="photo-preview">
                   {selectedPhotos.map((photo, key) => (
-                    <div>
+                    <div key={key}>
                       <div
                         style={{
                           position: 'absolute',

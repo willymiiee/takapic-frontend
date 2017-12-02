@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import uuidv4 from 'uuid/v4';
 import { Button } from "react-bootstrap";
 import get from 'lodash/get';
+import { updateMeetingPoints } from '../../store/actions/profileUpdateActions';
 
 import MapWithASearchBox from './../MapWithASearchBox';
-import {dashify} from "../../helpers/helpers";
-
-import {updateMeetingPoints} from '../../store/actions/profileUpdateActions';
 
 class MeetingPoints extends Component {
   constructor(props) {
@@ -28,25 +26,24 @@ class MeetingPoints extends Component {
 
   setLocalState = () => {
     const { photographerServiceInformation : { data } } = this.props
-    let { meetingPoints } = this.state
+    let { meetingPoints } = this.state;
 
     if (data.meetingPoints) {
       meetingPoints = Object.keys(data.meetingPoints)
       .filter(x => x !== "0000")
       .map(item => (data.meetingPoints[item]));
 
-      this.setState({meetingPoints});
+      this.setState({ meetingPoints });
     }
-
-  }
+  };
 
   handleAddition = params => {
     let generalLocation = get(params, 'generalLocation');
     const specificLocation = get(params, 'specificLocation', '-');
 
     if (generalLocation && this.state.meetingPoints.length < 3) {
-      let uuid = uuidv4()
-      let meetingPointsLocal = Object.assign(generalLocation, {placeLocationNotes: specificLocation, id: uuid}, )
+      let uuid = uuidv4();
+      let meetingPointsLocal = Object.assign(generalLocation, { placeLocationNotes: specificLocation, id: uuid });
       const meetingPoints = [...this.state.meetingPoints, meetingPointsLocal];
       this.setState({ meetingPoints });
     }
@@ -57,30 +54,12 @@ class MeetingPoints extends Component {
     const {
         photographerServiceInformation: {
           data: {
-            userMetadata: {
-              accountProviderType,
-              uid,
-              email,
-            }
+            userMetadata: { uid }
           }
         }
     } = this.props;
 
-    const state = this.state
-
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-    } else {
-        reference = dashify(email);
-    }
-
-    const params = {
-        reference,
-        state,
-        uid,
-    };
-
+    const params = { state: this.state, uid };
     this.props.updateMeetingPoints(params);
 
   };

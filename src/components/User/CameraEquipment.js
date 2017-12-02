@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { Form, FormGroup, Col, ControlLabel, Button } from 'react-bootstrap';
 import Select from 'react-select';
 
-import {dashify} from "../../helpers/helpers";
-
-import {updateCameraEquipment} from '../../store/actions/profileUpdateActions';
+import { updateCameraEquipment } from '../../store/actions/profileUpdateActions';
 
 class CameraEquipment extends Component {
   constructor(props) {
@@ -36,61 +34,53 @@ class CameraEquipment extends Component {
       values.lenses = cameraEquipment.lens;
       this.setState({ options });
     }
-  }
+  };
 
   handleOnChangeBody = (value) => {
 		const { values } = this.state;
 		values.bodies = value
 		this.setState({ values });
-	}
+	};
 
   handleOnChangeLens = (value) => {
 		const { values } = this.state;
 		values.lenses = value
 		this.setState({ values });
-	}
+	};
 
   handleUpdate = event => {
-      event.preventDefault();
-      const {values: {bodies, lenses}} = this.state;
-      if (
-          this.notEmpty(bodies) &&
-          this.notEmpty(lenses)
-      ) {
-          const {
-              photographerServiceInformation: {
-                data: {
-                  userMetadata: {
-                    accountProviderType,
-                    uid,
-                    email,
-                  }
-                }
-              }
-          } = this.props;
-
-          let reference = '';
-          if (accountProviderType === 'google.com') {
-              reference = 'googlecom-' + uid;
-          } else {
-              reference = dashify(email);
+    event.preventDefault();
+    const { values: { bodies, lenses } } = this.state;
+    if (
+      this.notEmpty(bodies) &&
+      this.notEmpty(lenses)
+    ) {
+      const {
+        photographerServiceInformation: {
+          data: {
+            userMetadata: { uid }
           }
+        }
+      } = this.props;
 
-          const params = {
-              reference,
-              bodies: bodies.map(body => { return (typeof body === "string") ? body : body.value }),
-              lenses: lenses.map(lens => { return (typeof lens === "string") ? lens : lens.value }),
-              uid: uid
-          };
+      const params = {
+        bodies: bodies.map(body => {
+          return (typeof body === "string") ? body : body.value
+        }),
+        lenses: lenses.map(lens => {
+          return (typeof lens === "string") ? lens : lens.value
+        }),
+        uid
+      };
 
-          this.props.updateCameraEquipment(params);
-      } else {
-          alert('Please complete the form');
-      }
+      this.props.updateCameraEquipment(params);
+    } else {
+      alert('Please complete the form');
+    }
   };
 
   notEmpty = arr => {
-      return arr.length > 0 && arr[0] !== '';
+    return arr.length > 0 && arr[0] !== '';
   };
 
   render() {
@@ -148,8 +138,8 @@ class CameraEquipment extends Component {
 }
 
 export default connect(
-    null,
-    dispatch => ({
-        updateCameraEquipment: paramsObject => dispatch(updateCameraEquipment(paramsObject))
-    })
+  null,
+  dispatch => ({
+    updateCameraEquipment: paramsObject => dispatch(updateCameraEquipment(paramsObject))
+  })
 )(CameraEquipment);

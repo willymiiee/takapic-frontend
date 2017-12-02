@@ -8,6 +8,7 @@ import {
   Table,
 } from 'react-bootstrap';
 import { setPricing } from '../../store/actions/photographerServiceInfoActionsStep2';
+
 import Page from '../Page';
 
 class Step2IndicatePrice extends Component {

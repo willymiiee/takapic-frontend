@@ -22,7 +22,7 @@ export const updateBasicInformation = (params) => {
 
 const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
   const db = database.database();
-  const ref = db.ref('/user_metadata');
+  const ref = db.ref('user_metadata');
   const userRef = ref.child(reference);
 
   userRef.update({ photoProfileUrl });
@@ -30,8 +30,8 @@ const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
 
 export const updatePhotoProfile = (params) => {
   return dispatch => {
-    let { reference, state } = params
-    let { values: { fileImage, name } } = state
+    let { uid, state } = params;
+    let { values: { fileImage, name } } = state;
 
     let fileExt = '.jpg';
     if (fileImage.type === 'image/jpeg') {
@@ -41,7 +41,7 @@ export const updatePhotoProfile = (params) => {
     }
 
     const storageRef = database.storage().ref();
-    const photoPath = `pictures/user-photo-profile/${reference}${fileExt}`;
+    const photoPath = `pictures/user-photo-profile/${uid}${fileExt}`;
     const pictureRef = storageRef.child(photoPath);
 
     pictureRef
@@ -54,7 +54,7 @@ export const updatePhotoProfile = (params) => {
           photoURL: downloadURL,
         });
 
-        updateUserMetadataPhotoProfile(reference, downloadURL);
+        updateUserMetadataPhotoProfile(uid, downloadURL);
 
       })
   };
@@ -62,13 +62,13 @@ export const updatePhotoProfile = (params) => {
 
 export const updateBasicInformationUser = (params) => {
   return dispatch => {
-    const { reference, state } = params;
+    const { uid, state } = params;
 
     dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION_USER" });
 
     const db = database.database();
     const ref = db.ref("/user_metadata");
-    const metadataRef = ref.child(reference);
+    const metadataRef = ref.child(uid);
     metadataRef
       .update({
         displayName: state.values.name,
@@ -97,13 +97,13 @@ export const updateBasicInformationUser = (params) => {
 
 export const updateBasicInformationPhotographer = (params) => {
   return dispatch => {
-    const { reference, state } = params;
+    const { uid, state } = params;
 
     dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION_PHOTOGRAPHER" });
 
     const db = database.database();
     const ref = db.ref("/photographer_service_information");
-    const metadataRef = ref.child(reference);
+    const metadataRef = ref.child(uid);
     metadataRef
       .update({
         selfDescription: state.values.selfDescription,
@@ -128,14 +128,14 @@ export const updateBasicInformationPhotographer = (params) => {
 
 export const updateCameraEquipment = (params) => {
   return dispatch => {
-    const { reference, bodies, lenses } = params;
+    const { uid, bodies, lenses } = params;
 
     dispatch({ type: "UPDATE_PROFILE_CAMERA_EQUIPMENT" });
     dispatch(setActiveTab(2));
 
     const db = database.database();
-    const ref = db.ref("/photographer_service_information");
-    const metadataRef = ref.child(reference);
+    const ref = db.ref("photographer_service_information");
+    const metadataRef = ref.child(uid);
     metadataRef
       .update({
         cameraEquipment: { body: bodies, lens: lenses },
@@ -158,14 +158,14 @@ export const updateCameraEquipment = (params) => {
 
 export const updateMeetingPoints = (params) => {
   return dispatch => {
-    const { reference, state } = params;
+    const { uid, state } = params;
 
     dispatch({ type: "UPDATE_PROFILE_MEETING_POINT" });
     dispatch(setActiveTab(3));
 
     const db = database.database();
     const ref = db.ref("/photographer_service_information");
-    const metadataRef = ref.child(reference);
+    const metadataRef = ref.child(uid);
     metadataRef
       .update({
         meetingPoints: state.meetingPoints
@@ -184,10 +184,10 @@ export const updateMeetingPoints = (params) => {
         });
       });
   };
-}
+};
 
 export const uploadPhotosPortfolio = (params) => {
-  const { reference, state: { selectedPhotos } } = params;
+  const { uid, state: { selectedPhotos } } = params;
   return dispatch => {
     let files = selectedPhotos;
     let percentages = files.map(f => 0);
@@ -199,7 +199,7 @@ export const uploadPhotosPortfolio = (params) => {
 
     for (let i in files) {
 
-      const fullDirectory = `pictures/portofolio-photos/${reference}`;
+      const fullDirectory = `pictures/portofolio-photos/${uid}`;
       const imageFile = files[i].file;
       let storageRef = firebase
         .storage()
@@ -226,8 +226,8 @@ export const uploadPhotosPortfolio = (params) => {
             fileName: imageFile.name,
             url: downloadURL,
             theme: '-',
-          }
-          dataImages = [...dataImages, payload];
+          };
+          dataImages = [ ...dataImages, payload ];
         }
       );
     }
@@ -243,11 +243,11 @@ export const uploadPhotosPortfolio = (params) => {
 };
 
 export const updatePhotosPortfolio = (params, dataImages) => {
-  let { reference, state: {photosPortofolio} } = params
+  let { uid, state: {photosPortofolio} } = params
   return dispatch => {
     const db = database.database();
     const ref = db.ref('/photographer_service_information');
-    const item = ref.child(reference);
+    const item = ref.child(uid);
 
     photosPortofolio = photosPortofolio.concat(dataImages);
 
@@ -272,7 +272,7 @@ export const updatePhotosPortfolio = (params, dataImages) => {
 
 export const updatePackagesPrice = (params) => {
   return dispatch => {
-    const { reference, state } = params;
+    const { uid, state } = params;
 
     let packagesPrice = Object.keys(state.packagesPrice).map(item => (state.packagesPrice[item]));
 
@@ -280,8 +280,8 @@ export const updatePackagesPrice = (params) => {
     dispatch(setActiveTab(5));
 
     const db = database.database();
-    const ref = db.ref("/photographer_service_information");
-    const metadataRef = ref.child(reference);
+    const ref = db.ref("photographer_service_information");
+    const metadataRef = ref.child(uid);
     metadataRef
       .update({
         packagesPrice: packagesPrice,
@@ -291,7 +291,7 @@ export const updatePackagesPrice = (params) => {
           type: "UPDATE_PROFILE_PACKAGES_PRICE_SUCCESS",
           payload: { status: "OK", message: "Data updated" }
         });
-        updateUserMetadataPriceStartFrom(reference, packagesPrice[0].price);
+        updateUserMetadataPriceStartFrom(uid, packagesPrice[0].price);
         dispatch(fetchPhotographerServiceInformation(params.uid));
       })
       .catch(error => {
@@ -301,7 +301,7 @@ export const updatePackagesPrice = (params) => {
         });
       });
   };
-}
+};
 
 export const setActiveTab = (tabNumber) => {
   return {

@@ -25,7 +25,7 @@ export const imageSelectedAction = fileObject => {
   };
 };
 
-export const uploadPhotoProfile = (fileObject, reference, displayName) => {
+export const uploadPhotoProfile = (fileObject, uid, displayName) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_START' });
 
@@ -37,7 +37,7 @@ export const uploadPhotoProfile = (fileObject, reference, displayName) => {
     }
 
     const storageRef = database.storage().ref();
-    const photoPath = `pictures/user-photo-profile/${reference}${fileExt}`;
+    const photoPath = `pictures/user-photo-profile/${uid}${fileExt}`;
     const pictureRef = storageRef.child(photoPath);
 
     pictureRef
@@ -54,7 +54,7 @@ export const uploadPhotoProfile = (fileObject, reference, displayName) => {
           photoURL: downloadURL,
         });
 
-        updateUserMetadataPhotoProfile(reference, downloadURL);
+        updateUserMetadataPhotoProfile(uid, downloadURL);
 
         dispatch({
           type: 'USER_AUTH_UPDATE_PROFILE',

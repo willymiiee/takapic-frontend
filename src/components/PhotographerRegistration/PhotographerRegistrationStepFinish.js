@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Page from 'components/Page';
+import Page from '../Page';
 
 class PhotographerRegistrationStepFinish extends Component {
   render() {

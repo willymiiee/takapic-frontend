@@ -1,33 +1,31 @@
 import { database, facebookAuthProvider, googleAuthProvider } from '../../services/firebase';
 import history from '../../services/history';
-import { dashify } from '../../helpers/helpers';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
-const createUserMetadata = async (accountProviderType, uid, reference, userType, displayName) => {
+const createUserMetadata = async (uid, email, userType, displayName) => {
   try {
-    let referenceFix = reference;
-    if (referenceFix !== 'google.com') {
-      referenceFix = dashify(reference);
-    }
-
     const db = database.database();
-    const child = db.ref('/user_metadata').child(dashify(referenceFix));
+    const child = db.ref('user_metadata').child(uid);
     const result_data = await child.once('value');
     const data = await result_data.val();
 
     if (data === null) {
-      await child.set({
+      let metaData = {
         uid,
-        accountProviderType,
-        email: reference === 'google.com' ? '-' : reference,
+        email,
         userType,
         firstLogin: true,
         displayName,
         phoneNumber: '-',
-        rating: 0,
-        priceStartFrom: 0,
-        defaultDisplayPictureUrl: '-',
-      });
+      };
+
+      if (userType === USER_PHOTOGRAPHER) {
+        metaData.rating = 0;
+        metaData.priceStartFrom = 0;
+        metaData.defaultDisplayPictureUrl = '-';
+      }
+
+      await child.set(metaData);
       return true;
     }
   } catch (error) {
@@ -46,8 +44,11 @@ export const userSignupByEmailPassword = (
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function(result) {
+
+        // Here we send email the email verification
         result.sendEmailVerification();
-        createUserMetadata('email', result.uid, email, userType, displayName)
+
+        createUserMetadata(result.uid, email, userType, displayName)
           .then(() => {
 
             // Logout Implicitly
@@ -94,7 +95,7 @@ export const userSignupByFacebook = userType => {
         const email = result.additionalUserInfo.profile.email;
         const displayName = result.additionalUserInfo.profile.name;
 
-        createUserMetadata('facebook.com', result.user.uid, email, userType, displayName)
+        createUserMetadata(result.user.uid, email, userType, displayName)
           .then(() => {
             const payload = {
               uid: result.user.uid,
@@ -102,14 +103,13 @@ export const userSignupByFacebook = userType => {
               emailVerified: result.user.emailVerified,
               displayName,
               photoURL: result.user.photoURL,
-              providerId: 'facebok.com',
               refreshToken: result.user.refreshToken
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
           })
           .then(() => {
-            fetchUserMetadata('facebook.com', email, dispatch);
+            fetchUserMetadata(result.user.uid, dispatch);
           })
           .catch(error => {
             console.log(error);
@@ -134,10 +134,10 @@ export const userSignupByGoogle = userType => {
       .signInWithPopup(googleAuthProvider)
       .then(result => {
         const uid = result.user.uid;
-        const reference = 'googlecom-' + uid;
+        const email = result.user.email;
         const displayName = result.user.displayName;
 
-        createUserMetadata('google.com', uid, reference, userType, displayName)
+        createUserMetadata(uid, email, userType, displayName)
           .then(() => {
             const payload = {
               uid,
@@ -145,14 +145,13 @@ export const userSignupByGoogle = userType => {
               emailVerified: true,
               displayName,
               photoURL: result.user.photoURL,
-              providerId: 'google.com',
               refreshToken: result.user.refreshToken
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
           })
           .then(() => {
-            fetchUserMetadata('google.com', reference, dispatch);
+            fetchUserMetadata(uid, dispatch);
           })
           .catch(error => {
             console.log(error);
@@ -168,20 +167,13 @@ export const userSignupByGoogle = userType => {
   };
 };
 
-const fetchUserMetadata = (accountProviderType, reference, dispatch) => {
-  let referenceFix = reference;
-  if (accountProviderType !== 'google.com') {
-    referenceFix = dashify(reference);
-  }
-
-  const db = database.database();
-  db
-    .ref('/user_metadata')
-    .child(referenceFix)
+const fetchUserMetadata = (uid, dispatch) => {
+  database.database()
+    .ref('user_metadata')
+    .child(uid)
     .once('value')
     .then(snapshot => {
       const data = snapshot.val();
-
       dispatch({
         type: 'USER_AUTH_LOGIN_SUCCESS_FETCH_USER_METADATA',
         payload: data,
@@ -214,12 +206,11 @@ export const loggingIn = (email, password) => {
               emailVerified: user.emailVerified,
               displayName: user.displayName,
               photoURL: user.photoURL,
-              providerId: 'email',
               refreshToken: user.refreshToken
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-            fetchUserMetadata('email', email, dispatch);
+            fetchUserMetadata(user.uid, dispatch);
 
             /*if (!user.emailVerified) {
               dispatch({

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ProgressBar, Button } from 'react-bootstrap';
 
-import { dashify } from "../../helpers/helpers";
 import { uploadPhotosPortfolio } from '../../store/actions/profileUpdateActions';
 import { updateUserMetadataDefaultDisplayPicture } from "../../store/actions/photographerServiceInfoActionsStep2";
 
@@ -65,23 +64,13 @@ class PhotosPortofolio extends Component {
     const {
       photographerServiceInformation: {
         data: {
-          userMetadata: {
-            accountProviderType,
-            uid,
-            email,
-          }
+          userMetadata: { uid }
         }
       }
     } = this.props;
     let { photosPortofolio } = this.state;
 
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-      reference = 'googlecom-' + uid;
-    } else {
-      reference = dashify(email);
-    }
-    updateUserMetadataDefaultDisplayPicture(reference, pictureUrl);
+    updateUserMetadataDefaultDisplayPicture(uid, pictureUrl);
     const newPhotosPortofolio = photosPortofolio.map((item, indexEuy) => {
       if (index === indexEuy) {
         return { ...item, defaultPicture: true };
@@ -106,32 +95,13 @@ class PhotosPortofolio extends Component {
     const {
         photographerServiceInformation: {
           data: {
-            userMetadata: {
-              accountProviderType,
-              uid,
-              email,
-            }
+            userMetadata: { uid }
           }
         }
     } = this.props;
 
-    const state = this.state
-
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-    } else {
-        reference = dashify(email);
-    }
-
-    const params = {
-        reference,
-        state,
-        uid,
-    };
-
+    const params = { state: this.state, uid };
     this.props.uploadPhotosPortfolio(params);
-
   };
 
   render() {

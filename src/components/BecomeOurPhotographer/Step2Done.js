@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { database } from '../../services/firebase';
-import { dashify } from '../../helpers/helpers';
 import { updateUserMetadataDefaultDisplayPicture } from "../../store/actions/photographerServiceInfoActionsStep2";
 
 import Page from '../Page';
@@ -21,20 +20,13 @@ const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
 class Step2Done extends Component {
   componentWillMount() {
     const {
-      user: { uid, email, userMetadata: { accountProviderType } },
+      user: { uid },
       photographerPhotosPortofolio: data
     } = this.props;
 
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-      reference = 'googlecom-' + uid;
-    } else {
-      reference = dashify(email);
-    }
-
     if (data.length > 0) {
-      this.props.updatePhotographerServiceInfoPhotosPortofolio(reference, data);
-      updateUserMetadataDefaultDisplayPicture(reference, data[0].url);
+      this.props.updatePhotographerServiceInfoPhotosPortofolio(uid, data);
+      updateUserMetadataDefaultDisplayPicture(uid, data[0].url);
     }
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Page from 'components/Page';
+import Page from '../Page';
 
 class PhotographerRegistrationStep1CheckMail extends Component {
   render() {

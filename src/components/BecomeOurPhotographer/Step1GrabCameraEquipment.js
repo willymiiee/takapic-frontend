@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Page from '../Page';
-import './../../styles/react-selectize.css';
 import { MultiSelect } from 'react-selectize';
 import {
   Button,
   FormGroup,
   FormControl
 } from 'react-bootstrap';
-import {dashify} from "../../helpers/helpers";
-import {submitCameraEquipment} from '../../store/actions/photographerServiceInfoActions';
+import { submitCameraEquipment } from '../../store/actions/photographerServiceInfoActions';
+
+import './../../styles/react-selectize.css';
+import Page from '../Page';
 
 class Step1GrabCameraEquipment extends Component {
   constructor(props) {
@@ -71,34 +71,23 @@ class Step1GrabCameraEquipment extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const {selected: {bodies, lenses, languages, speciality}} = this.state;
+    const { selected: { bodies, lenses, languages, speciality } } = this.state;
     if (
       this.notEmpty(bodies) &&
       this.notEmpty(lenses) &&
       this.notEmpty(languages)
     ) {
       const {
-        photographerServiceInfo: {location, selfDescription},
-        user: {
-          uid,
-          email,
-          userMetadata: {accountProviderType}
-        }
+        photographerServiceInfo: { location, selfDescription },
+        user: { uid }
       } = this.props;
 
       const currency = location.currency;
       location.locationMerge = location.locationAdmLevel2 + ', ' + location.locationAdmLevel1 + ', ' + location.countryName;
       delete location.currency;
 
-      let reference = '';
-      if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-      } else {
-        reference = dashify(email);
-      }
-
       const params = {
-        reference,
+        reference: uid,
         bodies: bodies.filter(b => b !== ''),
         lenses: lenses.filter(l => l !== ''),
         languages,
