@@ -1,14 +1,9 @@
 .reservation-detail-main-wraper .left-reservation-detail-wrapper {
-  float: left;
-  width: 35%;
-  margin-right: 5px;
-  padding: 10px;
+
 }
 
 .reservation-detail-main-wraper .right-reservation-messages-wrapper {
-  float: left;
-  width: 63%;
-  padding: 10px;
+
 }
 
 .reservation-detail-main-wraper .left-reservation-detail-wrapper h4 {
@@ -38,6 +33,7 @@
 
 .left-reservation-detail-wrapper .reservation-trip-details-item-title {
   font-weight: bold;
+  margin-bottom: 0px !important;
 }
 
 /* ============================================================================================================================
@@ -86,4 +82,10 @@
 /* display of quote author (alternatively use a class on the element following the blockquote) */
 .example-twitter + p {
   padding-left:15px;
+}
+
+.chat-text-area{
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
