@@ -2353,6 +2353,9 @@ RESPONSIVE
         /*overflow: hidden;*/
         /*height:unset;*/
     /*}*/
+    .search-result-page{
+        margin-top:100px !important;
+    }
 
 }
 
@@ -3958,7 +3961,7 @@ figcaption.action-btn a .fa {
 
 .search-box-custom-again {
   display: flex;
-  height: 50px;
+  height: 51px;
   align-items: center;
   margin: 0;
   padding: 0;
