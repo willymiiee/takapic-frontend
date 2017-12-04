@@ -62,7 +62,7 @@ class Step2SetupMeetingPointA extends Component {
     const specificLocation = get(params, 'specificLocation', '-');
 
     if (generalLocation && this.state.meetingPoints.length < 3) {
-      const meetingPoints = [...this.state.meetingPoints, { generalLocation, specificLocation }];
+      const meetingPoints = [ ...this.state.meetingPoints, { generalLocation, specificLocation } ];
       this.setState({ meetingPoints });
     }
   };
@@ -87,10 +87,6 @@ class Step2SetupMeetingPointA extends Component {
                 this.state.mapLoaded && (
                   <MapWithASearchBox
                     handleAddition={this.handleAddition}
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
-                    loadingElement={<div style={{height: `100%`}}/>}
-                    containerElement={<div style={{height: `400px`}}/>}
-                    mapElement={<div style={{height: `100%`}}/>}
                   />)
               }
             </div>

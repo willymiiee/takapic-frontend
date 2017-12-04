@@ -22,7 +22,8 @@ class User extends Component{
     this.state = {
       countries: [],
       currencies: {},
-      meetingPoint: null
+      meetingPoint: null,
+      activeTab: 0
     };
   }
 
@@ -75,9 +76,7 @@ class User extends Component{
   };
 
   handleSelectedTab = (activeTab) => {
-    if (activeTab === 3) {
-      this.setState({ meetingPoint: <MeetingPoints photographerServiceInformation={this.props.photographerServiceInformation} /> })
-    }
+    this.setState({ activeTab });
   };
 
   render() {
@@ -98,7 +97,7 @@ class User extends Component{
           </Tab>
 
           <Tab eventKey={3} title="Meeting Points">
-            {this.state.meetingPoint}
+            { this.state.activeTab === 3 ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/> : null }
           </Tab>
 
           <Tab eventKey={4} title="Photos Portofolio">

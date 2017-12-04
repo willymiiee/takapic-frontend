@@ -5,6 +5,7 @@ import {
   fetchPhotographerServiceInformation,
   resetPhotographerServiceInformationData
 } from "../../store/actions/photographerServiceInfoActions";
+import get from 'lodash/get';
 
 import Animator from '../common/Animator';
 import Page from '../Page';
@@ -76,15 +77,20 @@ class PhotographerPortofolio extends Component {
 
     if (!loading && currenciesRates) {
       const { photographerServiceInformation: { data } } = this.props;
-      const convertedPackagesPrice = data.packagesPrice.map(item => {
-        const USDRates = currenciesRates['USD' + data.userMetadata.currency];
-        const convertedPrice = Math.round(item.price / USDRates);
-        return { ...item, price: convertedPrice };
-      });
+      const packagesPrice = get(data, 'packagesPrice', null);
+      let convertedPackagesPrice = [];
 
-      let mainContent = <Gallery data={data} />;
+      if (packagesPrice) {
+        convertedPackagesPrice = packagesPrice.map(item => {
+          const USDRates = currenciesRates['USD' + data.userMetadata.currency];
+          const convertedPrice = Math.round(item.price / USDRates);
+          return {...item, price: convertedPrice};
+        });
+      }
+
+      let mainContent = packagesPrice ? <Gallery data={data} /> : null;
       if (activeMenu === "aboutMe") {
-        mainContent = <About data={data} convertedPackagesPrice={convertedPackagesPrice}/>;
+        mainContent = packagesPrice ? <About data={data} convertedPackagesPrice={convertedPackagesPrice}/> : null;
       }
 
       return (

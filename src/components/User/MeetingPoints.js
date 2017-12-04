@@ -11,31 +11,27 @@ class MeetingPoints extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      meetingPoints: [],
-      mapLoaded: false,
+      meetingPoints: []
     };
   }
 
-  componentWillMount() {
-    this.setLocalState();
-  }
-
   componentDidMount() {
-    this.setState({ mapLoaded: true });
+    this.setLocalState(this.props);
   }
 
-  setLocalState = () => {
-    const { photographerServiceInformation : { data } } = this.props
-    let { meetingPoints } = this.state;
+  componentWillReceiveProps(nextProps) {
+    const { photographerServiceInformation : { data: { meetingPoints } } } = nextProps;
+    if (meetingPoints !== this.state.meetingPoints) {
+      this.setLocalState(nextProps);
+    }
+  }
 
-    if (data.meetingPoints) {
-      meetingPoints = Object.keys(data.meetingPoints)
-      .filter(x => x !== "0000")
-      .map(item => (data.meetingPoints[item]));
-
+  setLocalState(props) {
+    const { photographerServiceInformation : { data: { meetingPoints } } } = props;
+    if (meetingPoints) {
       this.setState({ meetingPoints });
     }
-  };
+  }
 
   handleAddition = params => {
     let generalLocation = get(params, 'generalLocation');
@@ -52,11 +48,9 @@ class MeetingPoints extends Component {
   handleUpdate = event => {
     event.preventDefault();
     const {
-        photographerServiceInformation: {
-          data: {
-            userMetadata: { uid }
-          }
-        }
+      photographerServiceInformation: {
+        data: { userMetadata: { uid } }
+      }
     } = this.props;
 
     const params = { state: this.state, uid };
@@ -70,16 +64,7 @@ class MeetingPoints extends Component {
         <div className="row">
           <div className="col-md-8">
             <h4>Please choose three different meeting points</h4>
-            {
-              this.state.mapLoaded && (
-                <MapWithASearchBox
-                  handleAddition={this.handleAddition}
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
-                  loadingElement={<div style={{height: `100%`}}/>}
-                  containerElement={<div style={{height: `400px`}}/>}
-                  mapElement={<div style={{height: `100%`}}/>}
-                />)
-            }
+            <MapWithASearchBox handleAddition={this.handleAddition}/>
           </div>
 
           <div className="col-md-4">
@@ -125,8 +110,8 @@ class MeetingPoints extends Component {
 }
 
 export default connect(
-    null,
-    dispatch => ({
-        updateMeetingPoints: paramsObject => dispatch(updateMeetingPoints(paramsObject))
-    })
+  null,
+  dispatch => ({
+    updateMeetingPoints: paramsObject => dispatch(updateMeetingPoints(paramsObject))
+  })
 )(MeetingPoints);
