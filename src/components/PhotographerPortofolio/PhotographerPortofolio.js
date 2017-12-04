@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchCurrenciesRates, fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
+import {
+  fetchPhotographerServiceInformation,
+  resetPhotographerServiceInformationData
+} from "../../store/actions/photographerServiceInfoActions";
 
 import Animator from '../common/Animator';
 import Page from '../Page';
@@ -15,27 +18,18 @@ class PhotographerPortofolio extends Component {
     this.state = {
       activeMenu: "gallery",
     };
-
-    this.handleMenuClick = this.handleMenuClick.bind(this);
-  }
-
-  componentWillMount() {
-    const keys = Object.keys(this.props.currenciesRates);
-    if (keys.length < 2) {
-      this.props.fetchCurrenciesRates();
-    }
   }
 
   componentDidMount() {
     this.fetchPhotographerInformation();
   }
 
-  fetchPhotographerInformation = () => {
-    const {
-      photographerServiceInformation: { loading }
-    } = this.props;
+  componentWillUnmount() {
+    this.props.resetPhotographerServiceInformationData();
+  }
 
-    if (loading) {
+  fetchPhotographerInformation = () => {
+    if (this.props.photographerServiceInformation.loading) {
       const { match: { params: { photographerId } } } = this.props;
       this.props.fetchPhotographerServiceInformation(photographerId);
     }
@@ -80,7 +74,7 @@ class PhotographerPortofolio extends Component {
 
     const { activeMenu } = this.state;
 
-    if (!loading && !currenciesRates.fetchCurrenciesRatesLoading) {
+    if (!loading && currenciesRates) {
       const { photographerServiceInformation: { data } } = this.props;
       const convertedPackagesPrice = data.packagesPrice.map(item => {
         const USDRates = currenciesRates['USD' + data.userMetadata.currency];
@@ -136,7 +130,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchPhotographerServiceInformation: photographerId => dispatch(fetchPhotographerServiceInformation(photographerId)),
-  fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
+  resetPhotographerServiceInformationData: () => dispatch(resetPhotographerServiceInformationData())
 });
 
 export default withRouter(

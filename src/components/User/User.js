@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Tabs, Tab } from "react-bootstrap";
 import history from '../../services/history';
-
-import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
+import {
+  fetchPhotographerServiceInformation,
+  resetPhotographerServiceInformationData
+} from "../../store/actions/photographerServiceInfoActions";
 
 import Animator from '../common/Animator';
 import Page from "../Page";
@@ -24,15 +26,18 @@ class User extends Component{
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { activeTab } = this.props;
-
-    this.getPhotographerServiceInformation();
     this.formatCountriesSource();
+    this.getPhotographerServiceInformation();
 
     if (activeTab === 3) {
       this.handleSelectedTab(activeTab);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetPhotographerServiceInformationData();
   }
 
   getPhotographerServiceInformation = () => {
@@ -117,6 +122,7 @@ class User extends Component{
 }
 
 const mapStateToProps = state => ({
+  user: state.userAuth,
   photographerServiceInformation: state.photographerServiceInformation,
   countries: state.countries,
   activeTab: state.profileUpdate.activeTab,
@@ -124,7 +130,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid))
+  fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid)),
+  resetPhotographerServiceInformationData: () => dispatch(resetPhotographerServiceInformationData())
 });
 
 export default withRouter(

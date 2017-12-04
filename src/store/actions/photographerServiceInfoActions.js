@@ -89,20 +89,8 @@ export const fetchPhotographerServiceInformation = (uid) => {
   };
 };
 
-export const fetchCurrenciesRates = () => {
+export const resetPhotographerServiceInformationData = () => {
   return dispatch => {
-    dispatch({
-      type: 'FETCH_CURRENCIES_RATES_LOADING'
-    });
-
-    const db = database.database();
-    const ratesRef = db.ref('/currency_exchange_rates');
-    ratesRef.once('value', snapshot => {
-      const rates = snapshot.val();
-      dispatch({
-        type: 'FETCH_CURRENCIES_RATES',
-        payload: rates
-      });
-    });
+    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET' })
   };
 };

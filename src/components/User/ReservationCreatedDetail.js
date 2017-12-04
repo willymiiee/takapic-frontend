@@ -35,16 +35,17 @@ class ReservationCreatedDetail extends Component {
   }
 
   render() {
-
-      const defaultImage = <img
-          className="cover circle-img border-smooth"
-          src="/images/default-profile.jpg"
-      />;
-      const image = <img
-          className="cover circle-img border-smooth"
-          src="https://firebasestorage.googleapis.com/v0/b/takapic-project.appspot.com/o/pictures%2Fuser-photo-profile%2Ftahubulat4-getnada-com.jpg?alt=media&token=55a3066e-d5ee-4da8-925c-43e784011a54"
-          onError={this._onImgError}
-      />;
+    const defaultImage = <img
+        className="cover circle-img border-smooth"
+        src="/images/default-profile.jpg"
+        alt="This is an alt text"
+    />;
+    const image = <img
+        className="cover circle-img border-smooth"
+        src="https://firebasestorage.googleapis.com/v0/b/takapic-project.appspot.com/o/pictures%2Fuser-photo-profile%2Ftahubulat4-getnada-com.jpg?alt=media&token=55a3066e-d5ee-4da8-925c-43e784011a54"
+        alt="This is an alt text"
+        onError={this._onImgError}
+    />;
 
     return (
       <Page>

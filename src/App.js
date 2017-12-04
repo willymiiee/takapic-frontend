@@ -1,15 +1,7 @@
 import React from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import qs from 'qs';
-import { lifecycle, compose } from 'recompose';
-import { replace } from 'react-router-redux';
-import { database } from "./services/firebase";
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import history from 'services/history';
-import store from 'store';
 
-import Animator from 'components/common/Animator';
-import ScrollToTop from 'components/common/ScrollToTop';
 import Home from 'pages/home';
 import PhotographerPortofolio from 'components/PhotographerPortofolio/PhotographerPortofolio';
 import PhotographerBooking from 'components/Profile/PhotographerBooking';
@@ -46,183 +38,133 @@ import Packages from "./components/About/Packages";
 import ContactUs from "./components/About/ContactUs";
 import HowItWorks from "./components/About/HowItWorks";
 
-const fetchCountriesAction = () => {
-  return dispatch => {
-    const db = database.database();
-    const countriesRef = db.ref('/countries');
-    countriesRef.once('value', snapshot => {
-      const countriesSource = snapshot.val();
-      dispatch({
-        type: 'INIT_FETCH_COUNTRIES_SUCCESS',
-        payload: countriesSource
-      });
-    });
-  }
-};
+import 'index.css';
+import 'element-theme-default';
 
-store.dispatch({ type: 'USER_AUTH_LOADING_AUTH' });
-store.dispatch(fetchCountriesAction());
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    { ...rest }
+    render={(props) => {
+      const initialLoginData = localStorage.getItem('initial_login_data');
+      if (!initialLoginData) {
+        return <Redirect
+          to={{
+            pathname: '/',
+            state: { from: 'hahaha' }
+          }}
+        />
+      }
+      return <Component { ...props }/>
+    }}
+  />
+);
 
-const redirect = props => {
-  console.log(props);
-  props.replace(
-    qs.parse(props.location.search.replace('?', '')).from ||
-      qs.parse(props.location.search.replace('?', '')).to ||
-      '/'
-  );
-};
-
-const onlyLoggedOut = WrappedComponent =>
-  compose(
-    connect(state => ({ user: state.userAuth }), {
-      replace,
-    }),
-    lifecycle({
-      componentDidMount() {
-        if (this.props.user.uid) {
-          redirect(this.props);
-        }
-      },
-      componentWillReceiveProps(nextProps) {
-        if (nextProps.user) {
-          redirect(nextProps);
-        }
-      },
-    })
-  )(props => <WrappedComponent {...props} />);
-
-const onlyLoggedIn = WrappedComponent =>
-  compose(
-    connect(state => ({ user: state.userAuth }), {
-      replace,
-    }),
-    lifecycle({
-      componentDidMount() {
-        if (!this.props.user.uid) {
-          redirect(this.props);
-        }
-      },
-      componentWillReceiveProps(nextProps) {
-        if (!nextProps.user) {
-          redirect(nextProps);
-        }
-      },
-    })
-  )(props => <WrappedComponent {...props} />);
-
-const App = connect(state => state)(props => {
-  return (
-    <Router history={history}>
-      <div>
-        {props.localeLoaded ? null : <Animator />}
-        <ScrollToTop>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/booking/:photographerId/:reservationId" component={onlyLoggedIn(PhotographerBooking)} />
-            <Route path="/sign-in" component={SignIn} />
-            <Route path="/photographer/:photographerId" component={PhotographerDetail} />
-            <Route path="/me/reservations/:reservationid" component={onlyLoggedIn(ReservationCreatedDetail)} />
-            <Route path="/search" component={Search} />
-            <Route path="/traveller-registration" component={TravellerRegistration} />
-            <Route
-              path="/photographer-portofolio/:photographerId"
-              component={PhotographerPortofolio}
-            />
-            <Route
-              path="/welcome-photographer"
-              component={onlyLoggedOut(WelcomePhotographer)}
-            />
-            <Route
-              path="/photographer-registration/s1"
-              component={onlyLoggedOut(PhotographerRegistrationStep1)}
-            />
-            <Route
-              path="/photographer-registration/s1-checkmail"
-              component={PhotographerRegistrationStep1CheckMail}
-            />
-            <Route
-              path="/photographer-registration/s2"
-              component={onlyLoggedIn(PhotographerRegistrationStep2)}
-            />
-            <Route
-              path="/photographer-registration/s3"
-              component={onlyLoggedIn(PhotographerRegistrationStep3)}
-            />
-            <Route
-              path="/photographer-registration/finish"
-              component={onlyLoggedIn(PhotographerRegistrationStepFinish)}
-            />
-            <Route
-              path="/become-our-photographer/welcome-1"
-              component={onlyLoggedIn(Step1Welcome)}
-            />
-            <Route
-              path="/become-our-photographer/step-1-1"
-              component={onlyLoggedIn(Step1GrabCityNew)}
-            />
-            <Route
-              path="/become-our-photographer/step-1-2"
-              component={onlyLoggedIn(Step1GrabInterestingSelfIntroduction)}
-            />
-            <Route
-              path="/become-our-photographer/step-1-3"
-              component={onlyLoggedIn(Step1GrabCameraEquipment)}
-            />
-            <Route
-              path="/become-our-photographer/welcome-2"
-              component={onlyLoggedIn(Step2Welcome)}
-            />
-            <Route
-              path="/become-our-photographer/step-2-1"
-              component={onlyLoggedIn(Step2IndicatePrice)}
-            />
-            <Route
-              path="/become-our-photographer/step-2-2"
-              component={onlyLoggedIn(Step2DateAvailability)}
-            />
-            <Route
-              path="/become-our-photographer/step-2-3"
-              component={onlyLoggedIn(Step2SetupMeetingPointA)}
-            />
-            <Route
-              path="/become-our-photographer/step-2-4"
-              component={onlyLoggedIn(Step2InitiatePortofolio)}
-            />
-            <Route
-              path="/become-our-photographer/step-2-5"
-              component={onlyLoggedIn(Step2Done)}
-            />
-            <Route
-              path="/me/edit"
-              component={onlyLoggedIn(User)}
-            />
-            <Route
-                path="/traveller-faq"
-                component={TravellerFaq}/>
-            <Route
-                path="/privacy-policy"
-                component={PrivacyPolicy}/>
-            <Route
-                path="/about-us"
-                component={AboutUs}/>
-            <Route
-                path="/packages"
-                component={Packages}/>
-            <Route
-                path="/contact-us"
-                component={ContactUs}/>
-            <Route
-                path="/photographer-faq"
-                component={PhotographerFaq}/>
-            <Route
-                path="/how-it-works"
-                component={HowItWorks}/>
-            <Route path="*" component={NotFoundPage} />
-          </Switch>
-        </ScrollToTop>
-      </div>
-    </Router>
-  );
-});
+const App = (props) => (
+  <Router history={history}>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <PrivateRoute path="/booking/:photographerId/:reservationId" component={PhotographerBooking}/>
+      <Route path="/sign-in" component={SignIn} />
+      <Route path="/photographer/:photographerId" component={PhotographerDetail} />
+      <PrivateRoute path="/me/reservations/:reservationid" component={ReservationCreatedDetail} />
+      <Route path="/search" component={Search} />
+      <Route path="/traveller-registration" component={TravellerRegistration} />
+      <Route
+        path="/photographer-portofolio/:photographerId"
+        component={PhotographerPortofolio}
+      />
+      <Route
+        path="/welcome-photographer"
+        component={WelcomePhotographer}
+      />
+      <Route
+        path="/photographer-registration/s1"
+        component={PhotographerRegistrationStep1}
+      />
+      <Route
+        path="/photographer-registration/s1-checkmail"
+        component={PhotographerRegistrationStep1CheckMail}
+      />
+      <PrivateRoute
+        path="/photographer-registration/s2"
+        component={PhotographerRegistrationStep2}
+      />
+      <PrivateRoute
+        path="/photographer-registration/s3"
+        component={PhotographerRegistrationStep3}
+      />
+      <PrivateRoute
+        path="/photographer-registration/finish"
+        component={PhotographerRegistrationStepFinish}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/welcome-1"
+        component={Step1Welcome}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-1-1"
+        component={Step1GrabCityNew}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-1-2"
+        component={Step1GrabInterestingSelfIntroduction}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-1-3"
+        component={Step1GrabCameraEquipment}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/welcome-2"
+        component={Step2Welcome}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-2-1"
+        component={Step2IndicatePrice}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-2-2"
+        component={Step2DateAvailability}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-2-3"
+        component={Step2SetupMeetingPointA}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-2-4"
+        component={Step2InitiatePortofolio}
+      />
+      <PrivateRoute
+        path="/become-our-photographer/step-2-5"
+        component={Step2Done}
+      />
+      <PrivateRoute
+        path="/me/edit"
+        component={User}
+      />
+      <Route
+        path="/traveller-faq"
+        component={TravellerFaq}/>
+      <Route
+        path="/privacy-policy"
+        component={PrivacyPolicy}/>
+      <Route
+        path="/about-us"
+        component={AboutUs}/>
+      <Route
+        path="/packages"
+        component={Packages}/>
+      <Route
+        path="/contact-us"
+        component={ContactUs}/>
+      <Route
+        path="/photographer-faq"
+        component={PhotographerFaq}/>
+      <Route
+        path="/how-it-works"
+        component={HowItWorks}/>
+      <Route path="*" component={NotFoundPage} />
+    </Switch>
+  </Router>
+);
 
 export default App;

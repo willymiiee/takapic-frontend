@@ -45,11 +45,9 @@ const countries = (state = {}, action) => {
   return state;
 };
 
-const currenciesRates = (state = { fetchCurrenciesRatesLoading: false }, action) => {
-  if (action.type === 'FETCH_CURRENCIES_RATES_LOADING') {
-    return { ...state, fetchCurrenciesRatesLoading: true };
-  } else if (action.type === 'FETCH_CURRENCIES_RATES') {
-    return { ...action.payload, fetchCurrenciesRatesLoading: false };
+const currenciesRates = (state = {}, action) => {
+  if (action.type === 'FETCH_CURRENCIES_RATES') {
+    return action.payload;
   }
   return state;
 };
@@ -82,7 +80,6 @@ const photographerListings = (state = [], action) => {
   return state;
 };
 
-
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
@@ -108,7 +105,7 @@ const rootReducer = combineReducers({
         return state;
     }
   },
-  profileUpdate,
+  profileUpdate
 });
 
 export default rootReducer;

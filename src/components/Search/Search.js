@@ -5,7 +5,6 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
-import { fetchCurrenciesRates } from "../../store/actions/photographerServiceInfoActions";
 
 import Page from '../Page';
 import SearchResult from './SearchResult';
@@ -101,13 +100,6 @@ class Search extends Component {
       });
   }
 
-  componentWillMount() {
-    const keys = Object.keys(this.props.currenciesRates);
-    if (keys.length < 2) {
-      this.props.fetchCurrenciesRates();
-    }
-  }
-
   componentDidMount() {
     if (this.props.photographerListings.length < 1) {
       this.props.fetchPhotographerListings(this.props.location.search);
@@ -181,7 +173,7 @@ class Search extends Component {
 
 
             {
-              this.props.photographerListings.length > 0 && !this.props.currenciesRates.fetchCurrenciesRatesLoading
+              this.props.photographerListings.length > 0 && this.props.currenciesRates
                 ? <SearchResult
                   listings={this.props.photographerListings}
                   currenciesRates={this.props.currenciesRates}/>
@@ -202,7 +194,6 @@ export default connect(
   }),
   dispatch => ({
     fetchPhotographerListings: searchInfo => dispatch(fetchPhotographerListings(searchInfo)),
-    fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates()),
     resetListings: () => dispatch(resetListings())
   })
 )(Search);
