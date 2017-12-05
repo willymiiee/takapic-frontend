@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 
 import Page from '../Page';
 
@@ -44,7 +45,6 @@ class HowItWorks extends Component {
     this.setState({matchState: false});
     this.setState({bookState: false});
     this.setState({selectState: true});
-    console.log("clicked");
   }
 
 
@@ -119,11 +119,11 @@ class HowItWorks extends Component {
               </div>
 
               <div style={{textAlign: 'center', marginTop: '50px'}}>
-                <button
-                  type="submit"
+                <Link
+                  to="/search/?destination=&date="
                   className="button button-white"
                 >Book Now
-                </button>
+                </Link>
               </div>
 
             </div>

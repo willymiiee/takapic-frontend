@@ -141,7 +141,7 @@ class PhotographerDetail extends Component {
               <h2>{displayName}</h2>
               <p>{locationMerge}</p>
               <Link
-                to={`/photographer-portofolio/${photographerId}`}
+                to={`/photographer-portofolio/${photographerId}/gallery`}
                 className="button button-white"
               >
                 Go to Portofolio

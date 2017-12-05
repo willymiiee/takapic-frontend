@@ -3,7 +3,8 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import history from 'services/history';
 
 import Home from 'pages/home';
-import PhotographerPortofolio from 'components/PhotographerPortofolio/PhotographerPortofolio';
+import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
+import PortofolioGalleryyy from 'components/PhotographerPortofolio/PortofolioGalleryyy';
 import PhotographerBooking from 'components/Profile/PhotographerBooking';
 import PhotographerDetail from 'components/Profile/PhotographerDetail';
 import Search from 'components/Search/Search';
@@ -70,8 +71,12 @@ const App = (props) => (
       <Route path="/search" component={Search} />
       <Route path="/traveller-registration" component={TravellerRegistration} />
       <Route
-        path="/photographer-portofolio/:photographerId"
-        component={PhotographerPortofolio}
+        path="/photographer-portofolio/:photographerId/gallery"
+        component={PortofolioGalleryyy}
+      />
+      <Route
+        path="/photographer-portofolio/:photographerId/about-me"
+        component={PortofolioAbout}
       />
       <Route
         path="/welcome-photographer"
