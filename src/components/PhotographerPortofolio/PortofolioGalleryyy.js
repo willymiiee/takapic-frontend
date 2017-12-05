@@ -58,7 +58,7 @@ class PortofolioGalleryyy extends Component {
         }
       } = this.props;
 
-      const imagesUrlList = photosPortofolio.map(item => item.url);
+      const imagesUrlList = photosPortofolio ? photosPortofolio.map(item => item.url) : [];
 
       return (
         <Page>
