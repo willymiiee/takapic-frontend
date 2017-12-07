@@ -1151,19 +1151,52 @@ button.u:hover {
 }
 
 #photo-preview {
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     line-height: 0;
     font-size: 0;
 }
 
 #photo-preview > div {
     display: inline-block;
-    width: 160px;
-    height: 160px;
+    width: 167px;
+    height: 167px;
     overflow: hidden;
     position: relative;
     margin: 0 5px 5px 0;
 }
+
+/*cover all size photo on gallery*/
+@media (max-width: 420px) {
+    #photo-preview > div {
+        width: 100%;
+        height: 167px;
+    }
+}
+@media (min-width: 421px) and (max-width: 548px) {
+    #photo-preview > div {
+        width: 48%;
+        height: 167px;
+    }
+}
+@media (min-width: 549px) and (max-width: 767px) {
+    #photo-preview > div {
+        width: 32%;
+        height: 160px;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    #photo-preview > div {
+        width: 48%;
+        height: 167px;
+    }
+}
+@media (min-width: 992px) {
+    #photo-preview > div {
+        width: 31%;
+        height: 167px;
+    }
+}
+
 
 #photo-preview > div > img {
     object-fit: cover;
@@ -3375,8 +3408,21 @@ PHASE 1 BOP - New Photographer Account Register
 
 .browse-profile-holder {
     border-radius: 40px;
-    padding: 0px;
+    padding: 0;
     border: solid 1px #aaa;
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.width-full{
+    width:100% !important;
+}
+
+@media (max-width: 481px) {
+    .browse-profile-holder{
+        width:100% !important;
+    }
 }
 
 .browse-profile-btn {
@@ -3525,16 +3571,6 @@ PHASE 1 BOP - New Photographer Account Register
         top: 53px !important;
         left: 10px !important;
     }
-    .input-place-location-note{
-        width: 94% !important;
-        top: 94px !important;
-        left: 10px !important;
-    }
-    .btn-place-location {
-        left: 10px !important;
-        top: 137px !important;
-        width: 94% !important;
-    }
     .create-point-wrapper {
         margin-top: 65px;
     }
@@ -3542,24 +3578,9 @@ PHASE 1 BOP - New Photographer Account Register
 
 @media (min-width: 1024px) {
     .input-place-location-name{
-        width:31% !important;
+        width:71% !important;
         top: 10px !important;
         left: 113px !important;
-    }
-    .input-place-location-note{
-        width:27% !important;
-        top: 10px !important;
-        left: 51% !important;
-    }
-    .btn-place-location{
-        top: 10px !important;
-        left: 80% !important;
-    }
-}
-
-@media (min-width: 1200px){
-    .input-place-location-name {
-        width: 79% !important;
     }
 }
 
@@ -3632,6 +3653,10 @@ PHASE 1 BOP - New Photographer Account Register
 .Select-control .Select-value {
     line-height:45px !important;
 }
+.line-height-minimum .Select-control .Select-value{
+    line-height:20px !important;
+}
+
 /*
 ----------------------------------------------------------------------------
 MASONRY STYLES
@@ -4073,7 +4098,6 @@ figcaption.action-btn a .fa {
   display: block !important;
 }
 
-
 @media (max-width: 480px) {
   .search-box-custom-again {
     display: block;
@@ -4116,9 +4140,11 @@ figcaption.action-btn a .fa {
   position: absolute;
   top: 50%;
   right: 0;
+  left:0;
+  text-align: center;
   font-size: 14px;
   cursor: pointer;
-  width: 128px;
+  width: 100%;
   height: 25px;
   color: #fff;
 }
@@ -4204,20 +4230,15 @@ figcaption.action-btn a .fa {
 .icon-box-2 h3{
   margin-bottom:10px;
 }
+.how-it-works-icon {
+    position: static;
+}
 .how-it-works-icon:hover{
-  background: #EEEEEE;
-  border-radius: 24px;
-  cursor: pointer;
+    background: #EEEEEE;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: 0.5s;
 }
-
-.how-it-works{
-  margin-top:50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: black;
-}
-
 .how-it-works span{
   text-align: center;
   font-size: 23px;
@@ -4229,4 +4250,98 @@ figcaption.action-btn a .fa {
   font-style: italic;
   font-weight: lighter;
   color: #999999;
+}
+.how-it-works{
+  margin-top:50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  position: absolute;
+  left: 80px;
+  right: 80px;
+}
+.how-it-works img {
+    width: 100%;
+    object-fit: cover;
+}
+.how-it-works-book {
+    text-align: center;
+    margin-top: 50px;
+}
+
+
+@media (min-width: 768px){
+    .how-it-works-book{
+        margin-top: 400px;
+    }
+    .how-it-works-hide {
+        display: none;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px){
+    .how-it-works-icon {
+        margin-top: 20px;
+        padding: 10px;
+        position: relative;
+    }
+
+    .how-it-works-icon:hover{
+        background: none;
+        border-radius: 0px;
+        cursor: pointer;
+        transition: 0s;
+    }
+    .how-it-works span{
+        font-size: 16px;
+        line-height: 22px;
+    }
+    .how-it-works img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+    }
+    .how-it-works {
+        margin-left: 16px;
+        margin-right: 16px;
+        position: static;
+    }
+}
+
+@media (max-width: 480px) {
+    .how-it-works-icon {
+        margin-top: 20px;
+        padding: 10px;
+        position: relative;
+    }
+    .how-it-works-icon:hover{
+        background: none;
+        border-radius: 0px;
+        cursor: pointer;
+        transition: 0s;
+    }
+    .how-it-works-icon .icon-box-2 {
+        margin-top: 0px;
+    }
+    .how-it-works span{
+        font-size: 13px;
+        line-height: 20px;
+    }
+    .how-it-works img {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+    .how-it-works {
+        margin-left: 16px;
+        margin-right: 16px;
+        position: static;
+    }
+}
+
+@media (max-width: 991px) {
+    .list-of-meeting-points{
+        padding-top:70px;
+    }
 }

@@ -60,7 +60,7 @@ class PhotographerRegistrationStep2 extends Component {
                   </div>
                 </div>
               </div>
-              <div className="form-group browse-profile-holder">
+              <div className="form-group browse-profile-holder width-full">
                 <div className="browse-profile-btn">
                   <span>Browse</span>
                   <input

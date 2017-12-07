@@ -83,6 +83,7 @@ class Step2SetupMeetingPointA extends Component {
           <div className="row">
             <div className="col-md-8">
               <h4>Please choose three different meeting points</h4>
+              <hr/>
               {
                 this.state.mapLoaded && (
                   <MapWithASearchBox
