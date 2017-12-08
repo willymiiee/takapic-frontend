@@ -17,6 +17,7 @@ import CameraEquipment from "./CameraEquipment";
 import MeetingPoints from "./MeetingPoints";
 import PhotosPortofolio from "./PhotosPortofolio";
 import PackagesPrice from "./PackagesPrice";
+import ScheduleNotAvailable from './ScheduleNotAvailable';
 
 class User extends Component{
   constructor() {
@@ -123,6 +124,10 @@ class User extends Component{
 
               <Tab eventKey={5} title="Packages Price">
                 <PackagesPrice photographerServiceInformation={photographerServiceInformation}/>
+              </Tab>
+
+              <Tab eventKey={6} title="Schedule">
+                <ScheduleNotAvailable/>
               </Tab>
             </Tabs>
           </div>

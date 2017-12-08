@@ -1,8 +1,12 @@
 import firebase from 'firebase';
 import uuidv4 from 'uuid/v4';
+import moment from "moment/moment";
 import { database } from "../../services/firebase";
 import { updateUserMetadataPriceStartFrom } from "./photographerServiceInfoActionsStep2";
-import { fetchPhotographerServiceInformation, tellThemThatWasSuccessOrFailed } from './photographerServiceInfoActions'
+import {
+  fetchPhotographerServiceInformation,
+  tellThemThatWasSuccessOrFailed
+} from './photographerServiceInfoActions'
 
 export const updateBasicInformation = (params) => {
   return dispatch => {
@@ -337,4 +341,31 @@ export const setActiveTab = (tabNumber) => {
     type: 'UPDATE_ACTIVE_TAB',
     payload: tabNumber
   }
-}
+};
+
+export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
+  return dispatch => {
+    dispatch({ type: 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_START' });
+    dispatch(setActiveTab(6));
+
+    const notAvailableDatesAsDateStringList = notAvailableDates.map(item => moment(item).format('YYYY-MM-DD'));
+    database
+      .database()
+      .ref('photographer_service_information')
+      .child(uid)
+      .update({ notAvailableDates: notAvailableDatesAsDateStringList })
+      .then(() => {
+        dispatch({ type: 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_SUCCESS' });
+      })
+      .then(() => {
+        dispatch(fetchPhotographerServiceInformation(uid));
+      })
+      .then(() => {
+        dispatch(tellThemThatWasSuccessOrFailed('success'));
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_ERROR' });
+      })
+  };
+};

@@ -53,6 +53,11 @@ const profileUpdate = (state = initialState, action) => {
       return { loading: false, loaded: true, error: action.error };
     case 'UPDATE_ACTIVE_TAB':
       return { ...state, activeTab: action.payload };
+    case 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_START':
+      return { ...state, loading: true };
+    case 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_SUCCESS':
+    case 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_ERROR':
+      return { ...state, loading: false };
     default:
       return state;
   }
