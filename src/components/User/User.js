@@ -5,7 +5,8 @@ import { Tabs, Tab } from "react-bootstrap";
 import history from '../../services/history';
 import {
   fetchPhotographerServiceInformation,
-  resetPhotographerServiceInformationData
+  resetPhotographerServiceInformationData,
+  tellThemThatWasSuccessOrFailed
 } from "../../store/actions/photographerServiceInfoActions";
 import { setActiveTab } from "../../store/actions/profileUpdateActions";
 
@@ -78,6 +79,7 @@ class User extends Component{
   };
 
   handleSelectedTab = (activeTab) => {
+    this.props.tellThemThatWasSuccessOrFailed('nothing');
     this.setState({ activeTab });
   };
 
@@ -85,37 +87,45 @@ class User extends Component{
     if (this.props.photographerServiceInformation.loading || this.props.profile.loading) {
       return (<Animator/>);
     } else {
-      const {photographerServiceInformation, activeTab, profile} = this.props;
-
-      const tabsInstance = (
-        <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false}
-              onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
-          <Tab eventKey={1} title="Basic Information">
-            <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
-          </Tab>
-
-          <Tab eventKey={2} title="Camera Equipment">
-            <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
-          </Tab>
-
-          <Tab eventKey={3} title="Meeting Points">
-            { this.state.activeTab === 3 ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/> : null }
-          </Tab>
-
-          <Tab eventKey={4} title="Photos Portofolio">
-            <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
-          </Tab>
-
-          <Tab eventKey={5} title="Packages Price">
-            <PackagesPrice photographerServiceInformation={photographerServiceInformation}/>
-          </Tab>
-        </Tabs>
-      );
+      const { photographerServiceInformation, activeTab, profile, tellThemThatWasSuccessOrFailedInfo } = this.props;
 
       return (
         <Page>
           <div className="hidden-xs padding-bottom-60"/>
-          <div className="container">{ tabsInstance }</div>
+          <div className="container">
+
+            {
+              tellThemThatWasSuccessOrFailedInfo.whatsup === 'success'
+                ? (
+                  <div className="notification success">
+                    <p><span>Success!</span> You did it, enjoy it.</p>
+                  </div>
+                )
+                : null
+            }
+
+            <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
+              <Tab eventKey={1} title="Basic Information">
+                <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
+              </Tab>
+
+              <Tab eventKey={2} title="Camera Equipment">
+                <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
+              </Tab>
+
+              <Tab eventKey={3} title="Meeting Points">
+                { this.state.activeTab === 3 ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/> : null }
+              </Tab>
+
+              <Tab eventKey={4} title="Photos Portofolio">
+                <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
+              </Tab>
+
+              <Tab eventKey={5} title="Packages Price">
+                <PackagesPrice photographerServiceInformation={photographerServiceInformation}/>
+              </Tab>
+            </Tabs>
+          </div>
         </Page>
       );
     }
@@ -128,12 +138,14 @@ const mapStateToProps = state => ({
   countries: state.countries,
   activeTab: state.profileUpdate.activeTab,
   profile: state.profileUpdate,
+  tellThemThatWasSuccessOrFailedInfo: state.tellThemThatWasSuccessOrFailed
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid)),
   resetPhotographerServiceInformationData: () => dispatch(resetPhotographerServiceInformationData()),
-  setActiveTab: (tabIndex) => dispatch(setActiveTab(tabIndex))
+  setActiveTab: (tabIndex) => dispatch(setActiveTab(tabIndex)),
+  tellThemThatWasSuccessOrFailed: (whatsup) => dispatch(tellThemThatWasSuccessOrFailed(whatsup))
 });
 
 export default withRouter(

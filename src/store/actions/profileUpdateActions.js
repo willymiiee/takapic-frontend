@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import uuidv4 from 'uuid/v4';
 import { database } from "../../services/firebase";
 import { updateUserMetadataPriceStartFrom } from "./photographerServiceInfoActionsStep2";
-import { fetchPhotographerServiceInformation } from './photographerServiceInfoActions'
+import { fetchPhotographerServiceInformation, tellThemThatWasSuccessOrFailed } from './photographerServiceInfoActions'
 
 export const updateBasicInformation = (params) => {
   return dispatch => {
@@ -131,6 +131,9 @@ export const updateBasicInformationPhotographer = (params) => {
         });
         dispatch(fetchPhotographerServiceInformation(params.uid));
       })
+      .then(() => {
+        dispatch(tellThemThatWasSuccessOrFailed('success'));
+      })
       .catch(error => {
         dispatch({
           type: "UPDATE_PROFILE_BASIC_INFORMATION_PHOTOGRAPHER_ERROR",
@@ -161,6 +164,9 @@ export const updateCameraEquipment = (params) => {
         });
         dispatch(fetchPhotographerServiceInformation(params.uid))
       })
+      .then(() => {
+        dispatch(tellThemThatWasSuccessOrFailed('success'));
+      })
       .catch(error => {
         dispatch({
           type: "UPDATE_PROFILE_CAMERA_EQUIPMENT_ERROR",
@@ -190,6 +196,9 @@ export const updateMeetingPoints = (params) => {
           payload: { status: "OK", message: "Data updated" }
         });
         dispatch(fetchPhotographerServiceInformation(params.uid))
+      })
+      .then(() => {
+        dispatch(tellThemThatWasSuccessOrFailed('success'));
       })
       .catch(error => {
         dispatch({
@@ -251,6 +260,9 @@ export const uploadPhotosPortfolio = (params) => {
       .then(() => {
         dispatch({ type: "PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO" });
         dispatch(setActiveTab(4));
+      })
+      .then(() => {
+        dispatch(tellThemThatWasSuccessOrFailed('success'));
       });
   };
 };
@@ -307,6 +319,9 @@ export const updatePackagesPrice = (params) => {
         });
         updateUserMetadataPriceStartFrom(uid, packagesPrice[0].price);
         dispatch(fetchPhotographerServiceInformation(params.uid));
+      })
+      .then(() => {
+        dispatch(tellThemThatWasSuccessOrFailed('success'));
       })
       .catch(error => {
         dispatch({

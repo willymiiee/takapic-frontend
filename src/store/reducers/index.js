@@ -80,6 +80,13 @@ const photographerListings = (state = [], action) => {
   return state;
 };
 
+const tellThemThatWasSuccessOrFailed = (state = { whatsup: 'nothing' }, action) => {
+  if (action.type === 'PROFILE_MANAGER_TELL_THEM_THAT_WAS_SUCCESS_OR_FAILED') {
+    return { ...state, whatsup: action.payload };
+  }
+  return state;
+};
+
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
@@ -93,6 +100,7 @@ const rootReducer = combineReducers({
   currenciesRates,
   reservation,
   photographerListings,
+  tellThemThatWasSuccessOrFailed,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

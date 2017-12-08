@@ -196,7 +196,7 @@ class PhotosPortofolio extends Component {
                       />
 
                       {
-                        profile.hasOwnProperty('percentages') && profile.percentages[key] && (
+                        profile.hasOwnProperty('percentages') && profile.percentages.length > 0 && (
                           <ProgressBar
                             striped
                             bsStyle="success"

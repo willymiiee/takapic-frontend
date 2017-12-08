@@ -12,6 +12,15 @@ export const selfDescription = description => {
   };
 };
 
+export const tellThemThatWasSuccessOrFailed = (whatsup) => {
+  return dispatch => {
+    dispatch({
+      type: 'PROFILE_MANAGER_TELL_THEM_THAT_WAS_SUCCESS_OR_FAILED',
+      payload: whatsup
+    });
+  };
+};
+
 const updateUserMetadataLocationAndSpeciality = (reference, location, speciality, currency) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
