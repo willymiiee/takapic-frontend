@@ -1,6 +1,11 @@
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import history from 'services/history';
+import store from "./store";
+import {
+  resetPhotographerServiceInformationData,
+  fetchPhotographerListings
+} from "./store/actions/photographerServiceInfoActions";
 
 import Home from 'pages/home';
 import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
@@ -41,6 +46,14 @@ import HowItWorks from "./components/About/HowItWorks";
 
 import 'index.css';
 import 'element-theme-default';
+
+history.listen((location, action) => {
+  if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
+    store.dispatch(resetPhotographerServiceInformationData());
+  } else if (location.pathname.includes('/search')) {
+    store.dispatch(fetchPhotographerListings(location.search));
+  }
+});
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
