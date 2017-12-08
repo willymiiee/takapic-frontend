@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {connect} from 'react-redux';
+import React, { Component } from "react";
+import { connect } from 'react-redux';
 import Select from "react-select";
 import {
   Form,
@@ -10,12 +10,13 @@ import {
   Button
 } from "react-bootstrap";
 import size from 'lodash/size';
+import isEqual from 'lodash/isEqual';
 
-import {updateBasicInformation} from '../../store/actions/profileUpdateActions';
+import { updateBasicInformation } from '../../store/actions/profileUpdateActions';
 
 class BasicInformation extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       languages: [
         "English",
@@ -81,10 +82,20 @@ class BasicInformation extends Component {
   }
 
   componentWillMount() {
-    const { photographerServiceInformation: { data } } = this.props;
+    this.setLocalState(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps, this.props)) {
+      this.setLocalState(nextProps);
+    }
+  }
+
+  setLocalState(props) {
+    const { photographerServiceInformation: { data } } = props;
 
     if (size(data) < 3) {
-      const { photographerServiceInformation: { data: { userMetadata } } } = this.props;
+      const { photographerServiceInformation: { data: { userMetadata } } } = props;
       const { values } = this.state;
 
       values.photoProfileUrl = userMetadata.photoProfileUrl || "";
@@ -100,7 +111,7 @@ class BasicInformation extends Component {
           data: {userMetadata, selfDescription}
         },
         state: {currencies}
-      } = this.props;
+      } = props;
 
       const {location, selected, values} = this.state;
 
@@ -179,7 +190,7 @@ class BasicInformation extends Component {
       }
 
       location.country = selectChoice.value;
-      location.countryName = selectChoice.label
+      location.countryName = selectChoice.label;
       location.continent = selectChoice.continent || "";
 
       values.currency = currency;

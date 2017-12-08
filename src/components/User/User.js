@@ -7,6 +7,7 @@ import {
   fetchPhotographerServiceInformation,
   resetPhotographerServiceInformationData
 } from "../../store/actions/photographerServiceInfoActions";
+import { setActiveTab } from "../../store/actions/profileUpdateActions";
 
 import Animator from '../common/Animator';
 import Page from "../Page";
@@ -39,6 +40,7 @@ class User extends Component{
 
   componentWillUnmount() {
     this.props.resetPhotographerServiceInformationData();
+    this.props.setActiveTab(1);
   }
 
   getPhotographerServiceInformation = () => {
@@ -130,7 +132,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid)),
-  resetPhotographerServiceInformationData: () => dispatch(resetPhotographerServiceInformationData())
+  resetPhotographerServiceInformationData: () => dispatch(resetPhotographerServiceInformationData()),
+  setActiveTab: (tabIndex) => dispatch(setActiveTab(tabIndex))
 });
 
 export default withRouter(

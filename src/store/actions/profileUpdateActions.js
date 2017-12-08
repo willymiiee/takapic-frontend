@@ -28,6 +28,20 @@ const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
   userRef.update({ photoProfileUrl });
 };
 
+const deletePhotoPortofolios = (uid, photos) => {
+  if (photos.length > 0) {
+    const fullDirectory = `pictures/portofolio-photos/${uid}`;
+    const storageRef = firebase.storage().ref();
+    let tasks = [];
+
+    for (let itemPhoto in photos) {
+      tasks = [ ...tasks, storageRef.child(fullDirectory + '/' + photos[itemPhoto].fileName).delete() ];
+    }
+
+    Promise.all(tasks);
+  }
+};
+
 export const updatePhotoProfile = (params) => {
   return dispatch => {
     let { uid, state } = params;
@@ -187,40 +201,35 @@ export const updateMeetingPoints = (params) => {
 };
 
 export const uploadPhotosPortfolio = (params) => {
-  const { uid, state: { selectedPhotos } } = params;
   return dispatch => {
+    const { uid, state: { selectedPhotos, photosPortofolioDeleted } } = params;
     let files = selectedPhotos;
     let percentages = files.map(f => 0);
     let tasks = [];
     let dataImages = [];
 
-    dispatch({ type: "UPDATE_PHOTOS_PORTOFOLIO" });
-    dispatch(setActiveTab(4));
-
-    for (let i in files) {
-
+    for (let fileItem in files) {
       const fullDirectory = `pictures/portofolio-photos/${uid}`;
-      const imageFile = files[i].file;
+      const imageFile = files[fileItem].file;
       let storageRef = firebase
         .storage()
         .ref(fullDirectory + '/' + imageFile.name);
 
-      //Upload file
-      tasks = [...tasks, storageRef.put(imageFile)];
-      tasks[i].on(
+      // Upload file
+      tasks = [ ...tasks, storageRef.put(imageFile) ];
+      tasks[fileItem].on(
         'state_changed',
         function progress(snapshot) {
-          let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-          percentages[i] = percentage;
+          percentages[fileItem] = snapshot.bytesTransferred / snapshot.totalBytes * 100;
           dispatch({
-            type: 'UPLOAD_IMAGE_PHOTOS_PORTOFOLIO',
-            percentages,
+            type: 'PROFILE_MANAGER_UPLOAD_IMAGE_PHOTOS_PORTOFOLIO',
+            percentages
           });
         },
         function error(err) {},
         // eslint-disable-next-line
         function complete() {
-          let downloadURL = tasks[i].snapshot.downloadURL;
+          let downloadURL = tasks[fileItem].snapshot.downloadURL;
           let payload = {
             id: uuidv4(),
             fileName: imageFile.name,
@@ -232,43 +241,48 @@ export const uploadPhotosPortfolio = (params) => {
       );
     }
 
-    return Promise.all(tasks).then(
-      () => {
+    return Promise.all(tasks)
+      .then(() => {
+        deletePhotoPortofolios(uid, photosPortofolioDeleted);
+      })
+      .then(() => {
         dispatch(updatePhotosPortfolio(params, dataImages));
-      },
-      () => {
-      }
-    );
+      })
+      .then(() => {
+        dispatch({ type: "PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO" });
+        dispatch(setActiveTab(4));
+      });
   };
 };
 
 export const updatePhotosPortfolio = (params, dataImages) => {
-  let { uid, state: {photosPortofolio} } = params
   return dispatch => {
     const db = database.database();
-    const ref = db.ref('/photographer_service_information');
+    const ref = db.ref('photographer_service_information');
+    let { uid, state: { photosPortofolio } } = params;
     const item = ref.child(uid);
 
     photosPortofolio = photosPortofolio.concat(dataImages);
 
-    item.update({
-      photosPortofolio: photosPortofolio
-    })
-    .then(() => {
-      dispatch({
-        type: "UPDATE_PHOTOS_PORTOFOLIO_SUCCESS",
-        payload: { status: "OK", message: "Data updated" }
+    item
+      .update({ photosPortofolio: photosPortofolio })
+      .then(() => {
+        dispatch({
+          type: "PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO_SUCCESS",
+          payload: { status: "OK", message: "Data updated" }
+        });
+      })
+      .then(() => {
+        dispatch(fetchPhotographerServiceInformation(uid));
+      })
+      .catch(error => {
+        dispatch({
+          type: "PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO_ERROR",
+          error
+        });
       });
-      dispatch(fetchPhotographerServiceInformation(params.uid))
-    })
-    .catch(error => {
-      dispatch({
-        type: "UPDATE_PHOTOS_PORTOFOLIO_ERROR",
-        error
-      });
-    });
   };
-}
+};
 
 export const updatePackagesPrice = (params) => {
   return dispatch => {

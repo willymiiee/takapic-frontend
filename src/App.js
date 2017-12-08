@@ -50,8 +50,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       if (!initialLoginData) {
         return <Redirect
           to={{
-            pathname: '/',
-            state: { from: 'hahaha' }
+            pathname: '/'
           }}
         />
       }

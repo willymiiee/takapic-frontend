@@ -60,6 +60,10 @@ class Step2IndicatePrice extends Component {
     this.setState({ masterPackages: newMasterPackages });
   };
 
+  handleFocus = (evt) => {
+    evt.target.select();
+  };
+
   handleSubmit = event => {
     event.preventDefault();
     this.props.setPricing({ detailMasterPackage: this.state.masterPackages });
@@ -104,6 +108,7 @@ class Step2IndicatePrice extends Component {
                                   type="number"
                                   value={item.price}
                                   onChange={event => this.handleChange(event, item.id)}
+                                  onFocus={this.handleFocus}
                                 />
                                 <InputGroup.Button style={{ padding: 10 }}><p>{ currency }</p></InputGroup.Button>
                               </InputGroup>

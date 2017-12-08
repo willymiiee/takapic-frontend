@@ -108,6 +108,10 @@ class PackagesPrice extends Component {
     this.setState({packagesPrice});
   };
 
+  handleFocus = (evt) => {
+    evt.target.select();
+  };
+
   handleUpdate = event => {
     event.preventDefault();
     const {
@@ -157,8 +161,8 @@ class PackagesPrice extends Component {
                           <FormControl
                             type="number"
                             value={td.price}
-                            onChange={event =>
-                              this.handleChange(event, tr, kk)}
+                            onChange={event => this.handleChange(event, tr, kk)}
+                            onFocus={this.handleFocus}
                           />
                           <InputGroup.Button style={{padding: 10}}>
                             <p>{this.state.currency}</p>
