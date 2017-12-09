@@ -92,7 +92,7 @@ class User extends Component{
 
       return (
         <Page>
-          <div className="hidden-xs padding-bottom-60"/>
+          <div className="padding-bottom-60"/>
           <div className="container">
 
             {

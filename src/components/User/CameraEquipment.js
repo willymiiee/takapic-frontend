@@ -96,47 +96,41 @@ class CameraEquipment extends Component {
     const { options, values } = this.state;
 
     return (
-      <Form horizontal>
+      <Form style={{marginTop:'40px'}}>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            Body
-          </Col>
-          <Col sm={6}>
-            <Select.Creatable
-    					multi={true}
-              options={options.bodies.map(item => ({
-                label: item,
-                value: item,
-                style: {
-                  margin: "5px 0px 5px 5px"
-                }
-              }))}
-    					onChange={this.handleOnChangeBody}
-    					value={values.bodies}
-              placeholder="Add more body camera equipment"
-    				/>
-          </Col>
+          Body
+          <Select.Creatable
+            multi={true}
+            className="line-height-minimum"
+            options={options.bodies.map(item => ({
+              label: item,
+              value: item,
+              style: {
+                margin: "5px 0px 5px 5px"
+              }
+            }))}
+                      onChange={this.handleOnChangeBody}
+                      value={values.bodies}
+            placeholder="Add more body camera equipment"
+          />
         </FormGroup>
 
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            Lens
-          </Col>
-          <Col sm={6}>
-            <Select.Creatable
-    					multi={true}
-              options={options.lenses.map(item => ({
-                label: item,
-                value: item,
-                style: {
-                  margin: "5px 0px 5px 5px"
-                }
-              }))}
-    					onChange={this.handleOnChangeLens}
-    					value={values.lenses}
-              placeholder="Add more lens camera equipment"
-    				/>
-          </Col>
+          Lens
+          <Select.Creatable
+            multi={true}
+            className="line-height-minimum"
+            options={options.lenses.map(item => ({
+              label: item,
+              value: item,
+              style: {
+                margin: "5px 0px 5px 5px"
+              }
+            }))}
+                      onChange={this.handleOnChangeLens}
+                      value={values.lenses}
+            placeholder="Add more lens camera equipment"
+                  />
         </FormGroup>
 
         <hr/>
