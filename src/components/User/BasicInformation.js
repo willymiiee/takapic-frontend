@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {connect} from 'react-redux';
+import React, { Component } from "react";
+import { connect } from 'react-redux';
 import Select from "react-select";
 import {
   Form,
@@ -7,15 +7,17 @@ import {
   Col,
   ControlLabel,
   FormControl,
-  Button
+  Button,
+  InputGroup
 } from "react-bootstrap";
 import size from 'lodash/size';
+import isEqual from 'lodash/isEqual';
 
-import {updateBasicInformation} from '../../store/actions/profileUpdateActions';
+import { updateBasicInformation } from '../../store/actions/profileUpdateActions';
 
 class BasicInformation extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       languages: [
         "English",
@@ -70,6 +72,7 @@ class BasicInformation extends Component {
         fileImage: false,
         name: "",
         selfDescription: "",
+        phoneDialCode: "",
         phoneNumber: "",
         city: {
           label: "",
@@ -81,10 +84,20 @@ class BasicInformation extends Component {
   }
 
   componentWillMount() {
-    const { photographerServiceInformation: { data } } = this.props;
+    this.setLocalState(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps, this.props)) {
+      this.setLocalState(nextProps);
+    }
+  }
+
+  setLocalState(props) {
+    const { photographerServiceInformation: { data } } = props;
 
     if (size(data) < 3) {
-      const { photographerServiceInformation: { data: { userMetadata } } } = this.props;
+      const { photographerServiceInformation: { data: { userMetadata } } } = props;
       const { values } = this.state;
 
       values.photoProfileUrl = userMetadata.photoProfileUrl || "";
@@ -100,7 +113,7 @@ class BasicInformation extends Component {
           data: {userMetadata, selfDescription}
         },
         state: {currencies}
-      } = this.props;
+      } = props;
 
       const {location, selected, values} = this.state;
 
@@ -116,6 +129,7 @@ class BasicInformation extends Component {
         values.photoProfileUrl = userMetadata.photoProfileUrl || "";
         values.name = userMetadata.displayName || "";
         values.selfDescription = selfDescription || "";
+        values.phoneDialCode = userMetadata.phoneDialCode;
         values.phoneNumber = userMetadata.phoneNumber || "";
         values.city.label = location.locationAdmLevel2 || "";
         values.city.value = location.locationAdmLevel2 || "";
@@ -162,9 +176,12 @@ class BasicInformation extends Component {
   };
 
   _handlePhoneNumberChange = event => {
-    const {values} = this.state;
-    values.phoneNumber = event.target.value;
-    this.setState({values});
+    const re = /^[0-9\b]+$/;
+    if (event.target.value === '' || re.test(event.target.value)) {
+      const { values } = this.state;
+      values.phoneNumber = event.target.value;
+      this.setState({ values });
+    }
   };
 
   _handleSelectCountry = selectChoice => {
@@ -179,7 +196,7 @@ class BasicInformation extends Component {
       }
 
       location.country = selectChoice.value;
-      location.countryName = selectChoice.label
+      location.countryName = selectChoice.label;
       location.continent = selectChoice.continent || "";
 
       values.currency = currency;
@@ -323,14 +340,21 @@ class BasicInformation extends Component {
         </FormGroup>
 
         <FormGroup controlId="formHorizontalPhoneNumber">
-          Phone Number
-          <FormControl
-            style={{marginTop:'7px', paddingLeft:'10px', color:'#333'}}
-            type="text"
-            placeholder="Enter Your Phone Number"
-            value={values.phoneNumber}
-            onChange={this._handlePhoneNumberChange}
-          />
+          <Col componentClass={ControlLabel} sm={2}>
+            Phone number
+          </Col>
+          <Col sm={6}>
+            <InputGroup>
+              <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
+              <FormControl
+                type="text"
+                placeholder="Enter Your Phone Number"
+                value={values.phoneNumber}
+                onChange={this._handlePhoneNumberChange}
+                style={{marginTop:'7px', paddingLeft:'10px', color:'#333'}}
+              />
+            </InputGroup>
+          </Col>
         </FormGroup>
 
         <FormGroup controlId="formHorizontalCountry">

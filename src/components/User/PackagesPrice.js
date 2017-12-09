@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { FormGroup, FormControl, Table, InputGroup, Button } from 'react-bootstrap'
+import isEqual from 'lodash/isEqual';
 
 import { updatePackagesPrice } from '../../store/actions/profileUpdateActions';
 
@@ -36,12 +37,19 @@ class PackagesPrice extends Component {
   }
 
   componentWillMount() {
-    this.setStatePackagePrice();
-    this.setStateCurrency();
+    this.setStatePackagePrice(this.props);
+    this.setStateCurrency(this.props);
   }
 
-  setStatePackagePrice = () => {
-    const {photographerServiceInformation: {data}} = this.props
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.photographerServiceInformation.data, this.props.photographerServiceInformation.data)) {
+      this.setStatePackagePrice(nextProps);
+      this.setStateCurrency(nextProps);
+    }
+  }
+
+  setStatePackagePrice = (props) => {
+    const { photographerServiceInformation: { data } } = props;
 
     if (data.packagesPrice) {
       let packagesPrice = data.packagesPrice;
@@ -80,19 +88,19 @@ class PackagesPrice extends Component {
     }
   };
 
-  setStateCurrency = () => {
+  setStateCurrency = (props) => {
     const {
       photographerServiceInformation: {
         data: {
           userMetadata
         }
       }
-    } = this.props;
+    } = props;
 
     if (userMetadata) {
       this.setState({
         currency: userMetadata.currency
-      })
+      });
     }
   };
 
@@ -102,10 +110,17 @@ class PackagesPrice extends Component {
     const key = tr[index].key;
 
     if (event.target.value !== '') {
-      packagesPrice[key].price = event.target.value;
+      // eslint-disable-next-line
+      let val = !event.target.value ? 0 : parseInt(event.target.value);
+      val = val <= 0 ? 0 : val;
+      packagesPrice[key].price = val;
     }
 
     this.setState({packagesPrice});
+  };
+
+  handleFocus = (evt) => {
+    evt.target.select();
   };
 
   handleUpdate = event => {
@@ -157,8 +172,8 @@ class PackagesPrice extends Component {
                           <FormControl
                             type="number"
                             value={td.price}
-                            onChange={event =>
-                              this.handleChange(event, tr, kk)}
+                            onChange={event => this.handleChange(event, tr, kk)}
+                            onFocus={this.handleFocus}
                           />
                           <InputGroup.Button style={{padding: 10}}>
                             <p>{this.state.currency}</p>

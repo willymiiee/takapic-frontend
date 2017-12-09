@@ -71,11 +71,20 @@ const reservation = (state = {}, action) => {
   }
 };
 
-const photographerListings = (state = [], action) => {
-  if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING') {
-    return action.payload;
+const photographerListings = (state = { results: [], isFetching: true }, action) => {
+  if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING_SUCCESS') {
+    return { ...state, results: action.payload, isFetching: false };
+  } else if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING_START') {
+    return { ...state, isFetching: true };
   } else if (action.type === 'EMPTY_PHOTOGRAPHER_LISTINGS') {
-    return [];
+    return { ...state, results: [], isFetching: true };
+  }
+  return state;
+};
+
+const tellThemThatWasSuccessOrFailed = (state = { whatsup: 'nothing' }, action) => {
+  if (action.type === 'PROFILE_MANAGER_TELL_THEM_THAT_WAS_SUCCESS_OR_FAILED') {
+    return { ...state, whatsup: action.payload };
   }
   return state;
 };
@@ -93,6 +102,7 @@ const rootReducer = combineReducers({
   currenciesRates,
   reservation,
   photographerListings,
+  tellThemThatWasSuccessOrFailed,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

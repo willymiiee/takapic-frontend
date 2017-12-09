@@ -2,12 +2,22 @@ import axios from 'axios';
 import get from 'lodash/get';
 import { database } from '../../services/firebase';
 import history from '../../services/history';
+import queryString from "query-string";
 
 export const selfDescription = description => {
   return dispatch => {
     dispatch({
       type: 'BECOME_OUR_PHOTOGRAPHER_SELF_INTRO',
       payload: { selfDescription: description },
+    });
+  };
+};
+
+export const tellThemThatWasSuccessOrFailed = (whatsup) => {
+  return dispatch => {
+    dispatch({
+      type: 'PROFILE_MANAGER_TELL_THEM_THAT_WAS_SUCCESS_OR_FAILED',
+      payload: whatsup
     });
   };
 };
@@ -92,5 +102,32 @@ export const fetchPhotographerServiceInformation = (uid) => {
 export const resetPhotographerServiceInformationData = () => {
   return dispatch => {
     dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET' })
+  };
+};
+
+export const fetchPhotographerListings = searchInfo => {
+  return dispatch => {
+    let { destination, date } = queryString.parse(searchInfo);
+    const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
+
+    dispatch({ type: 'FETCH_PHOTOGRAPHERS_LISTING_START' });
+
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .then(response => {
+        dispatch({
+          type: 'FETCH_PHOTOGRAPHERS_LISTING_SUCCESS',
+          payload: response.data.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+
+export const resetListings = () => {
+  return dispatch => {
+    dispatch({ type: 'EMPTY_PHOTOGRAPHER_LISTINGS' });
   };
 };

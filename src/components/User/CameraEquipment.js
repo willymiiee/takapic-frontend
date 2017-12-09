@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Form, FormGroup, Col, ControlLabel, Button } from 'react-bootstrap';
 import Select from 'react-select';
+import isEqual from 'lodash/isEqual';
 
 import { updateCameraEquipment } from '../../store/actions/profileUpdateActions';
 
 class CameraEquipment extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       options: {
         bodies: [],
@@ -21,12 +22,20 @@ class CameraEquipment extends Component {
   }
 
   componentWillMount() {
-    this.getCameraEquipment();
+    this.setLocalState(this.props);
   }
 
-  getCameraEquipment = () => {
+  componentWillReceiveProps(nextProps) {
+    const { cameraEquipment: cameraEquipmentNew } = nextProps.photographerServiceInformation.data;
+    const { cameraEquipment: cameraEquipmentOld } = this.props.photographerServiceInformation.data;
+    if (!isEqual(cameraEquipmentNew, cameraEquipmentOld)) {
+      this.setLocalState(nextProps);
+    }
+  }
+
+  setLocalState(props) {
     let { options, values } = this.state;
-    let cameraEquipment = this.props.photographerServiceInformation.data.cameraEquipment;
+    let cameraEquipment = props.photographerServiceInformation.data.cameraEquipment;
     if (cameraEquipment) {
       options.bodies = cameraEquipment.body;
       options.lenses = cameraEquipment.lens;
@@ -38,13 +47,13 @@ class CameraEquipment extends Component {
 
   handleOnChangeBody = (value) => {
 		const { values } = this.state;
-		values.bodies = value
+		values.bodies = value;
 		this.setState({ values });
 	};
 
   handleOnChangeLens = (value) => {
 		const { values } = this.state;
-		values.lenses = value
+		values.lenses = value;
 		this.setState({ values });
 	};
 
@@ -84,7 +93,7 @@ class CameraEquipment extends Component {
   };
 
   render() {
-    const { options, values } = this.state
+    const { options, values } = this.state;
 
     return (
       <Form style={{marginTop:'40px'}}>

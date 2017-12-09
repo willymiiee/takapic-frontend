@@ -72,7 +72,7 @@ export const uploadPhotoProfile = (fileObject, uid, displayName) => {
   };
 };
 
-export const uploadPhonenumber = (phonenumber, reference) => {
+export const uploadPhonenumber = (phoneNumberCountryCode, phoneNumber, reference) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_START ' });
 
@@ -80,14 +80,15 @@ export const uploadPhonenumber = (phonenumber, reference) => {
     const metadataRef = ref.child(reference);
     metadataRef
       .update({
-        phoneNumber: phonenumber,
+        phoneDialCode: phoneNumberCountryCode,
+        phoneNumber,
         firstLogin: false,
       })
       .then(() => {
         dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_SUCCESS ' });
         dispatch({
           type: 'USER_AUTH_UPDATE_METADATA',
-          payload: { phoneNumber: phonenumber, firstLogin: false },
+          payload: { phoneDialCode: phoneNumberCountryCode, phoneNumber, firstLogin: false },
         });
         history.push('/photographer-registration/finish');
       })

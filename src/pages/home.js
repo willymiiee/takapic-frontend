@@ -13,9 +13,8 @@ import Page from '../components/Page';
 
 const fetchHomepageData = () => {
   return dispatch => {
-    const queryParams = 'filter[destination]=jakarta, indonesia&filter[date]=';
     axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/topPhotographers`)
       .then(response => {
         dispatch({
           type: 'HOMEPAGE_FETCH_TOP_PHOTOGRAPHERS_SUCCESS',
@@ -30,11 +29,11 @@ const fetchHomepageData = () => {
 };
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       search: {
-        destination: null,
+        destination: { label: 'Anywhere' },
         date: null
       }
     };
@@ -128,7 +127,7 @@ class Home extends Component {
                   valueKey="label"
                   labelKey="label"
                   loadOptions={this.retrieveLocations}
-                  placeholder="Choose your destination"
+                  placeholder="Choose your destination or leave it empty to go Anywhere"
                 />
               </div>
 
@@ -158,24 +157,24 @@ class Home extends Component {
 
           <div className="row posters">
             <div className="col-xs-4">
-              <a className="poster" href="">
+              <Link to="/search/?destination=Bali,%20Indonesia&date=" className="poster">
                 <div className="text">BALI</div>
                 <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
-              </a>
+              </Link>
             </div>
 
             <div className="col-xs-4">
-              <a className="poster" href="/">
+              <Link to="/search/?destination=Seoul,%20South%20Korea&date=" className="poster">
                 <div className="text">SEOUL</div>
                 <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
-              </a>
+              </Link>
             </div>
 
             <div className="col-xs-4">
-              <a className="poster" href="/">
+              <Link to="/search/?destination=Paris,%20France&date=" className="poster">
                 <div className="text">PARIS</div>
                 <img src="images/location/paris.jpg" alt="Featured destination - Paris"/>
-              </a>
+              </Link>
             </div>
           </div>
 

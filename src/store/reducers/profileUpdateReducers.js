@@ -33,16 +33,16 @@ const profileUpdate = (state = initialState, action) => {
       return { ...state, loading: false, loaded: true, ...action.payload };
     case 'UPDATE_PROFILE_MEETING_POINT_ERROR':
       return { loading: false, loaded: true, error: action.error };
-    case 'UPDATE_PHOTOS_PORTOFOLIO':
+    case 'PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO':
       return { loading: true, loaded: false };
-    case 'UPLOAD_IMAGE_PHOTOS_PORTFOLIO':
+    case 'PROFILE_MANAGER_UPLOAD_IMAGE_PHOTOS_PORTOFOLIO':
       return {
         percentages: action.percentages,
       };
-    case 'UPDATE_PHOTOS_PORTOFOLIO_SUCCESS':
+    case 'PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO_SUCCESS':
       delete state.error;
       return { ...state, loading: false, loaded: true, ...action.payload };
-    case 'UPDATE_PHOTOS_PORTOFOLIO_ERROR':
+    case 'PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO_ERROR':
       return { loading: false, loaded: true, error: action.error };
     case 'UPDATE_PROFILE_PACKAGES_PRICE':
       return { loading: true, loaded: false };
@@ -52,7 +52,12 @@ const profileUpdate = (state = initialState, action) => {
     case 'UPDATE_PROFILE_PACKAGES_PRICE_ERROR':
       return { loading: false, loaded: true, error: action.error };
     case 'UPDATE_ACTIVE_TAB':
-      return { ...state, activeTab: action.payload }
+      return { ...state, activeTab: action.payload };
+    case 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_START':
+      return { ...state, loading: true };
+    case 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_SUCCESS':
+    case 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_ERROR':
+      return { ...state, loading: false };
     default:
       return state;
   }

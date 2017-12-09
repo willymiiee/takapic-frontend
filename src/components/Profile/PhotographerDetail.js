@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import store from '../../store';
-import history from '../../services/history';
 import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
@@ -14,12 +12,6 @@ import './../../react-slick.min.css';
 import Animator from '../common/Animator';
 import Page from '../Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';
-
-history.listen((location, action) => {
-  if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
-    store.dispatch(resetPhotographerServiceInformationData());
-  }
-});
 
 class PhotographerDetail extends Component {
   constructor() {

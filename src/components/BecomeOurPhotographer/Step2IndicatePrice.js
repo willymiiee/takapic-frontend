@@ -50,7 +50,8 @@ class Step2IndicatePrice extends Component {
     const newMasterPackages = masterPackages.map(item => {
       if (item.id === itemId) {
         // eslint-disable-next-line
-        const fixVal = !event.target.value ? 0 : parseInt(event.target.value);
+        let fixVal = !event.target.value ? 0 : parseInt(event.target.value);
+        fixVal = fixVal <= 0 ? 0 : fixVal;
         return Object.assign({}, item, {
           price: fixVal
         });
@@ -58,6 +59,10 @@ class Step2IndicatePrice extends Component {
       return item;
     });
     this.setState({ masterPackages: newMasterPackages });
+  };
+
+  handleFocus = (evt) => {
+    evt.target.select();
   };
 
   handleSubmit = event => {
@@ -104,6 +109,7 @@ class Step2IndicatePrice extends Component {
                                   type="number"
                                   value={item.price}
                                   onChange={event => this.handleChange(event, item.id)}
+                                  onFocus={this.handleFocus}
                                 />
                                 <InputGroup.Button style={{ padding: 10 }}><p>{ currency }</p></InputGroup.Button>
                               </InputGroup>
