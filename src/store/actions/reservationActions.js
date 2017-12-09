@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import { database } from "../../services/firebase";
 
 export const fetchReservationAction = travellerId => {
@@ -24,6 +25,7 @@ export const reservationInitializeAction = (reservationId, information) => {
   return dispatch => {
     const db = database.database();
     const reservationRefChild = db.ref('/reservations').child(reservationId);
+    information.created = firebase.database.ServerValue.TIMESTAMP;
     reservationRefChild.set(information);
 
     dispatch({
@@ -37,6 +39,7 @@ export const reservationPaymentAction = (reservationId, data) => {
   return dispatch => {
     const db = database.database();
     const reservationRefChild = db.ref('/reservations').child(reservationId);
+    data.updated = firebase.database.ServerValue.TIMESTAMP;
     reservationRefChild.update(data);
 
     dispatch({

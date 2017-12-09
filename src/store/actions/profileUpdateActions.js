@@ -29,7 +29,7 @@ const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
   const ref = db.ref('user_metadata');
   const userRef = ref.child(reference);
 
-  userRef.update({ photoProfileUrl });
+  userRef.update({ photoProfileUrl, updated: firebase.database.ServerValue.TIMESTAMP });
 };
 
 const deletePhotoPortofolios = (uid, photos) => {
@@ -97,6 +97,7 @@ export const updateBasicInformationUser = (params) => {
         locationAdmLevel1: state.location.locationAdmLevel1,
         locationAdmLevel2: state.location.locationAdmLevel2,
         locationMerge: state.location.locationMerge,
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
         dispatch({
@@ -127,6 +128,7 @@ export const updateBasicInformationPhotographer = (params) => {
         selfDescription: state.values.selfDescription,
         languages: state.selected.languages,
         location: state.location,
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
         dispatch({
@@ -160,6 +162,7 @@ export const updateCameraEquipment = (params) => {
     metadataRef
       .update({
         cameraEquipment: { body: bodies, lens: lenses },
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
         dispatch({
@@ -192,7 +195,8 @@ export const updateMeetingPoints = (params) => {
     const metadataRef = ref.child(uid);
     metadataRef
       .update({
-        meetingPoints: state.meetingPoints
+        meetingPoints: state.meetingPoints,
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
         dispatch({
@@ -281,7 +285,7 @@ export const updatePhotosPortfolio = (params, dataImages) => {
     photosPortofolio = photosPortofolio.concat(dataImages);
 
     item
-      .update({ photosPortofolio: photosPortofolio })
+      .update({ photosPortofolio: photosPortofolio, updated: firebase.database.ServerValue.TIMESTAMP })
       .then(() => {
         dispatch({
           type: "PROFILE_MANAGER_UPDATE_PHOTOS_PORTOFOLIO_SUCCESS",
@@ -315,6 +319,7 @@ export const updatePackagesPrice = (params) => {
     metadataRef
       .update({
         packagesPrice: packagesPrice,
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
         dispatch({
@@ -353,7 +358,10 @@ export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
       .database()
       .ref('photographer_service_information')
       .child(uid)
-      .update({ notAvailableDates: notAvailableDatesAsDateStringList })
+      .update({
+        notAvailableDates: notAvailableDatesAsDateStringList,
+        updated: firebase.database.ServerValue.TIMESTAMP
+      })
       .then(() => {
         dispatch({ type: 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_SUCCESS' });
       })

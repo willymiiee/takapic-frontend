@@ -5,7 +5,10 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
-import { fetchPhotographerListings, resetListings } from "../../store/actions/photographerServiceInfoActions";
+import {
+  fetchPhotographerListings,
+  resetListings
+} from "../../store/actions/photographerServiceInfoActions";
 
 import Page from '../Page';
 import SearchResult from './SearchResult';
@@ -78,10 +81,16 @@ class Search extends Component {
     this.props.resetListings();
   }
 
+  componentDidMount() {
+    if (!this.props.photographerListings.isFetching && !this.props.photographerListings.isFetched) {
+      this.props.fetchPhotographerListings(this.props.location.search);
+    }
+  }
+
   render() {
     const searchQs = queryString.parse(this.props.location.search);
 
-    if (!this.props.photographerListings.isFetching) {
+    if (!this.props.photographerListings.isFetching && this.props.photographerListings.isFetched) {
       return (
         <Page>
           <div className="container">

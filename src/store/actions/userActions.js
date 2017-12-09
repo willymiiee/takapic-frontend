@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import { database, facebookAuthProvider, googleAuthProvider } from '../../services/firebase';
 import history from '../../services/history';
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
@@ -39,6 +40,7 @@ const createUserMetadata = async (uid, email, userType, displayName) => {
         firstLogin: true,
         displayName,
         phoneNumber: '-',
+        created: firebase.database.ServerValue.TIMESTAMP
       };
 
       if (userType === USER_PHOTOGRAPHER) {

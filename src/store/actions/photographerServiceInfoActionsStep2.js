@@ -10,7 +10,7 @@ export const updateUserMetadataPriceStartFrom = (reference, price) => {
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(reference);
 
-  userRef.update({ priceStartFrom: price });
+  userRef.update({ priceStartFrom: price, updated: firebase.database.ServerValue.TIMESTAMP });
 };
 
 export const updateUserMetadataDefaultDisplayPicture = (reference, picture) => {
@@ -18,7 +18,7 @@ export const updateUserMetadataDefaultDisplayPicture = (reference, picture) => {
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(reference);
 
-  userRef.update({ defaultDisplayPictureUrl: picture });
+  userRef.update({ defaultDisplayPictureUrl: picture, updated: firebase.database.ServerValue.TIMESTAMP });
 };
 
 const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
@@ -29,7 +29,7 @@ const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
     db
       .ref('user_metadata')
       .child(reference)
-      .update({ defaultDisplayPictureUrl: data[0].url })
+      .update({ defaultDisplayPictureUrl: data[0].url, updated: firebase.database.ServerValue.TIMESTAMP })
       .then(() => {
 
         // Update photos portofolio in photographer service information
@@ -43,7 +43,7 @@ const updatePhotographerServiceInfoPhotosPortofolio = (reference, data) => {
         db
           .ref('photographer_service_information')
           .child(reference)
-          .update({ photosPortofolio: photos });
+          .update({ photosPortofolio: photos, updated: firebase.database.ServerValue.TIMESTAMP });
       });
   }
 };
@@ -74,7 +74,8 @@ export const setMeetingPoint = params => {
       .update({
         packagesPrice,
         meetingPoints,
-        notAvailableDates: notAvailableDatesFormattedList
+        notAvailableDates: notAvailableDatesFormattedList,
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(result => {
         updateUserMetadataPriceStartFrom(reference, packagesPrice[0].price);

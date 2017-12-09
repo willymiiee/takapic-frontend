@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import { database } from '../../services/firebase';
 import history from '../../services/history';
 
@@ -6,7 +7,7 @@ const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(reference);
 
-  userRef.update({ photoProfileUrl });
+  userRef.update({ photoProfileUrl, updated: firebase.database.ServerValue.TIMESTAMP });
 };
 
 export const imageSelectedAction = fileObject => {
@@ -83,6 +84,7 @@ export const uploadPhonenumber = (phoneNumberCountryCode, phoneNumber, reference
         phoneDialCode: phoneNumberCountryCode,
         phoneNumber,
         firstLogin: false,
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
         dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_SUCCESS ' });

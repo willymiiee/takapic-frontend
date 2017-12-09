@@ -1,5 +1,6 @@
 import axios from 'axios';
 import get from 'lodash/get';
+import firebase from 'firebase';
 import { database } from '../../services/firebase';
 import history from '../../services/history';
 import queryString from "query-string";
@@ -62,6 +63,7 @@ export const submitCameraEquipment = params => {
         languages,
         location,
         selfDescription,
+        updated: firebase.database.ServerValue.TIMESTAMP,
         // speciality
       })
       .then(() => {

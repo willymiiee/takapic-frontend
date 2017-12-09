@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Form, FormGroup, Col, ControlLabel, Button } from 'react-bootstrap';
+import { Form, FormGroup, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import isEqual from 'lodash/isEqual';
 

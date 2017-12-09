@@ -71,13 +71,13 @@ const reservation = (state = {}, action) => {
   }
 };
 
-const photographerListings = (state = { results: [], isFetching: true }, action) => {
+const photographerListings = (state = { results: [], isFetching: false, isFetched: false }, action) => {
   if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING_SUCCESS') {
-    return { ...state, results: action.payload, isFetching: false };
+    return { ...state, results: action.payload, isFetching: false, isFetched: true };
   } else if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING_START') {
-    return { ...state, isFetching: true };
+    return { ...state, isFetching: true, isFetched: false };
   } else if (action.type === 'EMPTY_PHOTOGRAPHER_LISTINGS') {
-    return { ...state, results: [], isFetching: true };
+    return { ...state, results: [], isFetching: false, isFetched: false };
   }
   return state;
 };
