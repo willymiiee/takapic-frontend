@@ -7,7 +7,8 @@ import {
   Col,
   ControlLabel,
   FormControl,
-  Button
+  Button,
+  InputGroup
 } from "react-bootstrap";
 import size from 'lodash/size';
 import isEqual from 'lodash/isEqual';
@@ -71,6 +72,7 @@ class BasicInformation extends Component {
         fileImage: false,
         name: "",
         selfDescription: "",
+        phoneDialCode: "",
         phoneNumber: "",
         city: {
           label: "",
@@ -127,6 +129,7 @@ class BasicInformation extends Component {
         values.photoProfileUrl = userMetadata.photoProfileUrl || "";
         values.name = userMetadata.displayName || "";
         values.selfDescription = selfDescription || "";
+        values.phoneDialCode = userMetadata.phoneDialCode;
         values.phoneNumber = userMetadata.phoneNumber || "";
         values.city.label = location.locationAdmLevel2 || "";
         values.city.value = location.locationAdmLevel2 || "";
@@ -173,9 +176,12 @@ class BasicInformation extends Component {
   };
 
   _handlePhoneNumberChange = event => {
-    const {values} = this.state;
-    values.phoneNumber = event.target.value;
-    this.setState({values});
+    const re = /^[0-9\b]+$/;
+    if (event.target.value === '' || re.test(event.target.value)) {
+      const { values } = this.state;
+      values.phoneNumber = event.target.value;
+      this.setState({ values });
+    }
   };
 
   _handleSelectCountry = selectChoice => {
@@ -344,15 +350,18 @@ class BasicInformation extends Component {
 
         <FormGroup controlId="formHorizontalPhoneNumber">
           <Col componentClass={ControlLabel} sm={2}>
-            Phone Number
+            Phone number
           </Col>
           <Col sm={6}>
-            <FormControl
-              type="text"
-              placeholder="Enter Your Phone Number"
-              value={values.phoneNumber}
-              onChange={this._handlePhoneNumberChange}
-            />
+            <InputGroup>
+              <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
+              <FormControl
+                type="text"
+                placeholder="Enter Your Phone Number"
+                value={values.phoneNumber}
+                onChange={this._handlePhoneNumberChange}
+              />
+            </InputGroup>
           </Col>
         </FormGroup>
 

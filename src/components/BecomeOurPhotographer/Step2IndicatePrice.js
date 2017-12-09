@@ -50,7 +50,8 @@ class Step2IndicatePrice extends Component {
     const newMasterPackages = masterPackages.map(item => {
       if (item.id === itemId) {
         // eslint-disable-next-line
-        const fixVal = !event.target.value ? 0 : parseInt(event.target.value);
+        let fixVal = !event.target.value ? 0 : parseInt(event.target.value);
+        fixVal = fixVal <= 0 ? 0 : fixVal;
         return Object.assign({}, item, {
           price: fixVal
         });

@@ -7,6 +7,7 @@ import {
   fetchPhotographerListings
 } from "./store/actions/photographerServiceInfoActions";
 
+import ScrollToTop from './components/common/ScrollToTop';
 import Home from 'pages/home';
 import PortofolioAbout from 'components/PhotographerPortofolio/PortofolioAbout';
 import PortofolioGalleryyy from 'components/PhotographerPortofolio/PortofolioGalleryyy';
@@ -74,113 +75,115 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const App = (props) => (
   <Router history={history}>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <PrivateRoute path="/booking/:photographerId/:reservationId" component={PhotographerBooking}/>
-      <Route path="/sign-in" component={SignIn} />
-      <Route path="/photographer/:photographerId" component={PhotographerDetail} />
-      <PrivateRoute path="/me/reservations/:reservationid" component={ReservationCreatedDetail} />
-      <Route path="/search" component={Search} />
-      <Route path="/traveller-registration" component={TravellerRegistration} />
-      <Route
-        path="/photographer-portofolio/:photographerId/gallery"
-        component={PortofolioGalleryyy}
-      />
-      <Route
-        path="/photographer-portofolio/:photographerId/about-me"
-        component={PortofolioAbout}
-      />
-      <Route
-        path="/welcome-photographer"
-        component={WelcomePhotographer}
-      />
-      <Route
-        path="/photographer-registration/s1"
-        component={PhotographerRegistrationStep1}
-      />
-      <Route
-        path="/photographer-registration/s1-checkmail"
-        component={PhotographerRegistrationStep1CheckMail}
-      />
-      <PrivateRoute
-        path="/photographer-registration/s2"
-        component={PhotographerRegistrationStep2}
-      />
-      <PrivateRoute
-        path="/photographer-registration/s3"
-        component={PhotographerRegistrationStep3}
-      />
-      <PrivateRoute
-        path="/photographer-registration/finish"
-        component={PhotographerRegistrationStepFinish}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/welcome-1"
-        component={Step1Welcome}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-1-1"
-        component={Step1GrabCityNew}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-1-2"
-        component={Step1GrabInterestingSelfIntroduction}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-1-3"
-        component={Step1GrabCameraEquipment}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/welcome-2"
-        component={Step2Welcome}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-2-1"
-        component={Step2IndicatePrice}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-2-2"
-        component={Step2DateAvailability}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-2-3"
-        component={Step2SetupMeetingPointA}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-2-4"
-        component={Step2InitiatePortofolio}
-      />
-      <PrivateRoute
-        path="/become-our-photographer/step-2-5"
-        component={Step2Done}
-      />
-      <PrivateRoute
-        path="/me/edit"
-        component={User}
-      />
-      <Route
-        path="/traveller-faq"
-        component={TravellerFaq}/>
-      <Route
-        path="/privacy-policy"
-        component={PrivacyPolicy}/>
-      <Route
-        path="/about-us"
-        component={AboutUs}/>
-      <Route
-        path="/packages"
-        component={Packages}/>
-      <Route
-        path="/contact-us"
-        component={ContactUs}/>
-      <Route
-        path="/photographer-faq"
-        component={PhotographerFaq}/>
-      <Route
-        path="/how-it-works"
-        component={HowItWorks}/>
-      <Route path="*" component={NotFoundPage} />
-    </Switch>
+    <ScrollToTop>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <PrivateRoute path="/booking/:photographerId/:reservationId" component={PhotographerBooking}/>
+        <Route path="/sign-in" component={SignIn} />
+        <Route path="/photographer/:photographerId" component={PhotographerDetail} />
+        <PrivateRoute path="/me/reservations/:reservationid" component={ReservationCreatedDetail} />
+        <Route path="/search" component={Search} />
+        <Route path="/traveller-registration" component={TravellerRegistration} />
+        <Route
+          path="/photographer-portofolio/:photographerId/gallery"
+          component={PortofolioGalleryyy}
+        />
+        <Route
+          path="/photographer-portofolio/:photographerId/about-me"
+          component={PortofolioAbout}
+        />
+        <Route
+          path="/welcome-photographer"
+          component={WelcomePhotographer}
+        />
+        <Route
+          path="/photographer-registration/s1"
+          component={PhotographerRegistrationStep1}
+        />
+        <Route
+          path="/photographer-registration/s1-checkmail"
+          component={PhotographerRegistrationStep1CheckMail}
+        />
+        <PrivateRoute
+          path="/photographer-registration/s2"
+          component={PhotographerRegistrationStep2}
+        />
+        <PrivateRoute
+          path="/photographer-registration/s3"
+          component={PhotographerRegistrationStep3}
+        />
+        <PrivateRoute
+          path="/photographer-registration/finish"
+          component={PhotographerRegistrationStepFinish}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/welcome-1"
+          component={Step1Welcome}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-1-1"
+          component={Step1GrabCityNew}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-1-2"
+          component={Step1GrabInterestingSelfIntroduction}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-1-3"
+          component={Step1GrabCameraEquipment}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/welcome-2"
+          component={Step2Welcome}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-2-1"
+          component={Step2IndicatePrice}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-2-2"
+          component={Step2DateAvailability}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-2-3"
+          component={Step2SetupMeetingPointA}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-2-4"
+          component={Step2InitiatePortofolio}
+        />
+        <PrivateRoute
+          path="/become-our-photographer/step-2-5"
+          component={Step2Done}
+        />
+        <PrivateRoute
+          path="/me/edit"
+          component={User}
+        />
+        <Route
+          path="/traveller-faq"
+          component={TravellerFaq}/>
+        <Route
+          path="/privacy-policy"
+          component={PrivacyPolicy}/>
+        <Route
+          path="/about-us"
+          component={AboutUs}/>
+        <Route
+          path="/packages"
+          component={Packages}/>
+        <Route
+          path="/contact-us"
+          component={ContactUs}/>
+        <Route
+          path="/photographer-faq"
+          component={PhotographerFaq}/>
+        <Route
+          path="/how-it-works"
+          component={HowItWorks}/>
+        <Route path="*" component={NotFoundPage} />
+      </Switch>
+    </ScrollToTop>
   </Router>
 );
 

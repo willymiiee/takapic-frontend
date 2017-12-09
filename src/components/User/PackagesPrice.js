@@ -110,7 +110,10 @@ class PackagesPrice extends Component {
     const key = tr[index].key;
 
     if (event.target.value !== '') {
-      packagesPrice[key].price = event.target.value;
+      // eslint-disable-next-line
+      let val = !event.target.value ? 0 : parseInt(event.target.value);
+      val = val <= 0 ? 0 : val;
+      packagesPrice[key].price = val;
     }
 
     this.setState({packagesPrice});

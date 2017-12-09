@@ -77,16 +77,15 @@ const PhoneNumberCollectFormik = Formik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     setTimeout(() => {
-      const phoneNumber = values.phoneNumberCountryCode + values.phoneNumber;
-      props.uploadPhonenumber(phoneNumber, props.reference);
+      props.uploadPhonenumber(values.phoneNumberCountryCode, values.phoneNumber, props.reference);
       setSubmitting(false);
     }, 1000);
   }
 })(PhoneNumberCollectForm);
 
 class PhotographerRegistrationStep3 extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       countries: [],
       phonenumber_country_code: '',
