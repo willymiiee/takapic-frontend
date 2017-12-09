@@ -13,9 +13,8 @@ import Page from '../components/Page';
 
 const fetchHomepageData = () => {
   return dispatch => {
-    const queryParams = 'filter[destination]=jakarta, indonesia&filter[date]=';
     axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/topPhotographers`)
       .then(response => {
         dispatch({
           type: 'HOMEPAGE_FETCH_TOP_PHOTOGRAPHERS_SUCCESS',
