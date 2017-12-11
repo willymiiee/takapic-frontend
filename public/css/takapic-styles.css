@@ -1253,6 +1253,9 @@ button.u:hover {
 
 #photographer-portofolio-left > img {
     width: 100%;
+    min-height: 190px;
+    max-height: 230px;
+    object-fit: cover;
 }
 
 #photographer-portofolio-left > .ratings {
@@ -1289,21 +1292,6 @@ button.u:hover {
     margin-bottom: 15px;
 }
 
-#photographer-portofolio-about ul {
-    list-style-type: disc;
-}
-
-#photographer-portofolio-about h3 {
-    margin: 0 0 0 8px;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-#photographer-portofolio-about .about-content {
-    margin: 0 0 0 -16px;
-    padding: 8px 0 16px 24px;
-    border-left: 1px solid #ddd;
-}
 
 #photographer-portofolio-about ul {
     list-style-type: disc;
@@ -1316,29 +1304,21 @@ button.u:hover {
 }
 
 #photographer-portofolio-about .about-content {
-    margin: 0 0 0 -16px;
-    padding: 8px 0 16px 24px;
+    padding: 10px 10px 10px 24px;
     border-left: 1px solid #ddd;
+}
+
+#photographer-portofolio-about .about-content li {
+    font-size: 14px;
 }
 
 .photographer-portofolio-about-heading-image-wrapper {
-  width: 960px;
-  height: auto;
+  width: auto;
+  height: 300px;
   padding-top: -webkit-calc(9 / 21 * 100%);
   padding-top: -moz-calc(9 / 21 * 100%);
   padding-top: calc(9 / 21 * 100%);
   position: relative;
-}
-
-@media (max-width: 480px) {
-  .photographer-portofolio-about-heading-image-wrapper {
-    width: 345px;
-    height: auto;
-    padding-top: -webkit-calc(9 / 21 * 100%);
-    padding-top: -moz-calc(9 / 21 * 100%);
-    padding-top: calc(9 / 21 * 100%);
-    position: relative;
-  }
 }
 
 .photographer-portofolio-about-heading-image-sub-wrapper {
@@ -1373,35 +1353,6 @@ button.u:hover {
     font-weight: bold;
 }
 
-#photographer-portofolio-package > div > span {
-    display: inline-block;
-    width: 80px;
-    margin: 0 5px 0 40px;
-}
-
-#photographer-portofolio-package .package {
-    margin: 16px 0 0 8px;
-}
-
-#photographer-portofolio-package .package .package-detail {
-    width: 150px;
-    float: left;
-}
-
-#photographer-portofolio-package .package .package-detail p {
-    margin-bottom: 0;
-}
-
-#photographer-portofolio-package .package .package-detail:last-child {
-    padding-left: 48px;
-    border-left: 1px solid #ddd;
-}
-
-#photographer-portofolio-package > div > span:after {
-    content: ':';
-    display: inline-block;
-    float: right;
-}
 
 #photographer-portofolio-reviews > div {
     font-size: 0;
@@ -1472,14 +1423,32 @@ button.u:hover {
 }
 
 .photographer-portofolio-nav-item {
-  padding: 3px 3px 3px 10px;
-  margin-bottom: 5px;
+  color: #707070;
+  padding: 6px;
+  text-align: center;
+  border-radius: 50px;
+  border: solid 1px #eee;
+  margin-bottom: 16px;
+  transition: 0.2s;
+}
+
+.photographer-portofolio-nav-item:hover {
+    background: #f4f4f4;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    border-left: 3px solid #707070;
+    padding: 7px;
+    text-align: center;
+    transition: 0.4s;
 }
 
 .photographer-portofolio-active-nav-item {
-  color: #FFFFFF;
-  background-color: #000000;
-  padding: 3px 3px 3px 10px;
+    background: #eee;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    border-left: 3px solid #707070;
+    padding: 7px;
+    text-align: center;
 }
 
 /*
@@ -3683,6 +3652,36 @@ MASONRY STYLES
     height: auto;
 }
 
+@media (max-width: 1239px) {
+    .cv-MasonryGallery-figure {
+        width: unset !important;
+    }
+    .cv-MasonryGallery div {
+        width: 50%;
+        transition: 0.5s;
+    }
+}
+
+@media (max-width: 767px ) and (min-width: 648px) {
+    .cv-MasonryGallery-figure {
+        width: unset !important;
+    }
+    .cv-MasonryGallery div {
+        width: 33%;
+        transition: 0.5s;
+    }
+}
+
+@media (max-width: 481px){
+    .cv-MasonryGallery-figure {
+        width: unset !important;
+    }
+    .cv-MasonryGallery div {
+        width: 100%;
+        transition: 0.5s;
+    }
+}
+
 /*
 ----------------------------------------------------------------------------
 PORTOFOLIO CONTENT MODAL
@@ -4270,13 +4269,18 @@ figcaption.action-btn a .fa {
     margin-top: 50px;
 }
 
-
 @media (min-width: 768px){
     .how-it-works-book{
         margin-top: 400px;
     }
     .how-it-works-hide {
         display: none;
+    }
+}
+
+@media (min-width: 1024px) {
+    .how-it-works-book{
+        margin-top:530px;
     }
 }
 
@@ -4344,4 +4348,11 @@ figcaption.action-btn a .fa {
     .list-of-meeting-points{
         padding-top:70px;
     }
+}
+
+.nav-tabs {
+    position: static !important;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }

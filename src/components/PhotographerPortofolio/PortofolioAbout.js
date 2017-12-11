@@ -105,53 +105,49 @@ class PortofolioAbout extends Component {
                     </div>
                   </div>
 
-                  <p>{ selfDescription }</p>
-
-                  <ul>
-                    <li>
-                      <h3>Equipment</h3>
-                      <div className="about-content">
-                        <ul>
-                          <li>
-                            <ul>
-                              <li><h3>Body</h3></li>
-                              <div className="about-content">
-                                { contentCameraEquipmentBodies }
-                              </div>
-                            </ul>
-                          </li>
-
-                          <li>
-                            <ul>
-                              <li><h3>Lens</h3></li>
-                              <div className="about-content">
-                                { contentCameraEquipmentLenses }
-                              </div>
-                            </ul>
-                          </li>
-                        </ul>
+                  <p className="self-description">{ selfDescription }</p>
+                  <hr/>
+                  <div className="row">
+                    <div className="equipment col-sm-6">
+                      <div className="icon-box-2" style={{marginTop:'0px'}}>
+                        <i className="im im-icon-Camera"/>
+                        <h3>Camera Equipment</h3>
                       </div>
-                    </li>
-
-                    <li>
-                      <h3>Language</h3>
-                      <div className="about-content">
-                        { languages ? languages.join(', ') : '' }
+                      <hr/>
+                      <div className="">
+                        <h3>Body</h3>
+                        <div className="about-content">
+                            { contentCameraEquipmentBodies }
+                        </div>
+                        <h3>Lens</h3>
+                        <div className="about-content">
+                            { contentCameraEquipmentLenses }
+                        </div>
                       </div>
-                    </li>
-
-                    <li id="photographer-portofolio-package">
-                      <h3>Package</h3>
-                      <div className="package">
-                        <div className="package-detail hour">
+                    </div>
+                    <div className="language col-sm-6">
+                      <div className="icon-box-2" style={{marginTop:'0px'}}>
+                        <i className="im im-icon-Camera"/>
+                        <h3>Language</h3>
+                      </div>
+                      <hr/>
+                      <div className="about-content">
+                          { languages ? languages.join(', ') : '' }
+                      </div>
+                    </div>
+                    <div className="package col-sm-12">
+                      <div className="icon-box-2" style={{marginTop:'0px'}}>
+                        <i className="im im-icon-Camera-2"/>
+                        <h3>Language</h3>
+                      </div>
+                      <div className="package-detail hour">
                           { contentPackageHours }
-                        </div>
-                        <div className="package-detail price">
-                          { contentPackagePrices }
-                        </div>
                       </div>
-                    </li>
-                  </ul>
+                      <div className="package-detail price">
+                          { contentPackagePrices }
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               {/**/}
