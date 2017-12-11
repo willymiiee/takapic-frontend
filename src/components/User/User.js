@@ -91,7 +91,7 @@ class User extends Component{
       const { photographerServiceInformation, activeTab, profile, tellThemThatWasSuccessOrFailedInfo } = this.props;
 
       return (
-        <Page>
+        <Page style={{whiteSpace:'normal'}}>
           <div className="padding-bottom-60"/>
           <div className="container">
 
