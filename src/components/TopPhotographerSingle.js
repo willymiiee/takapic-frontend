@@ -45,7 +45,7 @@ const TopPhotographerSingle = props => {
         }
       </div>*/}
 
-      <Link className="button" to={`/photographer/${uid}`}>
+      <Link className="button btn-photographer-detail" to={`/photographer/${uid}`}>
         Detail
       </Link>
     </div>

@@ -340,21 +340,17 @@ class BasicInformation extends Component {
         </FormGroup>
 
         <FormGroup controlId="formHorizontalPhoneNumber">
-          <Col componentClass={ControlLabel} sm={2}>
-            Phone number
-          </Col>
-          <Col sm={6}>
-            <InputGroup>
-              <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
-              <FormControl
-                type="text"
-                placeholder="Enter Your Phone Number"
-                value={values.phoneNumber}
-                onChange={this._handlePhoneNumberChange}
-                style={{marginTop:'7px', paddingLeft:'10px', color:'#333'}}
-              />
-            </InputGroup>
-          </Col>
+          Phone number
+          <InputGroup>
+            <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
+            <FormControl
+              type="text"
+              placeholder="Enter Your Phone Number"
+              value={values.phoneNumber}
+              onChange={this._handlePhoneNumberChange}
+              style={{height:'47px', paddingLeft:'10px', color:'#333'}}
+            />
+          </InputGroup>
         </FormGroup>
 
         <FormGroup controlId="formHorizontalCountry">

@@ -158,7 +158,7 @@ button.u:hover {
 }
 
 #nav-logo > img {
-    height: 30px;
+    height: 25px;
 }
 
 #nav-menu {
@@ -169,7 +169,7 @@ button.u:hover {
 
 #nav-menu > i,
 #nav-menu > div > a {
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
 }
 
@@ -220,6 +220,10 @@ button.u:hover {
     width: 50%;
     float: none;
     vertical-align: top;
+}
+
+#footer ul.footer-links li {
+    font-size: 14px;
 }
 
 #footer .bootstrap-select.btn-group {
@@ -356,19 +360,19 @@ button.u:hover {
 }
 
 #landing-page-top > img {
-    width: 18%;
+    width: 15%;
 }
 
 #landing-page-top > h1 {
     font-weight: bold;
     color: #fff;
-    font-size: 40px;
+    font-size: 30px;
     margin: 2vw 0 5px;
 }
 
 #landing-page-top > p {
     color: #fff;
-    font-size: 28px;
+    font-size: 18px;
 }
 
 /*#landing-page-search {
@@ -1554,8 +1558,8 @@ CLASSES
 }
 
 .profile-list .profile-picture {
-    width: 125px;
-    height: 125px;
+    width: 150px;
+    height: 150px;
     max-width: 100%;
     margin: 0 auto;
     border-radius: 99999px;
@@ -2863,7 +2867,7 @@ RESPONSIVE
 
 @media (min-width: 768px) and (max-width: 991px) {
     #nav-menu > div > a {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #footer .bootstrap-select.btn-group {
@@ -3756,6 +3760,7 @@ PORTOFOLIO CONTENT SLIDER
     padding-left: 16px;
     padding-right: 16px;
     text-transform: capitalize;
+    font-size: 16px;
 }
 
 .img-photographer-detail {
@@ -4049,13 +4054,39 @@ figcaption.action-btn a .fa {
   -moz-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
   background: #fff;
-  border-radius: 50px;
+  border-radius: 8px;
 }
 
 .search-box-custom-again .Select-control {
   background-color: transparent;
   border: none;
   text-align: left;
+  border-right: solid 1px #eee;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.react-datepicker__day--keyboard-selected{
+    border-radius: 50px !important;
+    background-color: #3AECCB !important;
+    padding: 5px;
+}
+.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+    width: 2.4em !important;
+}
+.react-datepicker__header {
+    background-color: white !important;
+    border-bottom: none !important;
+}
+.react-datepicker__day-name {
+    color: #aaa;
+}
+.react-datepicker__current-month{
+    margin-top: 10px !important;
+    margin-bottom: 16px;
+}
+.react-datepicker__navigation {
+    top: 26px !important;
 }
 
 .search-box-custom-again .Select-placeholder {
@@ -4081,6 +4112,14 @@ figcaption.action-btn a .fa {
   box-shadow: none;
   padding:0 10px !important;
   color: #aaa;
+  font-size:20px;
+}
+
+#search-box-home .Select-clear-zone {
+  display: none;
+}
+#search-box-home .Select-arrow-zone {
+  display: none;
 }
 
 .search-box-custom-again .search-box-submit {
@@ -4089,12 +4128,18 @@ figcaption.action-btn a .fa {
 }
 .search-box-submit button {
   margin-right: 4px;
-  margin-bottom: 2px;
-  margin-top: 2px;
+  margin-bottom: 1px;
+  margin-top: 1px;
+  padding:8px 20px;
 }
 
 .react-datepicker-wrapper, .react-datepicker__input-container{
   display: block !important;
+}
+
+.has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    font-size: 20px;
+    color: #959595 !important;
 }
 
 @media (max-width: 480px) {
@@ -4355,4 +4400,30 @@ figcaption.action-btn a .fa {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+}
+.radius-8 {
+    -webkit-border-radius: 8px !important;
+    -moz-border-radius: 8px !important;
+    border-radius: 8px !important;
+}
+.key-color{
+    background-color: #3AECCB !important;
+}
+
+#top-photographer-home .btn-photographer-detail {
+    /*take out button detail in homepage*/
+    display: none;
+}
+#top-photographer-home .slick-prev:before, #top-photographer-home .slick-next:before {
+    color: #aaa !important;
+    text-shadow: none !important;
+}
+#top-photographer-home .slick-prev, #top-photographer-home .slick-next {
+    top: 40%;
+}
+#top-photographer-home .slick-next {
+    right: 0px !important;
+}
+#top-photographer-home .slick-prev {
+    left: 0px !important;
 }

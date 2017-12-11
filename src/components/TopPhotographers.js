@@ -38,7 +38,7 @@ class TopPhotographers extends Component {
   render() {
     const { topPhotographers } = this.props;
     return (
-      <div id="photographer-list" className="profile-list">
+      <div id="photographer-list" className="profile-list" style={{marginBottom:'0px'}}>
         {
           topPhotographers &&
           topPhotographers.map((item, index) => <TopPhotographerSingle key={`top-photographer-${index}`} item={item}/>)
