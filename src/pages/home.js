@@ -118,7 +118,7 @@ class Home extends Component {
             <h1>{ intl.get('TAGLINE') }</h1>
             <p>{ intl.get('SUBHEADER') }</p>
 
-            <div className="search-box-custom-again" style={{ marginTop: '90px'}}>
+            <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '90px'}}>
               <div className="search-box-destination">
                 <Select.Async
                   multi={false}
@@ -127,21 +127,22 @@ class Home extends Component {
                   valueKey="label"
                   labelKey="label"
                   loadOptions={this.retrieveLocations}
-                  placeholder="Choose your destination or leave it empty to go Anywhere"
+                  placeholder="Anywhere"
                 />
               </div>
 
-              <div className="search-box-date">
+              <div className="search-box-date" id="select-date-home">
                 <DatePicker
                   dateFormat="MMMM Do YYYY"
                   selected={this.state.search.date}
                   onChange={this.handleSearchDateChange}
-                  placeholderText="Choose a date"
+                  placeholderText="Anytime"
                 />
               </div>
 
               <div className="search-box-submit">
-                <button className="button" onClick={this.handleSearchSubmit}>
+                <button className="button radius-8 key-color"
+                        onClick={this.handleSearchSubmit}>
                   <i className="fa fa-search"/>
                   <span>Search</span>
                 </button>
@@ -149,10 +150,10 @@ class Home extends Component {
             </div>
           </div>
 
-          <h1 className="title margin-bottom-40">Featured Destination</h1>
+          <h1 className="title margin-bottom-40" style={{fontSize:'24px'}}>Featured Destination</h1>
 
           <div className="text-right margin-bottom-10">
-            <Link to="/">See All</Link>
+            <Link to="/" style={{fontSize:'14px'}}>See All</Link>
           </div>
 
           <div className="row posters">
@@ -178,20 +179,22 @@ class Home extends Component {
             </div>
           </div>
 
-          <h1 className="title margin-bottom-50">Top Photographers</h1>
+          <div id="top-photographer-home">
+          <h1 className="title" style={{marginTop:'70px',marginBottom:'60px',fontSize:'24px'}}>Top Photographers</h1>
 
           {
             topPhotographers && !loadingHomepageData ? <TopPhotographers topPhotographers={topPhotographers}/> : null
           }
+          </div>
 
-          <h1 className="title">Why be a Takapic traveller?</h1>
+          <h1 className="title" style={{marginTop:'30px',marginBottom:'25px', fontSize:'24px'}}>Why be a Takapic traveller?</h1>
 
           <div className="row icons-container">
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">
                 <i className="im im-icon-Map2"/>
-                <h3>Travel like a local</h3>
-                <p>
+                <h3 style={{fontSize:'20px'}}>Travel like a local</h3>
+                <p style={{fontSize:'14px'}}>
                   Local photographers will guide you to the best locations in
                   their city so you will not feel like a tourist
                 </p>
@@ -201,8 +204,8 @@ class Home extends Component {
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">
                 <i className="im im-icon-Camera-5"/>
-                <h3>Capture your precious moments</h3>
-                <p>
+                <h3 style={{fontSize:'20px'}}>Capture your precious moments</h3>
+                <p style={{fontSize:'14px'}}>
                   Forget about selfies and photos taken by random strangers. You
                   will be in the hands of a talented photographer with a
                   creative eye ready to capture your best travel memories
@@ -213,8 +216,8 @@ class Home extends Component {
             <div className="col-sm-4">
               <div className="icon-box-2">
                 <i className="im im-icon-Checked-User"/>
-                <h3>Trust and Safety</h3>
-                <p>
+                <h3 style={{fontSize:'20px'}}>Trust and Safety</h3>
+                <p style={{fontSize:'14px'}}>
                   Only verified photographers are registered and you can view
                   ratings and reviews left by travellers like you!
                 </p>
