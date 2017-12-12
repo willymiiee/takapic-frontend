@@ -157,7 +157,7 @@ const App = (props) => (
           component={Step2Done}
         />
         <PrivateRoute
-          path="/me/edit"
+          path="/me/edit/photographer"
           component={User}
         />
         <Route
