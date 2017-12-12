@@ -124,7 +124,7 @@ class HowItWorks extends Component {
                 </Link>
               </div>
               <div className="embed-responsive embed-responsive-16by9">
-                <iframe className="embed-responsive-item" src="https://www.youtube.com/embed/Yy-9EVSWsSg"></iframe>
+                <iframe title="Video promo" className="embed-responsive-item" src="https://www.youtube.com/embed/Yy-9EVSWsSg"></iframe>
               </div>
 
             </div>
