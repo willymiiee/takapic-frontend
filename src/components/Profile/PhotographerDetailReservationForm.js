@@ -80,7 +80,7 @@ class PhotographerDetailReservationForm extends Component {
           packageId,
           startDateTime: startingDate + ' ' + startingTime,
           photographerFee,
-          serviceFee: Math.round(this.state.reservation.photographerFee * serviceFee),
+          serviceFee: Math.round(photographerFee * serviceFee),
           credit,
           total,
           status: RESERVATION_REQUESTED
@@ -106,7 +106,7 @@ class PhotographerDetailReservationForm extends Component {
 
   choosePackage = (event, value) => {
     event.stopPropagation();
-    const packageSelected = this.state.packagesPrice.filter(item => item.id === value);
+    const packageSelected = this.state.packagesPrice.filter(item => item.id === value)[0];
     const total = this.calculateTotal(value);
     const newCopyData = {
       ...this.state,
@@ -328,7 +328,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  reservationInitializeAction: (travellerId, information) => dispatch(reservationInitializeAction(travellerId, information))
+  reservationInitializeAction: (reservationId, information) => dispatch(reservationInitializeAction(reservationId, information))
 });
 
 export default withRouter(

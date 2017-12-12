@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Tabs, Tab } from "react-bootstrap";
-import history from '../../services/history';
 import {
   fetchPhotographerServiceInformation,
   resetPhotographerServiceInformationData,
@@ -51,12 +50,7 @@ class User extends Component{
     } = this.props;
 
     if (loading) {
-      if (userMetadata.userType === "photographer") {
-        const uid = userMetadata.uid;
-        this.props.fetchPhotographerServiceInformation(uid);
-      } else {
-        history.push('/');
-      }
+      this.props.fetchPhotographerServiceInformation(userMetadata.uid);
     }
   };
 
