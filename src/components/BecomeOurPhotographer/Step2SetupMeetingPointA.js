@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import uuidv4 from 'uuid/v4';
 import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
-import { dashify } from "../../helpers/helpers";
 
 import MapWithASearchBox from './../MapWithASearchBox';
 import Page from '../Page';
@@ -31,7 +30,7 @@ class Step2SetupMeetingPointA extends Component {
     } else {
       const {
         photographerServiceInfoStep2: { detailMasterPackage },
-        user: {uid, email, userMetadata: { accountProviderType }},
+        user: { uid },
         userInitProfile: { notAvailableDates }
       } = this.props;
 
@@ -47,19 +46,13 @@ class Step2SetupMeetingPointA extends Component {
         };
       });
 
-      let reference = '';
-      if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-      } else {
-        reference = dashify(email);
-      }
-
       const params = {
-        reference,
+        reference: uid,
         packagesPrice: detailMasterPackage,
         meetingPoints,
         notAvailableDates
       };
+
       this.props.setMeetingPoint(params);
     }
   };
@@ -69,7 +62,7 @@ class Step2SetupMeetingPointA extends Component {
     const specificLocation = get(params, 'specificLocation', '-');
 
     if (generalLocation && this.state.meetingPoints.length < 3) {
-      const meetingPoints = [...this.state.meetingPoints, { generalLocation, specificLocation }];
+      const meetingPoints = [ ...this.state.meetingPoints, { generalLocation, specificLocation } ];
       this.setState({ meetingPoints });
     }
   };
@@ -90,14 +83,11 @@ class Step2SetupMeetingPointA extends Component {
           <div className="row">
             <div className="col-md-8">
               <h4>Please choose three different meeting points</h4>
+              <hr/>
               {
                 this.state.mapLoaded && (
                   <MapWithASearchBox
                     handleAddition={this.handleAddition}
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places"
-                    loadingElement={<div style={{height: `100%`}}/>}
-                    containerElement={<div style={{height: `400px`}}/>}
-                    mapElement={<div style={{height: `100%`}}/>}
                   />)
               }
             </div>

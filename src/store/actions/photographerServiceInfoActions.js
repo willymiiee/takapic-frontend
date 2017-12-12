@@ -1,13 +1,24 @@
 import axios from 'axios';
 import get from 'lodash/get';
+import firebase from 'firebase';
 import { database } from '../../services/firebase';
 import history from '../../services/history';
+import queryString from "query-string";
 
 export const selfDescription = description => {
   return dispatch => {
     dispatch({
       type: 'BECOME_OUR_PHOTOGRAPHER_SELF_INTRO',
       payload: { selfDescription: description },
+    });
+  };
+};
+
+export const tellThemThatWasSuccessOrFailed = (whatsup) => {
+  return dispatch => {
+    dispatch({
+      type: 'PROFILE_MANAGER_TELL_THEM_THAT_WAS_SUCCESS_OR_FAILED',
+      payload: whatsup
     });
   };
 };
@@ -52,18 +63,8 @@ export const submitCameraEquipment = params => {
         languages,
         location,
         selfDescription,
-        // speciality,
-        serviceReviews: {
-          rating: {
-            label: 'Common',
-            value: 3
-          },
-          impressions: [
-            { label: 'Friendly', value: 0.5 },
-            { label: 'Skillful', value: 0.5 },
-            { label: 'Comprehensive', value: 0.5 }
-          ]
-        }
+        updated: firebase.database.ServerValue.TIMESTAMP,
+        // speciality
       })
       .then(() => {
         dispatch({
@@ -100,20 +101,35 @@ export const fetchPhotographerServiceInformation = (uid) => {
   };
 };
 
-export const fetchCurrenciesRates = () => {
+export const resetPhotographerServiceInformationData = () => {
   return dispatch => {
-    dispatch({
-      type: 'FETCH_CURRENCIES_RATES_LOADING'
-    });
+    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET' })
+  };
+};
 
-    const db = database.database();
-    const ratesRef = db.ref('/currency_exchange_rates');
-    ratesRef.once('value', snapshot => {
-      const rates = snapshot.val();
-      dispatch({
-        type: 'FETCH_CURRENCIES_RATES',
-        payload: rates
+export const fetchPhotographerListings = searchInfo => {
+  return dispatch => {
+    let { destination, date } = queryString.parse(searchInfo);
+    const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
+
+    dispatch({ type: 'FETCH_PHOTOGRAPHERS_LISTING_START' });
+
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .then(response => {
+        dispatch({
+          type: 'FETCH_PHOTOGRAPHERS_LISTING_SUCCESS',
+          payload: response.data.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
       });
-    });
+  };
+};
+
+export const resetListings = () => {
+  return dispatch => {
+    dispatch({ type: 'EMPTY_PHOTOGRAPHER_LISTINGS' });
   };
 };

@@ -6,7 +6,6 @@ import Yup from 'yup';
 import { connect } from 'react-redux';
 import { database } from '../../services/firebase';
 import { uploadPhonenumber } from '../../store/actions/userInitProfileActions';
-import { dashify } from "../../helpers/helpers";
 
 import 'react-select/dist/react-select.css';
 import Page from '../Page';
@@ -78,16 +77,15 @@ const PhoneNumberCollectFormik = Formik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     setTimeout(() => {
-      const phoneNumber = values.phoneNumberCountryCode + values.phoneNumber;
-      props.uploadPhonenumber(phoneNumber, props.reference);
+      props.uploadPhonenumber(values.phoneNumberCountryCode, values.phoneNumber, props.reference);
       setSubmitting(false);
     }, 1000);
   }
 })(PhoneNumberCollectForm);
 
 class PhotographerRegistrationStep3 extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       countries: [],
       phonenumber_country_code: '',
@@ -115,19 +113,8 @@ class PhotographerRegistrationStep3 extends Component {
   render() {
     const { countries } = this.state;
     const {
-      user: {
-        uid,
-        email,
-        userMetadata: { accountProviderType }
-      }
+      user: { uid }
     } = this.props;
-
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-      reference = 'googlecom-' + uid;
-    } else {
-      reference = dashify(email);
-    }
 
     return (
       <Page>
@@ -151,7 +138,7 @@ class PhotographerRegistrationStep3 extends Component {
               <PhoneNumberCollectFormik
                 countries={countries}
                 uploadPhonenumber={this.props.uploadPhonenumber}
-                reference={reference}
+                reference={uid}
               />
             </div>
           </div>

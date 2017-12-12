@@ -45,11 +45,9 @@ const countries = (state = {}, action) => {
   return state;
 };
 
-const currenciesRates = (state = { fetchCurrenciesRatesLoading: false }, action) => {
-  if (action.type === 'FETCH_CURRENCIES_RATES_LOADING') {
-    return { ...state, fetchCurrenciesRatesLoading: true };
-  } else if (action.type === 'FETCH_CURRENCIES_RATES') {
-    return { ...action.payload, fetchCurrenciesRatesLoading: false };
+const currenciesRates = (state = {}, action) => {
+  if (action.type === 'FETCH_CURRENCIES_RATES') {
+    return action.payload;
   }
   return state;
 };
@@ -73,15 +71,23 @@ const reservation = (state = {}, action) => {
   }
 };
 
-const photographerListings = (state = [], action) => {
-  if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING') {
-    return action.payload;
+const photographerListings = (state = { results: [], isFetching: false, isFetched: false }, action) => {
+  if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING_SUCCESS') {
+    return { ...state, results: action.payload, isFetching: false, isFetched: true };
+  } else if (action.type === 'FETCH_PHOTOGRAPHERS_LISTING_START') {
+    return { ...state, isFetching: true, isFetched: false };
   } else if (action.type === 'EMPTY_PHOTOGRAPHER_LISTINGS') {
-    return [];
+    return { ...state, results: [], isFetching: false, isFetched: false };
   }
   return state;
 };
 
+const tellThemThatWasSuccessOrFailed = (state = { whatsup: 'nothing' }, action) => {
+  if (action.type === 'PROFILE_MANAGER_TELL_THEM_THAT_WAS_SUCCESS_OR_FAILED') {
+    return { ...state, whatsup: action.payload };
+  }
+  return state;
+};
 
 const rootReducer = combineReducers({
   userAuth,
@@ -96,6 +102,7 @@ const rootReducer = combineReducers({
   currenciesRates,
   reservation,
   photographerListings,
+  tellThemThatWasSuccessOrFailed,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {
@@ -108,7 +115,7 @@ const rootReducer = combineReducers({
         return state;
     }
   },
-  profileUpdate,
+  profileUpdate
 });
 
 export default rootReducer;

@@ -8,6 +8,7 @@ import {
   Table,
 } from 'react-bootstrap';
 import { setPricing } from '../../store/actions/photographerServiceInfoActionsStep2';
+
 import Page from '../Page';
 
 class Step2IndicatePrice extends Component {
@@ -48,14 +49,20 @@ class Step2IndicatePrice extends Component {
     const { masterPackages } = this.state;
     const newMasterPackages = masterPackages.map(item => {
       if (item.id === itemId) {
+        // eslint-disable-next-line
+        let fixVal = !event.target.value ? 0 : parseInt(event.target.value);
+        fixVal = fixVal <= 0 ? 0 : fixVal;
         return Object.assign({}, item, {
-          // eslint-disable-next-line
-          price: parseInt(event.target.value)
+          price: fixVal
         });
       }
       return item;
     });
     this.setState({ masterPackages: newMasterPackages });
+  };
+
+  handleFocus = (evt) => {
+    evt.target.select();
   };
 
   handleSubmit = event => {
@@ -99,9 +106,10 @@ class Step2IndicatePrice extends Component {
                             <FormGroup style={{ marginBottom: 0 }}>
                               <InputGroup>
                                 <FormControl
-                                  type="text"
+                                  type="number"
                                   value={item.price}
                                   onChange={event => this.handleChange(event, item.id)}
+                                  onFocus={this.handleFocus}
                                 />
                                 <InputGroup.Button style={{ padding: 10 }}><p>{ currency }</p></InputGroup.Button>
                               </InputGroup>

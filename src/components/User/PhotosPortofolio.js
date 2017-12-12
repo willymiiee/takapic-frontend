@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ProgressBar, Button } from 'react-bootstrap';
+import isEqual from 'lodash/isEqual';
 
-import { dashify } from "../../helpers/helpers";
 import { uploadPhotosPortfolio } from '../../store/actions/profileUpdateActions';
 import { updateUserMetadataDefaultDisplayPicture } from "../../store/actions/photographerServiceInfoActionsStep2";
 
 class PhotosPortofolio extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       photosPortofolio: [],
       selectedPhotos: [],
       loading: false,
       loaded: false,
       percentages: [],
-      defaultDisplayPictureUrl: ''
+      defaultDisplayPictureUrl: '',
+      photosPortofolioDeleted: []
     };
   }
 
@@ -24,9 +25,20 @@ class PhotosPortofolio extends Component {
 
     if (data.photosPortofolio) {
       this.setState({
-        photosPortofolio: Object.keys(data.photosPortofolio).map(item => (data.photosPortofolio[item])),
+        photosPortofolio: data.photosPortofolio,
         defaultDisplayPictureUrl: data.userMetadata.defaultDisplayPictureUrl
-      })
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { photographerServiceInformation: { data: { photosPortofolio: photosPortofolioNext } } } = nextProps;
+    const { photographerServiceInformation: { data: { photosPortofolio: photosPortofolioPrev } } } = this.props;
+
+    if (!isEqual(photosPortofolioNext, photosPortofolioPrev)) {
+      this.setState({
+        photosPortofolio: typeof photosPortofolioNext === 'undefined' ? [] : photosPortofolioNext
+      });
     }
   }
 
@@ -65,23 +77,13 @@ class PhotosPortofolio extends Component {
     const {
       photographerServiceInformation: {
         data: {
-          userMetadata: {
-            accountProviderType,
-            uid,
-            email,
-          }
+          userMetadata: { uid }
         }
       }
     } = this.props;
     let { photosPortofolio } = this.state;
 
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-      reference = 'googlecom-' + uid;
-    } else {
-      reference = dashify(email);
-    }
-    updateUserMetadataDefaultDisplayPicture(reference, pictureUrl);
+    updateUserMetadataDefaultDisplayPicture(uid, pictureUrl);
     const newPhotosPortofolio = photosPortofolio.map((item, indexEuy) => {
       if (index === indexEuy) {
         return { ...item, defaultPicture: true };
@@ -93,12 +95,15 @@ class PhotosPortofolio extends Component {
   };
 
   handleRemoveFromFirebase = (event, index) => {
-    let { photosPortofolio } = this.state;
-    photosPortofolio = [
-      ...photosPortofolio.slice(0, index),
-      ...photosPortofolio.slice(index + 1),
-    ];
-    this.setState({ photosPortofolio });
+    const { photosPortofolio, photosPortofolioDeleted } = this.state;
+    const newPhotosPortofolio = photosPortofolio.filter((item, itemIndex) => index !== itemIndex);
+    const deletedFile = photosPortofolio.filter((item, itemIndex) => index === itemIndex);
+    photosPortofolioDeleted.push(deletedFile[0]);
+
+    this.setState({
+      photosPortofolio: newPhotosPortofolio,
+      photosPortofolioDeleted
+    });
   };
 
   handleUpdate = event => {
@@ -106,36 +111,17 @@ class PhotosPortofolio extends Component {
     const {
         photographerServiceInformation: {
           data: {
-            userMetadata: {
-              accountProviderType,
-              uid,
-              email,
-            }
+            userMetadata: { uid }
           }
         }
     } = this.props;
 
-    const state = this.state
-
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-    } else {
-        reference = dashify(email);
-    }
-
-    const params = {
-        reference,
-        state,
-        uid,
-    };
-
+    const params = { state: this.state, uid };
     this.props.uploadPhotosPortfolio(params);
-
   };
 
   render() {
-    const { selectedPhotos, photosPortofolio, defaultDisplayPictureUrl } = this.state;
+    const { selectedPhotos, photosPortofolio } = this.state;
     const { profile } = this.props;
 
     return (
@@ -143,93 +129,99 @@ class PhotosPortofolio extends Component {
         <div className="row">
           <div className="col-sm-7 margin-top-15 margin-bottom-30">
             <div>
-              <input
-                accept="image/*"
-                ref={ref => (this._uploadFile = ref)}
-                className="hidden"
-                multiple
-                type="file"
-                onChange={this.handleUpload}
-              />
-              <button
-                className="button"
-                onClick={() => this._uploadFile.click()}
-              >
-                Browse images
-              </button>
               <div id="photo-preview">
-                {photosPortofolio.map((photo, key) => (
-                  <div key={key}>
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                      }}
-                    />
-                    <img src={photo.url} alt="This is the alt text" />
-                    {!profile.loading && (
-                      <i
-                        title="Remove Photo"
-                        onClick={event => this.handleRemoveFromFirebase(event, key)}
-                      />
-                    )}
-
-                    {
-                      defaultDisplayPictureUrl === photo.url || photo.defaultPicture === true
-                        ? <span className="set-default-photo-profile-manager">Default photo</span>
-                        : (
-                          <a
-                            className="set-default-photo-profile-manager"
-                            title="Set this photo as default photo display"
-                            data-
-                            onClick={event => this.handleSetAsDefault(event, photo.url, key)}
-                          >
-                            Set as default
-                          </a>
-                        )
-                    }
-                  </div>
-                ))}
-                {selectedPhotos.map((photo, key) => (
-                  <div key={key}>
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                      }}
-                    />
-                    {profile.loading && (
-                      <ProgressBar
-                        striped
-                        bsStyle="success"
-                        now={
-                          profile.percentages[
-                            key
-                          ]
-                        }
+                {
+                  photosPortofolio.map((photo, key) => (
+                    <div key={key}>
+                      <div
                         style={{
                           position: 'absolute',
-                          top: 70,
+                          top: 0,
                           width: '100%',
+                          height: '100%',
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
                         }}
                       />
-                    )}
+                      <img src={photo.url} alt="This is the alt text" />
+                      {!profile.loading && (
+                        <i
+                          title="Remove Photo"
+                          onClick={event => this.handleRemoveFromFirebase(event, key)}
+                        />
+                      )}
 
-                    <img src={photo.reader} alt="This is the alt text" />
+                      {
+                        photo.defaultPicture
+                          ? <span className="set-default-photo-profile-manager">Default photo</span>
+                          : (
+                            <a
+                              className="set-default-photo-profile-manager"
+                              title="Set this photo as default photo display"
+                              data-
+                              onClick={event => this.handleSetAsDefault(event, photo.url, key)}
+                            >
+                              Set as default
+                            </a>
+                          )
+                      }
+                    </div>
+                  ))
+                }
 
-                    {
-                      !profile.loading && (
-                        <i title="Remove Photo" onClick={event => this.handleRemove(event, key)}/>
-                      )
-                    }
-                  </div>
-                ))}
+                {
+                  selectedPhotos.map((photo, key) => (
+                    <div key={key}>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                        }}
+                      />
+
+                      {
+                        profile.hasOwnProperty('percentages') && profile.percentages.length > 0 && (
+                          <ProgressBar
+                            striped
+                            bsStyle="success"
+                            now={profile.percentages[key]}
+                            style={{
+                              position: 'absolute',
+                              top: 70,
+                              width: '100%',
+                            }}
+                          />
+                        )
+                      }
+
+                      <img src={photo.reader} alt="This is the alt text" />
+
+                      {
+                        !profile.loading && (
+                          <i title="Remove Photo" onClick={event => this.handleRemove(event, key)}/>
+                        )
+                      }
+                    </div>
+                  ))
+                }
+              </div>
+              <div style={{marginTop:'40px'}}>
+                <input
+                    accept="image/*"
+                    ref={ref => (this._uploadFile = ref)}
+                    className="hidden"
+                    multiple
+                    type="file"
+                    onChange={this.handleUpload}
+                />
+                <button
+                    className="button"
+                    onClick={() => this._uploadFile.click()}
+                >
+                  Browse images
+                </button>
               </div>
             </div>
           </div>

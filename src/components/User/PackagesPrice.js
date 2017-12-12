@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux';
-import { FormGroup, FormControl, Table , InputGroup, Button } from 'react-bootstrap'
-
-import {dashify} from "../../helpers/helpers";
+import { connect } from 'react-redux';
+import { FormGroup, FormControl, Table, InputGroup, Button } from 'react-bootstrap'
+import isEqual from 'lodash/isEqual';
 
 import { updatePackagesPrice } from '../../store/actions/profileUpdateActions';
 
@@ -38,78 +37,103 @@ class PackagesPrice extends Component {
   }
 
   componentWillMount() {
-    this.setStatePackagePrice();
-    this.setStateCurrency();
+    this.setStatePackagePrice(this.props);
+    this.setStateCurrency(this.props);
   }
 
-  setStatePackagePrice = () => {
-    const { photographerServiceInformation : { data } } = this.props
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.photographerServiceInformation.data, this.props.photographerServiceInformation.data)) {
+      this.setStatePackagePrice(nextProps);
+      this.setStateCurrency(nextProps);
+    }
+  }
+
+  setStatePackagePrice = (props) => {
+    const { photographerServiceInformation: { data } } = props;
 
     if (data.packagesPrice) {
       let packagesPrice = data.packagesPrice;
       this.setState({
         packagesPrice: packagesPrice
-      })
-    }
-  }
+      });
 
-  setStateCurrency = () => {
+    } else {
+      const initialPackagesPrice = [
+        {
+          id: 'PKG1',
+          packageName: '1 hour',
+          requirement: 'Minimum 30 photos',
+          price: 0
+        },
+        {
+          id: 'PKG2',
+          packageName: '2 hours',
+          requirement: 'Minimum 60 photos',
+          price: 0
+        },
+        {
+          id: 'PKG3',
+          packageName: '4 hours',
+          requirement: 'Minimum 120 photos',
+          price: 0
+        },
+        {
+          id: 'PKG4',
+          packageName: '8 hours',
+          requirement: 'Minimum 200 photos',
+          price: 0
+        }
+      ];
+      this.setState({ packagesPrice: initialPackagesPrice });
+    }
+  };
+
+  setStateCurrency = (props) => {
     const {
-      photographerServiceInformation : {
-        data : {
+      photographerServiceInformation: {
+        data: {
           userMetadata
         }
       }
-    } = this.props
+    } = props;
 
     if (userMetadata) {
       this.setState({
         currency: userMetadata.currency
-      })
+      });
     }
-  }
+  };
 
   handleChange = (event, tr, index) => {
     event.preventDefault();
-    const { packagesPrice } = this.state;
+    const {packagesPrice} = this.state;
     const key = tr[index].key;
 
     if (event.target.value !== '') {
-      packagesPrice[key].price = event.target.value;
+      // eslint-disable-next-line
+      let val = !event.target.value ? 0 : parseInt(event.target.value);
+      val = val <= 0 ? 0 : val;
+      packagesPrice[key].price = val;
     }
 
-    this.setState({ packagesPrice });
+    this.setState({packagesPrice});
+  };
+
+  handleFocus = (evt) => {
+    evt.target.select();
   };
 
   handleUpdate = event => {
     event.preventDefault();
     const {
-        photographerServiceInformation: {
-          data: {
-            userMetadata: {
-              accountProviderType,
-              uid,
-              email,
-            }
-          }
+      photographerServiceInformation: {
+        data: {
+          userMetadata: { uid }
         }
+      }
     } = this.props;
 
-    const state = this.state
-
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-    } else {
-        reference = dashify(email);
-    }
-
-    const params = {
-        reference,
-        state,
-        uid,
-    };
-
+    const params = {state: this.state, uid};
     this.props.updatePackagesPrice(params);
   };
 
@@ -130,36 +154,36 @@ class PackagesPrice extends Component {
           <div className="col-sm-7 margin-top-15 margin-bottom-30">
             <Table striped bordered condensed hover>
               <thead>
-                <tr>
-                  <th>Package</th>
-                  <th>Requirement</th>
-                  <th>Your Price</th>
-                </tr>
+              <tr>
+                <th>Package</th>
+                <th>Requirement</th>
+                <th>Your Price</th>
+              </tr>
               </thead>
               <tbody>
-                {tr.map((td, kk) => {
-                  return (
-                    <tr key={kk}>
-                      <td>{td.packageName}</td>
-                      <td>{td.requirement}</td>
-                      <td>
-                        <FormGroup style={{ marginBottom: 0 }}>
-                          <InputGroup>
-                            <FormControl
-                              type="number"
-                              value={td.price}
-                              onChange={event =>
-                                this.handleChange(event, tr, kk)}
-                            />
-                            <InputGroup.Button style={{ padding: 10 }}>
-                              <p>{ this.state.currency }</p>
-                            </InputGroup.Button>
-                          </InputGroup>
-                        </FormGroup>
-                      </td>
-                    </tr>
-                  );
-                })}
+              {tr.map((td, kk) => {
+                return (
+                  <tr key={kk}>
+                    <td>{td.packageName}</td>
+                    <td>{td.requirement}</td>
+                    <td>
+                      <FormGroup style={{marginBottom: 0}}>
+                        <InputGroup>
+                          <FormControl
+                            type="number"
+                            value={td.price}
+                            onChange={event => this.handleChange(event, tr, kk)}
+                            onFocus={this.handleFocus}
+                          />
+                          <InputGroup.Button style={{padding: 10}}>
+                            <p>{this.state.currency}</p>
+                          </InputGroup.Button>
+                        </InputGroup>
+                      </FormGroup>
+                    </td>
+                  </tr>
+                );
+              })}
               </tbody>
             </Table>
           </div>
@@ -180,7 +204,7 @@ class PackagesPrice extends Component {
         </div>
         <div className="row">
           <hr/>
-          <Button onClick={this.handleUpdate} style={{float:'right'}} className="button">Update</Button>
+          <Button onClick={this.handleUpdate} style={{float: 'right'}} className="button">Update</Button>
         </div>
       </div>
     );
@@ -188,8 +212,8 @@ class PackagesPrice extends Component {
 }
 
 export default connect(
-    null,
-    dispatch => ({
-        updatePackagesPrice: paramsObject => dispatch(updatePackagesPrice(paramsObject))
-    })
+  null,
+  dispatch => ({
+    updatePackagesPrice: paramsObject => dispatch(updatePackagesPrice(paramsObject))
+  })
 )(PackagesPrice);

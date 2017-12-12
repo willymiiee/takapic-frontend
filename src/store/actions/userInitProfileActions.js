@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import { database } from '../../services/firebase';
 import history from '../../services/history';
 
@@ -6,7 +7,7 @@ const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(reference);
 
-  userRef.update({ photoProfileUrl });
+  userRef.update({ photoProfileUrl, updated: firebase.database.ServerValue.TIMESTAMP });
 };
 
 export const imageSelectedAction = fileObject => {
@@ -25,7 +26,7 @@ export const imageSelectedAction = fileObject => {
   };
 };
 
-export const uploadPhotoProfile = (fileObject, reference, displayName) => {
+export const uploadPhotoProfile = (fileObject, uid, displayName) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHOTO_PROFILE_START' });
 
@@ -37,7 +38,7 @@ export const uploadPhotoProfile = (fileObject, reference, displayName) => {
     }
 
     const storageRef = database.storage().ref();
-    const photoPath = `pictures/user-photo-profile/${reference}${fileExt}`;
+    const photoPath = `pictures/user-photo-profile/${uid}${fileExt}`;
     const pictureRef = storageRef.child(photoPath);
 
     pictureRef
@@ -54,7 +55,7 @@ export const uploadPhotoProfile = (fileObject, reference, displayName) => {
           photoURL: downloadURL,
         });
 
-        updateUserMetadataPhotoProfile(reference, downloadURL);
+        updateUserMetadataPhotoProfile(uid, downloadURL);
 
         dispatch({
           type: 'USER_AUTH_UPDATE_PROFILE',
@@ -72,7 +73,7 @@ export const uploadPhotoProfile = (fileObject, reference, displayName) => {
   };
 };
 
-export const uploadPhonenumber = (phonenumber, reference) => {
+export const uploadPhonenumber = (phoneNumberCountryCode, phoneNumber, reference) => {
   return dispatch => {
     dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_START ' });
 
@@ -80,14 +81,16 @@ export const uploadPhonenumber = (phonenumber, reference) => {
     const metadataRef = ref.child(reference);
     metadataRef
       .update({
-        phoneNumber: phonenumber,
+        phoneDialCode: phoneNumberCountryCode,
+        phoneNumber,
         firstLogin: false,
+        updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
         dispatch({ type: 'USER_INIT_PROFILE_UPLOAD_PHONENUMBER_SUCCESS ' });
         dispatch({
           type: 'USER_AUTH_UPDATE_METADATA',
-          payload: { phoneNumber: phonenumber, firstLogin: false },
+          payload: { phoneDialCode: phoneNumberCountryCode, phoneNumber, firstLogin: false },
         });
         history.push('/photographer-registration/finish');
       })

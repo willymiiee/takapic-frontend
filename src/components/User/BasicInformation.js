@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Select from "react-select";
 import {
   Form,
@@ -7,16 +7,17 @@ import {
   Col,
   ControlLabel,
   FormControl,
-  Button
+  Button,
+  InputGroup
 } from "react-bootstrap";
+import size from 'lodash/size';
+import isEqual from 'lodash/isEqual';
 
-import {dashify} from "../../helpers/helpers";
-
-import {updateBasicInformation} from '../../store/actions/profileUpdateActions';
+import { updateBasicInformation } from '../../store/actions/profileUpdateActions';
 
 class BasicInformation extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       languages: [
         "English",
@@ -71,6 +72,7 @@ class BasicInformation extends Component {
         fileImage: false,
         name: "",
         selfDescription: "",
+        phoneDialCode: "",
         phoneNumber: "",
         city: {
           label: "",
@@ -82,80 +84,109 @@ class BasicInformation extends Component {
   }
 
   componentWillMount() {
-    const {
-      photographerServiceInformation,
-      photographerServiceInformation : {
-        data : { userMetadata, selfDescription }
-      },
-      state: { currencies }
-    } = this.props;
-    const { location, selected, values } = this.state;
+    this.setLocalState(this.props);
+  }
 
-    if (photographerServiceInformation && userMetadata) {
-      const currency = currencies[photographerServiceInformation.data.location.country];
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps, this.props)) {
+      this.setLocalState(nextProps);
+    }
+  }
 
-      location.country = photographerServiceInformation.data.location.country || "";
-      location.countryName = photographerServiceInformation.data.location.countryName || "";
-      location.locationAdmLevel1 = photographerServiceInformation.data.location.locationAdmLevel1 || "";
-      location.locationAdmLevel2 = photographerServiceInformation.data.location.locationAdmLevel2 || "";
-      location.locationMerge = photographerServiceInformation.data.location.locationMerge
+  setLocalState(props) {
+    const { photographerServiceInformation: { data } } = props;
+
+    if (size(data) < 3) {
+      const { photographerServiceInformation: { data: { userMetadata } } } = props;
+      const { values } = this.state;
 
       values.photoProfileUrl = userMetadata.photoProfileUrl || "";
       values.name = userMetadata.displayName || "";
-      values.selfDescription = selfDescription || "";
       values.phoneNumber = userMetadata.phoneNumber || "";
-      values.city.label = location.locationAdmLevel2 || "";
-      values.city.value = location.locationAdmLevel2 || "";
-      values.currency = currency;
 
-      selected.languages = photographerServiceInformation.data.languages || [];
+      this.setState({ values });
 
-      this.setState({
-        location,
-        values,
-        selected
-      });
+    } else {
+      const {
+        photographerServiceInformation,
+        photographerServiceInformation: {
+          data: {userMetadata, selfDescription}
+        },
+        state: {currencies}
+      } = props;
+
+      const {location, selected, values} = this.state;
+
+      if (photographerServiceInformation && userMetadata) {
+        const currency = currencies[photographerServiceInformation.data.location.country];
+
+        location.country = photographerServiceInformation.data.location.country || "";
+        location.countryName = photographerServiceInformation.data.location.countryName || "";
+        location.locationAdmLevel1 = photographerServiceInformation.data.location.locationAdmLevel1 || "";
+        location.locationAdmLevel2 = photographerServiceInformation.data.location.locationAdmLevel2 || "";
+        location.locationMerge = photographerServiceInformation.data.location.locationMerge
+
+        values.photoProfileUrl = userMetadata.photoProfileUrl || "";
+        values.name = userMetadata.displayName || "";
+        values.selfDescription = selfDescription || "";
+        values.phoneDialCode = userMetadata.phoneDialCode;
+        values.phoneNumber = userMetadata.phoneNumber || "";
+        values.city.label = location.locationAdmLevel2 || "";
+        values.city.value = location.locationAdmLevel2 || "";
+        values.currency = currency;
+
+        selected.languages = photographerServiceInformation.data.languages || [];
+
+        this.setState({
+          location,
+          values,
+          selected
+        });
+      }
     }
   }
 
   browsePhotoProfile = event => {
     event.preventDefault();
     this.imageSelectedAction(event.target.files[0]);
-  }
+  };
 
   imageSelectedAction = fileObject => {
-    let { values } = this.state;
+    let {values} = this.state;
     let fileReader = new FileReader();
 
     fileReader.onloadend = () => {
       values.fileImage = fileObject;
       values.photoProfileUrl = fileReader.result;
-      this.setState({ values });
+      this.setState({values});
     };
     fileReader.readAsDataURL(fileObject);
-  }
+  };
 
   _handleNameChange = event => {
-    const { values } = this.state;
+    const {values} = this.state;
     values.name = event.target.value;
-    this.setState({ values });
+    this.setState({values});
   };
 
   _handleSelfDescriptionChange = event => {
-    const { values } = this.state;
+    const {values} = this.state;
     values.selfDescription = event.target.value;
-    this.setState({ values });
+    this.setState({values});
   };
 
   _handlePhoneNumberChange = event => {
-    const { values } = this.state;
-    values.phoneNumber = event.target.value;
-    this.setState({ values });
+    const re = /^[0-9\b]+$/;
+    if (event.target.value === '' || re.test(event.target.value)) {
+      const { values } = this.state;
+      values.phoneNumber = event.target.value;
+      this.setState({ values });
+    }
   };
 
   _handleSelectCountry = selectChoice => {
-    const { location, values } = this.state;
-    const { state : { currencies } } = this.props;
+    const {location, values} = this.state;
+    const {state: {currencies}} = this.props;
 
     if (selectChoice) {
       const currency = currencies[selectChoice.value];
@@ -165,17 +196,17 @@ class BasicInformation extends Component {
       }
 
       location.country = selectChoice.value;
-      location.countryName = selectChoice.label
+      location.countryName = selectChoice.label;
       location.continent = selectChoice.continent || "";
 
       values.currency = currency;
 
-      this.setState({ location, values });
+      this.setState({location, values});
     }
   };
 
   _resetCity = () => {
-    const { location, values } = this.state
+    const {location, values} = this.state
 
     location.locationAdmLevel1 = "";
     location.locationAdmLevel2 = "";
@@ -195,7 +226,7 @@ class BasicInformation extends Component {
 
   _getCities = input => {
     if (!input) {
-      return Promise.resolve({ options: [] });
+      return Promise.resolve({options: []});
     }
 
     const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
@@ -205,13 +236,13 @@ class BasicInformation extends Component {
     )
       .then(response => response.json())
       .then(results => {
-        return { options: results.data };
+        return {options: results.data};
       });
   };
 
   _handleSelectCity = selectChoice => {
     if (selectChoice) {
-      const { location, values } = this.state;
+      const {location, values} = this.state;
 
       values.city.label = selectChoice.value;
       values.city.value = selectChoice.value;
@@ -227,207 +258,163 @@ class BasicInformation extends Component {
   };
 
   _handleSelectLanguages = value => {
-    const { selected } = this.state;
+    const {selected} = this.state;
     const languages = value.map(item => item.value);
     selected.languages = languages;
-    this.setState({ selected });
+    this.setState({selected});
   };
 
   handleUpdate = event => {
     event.preventDefault();
     const {
-        photographerServiceInformation: {
-          data: {
-            userMetadata: {
-              accountProviderType,
-              uid,
-              email,
-            }
-          }
+      photographerServiceInformation: {
+        data: {
+          userMetadata: {uid}
         }
+      }
     } = this.props;
 
-    const state = this.state
-
-    let reference = '';
-    if (accountProviderType === 'google.com') {
-        reference = 'googlecom-' + uid;
-    } else {
-        reference = dashify(email);
-    }
-
-    const params = {
-        reference,
-        state,
-        uid,
-    };
-
+    const params = {state: this.state, uid};
     this.props.updateBasicInformation(params);
-
-  };
-
-  notEmpty = arr => {
-      return arr.length > 0 && arr[0] !== '';
   };
 
   render() {
-    const {
-      state
-    } = this.props;
-
-    const { languages, location, selected, values } = this.state;
+    const {state} = this.props;
+    const {languages, location, selected, values} = this.state;
 
     return (
-      <Form horizontal>
+      <Form>
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2} />
-          <Col sm={6}>
-            <div id="profile-dragarea">
-              <div
-                id="filedrag-photo"
-                className="center-block img-responsive">
-                <div className="ph">
-                  {values.photoProfileUrl && (
-                    <img
-                      src={values.photoProfileUrl}
-                      className="center-block img-circle img-profile"
-                      alt="This is alt text"
-                    />
-                  )}
-                </div>
+          <div id="profile-dragarea">
+            <div
+              id="filedrag-photo"
+              className="center-block img-responsive">
+              <div className="ph">
+                {values.photoProfileUrl && (
+                  <img
+                    src={values.photoProfileUrl}
+                    className="center-block img-circle img-profile"
+                    alt="This is alt text"
+                  />
+                )}
               </div>
             </div>
-            <div className="browse-profile-holder" style={{ marginTop: '10px' }}>
-              <div className="browse-profile-btn">
-                <span>Browse</span>
-                <input
-                  className="input-file choose-file"
-                  id="btn-choose-profile"
-                  type="file"
-                  name=""
-                  onChange={this.browsePhotoProfile}
-                />
-              </div>
-              <div className="input-profile-name">
-                { values.fileImage ? values.fileImage.name : 'Choose file' }
-              </div>
+          </div>
+          <div className="browse-profile-holder" style={{marginTop: '30px'}}>
+            <div className="browse-profile-btn">
+              <span>Browse</span>
+              <input
+                className="input-file choose-file"
+                id="btn-choose-profile"
+                type="file"
+                name=""
+                onChange={this.browsePhotoProfile}
+              />
             </div>
-          </Col>
+            <div className="input-profile-name">
+              {values.fileImage ? values.fileImage.name : 'Choose file'}
+            </div>
+          </div>
         </FormGroup>
-
+        <hr/>
         <FormGroup controlId="formHorizontalName">
-          <Col componentClass={ControlLabel} sm={2}>
             Name
-          </Col>
-          <Col sm={6}>
             <FormControl
+              style={{marginTop:'7px', paddingLeft:'10px', color:'#333'}}
               type="text"
               placeholder="Enter Your Name"
               value={values.name}
               onChange={this._handleNameChange}
             />
-          </Col>
         </FormGroup>
 
         <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            Self Description
-          </Col>
-          <Col sm={6}>
-            <textarea
-              name="selfDescription"
-              placeholder="Enter Your Self Description"
-              value={values.selfDescription}
-              onChange={this._handleSelfDescriptionChange}
-            />
-          </Col>
+          Self Description
+          <textarea
+            name="selfDescription"
+            style={{padding:'16px 10px',marginTop:'7px', color:'#333'}}
+            placeholder="Enter Your Self Description"
+            value={values.selfDescription}
+            onChange={this._handleSelfDescriptionChange}
+          />
         </FormGroup>
 
         <FormGroup controlId="formHorizontalPhoneNumber">
-          <Col componentClass={ControlLabel} sm={2}>
-            Phone Number
-          </Col>
-          <Col sm={6}>
+          Phone number
+          <InputGroup>
+            <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
             <FormControl
               type="text"
               placeholder="Enter Your Phone Number"
               value={values.phoneNumber}
               onChange={this._handlePhoneNumberChange}
+              style={{height:'47px', paddingLeft:'10px', color:'#333'}}
             />
-          </Col>
+          </InputGroup>
         </FormGroup>
 
         <FormGroup controlId="formHorizontalCountry">
-          <Col componentClass={ControlLabel} sm={2}>
-            Country
-          </Col>
-          <Col sm={6}>
-            <Select
-              name="country"
-              value={location.country}
-              options={state.countries}
-              clearable={false}
-              onChange={this._handleSelectCountry}
-            />
-          </Col>
+          Country
+          <Select
+            style={{marginTop:'7px'}}
+            name="country"
+            value={location.country}
+            options={state.countries}
+            clearable={false}
+            onChange={this._handleSelectCountry}
+          />
         </FormGroup>
 
         <FormGroup controlId="formHorizontalCity">
-          <Col componentClass={ControlLabel} sm={2}>
-            City
-          </Col>
-          <Col sm={6}>
-            <Select.Async
-              multi={false}
-              value={values.city}
-              onChange={this._handleSelectCity}
-              valueKey="value"
-              labelKey="label"
-              loadOptions={this._getCities}
-              placeholder={
-                location.country ? (
-                  "Search and choose your city"
-                ) : (
-                  "Please select a country first"
-                )
-              }
-              disabled={!location.country}
-              filterOption={() => (true)}
-            />
-          </Col>
+          City
+          <Select.Async
+            style={{marginTop:'7px'}}
+            multi={false}
+            value={values.city}
+            onChange={this._handleSelectCity}
+            valueKey="value"
+            labelKey="label"
+            loadOptions={this._getCities}
+            placeholder={
+              location.country ? (
+                "Search and choose your city"
+              ) : (
+                "Please select a country first"
+              )
+            }
+            disabled={!location.country}
+            filterOption={() => (true)}
+          />
         </FormGroup>
 
         <FormGroup controlId="formHorizontalLanguageSpoken">
-          <Col componentClass={ControlLabel} sm={2}>
-            Language Spoken
-          </Col>
-          <Col sm={6}>
-            <Select
-              placeholder="Select your language"
-              options={languages.map(item => ({
-                label: item,
-                value: item,
-                style: {
-                  margin: "5px 0px 5px 5px"
-                }
-              }))}
-              multi={true}
-              value={selected.languages}
-              onChange={this._handleSelectLanguages}
-            />
-          </Col>
+          Language Spoken
+          <Select
+            className="line-height-minimum"
+            style={{marginTop:'7px'}}
+            placeholder="Select your language"
+            options={languages.map(item => ({
+              label: item,
+              value: item,
+              style: {
+                margin: "5px 0px 5px 5px"
+              }
+            }))}
+            multi={true}
+            value={selected.languages}
+            onChange={this._handleSelectLanguages}
+          />
         </FormGroup>
-
         <hr/>
-        <Button onClick={this.handleUpdate} style={{float:'right'}} className="button">Update</Button>
+        <Button onClick={this.handleUpdate} style={{float: 'right'}} className="button">Update Profile</Button>
       </Form>
     );
   }
 }
 
 export default connect(
-    null,
-    dispatch => ({
-        updateBasicInformation: paramsObject => dispatch(updateBasicInformation(paramsObject))
-    })
+  null,
+  dispatch => ({
+    updateBasicInformation: paramsObject => dispatch(updateBasicInformation(paramsObject))
+  })
 )(BasicInformation);

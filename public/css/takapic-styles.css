@@ -158,7 +158,7 @@ button.u:hover {
 }
 
 #nav-logo > img {
-    height: 30px;
+    height: 25px;
 }
 
 #nav-menu {
@@ -169,7 +169,7 @@ button.u:hover {
 
 #nav-menu > i,
 #nav-menu > div > a {
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
 }
 
@@ -220,6 +220,10 @@ button.u:hover {
     width: 50%;
     float: none;
     vertical-align: top;
+}
+
+#footer ul.footer-links li {
+    font-size: 14px;
 }
 
 #footer .bootstrap-select.btn-group {
@@ -356,19 +360,19 @@ button.u:hover {
 }
 
 #landing-page-top > img {
-    width: 18%;
+    width: 15%;
 }
 
 #landing-page-top > h1 {
     font-weight: bold;
     color: #fff;
-    font-size: 40px;
+    font-size: 30px;
     margin: 2vw 0 5px;
 }
 
 #landing-page-top > p {
     color: #fff;
-    font-size: 28px;
+    font-size: 18px;
 }
 
 /*#landing-page-search {
@@ -1151,19 +1155,52 @@ button.u:hover {
 }
 
 #photo-preview {
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     line-height: 0;
     font-size: 0;
 }
 
 #photo-preview > div {
     display: inline-block;
-    width: 160px;
-    height: 160px;
+    width: 167px;
+    height: 167px;
     overflow: hidden;
     position: relative;
     margin: 0 5px 5px 0;
 }
+
+/*cover all size photo on gallery*/
+@media (max-width: 420px) {
+    #photo-preview > div {
+        width: 100%;
+        height: 167px;
+    }
+}
+@media (min-width: 421px) and (max-width: 548px) {
+    #photo-preview > div {
+        width: 48%;
+        height: 167px;
+    }
+}
+@media (min-width: 549px) and (max-width: 767px) {
+    #photo-preview > div {
+        width: 32%;
+        height: 160px;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    #photo-preview > div {
+        width: 48%;
+        height: 167px;
+    }
+}
+@media (min-width: 992px) {
+    #photo-preview > div {
+        width: 31%;
+        height: 167px;
+    }
+}
+
 
 #photo-preview > div > img {
     object-fit: cover;
@@ -1220,6 +1257,9 @@ button.u:hover {
 
 #photographer-portofolio-left > img {
     width: 100%;
+    min-height: 190px;
+    max-height: 230px;
+    object-fit: cover;
 }
 
 #photographer-portofolio-left > .ratings {
@@ -1256,21 +1296,6 @@ button.u:hover {
     margin-bottom: 15px;
 }
 
-#photographer-portofolio-about ul {
-    list-style-type: disc;
-}
-
-#photographer-portofolio-about h3 {
-    margin: 0 0 0 8px;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-#photographer-portofolio-about .about-content {
-    margin: 0 0 0 -16px;
-    padding: 8px 0 16px 24px;
-    border-left: 1px solid #ddd;
-}
 
 #photographer-portofolio-about ul {
     list-style-type: disc;
@@ -1283,9 +1308,46 @@ button.u:hover {
 }
 
 #photographer-portofolio-about .about-content {
-    margin: 0 0 0 -16px;
-    padding: 8px 0 16px 24px;
+    padding: 10px 10px 10px 24px;
     border-left: 1px solid #ddd;
+}
+
+#photographer-portofolio-about .about-content li {
+    font-size: 14px;
+}
+
+.photographer-portofolio-about-heading-image-wrapper {
+    width: auto;
+    height: 300px;
+    padding-top: -webkit-calc(9 / 21 * 100%);
+    padding-top: -moz-calc(9 / 21 * 100%);
+    padding-top: calc(9 / 21 * 100%);
+    position: relative;
+}
+
+.photographer-portofolio-about-heading-image-sub-wrapper {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.photographer-portofolio-about-heading-image-wrapper img {
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+
+    transition: opacity 150ms ease-in;
+    -webkit-transition: opacity 150ms ease-in;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 #photographer-portofolio-tags a {
@@ -1295,35 +1357,6 @@ button.u:hover {
     font-weight: bold;
 }
 
-#photographer-portofolio-package > div > span {
-    display: inline-block;
-    width: 80px;
-    margin: 0 5px 0 40px;
-}
-
-#photographer-portofolio-package .package {
-    margin: 16px 0 0 8px;
-}
-
-#photographer-portofolio-package .package .package-detail {
-    width: 150px;
-    float: left;
-}
-
-#photographer-portofolio-package .package .package-detail p {
-    margin-bottom: 0;
-}
-
-#photographer-portofolio-package .package .package-detail:last-child {
-    padding-left: 48px;
-    border-left: 1px solid #ddd;
-}
-
-#photographer-portofolio-package > div > span:after {
-    content: ':';
-    display: inline-block;
-    float: right;
-}
 
 #photographer-portofolio-reviews > div {
     font-size: 0;
@@ -1391,6 +1424,35 @@ button.u:hover {
     vertical-align: top;
     padding-left: 15px;
     font-size: 18px;
+}
+
+.photographer-portofolio-nav-item {
+    color: #707070;
+    padding: 6px;
+    text-align: center;
+    border-radius: 50px;
+    border: solid 1px #eee;
+    margin-bottom: 16px;
+    transition: 0.2s;
+}
+
+.photographer-portofolio-nav-item:hover {
+    background: #f4f4f4;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    border-left: 3px solid #707070;
+    padding: 7px;
+    text-align: center;
+    transition: 0.4s;
+}
+
+.photographer-portofolio-active-nav-item {
+    background: #eee;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    border-left: 3px solid #707070;
+    padding: 7px;
+    text-align: center;
 }
 
 /*
@@ -1496,8 +1558,8 @@ CLASSES
 }
 
 .profile-list .profile-picture {
-    width: 125px;
-    height: 125px;
+    width: 150px;
+    height: 150px;
     max-width: 100%;
     margin: 0 auto;
     border-radius: 99999px;
@@ -2353,6 +2415,9 @@ RESPONSIVE
     /*overflow: hidden;*/
     /*height:unset;*/
     /*}*/
+    .search-result-page{
+        margin-top:100px !important;
+    }
 
 }
 
@@ -2802,7 +2867,7 @@ RESPONSIVE
 
 @media (min-width: 768px) and (max-width: 991px) {
     #nav-menu > div > a {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #footer .bootstrap-select.btn-group {
@@ -3316,8 +3381,21 @@ PHASE 1 BOP - New Photographer Account Register
 
 .browse-profile-holder {
     border-radius: 40px;
-    padding: 0px;
+    padding: 0;
     border: solid 1px #aaa;
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.width-full{
+    width:100% !important;
+}
+
+@media (max-width: 481px) {
+    .browse-profile-holder{
+        width:100% !important;
+    }
 }
 
 .browse-profile-btn {
@@ -3466,16 +3544,6 @@ PHASE 1 BOP - New Photographer Account Register
         top: 53px !important;
         left: 10px !important;
     }
-    .input-place-location-note{
-        width: 94% !important;
-        top: 94px !important;
-        left: 10px !important;
-    }
-    .btn-place-location {
-        left: 10px !important;
-        top: 137px !important;
-        width: 94% !important;
-    }
     .create-point-wrapper {
         margin-top: 65px;
     }
@@ -3483,24 +3551,9 @@ PHASE 1 BOP - New Photographer Account Register
 
 @media (min-width: 1024px) {
     .input-place-location-name{
-        width:31% !important;
+        width:71% !important;
         top: 10px !important;
         left: 113px !important;
-    }
-    .input-place-location-note{
-        width:27% !important;
-        top: 10px !important;
-        left: 51% !important;
-    }
-    .btn-place-location{
-        top: 10px !important;
-        left: 80% !important;
-    }
-}
-
-@media (min-width: 1200px){
-    .input-place-location-name {
-        width: 79% !important;
     }
 }
 
@@ -3573,6 +3626,10 @@ PHASE 1 BOP - New Photographer Account Register
 .Select-control .Select-value {
     line-height:45px !important;
 }
+.line-height-minimum .Select-control .Select-value{
+    line-height:20px !important;
+}
+
 /*
 ----------------------------------------------------------------------------
 MASONRY STYLES
@@ -3597,6 +3654,36 @@ MASONRY STYLES
 .cv-MasonryGallery-image {
     width: 100%;
     height: auto;
+}
+
+@media (max-width: 1239px) {
+    .cv-MasonryGallery-figure {
+        width: unset !important;
+    }
+    .cv-MasonryGallery div {
+        width: 50%;
+        transition: 0.5s;
+    }
+}
+
+@media (max-width: 767px ) and (min-width: 648px) {
+    .cv-MasonryGallery-figure {
+        width: unset !important;
+    }
+    .cv-MasonryGallery div {
+        width: 33%;
+        transition: 0.5s;
+    }
+}
+
+@media (max-width: 481px){
+    .cv-MasonryGallery-figure {
+        width: unset !important;
+    }
+    .cv-MasonryGallery div {
+        width: 100%;
+        transition: 0.5s;
+    }
 }
 
 /*
@@ -3673,6 +3760,7 @@ PORTOFOLIO CONTENT SLIDER
     padding-left: 16px;
     padding-right: 16px;
     text-transform: capitalize;
+    font-size: 16px;
 }
 
 .img-photographer-detail {
@@ -3958,7 +4046,7 @@ figcaption.action-btn a .fa {
 
 .search-box-custom-again {
     display: flex;
-    height: 50px;
+    height: 51px;
     align-items: center;
     margin: 0;
     padding: 0;
@@ -3966,13 +4054,57 @@ figcaption.action-btn a .fa {
     -moz-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
     background: #fff;
-    border-radius: 50px;
+    border-radius: 8px;
 }
 
 .search-box-custom-again .Select-control {
     background-color: transparent;
     border: none;
     text-align: left;
+    border-right: solid 1px #eee;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.react-datepicker__day--keyboard-selected{
+    border-radius: 50px !important;
+    background-color: #3AECCB !important;
+    padding: 5px;
+}
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range {
+    border-radius: 50px !important;
+    background-color: #3AECCB !important;
+    padding: 5px;
+}
+.react-datepicker__day--today{
+    border-radius: 50px !important;
+    border:solid 1px #3AECCB !important;
+    padding: 4px;
+}
+.react-datepicker__day:hover {
+    border-radius: 50px !important;
+    transition: 0.2s;
+}
+.react-datepicker__day{
+    padding: 4px;
+    transition: 0.2s;
+}
+.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+    width: 2.4em !important;
+}
+.react-datepicker__header {
+    background-color: white !important;
+    border-bottom: none !important;
+}
+.react-datepicker__day-name {
+    color: #aaa;
+}
+.react-datepicker__current-month{
+    margin-top: 10px !important;
+    margin-bottom: 16px;
+}
+.react-datepicker__navigation {
+    top: 26px !important;
 }
 
 .search-box-custom-again .Select-placeholder {
@@ -3980,12 +4112,15 @@ figcaption.action-btn a .fa {
 }
 
 .search-box-custom-again .search-box-destination {
-    flex-grow: 10;
-    margin-left: 10px;
+    flex: 1;
+}
+
+.search-box-custom-again .search-box-destination .Select-control .Select-value{
+    padding-left: 20px;
 }
 
 .search-box-custom-again .search-box-date {
-    flex-grow: 1;
+    flex: 1;
     margin-left: 10px;
     margin-top: 17px;
 }
@@ -3998,22 +4133,34 @@ figcaption.action-btn a .fa {
     box-shadow: none;
     padding:0 10px !important;
     color: #aaa;
+    font-size:20px;
+}
+
+#search-box-home .Select-clear-zone {
+    display: none;
+}
+#search-box-home .Select-arrow-zone {
+    display: none;
 }
 
 .search-box-custom-again .search-box-submit {
-    flex-grow: 1;
     text-align: right;
 }
 .search-box-submit button {
     margin-right: 4px;
-    margin-bottom: 2px;
-    margin-top: 2px;
+    margin-bottom: 1px;
+    margin-top: 1px;
+    padding:8px 20px;
 }
 
 .react-datepicker-wrapper, .react-datepicker__input-container{
     display: block !important;
 }
 
+.has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    font-size: 20px;
+    color: #959595 !important;
+}
 
 @media (max-width: 480px) {
     .search-box-custom-again {
@@ -4057,9 +4204,11 @@ figcaption.action-btn a .fa {
     position: absolute;
     top: 50%;
     right: 0;
+    left:0;
+    text-align: center;
     font-size: 14px;
     cursor: pointer;
-    width: 128px;
+    width: 100%;
     height: 25px;
     color: #fff;
 }
@@ -4145,20 +4294,15 @@ figcaption.action-btn a .fa {
 .icon-box-2 h3{
     margin-bottom:10px;
 }
+.how-it-works-icon {
+    position: static;
+}
 .how-it-works-icon:hover{
     background: #EEEEEE;
     border-radius: 24px;
     cursor: pointer;
+    transition: 0.5s;
 }
-
-.how-it-works{
-    margin-top:50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: black;
-}
-
 .how-it-works span{
     text-align: center;
     font-size: 23px;
@@ -4170,4 +4314,148 @@ figcaption.action-btn a .fa {
     font-style: italic;
     font-weight: lighter;
     color: #999999;
+}
+.how-it-works{
+    margin-top:50px;
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    position: absolute;
+    left: 15px;
+    right: 15px;
+}
+.how-it-works img {
+    width: 100%;
+    object-fit: cover;
+}
+.how-it-works-book {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+@media (min-width: 768px){
+    .how-it-works-hide {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px){
+    .how-it-works-book{
+        margin-top: 400px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1240px) {
+    .how-it-works-book{
+        margin-top:530px;
+    }
+}
+
+@media (min-width: 1241px) {
+    .how-it-works-book{
+        margin-top:620px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px){
+    .how-it-works-icon {
+        margin-top: 20px;
+        padding: 0px;
+        position: relative;
+    }
+
+    .how-it-works-icon:hover{
+        background: none;
+        border-radius: 0px;
+        cursor: pointer;
+        transition: 0s;
+    }
+    .how-it-works span{
+        font-size: 16px;
+        line-height: 22px;
+    }
+    .how-it-works img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+    }
+    .how-it-works {
+        position: relative;
+        left: 0;
+        right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .how-it-works-icon {
+        margin-top: 20px;
+        padding: 0px;
+        position: relative;
+    }
+    .how-it-works-icon:hover{
+        background: none;
+        border-radius: 0px;
+        cursor: pointer;
+        transition: 0s;
+    }
+    .how-it-works-icon .icon-box-2 {
+        margin-top: 0px;
+    }
+    .how-it-works span{
+        font-size: 13px;
+        line-height: 20px;
+    }
+    .how-it-works img {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+    .how-it-works {
+        position: relative;
+        left: 0;
+        right: 0;
+    }
+}
+
+@media (max-width: 991px) {
+    .list-of-meeting-points{
+        padding-top:70px;
+    }
+}
+
+.nav-tabs {
+    position: static !important;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.radius-8 {
+    -webkit-border-radius: 8px !important;
+    -moz-border-radius: 8px !important;
+    border-radius: 8px !important;
+}
+.key-color{
+    background-color: #3AECCB !important;
+}
+
+#top-photographer-home .btn-photographer-detail {
+    /*take out button detail in homepage*/
+    display: none;
+}
+#top-photographer-home .slick-prev:before, #top-photographer-home .slick-next:before {
+    color: #aaa !important;
+    text-shadow: none !important;
+}
+#top-photographer-home .slick-prev, #top-photographer-home .slick-next {
+    top: 40%;
+}
+#top-photographer-home .slick-next {
+    right: 0px !important;
+}
+#top-photographer-home .slick-prev {
+    left: 0px !important;
 }

@@ -50,41 +50,45 @@ class PhotographerDetailReservationForm extends Component {
     const travellerId = get(this.props, 'user.uid', null);
 
     if (travellerId) {
-      const {
-        photographerServiceInformation: { data: {userMetadata: { uid: photographerId } } },
-        reservationInitializeAction
-      } = this.props;
+      if (!this.state.reservation.startingDate && !this.state.reservation.startingTime) {
+        alert('Please choose starting date and starting time');
+      } else {
+        const {
+          photographerServiceInformation: {data: {userMetadata: {uid: photographerId}}},
+          reservationInitializeAction
+        } = this.props;
 
-      const {
-        reservation: {
-          startingDate,
-          startingTime,
+        const {
+          reservation: {
+            startingDate,
+            startingTime,
+            photographerFee,
+            serviceFee,
+            credit,
+            total,
+            package: {value: packageId}
+          }
+        } = this.state;
+
+        let reservationId = shortid.generate();
+        reservationId = reservationId.toUpperCase();
+
+        const information = {
+          reservationId,
+          travellerId,
+          photographerId,
+          packageId,
+          startDateTime: startingDate + ' ' + startingTime,
           photographerFee,
-          serviceFee,
+          serviceFee: Math.round(this.state.reservation.photographerFee * serviceFee),
           credit,
           total,
-          package: { value: packageId }
-        }
-      } = this.state;
+          status: RESERVATION_REQUESTED
+        };
 
-      let reservationId = shortid.generate();
-      reservationId = reservationId.toUpperCase();
-
-      const information = {
-        reservationId,
-        travellerId,
-        photographerId,
-        packageId,
-        startDateTime: startingDate + ' ' + startingTime,
-        photographerFee,
-        serviceFee: Math.round(this.state.reservation.photographerFee * serviceFee),
-        credit,
-        total,
-        status: RESERVATION_REQUESTED
-      };
-
-      reservationInitializeAction(reservationId, information);
-      this.props.history.push(`/booking/${photographerId}/${reservationId}`);
+        reservationInitializeAction(reservationId, information);
+        this.props.history.push(`/booking/${photographerId}/${reservationId}`);
+      }
 
     } else {
       this.props.history.push('/sign-in');

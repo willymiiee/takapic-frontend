@@ -13,9 +13,8 @@ import Page from '../components/Page';
 
 const fetchHomepageData = () => {
   return dispatch => {
-    const queryParams = 'filter[destination]=jakarta, indonesia&filter[date]=';
     axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/topPhotographers`)
       .then(response => {
         dispatch({
           type: 'HOMEPAGE_FETCH_TOP_PHOTOGRAPHERS_SUCCESS',
@@ -30,11 +29,11 @@ const fetchHomepageData = () => {
 };
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       search: {
-        destination: null,
+        destination: { label: 'Anywhere', color: '#eee'},
         date: null
       }
     };
@@ -119,7 +118,7 @@ class Home extends Component {
             <h1>{ intl.get('TAGLINE') }</h1>
             <p>{ intl.get('SUBHEADER') }</p>
 
-            <div className="search-box-custom-again" style={{ marginTop: '90px'}}>
+            <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '90px'}}>
               <div className="search-box-destination">
                 <Select.Async
                   multi={false}
@@ -128,21 +127,22 @@ class Home extends Component {
                   valueKey="label"
                   labelKey="label"
                   loadOptions={this.retrieveLocations}
-                  placeholder="Choose your destination"
+                  placeholder="Anywhere"
                 />
               </div>
 
-              <div className="search-box-date">
+              <div className="search-box-date" id="select-date-home">
                 <DatePicker
                   dateFormat="MMMM Do YYYY"
                   selected={this.state.search.date}
                   onChange={this.handleSearchDateChange}
-                  placeholderText="Choose a date"
+                  placeholderText="Anytime"
                 />
               </div>
 
               <div className="search-box-submit">
-                <button className="button" onClick={this.handleSearchSubmit}>
+                <button className="button radius-8 key-color"
+                        onClick={this.handleSearchSubmit}>
                   <i className="fa fa-search"/>
                   <span>Search</span>
                 </button>
@@ -150,49 +150,51 @@ class Home extends Component {
             </div>
           </div>
 
-          <h1 className="title margin-bottom-40">Featured Destination</h1>
+          <h1 className="title margin-bottom-40" style={{fontSize:'24px'}}>Featured Destination</h1>
 
           <div className="text-right margin-bottom-10">
-            <Link to="/">See All</Link>
+            <Link to="/" style={{fontSize:'14px'}}>See All</Link>
           </div>
 
           <div className="row posters">
             <div className="col-xs-4">
-              <a className="poster" href="">
+              <Link to="/search/?destination=Bali,%20Indonesia&date=" className="poster">
                 <div className="text">BALI</div>
                 <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
-              </a>
+              </Link>
             </div>
 
             <div className="col-xs-4">
-              <a className="poster" href="/">
+              <Link to="/search/?destination=Seoul,%20South%20Korea&date=" className="poster">
                 <div className="text">SEOUL</div>
                 <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
-              </a>
+              </Link>
             </div>
 
             <div className="col-xs-4">
-              <a className="poster" href="/">
+              <Link to="/search/?destination=Paris,%20France&date=" className="poster">
                 <div className="text">PARIS</div>
                 <img src="images/location/paris.jpg" alt="Featured destination - Paris"/>
-              </a>
+              </Link>
             </div>
           </div>
 
-          <h1 className="title margin-bottom-50">Top Photographers</h1>
+          <div id="top-photographer-home">
+          <h1 className="title" style={{marginTop:'70px',marginBottom:'60px',fontSize:'24px'}}>Top Photographers</h1>
 
           {
             topPhotographers && !loadingHomepageData ? <TopPhotographers topPhotographers={topPhotographers}/> : null
           }
+          </div>
 
-          <h1 className="title">Why be a Takapic traveller?</h1>
+          <h1 className="title" style={{marginTop:'30px',marginBottom:'25px', fontSize:'24px'}}>Why be a Takapic traveller?</h1>
 
           <div className="row icons-container">
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">
                 <i className="im im-icon-Map2"/>
-                <h3>Travel like a local</h3>
-                <p>
+                <h3 style={{fontSize:'20px'}}>Travel like a local</h3>
+                <p style={{fontSize:'14px'}}>
                   Local photographers will guide you to the best locations in
                   their city so you will not feel like a tourist
                 </p>
@@ -202,8 +204,8 @@ class Home extends Component {
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">
                 <i className="im im-icon-Camera-5"/>
-                <h3>Capture your precious moments</h3>
-                <p>
+                <h3 style={{fontSize:'20px'}}>Capture your precious moments</h3>
+                <p style={{fontSize:'14px'}}>
                   Forget about selfies and photos taken by random strangers. You
                   will be in the hands of a talented photographer with a
                   creative eye ready to capture your best travel memories
@@ -214,8 +216,8 @@ class Home extends Component {
             <div className="col-sm-4">
               <div className="icon-box-2">
                 <i className="im im-icon-Checked-User"/>
-                <h3>Trust and Safety</h3>
-                <p>
+                <h3 style={{fontSize:'20px'}}>Trust and Safety</h3>
+                <p style={{fontSize:'14px'}}>
                   Only verified photographers are registered and you can view
                   ratings and reviews left by travellers like you!
                 </p>

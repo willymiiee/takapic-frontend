@@ -5,36 +5,14 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
-import { fetchCurrenciesRates } from "../../store/actions/photographerServiceInfoActions";
+import {
+  fetchPhotographerListings,
+  resetListings
+} from "../../store/actions/photographerServiceInfoActions";
 
 import Page from '../Page';
 import SearchResult from './SearchResult';
 import Animator from '../common/Animator';
-
-const fetchPhotographerListings = searchInfo => {
-  return dispatch => {
-    let { destination, date } = queryString.parse(searchInfo);
-    const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
-
-    axios
-      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
-      .then(response => {
-        dispatch({
-          type: 'FETCH_PHOTOGRAPHERS_LISTING',
-          payload: response.data.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-};
-
-const resetListings = () => {
-  return dispatch => {
-    dispatch({ type: 'EMPTY_PHOTOGRAPHER_LISTINGS' });
-  };
-};
 
 class Search extends Component {
   constructor(props) {
@@ -44,7 +22,7 @@ class Search extends Component {
 
     this.state = {
       search: {
-        destination: !destination ? null : { label: destination },
+        destination: !destination ? { label: 'Anywhere' } : { label: destination },
         date: !date ? null : moment(date),
       }
     };
@@ -75,8 +53,6 @@ class Search extends Component {
       pathname: '/search/',
       search: 'destination=' + destinationValStr + '&date=' + dateValStr
     });
-
-    window.location.reload();
   };
 
   handleSearchDestinationChange = value => {
@@ -101,25 +77,20 @@ class Search extends Component {
       });
   }
 
-  componentWillMount() {
-    const keys = Object.keys(this.props.currenciesRates);
-    if (keys.length < 2) {
-      this.props.fetchCurrenciesRates();
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.photographerListings.length < 1) {
-      this.props.fetchPhotographerListings(this.props.location.search);
-    }
-  }
-
   componentWillUnmount() {
     this.props.resetListings();
   }
 
+  componentDidMount() {
+    if (!this.props.photographerListings.isFetching && !this.props.photographerListings.isFetched) {
+      this.props.fetchPhotographerListings(this.props.location.search);
+    }
+  }
+
   render() {
-    if (this.props.currenciesRates && this.props.photographerListings) {
+    const searchQs = queryString.parse(this.props.location.search);
+
+    if (!this.props.photographerListings.isFetching && this.props.photographerListings.isFetched) {
       return (
         <Page>
           <div className="container">
@@ -142,7 +113,7 @@ class Search extends Component {
                     dateFormat="MMMM Do YYYY"
                     selected={this.state.search.date}
                     onChange={this.handleSearchDateChange}
-                    placeholderText="Choose a date"
+                    placeholderText={!searchQs.date ? 'Any date' : ''}
                   />
                 </div>
 
@@ -180,18 +151,16 @@ class Search extends Component {
             </div>
 
 
-            {
-              this.props.photographerListings.length > 0 && !this.props.currenciesRates.fetchCurrenciesRatesLoading
-                ? <SearchResult
-                  listings={this.props.photographerListings}
-                  currenciesRates={this.props.currenciesRates}/>
-                : <Animator/>
-            }
+            <SearchResult
+              listings={this.props.photographerListings.results}
+              currenciesRates={this.props.currenciesRates}
+            />
           </div>
         </Page>
       );
     }
-    return null;
+
+    return <Animator/>;
   }
 }
 
@@ -202,7 +171,6 @@ export default connect(
   }),
   dispatch => ({
     fetchPhotographerListings: searchInfo => dispatch(fetchPhotographerListings(searchInfo)),
-    fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates()),
     resetListings: () => dispatch(resetListings())
   })
 )(Search);

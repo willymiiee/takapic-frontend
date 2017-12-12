@@ -23,7 +23,7 @@ class Step2DateAvailability extends Component {
     };
   }
 
-  dayClickHandle = (day, { selected }) => {
+  dayClickHandle = (day, {selected}) => {
     const { selectedDays } = this.state;
     if (selected) {
       const selectedIndex = selectedDays.findIndex(selectedDay => DateUtils.isSameDay(selectedDay, day));
@@ -31,7 +31,7 @@ class Step2DateAvailability extends Component {
     } else {
       selectedDays.push(day);
     }
-    this.setState({ selectedDays });
+    this.setState({selectedDays});
   };
 
   nextStepHandle = () => {
@@ -43,12 +43,12 @@ class Step2DateAvailability extends Component {
       <Page>
         <div className="container" id="photographer-landing">
           <div className="steps steps-4">
-            <div />
-            <div className="active" />
-            <div />
-            <div />
+            <div/>
+            <div className="active"/>
+            <div/>
+            <div/>
           </div>
-          <hr />
+          <hr/>
 
           <h3>Please let travellers know when you are <strong>NOT</strong> available for them</h3>
 
@@ -63,10 +63,11 @@ class Step2DateAvailability extends Component {
             </div>
 
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
-              <div className="card tips" style={{height:'340px'}}>
+              <div className="card tips" style={{height: '340px'}}>
                 <h3>About setting your schedule</h3>
                 <p>
-                  Please block out days which you are <strong>NOT</strong> available. The default setting is all days are
+                  Please block out days which you are <strong>NOT</strong> available. The default setting is all days
+                  are
                   open to customers.
                 </p>
 
@@ -78,12 +79,12 @@ class Step2DateAvailability extends Component {
               </div>
             </div>
           </div>
-          <hr />
-          <div style={{overflow:'hidden'}}>
+          <hr/>
+          <div style={{overflow: 'hidden'}}>
             <Link to="/become-our-photographer/step-2-3"
                   className="button"
                   onClick={this.nextStepHandle}
-                  style={{float:'right'}}>
+                  style={{float: 'right'}}>
               Next
             </Link>
 

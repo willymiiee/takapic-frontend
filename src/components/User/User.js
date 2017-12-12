@@ -3,8 +3,12 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Tabs, Tab } from "react-bootstrap";
 import history from '../../services/history';
-
-import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
+import {
+  fetchPhotographerServiceInformation,
+  resetPhotographerServiceInformationData,
+  tellThemThatWasSuccessOrFailed
+} from "../../store/actions/photographerServiceInfoActions";
+import { setActiveTab } from "../../store/actions/profileUpdateActions";
 
 import Animator from '../common/Animator';
 import Page from "../Page";
@@ -13,6 +17,7 @@ import CameraEquipment from "./CameraEquipment";
 import MeetingPoints from "./MeetingPoints";
 import PhotosPortofolio from "./PhotosPortofolio";
 import PackagesPrice from "./PackagesPrice";
+import ScheduleNotAvailable from './ScheduleNotAvailable';
 
 class User extends Component{
   constructor() {
@@ -20,19 +25,24 @@ class User extends Component{
     this.state = {
       countries: [],
       currencies: {},
-      meetingPoint: null
+      meetingPoint: null,
+      activeTab: 0
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { activeTab } = this.props;
-
-    this.getPhotographerServiceInformation();
     this.formatCountriesSource();
+    this.getPhotographerServiceInformation();
 
     if (activeTab === 3) {
       this.handleSelectedTab(activeTab);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetPhotographerServiceInformationData();
+    this.props.setActiveTab(1);
   }
 
   getPhotographerServiceInformation = () => {
@@ -48,7 +58,7 @@ class User extends Component{
         history.push('/');
       }
     }
-  }
+  };
 
   formatCountriesSource = () => {
     const { countries: countriesSource } = this.props;
@@ -67,56 +77,80 @@ class User extends Component{
     }
 
     this.setState({ countries: countriesList, currencies: currenciesObjects });
-  }
+  };
 
   handleSelectedTab = (activeTab) => {
-    if (activeTab === 3) {
-      this.setState({ meetingPoint: <MeetingPoints photographerServiceInformation={this.props.photographerServiceInformation} /> })
-    }
-  }
+    this.props.tellThemThatWasSuccessOrFailed('nothing');
+    this.setState({ activeTab });
+  };
 
   render() {
-    const { photographerServiceInformation, activeTab, profile } = this.props;
+    if (this.props.photographerServiceInformation.loading || this.props.profile.loading) {
+      return (<Animator/>);
+    } else {
+      const { photographerServiceInformation, activeTab, profile, tellThemThatWasSuccessOrFailedInfo } = this.props;
 
-    const tabsInstance = (
-      <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
-        <Tab eventKey={1} title="Basic Information">
-          <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
-        </Tab>
-        <Tab eventKey={2} title="Camera Equipment">
-          <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
-        </Tab>
-        <Tab eventKey={3} title="Meeting Points">
-          {this.state.meetingPoint}
-        </Tab>
-        <Tab eventKey={4} title="Photos Portofolio">
-          <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
-        </Tab>
-        <Tab eventKey={5} title="Packages Price">
-          <PackagesPrice photographerServiceInformation={photographerServiceInformation} />
-        </Tab>
-      </Tabs>
-    );
+      return (
+        <Page style={{whiteSpace:'normal'}}>
+          <div className="padding-bottom-60"/>
+          <div className="container">
 
-    return (
-      <Page>
-        {(photographerServiceInformation.loading || profile.loading) ? <Animator/> : null}
-        <div className="hidden-xs padding-bottom-60" />
-        <div className="container">{tabsInstance}</div>
-      </Page>
-    );
+            {
+              tellThemThatWasSuccessOrFailedInfo.whatsup === 'success'
+                ? (
+                  <div className="notification success">
+                    <p><span>Success!</span> You did it, enjoy it.</p>
+                  </div>
+                )
+                : null
+            }
+
+            <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
+              <Tab eventKey={1} title="Basic Information">
+                <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
+              </Tab>
+
+              <Tab eventKey={2} title="Camera Equipment">
+                <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
+              </Tab>
+
+              <Tab eventKey={3} title="Meeting Points">
+                { this.state.activeTab === 3 ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/> : null }
+              </Tab>
+
+              <Tab eventKey={4} title="Photos Portofolio">
+                <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
+              </Tab>
+
+              <Tab eventKey={5} title="Packages Price">
+                <PackagesPrice photographerServiceInformation={photographerServiceInformation}/>
+              </Tab>
+
+              <Tab eventKey={6} title="Schedule">
+                <ScheduleNotAvailable/>
+              </Tab>
+            </Tabs>
+          </div>
+        </Page>
+      );
+    }
   }
 }
 
 const mapStateToProps = state => ({
+  user: state.userAuth,
   photographerServiceInformation: state.photographerServiceInformation,
   countries: state.countries,
   activeTab: state.profileUpdate.activeTab,
   profile: state.profileUpdate,
+  tellThemThatWasSuccessOrFailedInfo: state.tellThemThatWasSuccessOrFailed
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid))
+  fetchPhotographerServiceInformation: uid => dispatch(fetchPhotographerServiceInformation(uid)),
+  resetPhotographerServiceInformationData: () => dispatch(resetPhotographerServiceInformationData()),
+  setActiveTab: (tabIndex) => dispatch(setActiveTab(tabIndex)),
+  tellThemThatWasSuccessOrFailed: (whatsup) => dispatch(tellThemThatWasSuccessOrFailed(whatsup))
 });
 
 export default withRouter(

@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 
 class ImagePopupAndSlider extends Component {
   render() {
-    const { state: { initialSlide, images } } = this.props;
+    const { initialSlide, images } = this.props;
     const settings = {
       dots: false,
       infinite: true,

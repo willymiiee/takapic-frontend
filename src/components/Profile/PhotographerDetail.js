@@ -1,31 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import store from '../../store';
-import history from '../../services/history';
 import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
 import { Modal } from 'react-bootstrap';
 import { nl2br } from "../../helpers/helpers";
-import { fetchCurrenciesRates, fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
+import { fetchPhotographerServiceInformation, resetPhotographerServiceInformationData } from "../../store/actions/photographerServiceInfoActions";
 
 import './../../react-slick.min.css';
 import Animator from '../common/Animator';
 import Page from '../Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';
-
-const resetData = () => {
-  return dispatch => {
-    dispatch({ type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET' })
-  };
-};
-
-history.listen((location, action) => {
-  if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
-    store.dispatch(resetData());
-  }
-});
 
 class PhotographerDetail extends Component {
   constructor() {
@@ -38,19 +24,8 @@ class PhotographerDetail extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
-  componentWillMount() {
-    const keys = Object.keys(this.props.currenciesRates);
-    if (keys.length < 2) {
-      this.props.fetchCurrenciesRates();
-    }
-  }
-
   componentDidMount() {
-    const {
-      photographerServiceInformation: { loading }
-    } = this.props;
-
-    if (!loading) {
+    if (!this.props.photographerServiceInformation.loading) {
       let photographerTop = window.$('#photographer-top');
       let pageYOffset;
 
@@ -86,6 +61,10 @@ class PhotographerDetail extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetPhotographerServiceInformationData();
+  }
+
   openModal() {
     this.setState({ showModal: true });
   }
@@ -95,11 +74,7 @@ class PhotographerDetail extends Component {
   }
 
   render() {
-    const {
-      photographerServiceInformation: { loading }
-    } = this.props;
-
-    if (!loading) {
+    if (!this.props.photographerServiceInformation.loading) {
       const {
         photographerServiceInformation: {
           data: {
@@ -158,10 +133,10 @@ class PhotographerDetail extends Component {
               <h2>{displayName}</h2>
               <p>{locationMerge}</p>
               <Link
-                to={`/photographer-portofolio/${photographerId}`}
+                to={`/photographer-portofolio/${photographerId}/gallery`}
                 className="button button-white"
               >
-                Go to Portofolio
+                Go to Portfolio
               </Link>
             </div>
 
@@ -259,7 +234,7 @@ class PhotographerDetail extends Component {
 
               <div className="col-sm-6 col-md-5 col-md-offset-1 margin-top-70">
                 {
-                  packagesPrice && !currenciesRates.fetchCurrenciesRatesLoading ? <PhotographerDetailReservationForm/> : null
+                  packagesPrice && currenciesRates ? <PhotographerDetailReservationForm/> : null
                 }
               </div>
             </div>
@@ -281,7 +256,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchPhotographerServiceInformation: photographerId => dispatch(fetchPhotographerServiceInformation(photographerId)),
-  fetchCurrenciesRates: () => dispatch(fetchCurrenciesRates())
+  resetPhotographerServiceInformationData: () => dispatch(resetPhotographerServiceInformationData())
 });
 
 export default withRouter(

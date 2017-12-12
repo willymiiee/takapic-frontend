@@ -8,10 +8,14 @@ import {
   Marker,
 } from 'react-google-maps';
 import SearchBox from 'react-google-maps/lib/components/places/SearchBox';
-const google = window.google;
 
 const MapWithASearchBox = compose(
-  withProps(),
+  withProps({
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBrXtsaqVz4UqYExEyRaf9jv5sEPJqeke8&v=3.exp&libraries=geometry,drawing,places",
+    loadingElement: <div style={{height: `100%`}}/>,
+    containerElement: <div style={{height: `400px`}}/>,
+    mapElement: <div style={{height: `100%`}}/>
+  }),
   lifecycle({
     componentWillMount() {
       const refs = {};
@@ -25,6 +29,7 @@ const MapWithASearchBox = compose(
         markers: [],
         onMapMounted: ref => {
           refs.map = ref;
+          if (!ref) { return }
         },
         onBoundsChanged: () => {
           this.setState({
@@ -37,7 +42,7 @@ const MapWithASearchBox = compose(
         },
         onPlacesChanged: () => {
           const places = refs.searchBox.getPlaces();
-          const bounds = new google.maps.LatLngBounds();
+          const bounds = new window.google.maps.LatLngBounds();
 
           places.forEach(place => {
             if (place.geometry.viewport) {
@@ -107,7 +112,7 @@ const MapWithASearchBox = compose(
           key={1}
           ref={props.onSearchBoxMounted}
           bounds={props.bounds}
-          controlPosition={google.maps.ControlPosition.TOP_LEFT}
+          controlPosition={1}
           onPlacesChanged={props.onPlacesChanged}
         >
           <input
