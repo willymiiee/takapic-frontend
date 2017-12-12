@@ -136,7 +136,7 @@ class PhotographerDetail extends Component {
                 to={`/photographer-portofolio/${photographerId}/gallery`}
                 className="button button-white"
               >
-                Go to Portofolio
+                Go to Portfolio
               </Link>
             </div>
 

@@ -25,9 +25,9 @@ const WelcomePhotographer = props => {
                       effectively so you can just concentrate on taking beautiful pictures and earning extra income.
                     </p>
 
-                    <h4  className="speech-sub-title">3. Your personalized portofolio page</h4>
+                    <h4  className="speech-sub-title">3. Your personalized portfolio page</h4>
                     <p>
-                      Takapic will provide you with a personalized portofolio page where you can showcase yourself and your work.
+                      Takapic will provide you with a personalized portfolio page where you can showcase yourself and your work.
                       You also decide on your pricing. This is your art, your rules, your price.
                     </p>
 
