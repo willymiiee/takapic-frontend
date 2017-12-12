@@ -4,8 +4,6 @@ import Select from "react-select";
 import {
   Form,
   FormGroup,
-  Col,
-  ControlLabel,
   FormControl,
   Button,
   InputGroup

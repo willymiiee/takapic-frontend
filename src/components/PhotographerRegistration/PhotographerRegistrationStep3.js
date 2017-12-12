@@ -154,7 +154,7 @@ export default connect(
     isUploadingPhoneNumber: state.userInitProfile.isUploadingPhoneNumber,
   }),
   dispatch => ({
-    uploadPhonenumber: (phonenumber, reference) =>
-      dispatch(uploadPhonenumber(phonenumber, reference)),
+    uploadPhonenumber: (phoneNumberCountryCode, phoneNumber, reference) =>
+      dispatch(uploadPhonenumber(phoneNumberCountryCode, phoneNumber, reference)),
   })
 )(PhotographerRegistrationStep3);
