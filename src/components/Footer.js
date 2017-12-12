@@ -18,6 +18,7 @@ class Footer extends Component {
                 className="footer-logo"
                 src="/images/takapic-logo/CL h small.png"
                 alt=""
+                style={{width:'120px',height:'auto'}}
               />
               <br />
               <br />
@@ -25,6 +26,7 @@ class Footer extends Component {
                 value={this.props.currentLocale}
                 onChange={this.onLanguageChange}
                 className="selectpicker margin-bottom-10"
+                style={{height:'40px'}}
               >
                 <option value="en-US">English</option>
                 <option value="id-ID">Mandarin</option>
@@ -87,7 +89,7 @@ class Footer extends Component {
           </div>
           <div className="row">
             <div className="col-md-12">
-              <div className="copyrights">
+              <div className="copyrights" style={{fontSize:'14px'}}>
                 © 2017 Takapic. All Rights Reserved.
               </div>
             </div>

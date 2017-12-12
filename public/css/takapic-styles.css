@@ -4071,6 +4071,24 @@ figcaption.action-btn a .fa {
     background-color: #3AECCB !important;
     padding: 5px;
 }
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range {
+    border-radius: 50px !important;
+    background-color: #3AECCB !important;
+    padding: 5px;
+}
+.react-datepicker__day--today{
+    border-radius: 50px !important;
+    border:solid 1px #3AECCB !important;
+    padding: 4px;
+}
+.react-datepicker__day:hover {
+    border-radius: 50px !important;
+    transition: 0.2s;
+}
+.react-datepicker__day{
+    padding: 4px;
+    transition: 0.2s;
+}
 .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
     width: 2.4em !important;
 }
@@ -4094,12 +4112,15 @@ figcaption.action-btn a .fa {
 }
 
 .search-box-custom-again .search-box-destination {
-  flex-grow: 10;
-  margin-left: 10px;
+  flex: 1;
+}
+
+.search-box-custom-again .search-box-destination .Select-control .Select-value{
+  padding-left: 20px;
 }
 
 .search-box-custom-again .search-box-date {
-  flex-grow: 1;
+  flex: 1;
   margin-left: 10px;
   margin-top: 17px;
 }
@@ -4123,7 +4144,6 @@ figcaption.action-btn a .fa {
 }
 
 .search-box-custom-again .search-box-submit {
-  flex-grow: 1;
   text-align: right;
 }
 .search-box-submit button {
@@ -4297,13 +4317,15 @@ figcaption.action-btn a .fa {
 }
 .how-it-works{
   margin-top:50px;
+  margin-left: 0px;
+  margin-right: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: black;
   position: absolute;
-  left: 80px;
-  right: 80px;
+  left: 15px;
+  right: 15px;
 }
 .how-it-works img {
     width: 100%;
@@ -4312,27 +4334,37 @@ figcaption.action-btn a .fa {
 .how-it-works-book {
     text-align: center;
     margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 @media (min-width: 768px){
-    .how-it-works-book{
-        margin-top: 400px;
-    }
     .how-it-works-hide {
         display: none;
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) and (max-width: 991px){
+    .how-it-works-book{
+        margin-top: 400px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1240px) {
     .how-it-works-book{
         margin-top:530px;
+    }
+}
+
+@media (min-width: 1241px) {
+    .how-it-works-book{
+        margin-top:620px;
     }
 }
 
 @media (min-width: 481px) and (max-width: 767px){
     .how-it-works-icon {
         margin-top: 20px;
-        padding: 10px;
+        padding: 0px;
         position: relative;
     }
 
@@ -4352,16 +4384,16 @@ figcaption.action-btn a .fa {
         object-fit: cover;
     }
     .how-it-works {
-        margin-left: 16px;
-        margin-right: 16px;
-        position: static;
+        position: relative;
+        left: 0;
+        right: 0;
     }
 }
 
 @media (max-width: 480px) {
     .how-it-works-icon {
         margin-top: 20px;
-        padding: 10px;
+        padding: 0px;
         position: relative;
     }
     .how-it-works-icon:hover{
@@ -4383,9 +4415,9 @@ figcaption.action-btn a .fa {
         object-fit: cover;
     }
     .how-it-works {
-        margin-left: 16px;
-        margin-right: 16px;
-        position: static;
+        position: relative;
+        left: 0;
+        right: 0;
     }
 }
 
