@@ -57,7 +57,7 @@ class HowItWorks extends Component {
               <h2 style={{textAlign: "center"}}>How It Works</h2>
               <hr/>
 
-              <div className="row">
+              <div className="row" style={{position:'relative', paddingLeft:'15px',paddingRight:'15px'}}>
                 <div className="col-sm-3 how-it-works-icon" onClick={this.searchClick}>
                   <div className="icon-box-2">
                     <i className="im im-icon-Location-2"/>
@@ -122,6 +122,9 @@ class HowItWorks extends Component {
                   className="button button-white"
                 >Book Now
                 </Link>
+              </div>
+              <div className="embed-responsive embed-responsive-16by9">
+                <iframe className="embed-responsive-item" src="https://www.youtube.com/embed/Yy-9EVSWsSg"></iframe>
               </div>
 
             </div>

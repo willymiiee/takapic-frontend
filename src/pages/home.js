@@ -33,7 +33,7 @@ class Home extends Component {
     super();
     this.state = {
       search: {
-        destination: { label: 'Anywhere' },
+        destination: { label: 'Anywhere', color: '#eee'},
         date: null
       }
     };
