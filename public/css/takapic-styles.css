@@ -1247,11 +1247,9 @@ button.u:hover {
 
 #photographer-portofolio-about .about-content {
     padding: 10px 10px 10px 24px;
-    /*border-left: 1px solid #ddd;*/
 }
 #photographer-portofolio-about .package-detail.price p, #photographer-portofolio-about .package-detail.hour p {
   font-size: 14px;
-  /*border-left: 1px solid #ddd;*/
 }
 
 #photographer-portofolio-about .about-content li {
@@ -4187,7 +4185,6 @@ figcaption.action-btn a .fa {
     width:110px;
     margin-right: 0 !important;
   }
-
   .search-box-custom-again {
     display: block;
     -webkit-box-shadow: none;

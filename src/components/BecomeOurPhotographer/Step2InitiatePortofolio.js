@@ -72,7 +72,7 @@ class Step2IntiatePortofolio extends Component {
             <div className="active" />
           </div>
           <hr />
-          <h3>Let start building your portofolio! (Maximum 10 photos)</h3>
+          <h3>Let start building your portfolio! (Maximum 10 photos)</h3>
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30">
               <div>
