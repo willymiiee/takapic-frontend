@@ -14,7 +14,7 @@ const TopPhotographerSingle = props => {
   } = props.item;
 
   return (
-    <div style={{paddingLeft:'16px',paddingRight:'16px'}}>
+    <div className="no-select single-photographer-holder">
       <div className="profile-picture">
         <img className="cover circle-img border-smooth" alt="" src={photoProfileUrl} />
       </div>

@@ -14,9 +14,13 @@ const Step2Done = (props) => (
             style={{ fontSize: '1em' }}
           >
             <div style={{marginBottom:'20px'}}><i className="fa fa-check-circle fa-3x" /></div>
+            <br/>
             Thanks!<br />
             Now, it's time for you as a Takapic photographer to wow
-            travellers with your beautiful photography! Let's go to your <Link style={{textDecoration:"underline", color:"black"}} to={`/photographer/${this.props.user.uid}`}> Portofolio Page </Link>
+            travellers with your beautiful photography! Let's go to your
+            <Link style={{textDecoration:"underline", color:"black"}}
+                  to={`/photographer/`}
+            > Portofolio Page </Link>
           </p>
         </div>
       </div>

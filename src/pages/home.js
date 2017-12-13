@@ -33,7 +33,7 @@ class Home extends Component {
     super();
     this.state = {
       search: {
-        destination: { label: 'Anywhere', color: '#eee'},
+        destination: null,
         date: null
       }
     };
@@ -118,26 +118,34 @@ class Home extends Component {
             <h1>{ intl.get('TAGLINE') }</h1>
             <p>{ intl.get('SUBHEADER') }</p>
 
-            <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '90px'}}>
+            <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '120px'}}>
               <div className="search-box-destination">
-                <Select.Async
-                  multi={false}
-                  value={this.state.search.destination}
-                  onChange={this.handleSearchDestinationChange}
-                  valueKey="label"
-                  labelKey="label"
-                  loadOptions={this.retrieveLocations}
-                  placeholder="Anywhere"
-                />
+                <div style={{display:'flex'}}>
+                  <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Location</span>
+                  <Select.Async
+                    multi={false}
+                    value={this.state.search.destination}
+                    onChange={this.handleSearchDestinationChange}
+                    valueKey="label"
+                    labelKey="label"
+                    loadOptions={this.retrieveLocations}
+                    placeholder="Anywhere"
+                    className="no-select"
+                  />
+                </div>
               </div>
 
               <div className="search-box-date" id="select-date-home">
-                <DatePicker
-                  dateFormat="MMMM Do YYYY"
-                  selected={this.state.search.date}
-                  onChange={this.handleSearchDateChange}
-                  placeholderText="Anytime"
-                />
+                <div style={{display:'flex'}}>
+                  <span id="label-field-date" style={{paddingLeft:'15px', marginRight:'15px'}}>Date</span>
+                  <DatePicker
+                    dateFormat="MMMM Do YYYY"
+                    selected={this.state.search.date}
+                    onChange={this.handleSearchDateChange}
+                    placeholderText="Anytime"
+                    style={{flex:'1'}}
+                  />
+                </div>
               </div>
 
               <div className="search-box-submit">
@@ -180,14 +188,14 @@ class Home extends Component {
           </div>
 
           <div id="top-photographer-home">
-          <h1 className="title" style={{marginTop:'70px',marginBottom:'60px',fontSize:'24px'}}>Top Photographers</h1>
+          <h1 className="title" style={{marginTop:'80px',marginBottom:'80px',fontSize:'24px'}}>Top Photographers</h1>
 
           {
             topPhotographers && !loadingHomepageData ? <TopPhotographers topPhotographers={topPhotographers}/> : null
           }
           </div>
 
-          <h1 className="title" style={{marginTop:'30px',marginBottom:'25px', fontSize:'24px'}}>Why be a Takapic traveller?</h1>
+          <h1 className="title" style={{marginTop:'60px',marginBottom:'35px', fontSize:'24px'}}>Why be a Takapic traveller?</h1>
 
           <div className="row icons-container">
             <div className="col-sm-4">
