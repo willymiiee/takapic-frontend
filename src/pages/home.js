@@ -115,8 +115,8 @@ class Home extends Component {
         <div className="container">
           <div id="landing-page-top">
             <img src="/images/takapic-logo/CL small w.png" alt="This is an alt text"/>
-            <h1>{ intl.get('TAGLINE') }</h1>
-            <p>{ intl.get('SUBHEADER') }</p>
+            <h1>Capture your travel moments</h1>
+            <p>Connect with a Takapic photographer</p>
 
             <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '120px'}}>
               <div className="search-box-destination">
