@@ -18,9 +18,10 @@ const Step2Done = (props) => (
             Thanks!<br />
             Now, it's time for you as a Takapic photographer to wow
             travellers with your beautiful photography! Let's go to your
-            <Link style={{textDecoration:"underline", color:"black"}}
-                  to={`/photographer/`}
-            > Portofolio Page </Link>
+            &nbsp;
+            <Link style={{textDecoration:"underline", color:"black"}} to={`/photographer-portofolio/${props.user.uid}/gallery`}>
+              Portofolio Page
+            </Link>
           </p>
         </div>
       </div>

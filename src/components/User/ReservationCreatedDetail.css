@@ -1,25 +1,16 @@
-.reservation-detail-main-wraper .left-reservation-detail-wrapper {
-
+.messages-container-inner .messages-inbox {
+  max-width: none;
 }
 
-.reservation-detail-main-wraper .right-reservation-messages-wrapper {
-
+.reservation-detail-wrapper {
+  padding: 30px;
 }
 
-.reservation-detail-main-wraper .left-reservation-detail-wrapper h4 {
-  font-weight: bold;
-}
-
-.reservation-detail-main-wraper .left-reservation-detail-wrapper .profile-picture {
+.profile-picture {
   width: 125px;
   height: 125px;
   max-width: 100%;
-}
-
-.reservation-detail-main-wraper .left-reservation-detail-wrapper .reservation-photographer-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 0 auto;
 }
 
 .info-item-text {
@@ -31,61 +22,8 @@
   font-size: 13px;
 }
 
-.left-reservation-detail-wrapper .reservation-trip-details-item-title {
+.reservation-trip-details-item-title {
   font-weight: bold;
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 }
 
-/* ============================================================================================================================
-== TWITTER
-** ============================================================================================================================ */
-
-.example-twitter {
-  position:relative;
-  padding:15px;
-  color:#333;
-  background:#eee;
-  /* css3 */
-  -webkit-border-radius:10px;
-  -moz-border-radius:10px;
-  border-radius:10px;
-}
-
-.example-twitter p {
-  line-height:1.25em;
-}
-
-/* this isn't necessary, just saves me having to edit the HTML of the demo */
-.example-twitter:before {
-  position:absolute;
-  top:-60px;
-  left:0;
-  width:155px;
-  height:36px;
-  /* reduce the damage in FF3.0 */
-  display:block;
-}
-
-/* creates the triangle */
-.example-twitter:after {
-  content:"";
-  position:absolute;
-  top:-30px;
-  left:50px;
-  border:15px solid transparent;
-  border-bottom-color:#eee;
-  /* reduce the damage in FF3.0 */
-  display:block;
-  width:0;
-}
-
-/* display of quote author (alternatively use a class on the element following the blockquote) */
-.example-twitter + p {
-  padding-left:15px;
-}
-
-.chat-text-area{
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-}
