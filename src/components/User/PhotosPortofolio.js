@@ -220,7 +220,7 @@ class PhotosPortofolio extends Component {
                     className="button"
                     onClick={() => this._uploadFile.click()}
                 >
-                  Browse images
+                  Browse to add images
                 </button>
               </div>
             </div>
