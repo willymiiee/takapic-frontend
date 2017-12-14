@@ -95,35 +95,46 @@ class Search extends Component {
         <Page>
           <div className="container">
             <div id="landing-page-top" className="srp">
-              <div className="search-box-custom-again">
+              
+              <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '120px'}}>
                 <div className="search-box-destination">
-                  <Select.Async
-                    multi={false}
-                    value={this.state.search.destination}
-                    onChange={this.handleSearchDestinationChange}
-                    valueKey="label"
-                    labelKey="label"
-                    loadOptions={this.retrieveLocations}
-                    placeholder="Choose your destination"
-                  />
+                  <div style={{display:'flex'}}>
+                    <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Location</span>
+                    <Select.Async
+                      multi={false}
+                      value={this.state.search.destination}
+                      onChange={this.handleSearchDestinationChange}
+                      valueKey="label"
+                      labelKey="label"
+                      loadOptions={this.retrieveLocations}
+                      placeholder="Anywhere"
+                      className="no-select"
+                    />
+                  </div>
                 </div>
 
-                <div className="search-box-date">
-                  <DatePicker
-                    dateFormat="MMMM Do YYYY"
-                    selected={this.state.search.date}
-                    onChange={this.handleSearchDateChange}
-                    placeholderText={!searchQs.date ? 'Any date' : ''}
-                  />
+                <div className="search-box-date" id="select-date-home">
+                  <div style={{display:'flex'}}>
+                    <span id="label-field-date" style={{paddingLeft:'15px', marginRight:'15px'}}>Date</span>
+                    <DatePicker
+                      dateFormat="MMMM Do YYYY"
+                      selected={this.state.search.date}
+                      onChange={this.handleSearchDateChange}
+                      placeholderText="Anytime"
+                      style={{flex:'1'}}
+                    />
+                  </div>
                 </div>
 
                 <div className="search-box-submit">
-                  <button className="button" onClick={this.handleSearchSubmit}>
+                  <button className="button radius-8 key-color"
+                          onClick={this.handleSearchSubmit}>
                     <i className="fa fa-search"/>
                     <span>Search</span>
                   </button>
                 </div>
               </div>
+            
             </div>
 
             {/*<div id="result-filter">
