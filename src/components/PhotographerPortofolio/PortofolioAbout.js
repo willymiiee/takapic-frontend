@@ -107,44 +107,53 @@ class PortofolioAbout extends Component {
 
                   <p className="self-description">{ selfDescription }</p>
                   <hr/>
-                  <div className="row">
-                    <div className="equipment col-sm-6">
-                      <div className="icon-box-2" style={{marginTop:'0px'}}>
-                        <i className="im im-icon-Camera"/>
-                        <h3>Camera Equipment</h3>
-                      </div>
-                      <hr/>
-                      <div className="">
-                        <h3>Body</h3>
-                        <div className="about-content">
-                            { contentCameraEquipmentBodies }
+                  <div className="row margin-0">
+                    <div className="equipment col-sm-4" style={{padding:'0 8px 0 0'}}>
+                      <div className="smooth-card radius-0 padding-16" style={{height:'400px',overflowY:'scroll'}}>
+                        <div className="icon-box-2" style={{marginTop:'0px'}}>
+                          <i className="im im-icon-Camera"/>
+                          <h3>Camera Equipment</h3>
                         </div>
-                        <h3>Lens</h3>
-                        <div className="about-content">
-                            { contentCameraEquipmentLenses }
+                        <hr/>
+                        <div className="">
+                          <h3>Body</h3>
+                          <div className="about-content">
+                              { contentCameraEquipmentBodies }
+                          </div>
+                          <h3>Lens</h3>
+                          <div className="about-content">
+                              { contentCameraEquipmentLenses }
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="language col-sm-6">
-                      <div className="icon-box-2" style={{marginTop:'0px'}}>
-                        <i className="im im-icon-Camera"/>
-                        <h3>Language</h3>
-                      </div>
-                      <hr/>
-                      <div className="about-content">
-                          { languages ? languages.join(', ') : '' }
+                    <div className="language col-sm-4" style={{padding:'0 8px 0 8px'}}>
+                      <div className="smooth-card radius-0 padding-16" style={{height:'400px',overflowY:'scroll'}}>
+                        <div className="icon-box-2" style={{marginTop:'0px'}}>
+                          <i className="im im-icon-Speak-2"/>
+                          <h3>Language</h3>
+                        </div>
+                        <hr/>
+                        <div className="about-content" style={{fontSize:'14px'}}>
+                            { languages ? languages.join(', ') : '' }
+                        </div>
                       </div>
                     </div>
-                    <div className="package col-sm-12">
-                      <div className="icon-box-2" style={{marginTop:'0px'}}>
-                        <i className="im im-icon-Camera-2"/>
-                        <h3>Language</h3>
-                      </div>
-                      <div className="package-detail hour">
-                          { contentPackageHours }
-                      </div>
-                      <div className="package-detail price">
-                          { contentPackagePrices }
+                    <div className="package col-sm-4" style={{padding:'0 0 0 8px'}}>
+                      <div className="smooth-card radius-0 padding-16" style={{height:'400px',overflowY:'scroll'}}>
+                        <div className="icon-box-2" style={{marginTop:'0px'}}>
+                          <i className="im im-icon-Pricing"/>
+                          <h3>Pricing</h3>
+                        </div>
+                        <hr/>
+                        <div className="row margin-0">
+                          <div className="package-detail hour col-xs-6">
+                              { contentPackageHours }
+                          </div>
+                          <div className="package-detail price col-xs-6" style={{borderLeft: '1px solid #eeeeee'}}>
+                              { contentPackagePrices }
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

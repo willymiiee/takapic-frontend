@@ -162,25 +162,32 @@ const App = (props) => (
         />
         <Route
           path="/traveller-faq"
-          component={TravellerFaq}/>
+          component={TravellerFaq}
+        />
         <Route
           path="/privacy-policy"
-          component={PrivacyPolicy}/>
+          component={PrivacyPolicy}
+        />
         <Route
           path="/about-us"
-          component={AboutUs}/>
+          component={AboutUs}
+        />
         <Route
           path="/packages"
-          component={Packages}/>
+          component={Packages}
+        />
         <Route
           path="/contact-us"
-          component={ContactUs}/>
+          component={ContactUs}
+        />
         <Route
           path="/photographer-faq"
-          component={PhotographerFaq}/>
+          component={PhotographerFaq}
+        />
         <Route
           path="/how-it-works"
-          component={HowItWorks}/>
+          component={HowItWorks}
+        />
         <Route path="*" component={NotFoundPage} />
       </Switch>
     </ScrollToTop>

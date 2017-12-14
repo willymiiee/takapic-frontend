@@ -76,20 +76,7 @@ class Step2IntiatePortofolio extends Component {
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30">
               <div>
-                <input
-                  accept="image/*"
-                  ref={ref => (this._uploadFile = ref)}
-                  className="hidden"
-                  multiple
-                  type="file"
-                  onChange={this.handleUpload}
-                />
-                <button
-                  className="button"
-                  onClick={() => this._uploadFile.click()}
-                >
-                  Browse images
-                </button>
+
                 <div id="photo-preview">
                   {selectedPhotos.map((photo, key) => (
                     <div key={key}>
@@ -128,6 +115,23 @@ class Step2IntiatePortofolio extends Component {
                     </div>
                   ))}
                 </div>
+                <div style={{marginTop:'40px'}}>
+                  <input
+                      accept="image/*"
+                      ref={ref => (this._uploadFile = ref)}
+                      className="hidden"
+                      multiple
+                      type="file"
+                      onChange={this.handleUpload}
+                  />
+                  <button
+                      className="button"
+                      onClick={() => this._uploadFile.click()}
+                  >
+                    Browse to add images
+                  </button>
+                </div>
+
               </div>
             </div>
             <div className="col-sm-5 margin-top-15 margin-bottom-30">

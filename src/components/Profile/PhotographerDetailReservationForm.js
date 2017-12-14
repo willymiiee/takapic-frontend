@@ -54,7 +54,15 @@ class PhotographerDetailReservationForm extends Component {
         alert('Please choose starting date and starting time');
       } else {
         const {
-          photographerServiceInformation: {data: {userMetadata: {uid: photographerId}}},
+          photographerServiceInformation: {
+            data: {
+              userMetadata: {
+                uid: photographerId,
+                displayName: photographerName,
+                photoProfileUrl: photographerPhotoProfileUrl
+              }
+            }
+          },
           reservationInitializeAction
         } = this.props;
 
@@ -85,6 +93,10 @@ class PhotographerDetailReservationForm extends Component {
           total,
           status: RESERVATION_REQUESTED
         };
+
+        const uidMapping = {};
+        uidMapping[photographerId] = { photographerName, photographerPhotoProfileUrl };
+        information.uidMapping = uidMapping;
 
         reservationInitializeAction(reservationId, information);
         this.props.history.push(`/booking/${photographerId}/${reservationId}`);

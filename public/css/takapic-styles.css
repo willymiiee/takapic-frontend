@@ -71,6 +71,7 @@ input[type='submit'],
 a.button.border,
 a.button {
     background: #aaa;
+    outline:none;
 }
 
 a.button:hover {
@@ -374,69 +375,6 @@ button.u:hover {
     color: #fff;
     font-size: 18px;
 }
-
-/*#landing-page-search {
-    background: #fff;
-    width: 85%;
-    margin: 5vw auto;
-    text-align: left;
-    border-radius: 50px;
-    vertical-align: middle;
-    padding: 5px 5px 5px 8px;
-    font-size: 0;
-}
-
-#landing-page-search > span {
-    display: none;
-    font-size: 18px;
-}
-
-#landing-page-search > span > .fa {
-    cursor: pointer;
-    display: inline-block;
-    padding-right: 15px;
-}
-
-#landing-page-search > span > a {
-    float: right;
-}
-
-#landing-page-search > div {
-    display: inline-block;
-    width: calc(50% - 50px);
-    margin: 5px 0;
-    height: 34px;
-}
-
-#landing-page-search > #search-date {
-    border-left: 1px solid #ddd;
-}
-
-#landing-page-search > div > input {
-    display: inline-block;
-    border: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    border-radius: 0;
-    background: none;
-    font-size: 18px;
-    transition: none;
-    margin-bottom: 0;
-    height: 100%;
-    padding: 0 20px !important;
-}
-
-#landing-page-search > .button {
-    float: right;
-    margin: 0;
-    width: 100px;
-    height: 44px;
-}
-
-#landing-page-search > .button > .fa {
-    display: none;
-}*/
 
 .loc-autocomplete {
     background: #fff;
@@ -1309,7 +1247,9 @@ button.u:hover {
 
 #photographer-portofolio-about .about-content {
     padding: 10px 10px 10px 24px;
-    border-left: 1px solid #ddd;
+}
+#photographer-portofolio-about .package-detail.price p, #photographer-portofolio-about .package-detail.hour p {
+  font-size: 14px;
 }
 
 #photographer-portofolio-about .about-content li {
@@ -1317,37 +1257,37 @@ button.u:hover {
 }
 
 .photographer-portofolio-about-heading-image-wrapper {
-    width: auto;
-    height: 300px;
-    padding-top: -webkit-calc(9 / 21 * 100%);
-    padding-top: -moz-calc(9 / 21 * 100%);
-    padding-top: calc(9 / 21 * 100%);
-    position: relative;
+  width: auto;
+  height: 300px;
+  padding-top: -webkit-calc(9 / 21 * 100%);
+  padding-top: -moz-calc(9 / 21 * 100%);
+  padding-top: calc(9 / 21 * 100%);
+  position: relative;
 }
 
 .photographer-portofolio-about-heading-image-sub-wrapper {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
 }
 
 .photographer-portofolio-about-heading-image-wrapper img {
-    display: block;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    margin: auto;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  margin: auto;
 
-    transition: opacity 150ms ease-in;
-    -webkit-transition: opacity 150ms ease-in;
+  transition: opacity 150ms ease-in;
+  -webkit-transition: opacity 150ms ease-in;
 
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 #photographer-portofolio-tags a {
@@ -1427,13 +1367,13 @@ button.u:hover {
 }
 
 .photographer-portofolio-nav-item {
-    color: #707070;
-    padding: 6px;
-    text-align: center;
-    border-radius: 50px;
-    border: solid 1px #eee;
-    margin-bottom: 16px;
-    transition: 0.2s;
+  color: #707070;
+  padding: 6px;
+  text-align: center;
+  border-radius: 50px;
+  border: solid 1px #eee;
+  margin-bottom: 16px;
+  transition: 0.2s;
 }
 
 .photographer-portofolio-nav-item:hover {
@@ -1632,23 +1572,23 @@ img.cover {
 }
 
 .card {
-    padding: 20px 30px;
-    border-radius: 16px;
-    -webkit-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+  padding: 20px 30px;
+  border-radius: 16px;
+  -webkit-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
 }
 
 .panel-body .smooth-card{
-    margin-bottom:20px;
+  margin-bottom:20px;
 }
 
 .smooth-card {
-    padding: 20px 30px;
-    border-radius: 16px;
-    -webkit-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+  padding: 20px 30px;
+  border-radius: 16px;
+  -webkit-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
 .card-popup {
@@ -1768,11 +1708,6 @@ CUSTOMIZE LIBRARY
 .select2-results__option {
     font-size: 16px;
 }
-
-.Select-menu-outer {
-    z-index: 1001 !important;
-}
-
 #photographer-landing .setup-content .Select-control input {
     height: 15px;
 }
@@ -1940,10 +1875,6 @@ RESPONSIVE
     #promo-bottom {
         margin: 60px 0;
         font-size: 24px;
-    }
-
-    #landing-page-top {
-        margin: 7vw 0 35vw;
     }
 
     #landing-page-top > img {
@@ -2412,8 +2343,8 @@ RESPONSIVE
     }
 
     /*.scroll-view {*/
-    /*overflow: hidden;*/
-    /*height:unset;*/
+        /*overflow: hidden;*/
+        /*height:unset;*/
     /*}*/
     .search-result-page{
         margin-top:100px !important;
@@ -2503,10 +2434,6 @@ RESPONSIVE
     #promo-bottom {
         margin: 90px 0;
         font-size: 28px;
-    }
-
-    #landing-page-top {
-        margin: 6vw 0 16vw;
     }
 
     #landing-page-top > h1 {
@@ -2907,10 +2834,6 @@ RESPONSIVE
         font-size: 30px;
     }
 
-    #landing-page-top {
-        margin: 11vw 0 19vw;
-    }
-
     #landing-page-search {
         width: 100%;
     }
@@ -3114,10 +3037,6 @@ RESPONSIVE
         margin: 0 100px 0 80px;
     }
 
-    #landing-page-top {
-        margin: calc(17vw - 70px) 0 calc(28vw - 70px);
-    }
-
     #result {
         margin: 0 -15px;
     }
@@ -3196,6 +3115,12 @@ p.l-h-22 {
 }
 .padding-16 {
     padding: 16px !important;
+}
+.padding-0 {
+  padding: 0 !important;
+}
+.margin-0 {
+  margin: 0 !important;
 }
 .radius-16 {
     border-radius: 16px !important;
@@ -3594,20 +3519,20 @@ PHASE 1 BOP - New Photographer Account Register
 
 
 /*@media (min-width: 992px) {*/
-/*.input-place-location-name{*/
-/*width:34% !important;*/
-/*top: 10px !important;*/
-/*left: 113px !important;*/
-/*}*/
-/*.input-place-location-note{*/
-/*width:30% !important;*/
-/*top: 10px !important;*/
-/*left: 48% !important;*/
-/*}*/
-/*.btn-place-location{*/
-/*top: 10px !important;*/
-/*left: 80% !important;*/
-/*}*/
+    /*.input-place-location-name{*/
+        /*width:34% !important;*/
+        /*top: 10px !important;*/
+        /*left: 113px !important;*/
+    /*}*/
+    /*.input-place-location-note{*/
+        /*width:30% !important;*/
+        /*top: 10px !important;*/
+        /*left: 48% !important;*/
+    /*}*/
+    /*.btn-place-location{*/
+        /*top: 10px !important;*/
+        /*left: 80% !important;*/
+    /*}*/
 /*}*/
 
 
@@ -3990,23 +3915,23 @@ figcaption.action-btn a .fa {
 }
 
 .DayPicker-Month {
-    display: table;
-    border-collapse: collapse;
-    border-spacing: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin: 0 1rem;
-    width: 100%;
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0 1rem;
+  width: 100%;
 }
 
 #photographer-landing .react-selectize.root-node {
-    width: auto;
+  width: auto;
 }
 
 .buttonNextPrevCoupleWrapper {
-    display: flex;
+  display: flex;
 }
 
 /* PRE PHOTOGRAPHER REGISTER SPEECH PAGE */
@@ -4045,25 +3970,26 @@ figcaption.action-btn a .fa {
 }
 
 .search-box-custom-again {
-    display: flex;
-    height: 51px;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    -webkit-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
-    background: #fff;
-    border-radius: 8px;
+  display: flex;
+  height: 51px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  -webkit-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.3);
+  background: #fff;
+  border-radius: 8px;
 }
 
 .search-box-custom-again .Select-control {
-    background-color: transparent;
-    border: none;
-    text-align: left;
-    border-right: solid 1px #eee;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  border-right: solid 1px #eee;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  outline:none !important;
 }
 
 .react-datepicker__day--keyboard-selected{
@@ -4090,7 +4016,7 @@ figcaption.action-btn a .fa {
     transition: 0.2s;
 }
 .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
-    width: 2.4em !important;
+    width: 4.92em !important;
 }
 .react-datepicker__header {
     background-color: white !important;
@@ -4108,134 +4034,262 @@ figcaption.action-btn a .fa {
 }
 
 .search-box-custom-again .Select-placeholder {
-    color: #808080;
+  color: #d6d6d6 !important;
+  font-size:20px;
 }
 
 .search-box-custom-again .search-box-destination {
-    flex: 1;
+  flex: 1;
 }
 
 .search-box-custom-again .search-box-destination .Select-control .Select-value{
-    padding-left: 20px;
+  padding-left: 20px;
 }
 
 .search-box-custom-again .search-box-date {
-    flex: 1;
-    margin-left: 10px;
-    margin-top: 17px;
+  flex: 1;
+  margin-left: 10px;
+  margin-top: 17px;
 }
 
 .search-box-custom-again .search-box-date input {
-    border: none;
-    height: 44px;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    padding:0 10px !important;
-    color: #aaa;
-    font-size:20px;
+  border: none;
+  height: 44px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  padding:0 10px !important;
+  color: black;
+  font-size:20px;
+}
+.search-box-custom-again .search-box-date input::placeholder {
+  color: #d6d6d6;
+  font-size: 20px;
+}
+
+
+.Select-menu-outer {
+  z-index: 1001 !important;
+}
+
+#search-box-home .Select-menu-outer {
+  position: absolute;
+  left:-100px;
+  right:0;
+  margin-top: 2px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 6px;
+  width:122.5% !important;
+  text-align: left;
+  padding-left:12px;
+}
+
+#search-box-home #select-date-home .react-datepicker-popper {
+  left:-80px !important;
+  top: 1px !important;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+#search-box-home #select-date-home .react-datepicker {
+  border: unset;
+}
+
+#search-box-home .Select-control:hover{
+  -webkit-box-shadow: unset;
+  -moz-box-shadow: unset;
+  box-shadow: unset;
+}
+
+#search-box-home .search-box-destination .Select.Select--single.is-clearable.is-searchable{
+  flex:1;
+}
+#search-box-home .is-focused, #search-box-home .is-pseudo-focused{
+  outline:none !important;
 }
 
 #search-box-home .Select-clear-zone {
-    display: none;
+  /*display: none;*/
+    padding-right:12px;
 }
 #search-box-home .Select-arrow-zone {
-    display: none;
+  display: none;
 }
 
 .search-box-custom-again .search-box-submit {
-    text-align: right;
+  text-align: right;
 }
 .search-box-submit button {
-    margin-right: 4px;
-    margin-bottom: 1px;
-    margin-top: 1px;
-    padding:8px 20px;
+  margin-right: 4px;
+  margin-bottom: 1px;
+  margin-top: 1px;
+  padding:8px 20px;
 }
 
 .react-datepicker-wrapper, .react-datepicker__input-container{
-    display: block !important;
+  display: block !important;
 }
 
 .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
     font-size: 20px;
-    color: #959595 !important;
+    color: black !important;
 }
 
-@media (max-width: 480px) {
-    .search-box-custom-again {
-        display: block;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
+#search-box-home #select-date-home div {
+  flex:1;
+}
 
-    .search-box-custom-again .Select-control {
-        background-color: #fff;
-        border-color: #d9d9d9 #ccc #b3b3b3;
-        border-radius: 4px;
-        border: 1px solid #eee;
-        border-spacing: 0;
-        border-collapse: separate;
-    }
+#search-box-home .react-datepicker__triangle {
+    display: none;
+}
 
-    .search-box-custom-again .search-box-destination {
-        margin-left: 0;
-    }
 
-    .search-box-custom-again .search-box-date {
-        flex-grow: 1;
-        margin-left: 0;
-        margin-top: 10px;
-    }
+@media (min-width: 992px) and (max-width: 1240px) {
+  #search-box-home .Select-menu-outer {
+    width:132% !important;
+  }
+  .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+    width: 3.75em !important;
+  }
+}
 
-    .search-box-custom-again .search-box-date input {
-        border: 1px solid #eee;
-    }
+@media (min-width: 768px) and (max-width: 991px) {
+  #search-box-home .Select-menu-outer {
+    width:150% !important;
+  }
+  .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+    width: 2.67em !important;
+  }
+  #landing-page-top {
+    text-align: center;
+    margin: 10vw 0 17vw;
+  }
+}
+@media (max-width: 767px) {
+  #search-box-home .Select-menu-outer {
+    width:100% !important;
+  }
+  #search-box-home {
+    margin-top:20px !important;
+    border: solid 1px #eee;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+  }
+  #label-field-date {
+    width:110px;
+    margin-right: 0 !important;
+  }
+  #label-field-destination {
+    width:110px;
+    margin-right: 0 !important;
+  }
+  .search-box-custom-again {
+    display: block;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
 
-    .search-box-custom-again .search-box-submit {
-        flex-grow: 1;
-        text-align: center;
-    }
+  .search-box-custom-again .Select-control {
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    border-spacing: 0;
+    border-collapse: separate;
+    width:100%;
+    outline:none;
+  }
+
+  #search-box-home .Select-control {
+    outline:none;
+    border: none !important;
+  }
+
+  #search-box-home .Select-control:hover {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .search-box-custom-again .search-box-destination {
+    margin-left: 0;
+    padding-top: 2px;
+  }
+
+  .search-box-custom-again .search-box-date {
+    flex-grow: 1;
+    margin-left: 0;
+    margin-top: 10px;
+    background: white;
+    border-radius: 6px;
+    height: 51px;
+    padding-top: 3px;
+    border: solid 1px #eee;
+  }
+
+  .search-box-custom-again .search-box-date input {
+    border: 1px solid #eee;
+  }
+
+  #search-box-home .search-box-date input {
+    border: none;
+    width:100%;
+  }
+
+  .search-box-custom-again .search-box-submit {
+    flex-grow: 1;
+    text-align: center;
+    margin-top:5px;
+    width: 100%;
+    display: block; 
+  }
+  .search-box-custom-again .search-box-submit button{
+    width:100%;
+  }
+  h1.title{
+    margin: 170px 0 50px;
+  }
 }
 
 .set-default-photo-profile-manager {
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    left:0;
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    width: 100%;
-    height: 25px;
-    color: #fff;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left:0;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  height: 25px;
+  color: #fff;
 }
 
 .social-media-login-sign-in {
-    text-align: center;
+  text-align: center;
 }
 .social-media-login-sign-in button {
-    background-color: #fff;
-    padding: 0 8px;
-    height: 32px;
+  background-color: #fff;
+  padding: 0 8px;
+  height: 32px;
 }
 
 .social-media-login-sign-in img {
-    max-height: 20px;
-    margin-right: 4px;
+  max-height: 20px;
+  margin-right: 4px;
 }
 
 .social-media-login-sign-in .btn-sign-in-facebook {
-    color: #3b5998;
-    border: 1px solid #3b5998;
-    margin-right: 4px;
+  color: #3b5998;
+  border: 1px solid #3b5998;
+  margin-right: 4px;
 }
 
 .social-media-login-sign-in .btn-sign-in-gmail {
-    color: #dd4b39;
-    border: 1px solid #dd4b39;
+  color: #dd4b39;
+  border: 1px solid #dd4b39;
 }
 
 
@@ -4282,17 +4336,17 @@ figcaption.action-btn a .fa {
     text-align: left;
 }
 .left-align{
-    text-align: left;
+  text-align: left;
 }
 .justify-align{
-    text-align: justify;
+  text-align: justify;
 }
 .icon-box-2 i{
-    background-color: transparent;
-    margin-bottom:0px;
+  background-color: transparent;
+  margin-bottom:0px;
 }
 .icon-box-2 h3{
-    margin-bottom:10px;
+  margin-bottom:10px;
 }
 .how-it-works-icon {
     position: static;
@@ -4304,28 +4358,28 @@ figcaption.action-btn a .fa {
     transition: 0.5s;
 }
 .how-it-works span{
-    text-align: center;
-    font-size: 23px;
-    line-height: 34px;
-    position: relative;
-    top: 50%;
-    display: block;
-    vertical-align: middle;
-    font-style: italic;
-    font-weight: lighter;
-    color: #999999;
+  text-align: center;
+  font-size: 23px;
+  line-height: 34px;
+  position: relative;
+  top: 50%;
+  display: block;
+  vertical-align: middle;
+  font-style: italic;
+  font-weight: lighter;
+  color: #999999;
 }
 .how-it-works{
-    margin-top:50px;
-    margin-left: 0px;
-    margin-right: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: black;
-    position: absolute;
-    left: 15px;
-    right: 15px;
+  margin-top:50px;
+  margin-left: 0px;
+  margin-right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  position: absolute;
+  left: 15px;
+  right: 15px;
 }
 .how-it-works img {
     width: 100%;
@@ -4446,6 +4500,9 @@ figcaption.action-btn a .fa {
     /*take out button detail in homepage*/
     display: none;
 }
+#top-photographer-home .slick-dots {
+  display: none !important;
+}
 #top-photographer-home .slick-prev:before, #top-photographer-home .slick-next:before {
     color: #aaa !important;
     text-shadow: none !important;
@@ -4458,4 +4515,47 @@ figcaption.action-btn a .fa {
 }
 #top-photographer-home .slick-prev {
     left: 0px !important;
+}
+#top-photographer-home .single-photographer-holder {
+  padding:16px 14px 0;
+  border:solid 1px #fff;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  transition: 0.5s;
+}
+#top-photographer-home .single-photographer-holder:hover {
+  border:solid 1px #eee;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.Select.Select--single.is-clearable.is-searchable.has-value {
+    flex: 1 !important;
+}
+#label-field-date, #label-field-destination {
+    color: black;
+    font-weight: bold;
+    padding-top: 8px;
+}
+
+.no-select {
+    -webkit-user-select: none;
+    user-select: none;
+}
+.no-select:focus{
+    outline:none !important;
+}
+
+/* customize date */
+#search-box-home .react-datepicker-popper[data-placement^="bottom"] {
+  margin-top:2px;
+  -webkit-box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.4);
+}
+#search-box-home .react-datepicker-popper[data-placement^="top"] {
+  margin-bottom:5px;
+  -webkit-box-shadow: 1px 0px 1px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 1px 0px 1px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 0px 1px 0 rgba(0, 0, 0, 0.4);
 }
