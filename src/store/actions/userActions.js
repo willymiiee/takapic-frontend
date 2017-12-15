@@ -7,7 +7,7 @@ const initialiazePhotographerProfileData = uid => {
   const initialProfileData = {
     serviceReviews: {
       rating: {
-        label: 'Common',
+        label: 'Rating',
         value: 3
       },
       impressions: [
@@ -276,5 +276,14 @@ export const loggingOut = () => {
         history.push('/');
         window.location.reload(true);
       });
+  };
+};
+
+export const searchInformationLog = (location, datetime) => {
+  return dispatch => {
+    dispatch({
+      type: 'SEARCH_INFORMATION_SUBMIT_SEARCH_LOG',
+      payload: { location, datetime }
+    });
   };
 };

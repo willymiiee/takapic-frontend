@@ -4,6 +4,7 @@ import { database } from "../../services/firebase";
 
 import './ReservationCreatedDetail.css';
 import Page from '../Page';
+import UserAccountPanel from './UserAccountPanel';
 
 class ReservationCreatedDetail extends Component {
   constructor() {
@@ -27,7 +28,8 @@ class ReservationCreatedDetail extends Component {
   componentWillUnmount() {
     database
       .database()
-      .ref('reservation_messages/RKKV-GHGG')
+      .ref('reservation_messages')
+      .child('RKKV-GHGG')
       .off();
   }
 
@@ -53,14 +55,10 @@ class ReservationCreatedDetail extends Component {
 
     return (
       <Page style={{whiteSpace:'normal'}}>
-        <div className="padding-bottom-30"/>
-        <div className="container">
+        <UserAccountPanel>
+          <h3>Reservation details</h3>
+
           <div className="messages-container margin-top-0">
-
-            <div className="messages-headline">
-              <h4>Reservation details</h4>
-            </div>
-
             <div className="messages-container-inner">
               {/* Messages */}
               <div className="messages-inbox">
@@ -119,9 +117,9 @@ class ReservationCreatedDetail extends Component {
               {/* Message Content */}
               <div className="message-content">
                 {
-                  this.state.messages && Object.keys(this.state.messages).map(item => {
+                  this.state.messages && Object.keys(this.state.messages).map((item) => {
                     return (
-                      <div className={this.state.messages[item].sender === uid ? 'message-bubble me' : 'message-bubble'}>
+                      <div key={item} className={this.state.messages[item].sender === uid ? 'message-bubble me' : 'message-bubble'}>
                         <div className="message-avatar">
                           <img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70" alt />
                         </div>
@@ -145,8 +143,7 @@ class ReservationCreatedDetail extends Component {
               {/* Message Content */}
             </div>
           </div>
-        </div>
-
+        </UserAccountPanel>
       </Page>
     );
   }

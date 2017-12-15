@@ -6,6 +6,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import intl from 'react-intl-universal';
 import store from '../store';
+import { searchInformationLog } from "../store/actions/userActions";
 
 import '../react-date-picker-custom.css';
 import TopPhotographers from '../components/TopPhotographers';
@@ -46,6 +47,8 @@ class Home extends Component {
     let { destination, date } = this.state.search;
     const destinationValStr = !destination ? '' : destination.label;
     const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+
+    this.props.searchInformationLog(destinationValStr, dateValStr);
 
     this.props.history.push({
       pathname: '/search/',
@@ -238,5 +241,8 @@ class Home extends Component {
 export default connect(
   state => ({
     homepageData: state.homepageData
+  }),
+  dispatch => ({
+    searchInformationLog: (strLocation, strDatetime) => dispatch(searchInformationLog(strLocation, strDatetime))
   })
 )(Home);

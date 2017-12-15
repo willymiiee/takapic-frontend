@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-import shortid from 'shortid';
 import { reservationInitializeAction } from "../../store/actions/reservationActions";
+import { searchInformationLog } from "../../store/actions/userActions";
+import { generateReservationNumber } from "../../helpers/helpers";
 import{ RESERVATION_REQUESTED } from "../../services/userTypes";
 
 const StartServicePrice = props => {
@@ -46,6 +47,25 @@ class PhotographerDetailReservationForm extends Component {
   dismiss = _ => _;
   show = _ => _;
 
+  makeSureDestinationLocation() {
+    const { searchInformation } = this.props;
+    let location = get(searchInformation, 'location');
+
+    if (!location) {
+      const {
+        photographerServiceInformation: {
+          data: {
+            userMetadata: { countryName, locationAdmLevel2 }
+          }
+        }
+      } = this.props;
+
+      location = locationAdmLevel2 || '';
+      location = location + ', ' + countryName;
+    }
+    return location;
+  }
+
   handleReserve = () => {
     const travellerId = get(this.props, 'user.uid', null);
 
@@ -63,7 +83,11 @@ class PhotographerDetailReservationForm extends Component {
               }
             }
           },
-          reservationInitializeAction
+          user: {
+            userMetadata: { displayName: travellerName }
+          },
+          reservationInitializeAction,
+          searchInformationLog
         } = this.props;
 
         const {
@@ -78,8 +102,8 @@ class PhotographerDetailReservationForm extends Component {
           }
         } = this.state;
 
-        let reservationId = shortid.generate();
-        reservationId = reservationId.toUpperCase();
+        const locationDestinationFix = this.makeSureDestinationLocation();
+        const reservationId = generateReservationNumber(travellerId);
 
         const information = {
           reservationId,
@@ -91,14 +115,27 @@ class PhotographerDetailReservationForm extends Component {
           serviceFee: Math.round(photographerFee * serviceFee),
           credit,
           total,
-          status: RESERVATION_REQUESTED
+          status: RESERVATION_REQUESTED,
+          destination: locationDestinationFix
         };
 
         const uidMapping = {};
-        uidMapping[photographerId] = { photographerName, photographerPhotoProfileUrl };
+        uidMapping[photographerId] = {
+          displayName: photographerName,
+          photoProfileUrl: photographerPhotoProfileUrl
+        };
+
+        uidMapping[travellerId] = {
+          displayName: travellerName,
+          photoProfileUrl: '-'
+        };
+
         information.uidMapping = uidMapping;
 
+        const datetime = startingDate + ' ' + startingTime;
+        searchInformationLog(locationDestinationFix, datetime);
         reservationInitializeAction(reservationId, information);
+
         this.props.history.push(`/booking/${photographerId}/${reservationId}`);
       }
 
@@ -336,11 +373,13 @@ class PhotographerDetailReservationForm extends Component {
 const mapStateToProps = state => ({
   user: state.userAuth,
   photographerServiceInformation: state.photographerServiceInformation,
-  currenciesRates: state.currenciesRates
+  currenciesRates: state.currenciesRates,
+  searchInformation: state.searchInformation
 });
 
 const mapDispatchToProps = dispatch => ({
-  reservationInitializeAction: (reservationId, information) => dispatch(reservationInitializeAction(reservationId, information))
+  reservationInitializeAction: (reservationId, information) => dispatch(reservationInitializeAction(reservationId, information)),
+  searchInformationLog: (location, datetime) => dispatch(searchInformationLog(location, datetime))
 });
 
 export default withRouter(

@@ -44,6 +44,7 @@ import AboutUs from "./components/About/AboutUs";
 import Packages from "./components/About/Packages";
 import ContactUs from "./components/About/ContactUs";
 import HowItWorks from "./components/About/HowItWorks";
+import ReservationsList from './components/User/ReservationsList';
 
 import 'index.css';
 import 'element-theme-default';
@@ -82,6 +83,7 @@ const App = (props) => (
         <Route path="/sign-in" component={SignIn} />
         <Route path="/photographer/:photographerId" component={PhotographerDetail} />
         <PrivateRoute path="/me/reservations/:reservationid" component={ReservationCreatedDetail} />
+        <PrivateRoute path="/me/reservations" component={ReservationsList} />
         <Route path="/search" component={Search} />
         <Route path="/traveller-registration" component={TravellerRegistration} />
         <Route
