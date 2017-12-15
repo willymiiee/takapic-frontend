@@ -435,6 +435,7 @@ button.u:hover {
     text-align: center;
     padding: 15px 0;
     font-size: 0;
+    margin-top: 50px;
 }
 
 #result-view > .fa {
@@ -479,7 +480,7 @@ button.u:hover {
     -webkit-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-    top: -4px;
+    transition: 0.3s;
 }
 
 #result > div > .photo {
@@ -1755,6 +1756,11 @@ CUSTOMIZE LIBRARY
 #sign-in-main-custom{
     margin-top:50px;
 }
+.footer-change-language {
+    height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 
 /*
 ------------------------------------------------------------------------
@@ -1999,6 +2005,12 @@ RESPONSIVE
         font-weight: bold;
         font-size: 16px;
     }
+    #result > div > .photographer > h4 {
+        position: absolute;
+        top: 50px;
+        left: 5px;
+        white-space: nowrap;
+    }
 
     #result > div > .ratings,
     #result.list-view > div > .ratings {
@@ -2007,7 +2019,7 @@ RESPONSIVE
         position: relative;
         margin-left: 10px;
         font-size: 11px;
-        top: -25px;
+        top: -30px;
     }
 
     #result > div > .price,
@@ -4167,8 +4179,15 @@ figcaption.action-btn a .fa {
   }
 }
 @media (max-width: 767px) {
-  #search-box-home .Select-menu-outer {
-    width:100% !important;
+  #search-box-home .search-box-destination .Select-menu-outer {
+      width:100% !important;
+      left: 0px;
+  }
+  #search-box-home .search-box-destination .Select {
+      position: unset;
+  }
+  #search-box-home .search-box-destination>div{
+      position: relative;
   }
   #search-box-home {
     margin-top:20px !important;
@@ -4227,6 +4246,7 @@ figcaption.action-btn a .fa {
     height: 51px;
     padding-top: 3px;
     border: solid 1px #eee;
+    position: relative;
   }
 
   .search-box-custom-again .search-box-date input {
@@ -4250,6 +4270,18 @@ figcaption.action-btn a .fa {
   }
   h1.title{
     margin: 170px 0 50px;
+  }
+  #search-box-home #select-date-home .react-datepicker-popper {
+    left:-110px !important;
+  }
+  .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+    width: 12% !important;
+  }
+  #search-box-home #select-date-home div {
+    width: 100%
+  }
+  #result-view {
+    margin-top: 120px;
   }
 }
 
@@ -4559,3 +4591,4 @@ figcaption.action-btn a .fa {
   -moz-box-shadow: 1px 0px 1px 0 rgba(0, 0, 0, 0.4);
   box-shadow: 1px 0px 1px 0 rgba(0, 0, 0, 0.4);
 }
+

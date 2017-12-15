@@ -25,8 +25,7 @@ class Footer extends Component {
               <select
                 value={this.props.currentLocale}
                 onChange={this.onLanguageChange}
-                className="selectpicker margin-bottom-10"
-                style={{height:'40px'}}
+                className="selectpicker margin-bottom-10 footer-change-language"
               >
                 <option value="en-US">English</option>
                 <option value="id-ID">Mandarin</option>
