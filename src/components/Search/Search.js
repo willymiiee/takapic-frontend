@@ -9,6 +9,7 @@ import {
   fetchPhotographerListings,
   resetListings
 } from "../../store/actions/photographerServiceInfoActions";
+import { searchInformationLog } from "../../store/actions/userActions";
 
 import Page from '../Page';
 import SearchResult from './SearchResult';
@@ -48,6 +49,8 @@ class Search extends Component {
     let { destination, date } = this.state.search;
     const destinationValStr = !destination ? '' : destination.label;
     const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+
+    this.props.searchInformationLog(destinationValStr, dateValStr);
 
     this.props.history.push({
       pathname: '/search/',
@@ -182,6 +185,7 @@ export default connect(
   }),
   dispatch => ({
     fetchPhotographerListings: searchInfo => dispatch(fetchPhotographerListings(searchInfo)),
-    resetListings: () => dispatch(resetListings())
+    resetListings: () => dispatch(resetListings()),
+    searchInformationLog: (strLocation, strDatetime) => dispatch(searchInformationLog(strLocation, strDatetime))
   })
 )(Search);

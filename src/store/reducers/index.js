@@ -89,6 +89,24 @@ const tellThemThatWasSuccessOrFailed = (state = { whatsup: 'nothing' }, action) 
   return state;
 };
 
+const searchInformation = (state = {}, action) => {
+  if (action.type === 'SEARCH_INFORMATION_SUBMIT_SEARCH_LOG') {
+    return { ...state, ...action.payload };
+  }
+  return state;
+};
+
+const reservations = (state = { isFetching: false, isFetched: false, data: [] }, action) => {
+  if (action.type === 'FETCH_RESERVATIONS_START') {
+    return { ...state, isFetching: true, isFetched: false };
+  } else if (action.type === 'FETCH_RESERVATIONS_SUCCESS') {
+    return { ...state, isFetching: false, isFetched: true, data: action.payload };
+  } else if (action.type === 'EMPTY_FETCHED_RESERVATIONS') {
+    return { ...state, isFetching: false, isFetched: false, data: [] };
+  }
+  return state;
+};
+
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
@@ -103,6 +121,8 @@ const rootReducer = combineReducers({
   reservation,
   photographerListings,
   tellThemThatWasSuccessOrFailed,
+  searchInformation,
+  reservations,
   locale: (state = 'en-US', action) =>
     action.type === 'SET_LOCALE' ? action.payload : state,
   localeLoaded: (state = false, action) => {

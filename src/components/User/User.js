@@ -11,6 +11,7 @@ import { setActiveTab } from "../../store/actions/profileUpdateActions";
 
 import Animator from '../common/Animator';
 import Page from "../Page";
+import UserAccountPanel from './UserAccountPanel';
 import BasicInformation from "./BasicInformation";
 import CameraEquipment from "./CameraEquipment";
 import MeetingPoints from "./MeetingPoints";
@@ -86,45 +87,46 @@ class User extends Component{
 
       return (
         <Page style={{whiteSpace:'normal'}}>
-          <div className="padding-bottom-60"/>
-          <div className="container">
+          <UserAccountPanel>
+            <h3>Update your profile here</h3>
+            <div>
+              {
+                tellThemThatWasSuccessOrFailedInfo.whatsup === 'success'
+                  ? (
+                    <div className="notification success">
+                      <p><span>Success!</span> You did it, enjoy it.</p>
+                    </div>
+                  )
+                  : null
+              }
 
-            {
-              tellThemThatWasSuccessOrFailedInfo.whatsup === 'success'
-                ? (
-                  <div className="notification success">
-                    <p><span>Success!</span> You did it, enjoy it.</p>
-                  </div>
-                )
-                : null
-            }
+              <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
+                <Tab eventKey={1} title="Basic Information">
+                  <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
+                </Tab>
 
-            <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
-              <Tab eventKey={1} title="Basic Information">
-                <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
-              </Tab>
+                <Tab eventKey={2} title="Camera Equipment">
+                  <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
+                </Tab>
 
-              <Tab eventKey={2} title="Camera Equipment">
-                <CameraEquipment photographerServiceInformation={photographerServiceInformation}/>
-              </Tab>
+                <Tab eventKey={3} title="Meeting Points">
+                  { this.state.activeTab === 3 ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/> : null }
+                </Tab>
 
-              <Tab eventKey={3} title="Meeting Points">
-                { this.state.activeTab === 3 ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/> : null }
-              </Tab>
+                <Tab eventKey={4} title="Photos Portofolio">
+                  <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
+                </Tab>
 
-              <Tab eventKey={4} title="Photos Portofolio">
-                <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
-              </Tab>
+                <Tab eventKey={5} title="Packages Price">
+                  <PackagesPrice photographerServiceInformation={photographerServiceInformation}/>
+                </Tab>
 
-              <Tab eventKey={5} title="Packages Price">
-                <PackagesPrice photographerServiceInformation={photographerServiceInformation}/>
-              </Tab>
-
-              <Tab eventKey={6} title="Schedule">
-                <ScheduleNotAvailable/>
-              </Tab>
-            </Tabs>
-          </div>
+                <Tab eventKey={6} title="Schedule">
+                  <ScheduleNotAvailable/>
+                </Tab>
+              </Tabs>
+            </div>
+          </UserAccountPanel>
         </Page>
       );
     }

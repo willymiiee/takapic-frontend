@@ -25,7 +25,7 @@ class Header extends Component {
               {
                 userMetadata
                   ? (
-                    <Link to={ userMetadata.userType === 'photographer' ? '/me/edit/photographer' : '/' }>
+                    <Link to={ userMetadata.userType === 'photographer' ? '/me/edit/photographer' : '/me/reservations' }>
                       [ {userMetadata.displayName} ]
                     </Link>
                   )
