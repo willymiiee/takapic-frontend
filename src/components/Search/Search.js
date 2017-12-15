@@ -91,8 +91,6 @@ class Search extends Component {
   }
 
   render() {
-    const searchQs = queryString.parse(this.props.location.search);
-
     if (!this.props.photographerListings.isFetching && this.props.photographerListings.isFetched) {
       return (
         <Page>

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import Select from 'react-select';
-import intl from 'react-intl-universal';
 import store from '../store';
 import { searchInformationLog } from "../store/actions/userActions";
 

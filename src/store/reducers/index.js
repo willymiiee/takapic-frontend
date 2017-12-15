@@ -55,17 +55,11 @@ const currenciesRates = (state = {}, action) => {
 const reservation = (state = {}, action) => {
   switch (action.type) {
     case 'RESERVATION_INITIALIZE':
-      return action.payload;
-
     case 'RESERVATION_PAYMENT':
-      return {
-        ...state,
-        ...action.payload
-      };
-
     case 'RESERVATION_FETCH':
       return { ...state, ...action.payload };
-
+    case 'RESET_EMPTY_RESERVATION_DATA':
+      return {};
     default:
       return state;
   }

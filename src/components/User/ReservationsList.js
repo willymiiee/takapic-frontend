@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { database } from "../../services/firebase";
@@ -82,6 +83,7 @@ class ReservationsList extends Component {
                 { userType === USER_PHOTOGRAPHER ? <th>Customer</th> : <th>Photographer</th> }
                 <th>Price</th>
                 <th>Status</th>
+                <th>&nbsp;</th>
               </tr>
 
               {
@@ -98,6 +100,9 @@ class ReservationsList extends Component {
                     }
                     <td>USD { item.total }</td>
                     <td>{ item.status }</td>
+                    <td>
+                      <Link to={`/me/reservations/${item.reservationId}/${item.photographerId}`}>Go detail</Link>
+                    </td>
                   </tr>
                 ))
               }

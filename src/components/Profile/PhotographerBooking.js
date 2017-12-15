@@ -179,7 +179,7 @@ const BookingFormFormik = Formik({
 
       props.reservationPaymentAction(props.reservation.reservationId, data);
       setSubmitting(false);
-      props.goToReservationDetail(props.reservation.reservationId);
+      props.goToReservationDetail(props.reservation.reservationId, props.reservation.photographerId);
     }, 1000);
   }
 })(BookingForm);
@@ -242,8 +242,8 @@ class PhotographerBooking extends Component {
     });
   };
 
-  goToReservationDetail = (reservationId) => {
-    this.props.history.push(`/me/reservations/${reservationId}`);
+  goToReservationDetail = (reservationNumber, photographerId) => {
+    this.props.history.push(`/me/reservations/${reservationNumber}/${photographerId}`);
   };
 
   render() {

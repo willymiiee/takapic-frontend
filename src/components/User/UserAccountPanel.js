@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { USER_PHOTOGRAPHER } from "../../services/userTypes";
 
 const UserAccountPanel = (props) => {
   return (
@@ -18,15 +20,27 @@ const UserAccountPanel = (props) => {
             </li>
 
             <li>
-              <a href="#">Profile manager</a>
+              <NavLink
+                to={props.userType === USER_PHOTOGRAPHER ? '/me/edit/photographer' : '/me/reservations'}
+              >
+                Profile manager
+              </NavLink>
             </li>
 
             <li>
-              <a href="#">Photo album</a>
+              <NavLink
+                to="/me/reservations"
+              >
+                Photo album
+              </NavLink>
             </li>
 
             <li>
-              <a href="#">Cash out</a>
+              <NavLink
+                to="/me/reservations"
+              >
+                Cash out
+              </NavLink>
             </li>
           </ul>
         </nav>
@@ -41,4 +55,6 @@ const UserAccountPanel = (props) => {
   );
 };
 
-export default UserAccountPanel;
+export default connect(
+  state => ({ userType: state.userAuth.userMetadata.userType })
+)(UserAccountPanel);
