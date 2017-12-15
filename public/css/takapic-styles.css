@@ -1757,7 +1757,9 @@ CUSTOMIZE LIBRARY
     margin-top:50px;
 }
 .footer-change-language {
-    height: 40px;
+    height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 /*
@@ -2358,11 +2360,6 @@ RESPONSIVE
     /*}*/
     .search-result-page{
         margin-top:100px !important;
-    }
-    .footer-change-language {
-        height: 50px;
-        padding-top: 10px;
-        padding-bottom: 10px;
     }
 
 }
