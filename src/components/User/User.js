@@ -88,7 +88,6 @@ class User extends Component{
       return (
         <Page style={{whiteSpace:'normal'}}>
           <UserAccountPanel>
-            <h3>Update your profile here</h3>
             <div>
               {
                 tellThemThatWasSuccessOrFailedInfo.whatsup === 'success'

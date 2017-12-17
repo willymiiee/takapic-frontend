@@ -463,10 +463,10 @@ button.u:hover {
 #result > div {
     font-size: 16px;
     display: inline-block;
-    width: calc(33.33% - 20px);
+    width: calc(33.33% - 10px);
     position: relative;
     height: 250px;
-    margin: 0 10px 20px;
+    margin: 0 5px 10px;
     text-align: center;
     cursor: pointer;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
@@ -2982,8 +2982,8 @@ RESPONSIVE
     }
 
     #result > div {
-        width: calc(33.33% - 30px);
-        margin: 0 15px 30px;
+        width: calc(33.33% - 16px);
+        margin: 0 8px 16px;
         height: 210px;
     }
 
@@ -3054,8 +3054,8 @@ RESPONSIVE
     }
 
     #result > div {
-        width: calc(33.33% - 30px);
-        margin: 0 15px 30px;
+        width: calc(33.33% - 16px);
+        margin: 0 8px 16px;
     }
 
     #photographer-photo-collection > div:not(:first-of-type) {
@@ -4047,14 +4047,22 @@ figcaption.action-btn a .fa {
 
 .search-box-custom-again .Select-placeholder {
   color: #d6d6d6 !important;
-  font-size:20px;
+  font-size:18px;
 }
 
 .search-box-custom-again .search-box-destination {
   flex: 1;
 }
 
+.search-box-custom-again .Select-placeholder {
+    padding-left: 20px;
+    outline: none;
+}
+
 .search-box-custom-again .search-box-destination .Select-control .Select-value{
+  padding-left: 20px;
+}
+.search-box-custom-again .search-box-destination .Select-control .Select-input{
   padding-left: 20px;
 }
 
@@ -4072,11 +4080,11 @@ figcaption.action-btn a .fa {
   box-shadow: none;
   padding:0 10px !important;
   color: black;
-  font-size:20px;
+  font-size:18px;
 }
 .search-box-custom-again .search-box-date input::placeholder {
   color: #d6d6d6;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 
@@ -4094,7 +4102,10 @@ figcaption.action-btn a .fa {
   border-radius: 6px;
   width:122.5% !important;
   text-align: left;
-  padding-left:12px;
+}
+
+#search-box-home .Select-menu-outer .Select-menu div{
+    padding-left: 20px !important;
 }
 
 #search-box-home #select-date-home .react-datepicker-popper {
@@ -4144,7 +4155,7 @@ figcaption.action-btn a .fa {
 }
 
 .has-value.Select--single > .Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-    font-size: 20px;
+    font-size: 18px;
     color: black !important;
 }
 
@@ -4179,6 +4190,15 @@ figcaption.action-btn a .fa {
   }
 }
 @media (max-width: 767px) {
+  .search-box-custom-again .search-box-destination .Select-control .Select-value{
+      padding-left: 10px;
+  }
+  .search-box-custom-again .search-box-destination .Select-control .Select-input{
+      padding-left: 10px;
+  }
+  .search-box-custom-again .Select-placeholder {
+    padding-left: 10px;
+  }
   #search-box-home .search-box-destination .Select-menu-outer {
       width:100% !important;
       left: 0px;

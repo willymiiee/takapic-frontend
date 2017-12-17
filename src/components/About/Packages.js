@@ -17,7 +17,7 @@ const Packages = props => {
               Groups of 8 people or more require a minimum 2 hours package. Also note that prices do not include any admission fees or transportation fees for the photographer incurred during the photo shoot. This could include but is not limited to for example paid entry to museums or attractions, Uber, transportation etc.
             </p>
             <div className="row">
-              <div className="col-sm-4">
+              <div className="col-sm-6 col-md-3">
                 <div className="icon-box-2 with-line">
                   <i className="im im-icon-Camera-2"/>
                   <h3>1 Hour package</h3>
@@ -26,7 +26,7 @@ const Packages = props => {
                   </p>
                 </div>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-6 col-md-3">
                 <div className="icon-box-2 with-line">
                   <i className="im im-icon-Camera-3"/>
                   <h3>2 Hour package</h3>
@@ -35,12 +35,21 @@ const Packages = props => {
                   </p>
                 </div>
               </div>
-              <div className="col-sm-4">
-                <div className="icon-box-2">
-                  <i className="im im-icon-Camera-5"/>
+              <div className="col-sm-6 col-md-3">
+                <div className="icon-box-2 with-line">
+                  <i className="im im-icon-Camera-Back"/>
                   <h3>4 Hour package</h3>
                   <p>
                     Get 120 High Quality photos <br/> Multiple Locations
+                  </p>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-3">
+                <div className="icon-box-2">
+                  <i className="im im-icon-Camera-5"/>
+                  <h3>8 Hour package</h3>
+                  <p>
+                    Get 200 High Quality photos <br/> Multiple Locations
                   </p>
                 </div>
               </div>

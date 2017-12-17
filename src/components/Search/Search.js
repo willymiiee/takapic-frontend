@@ -23,7 +23,7 @@ class Search extends Component {
 
     this.state = {
       search: {
-        destination: !destination ? { label: 'Anywhere' } : { label: destination },
+        destination: !destination ? null : { label: destination },
         date: !date ? null : moment(date),
       }
     };
