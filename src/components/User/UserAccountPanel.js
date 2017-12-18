@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 import { NavLink } from 'react-router-dom';
 import { USER_PHOTOGRAPHER } from "../../services/userTypes";
 
 const UserAccountPanel = (props) => {
+  const userType = get(props, 'user.userMetadata.userType', null);
   return (
     <div>
       <div className="padding-bottom-30"/>
@@ -20,11 +22,15 @@ const UserAccountPanel = (props) => {
             </li>
 
             <li>
-              <NavLink
-                to={props.userType === USER_PHOTOGRAPHER ? '/me/edit/photographer' : '/me/reservations'}
-              >
-                Profile manager
-              </NavLink>
+              {
+                userType && (
+                  <NavLink
+                    to={userType === USER_PHOTOGRAPHER ? '/me/edit/photographer' : '/me/reservations'}
+                  >
+                    Profile manager
+                  </NavLink>
+                )
+              }
             </li>
 
             <li>
@@ -56,5 +62,5 @@ const UserAccountPanel = (props) => {
 };
 
 export default connect(
-  state => ({ userType: state.userAuth.userMetadata.userType })
+  state => ({ user: state.userAuth })
 )(UserAccountPanel);
