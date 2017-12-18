@@ -11,6 +11,7 @@ import { Col, Panel, Row } from 'react-bootstrap';
 import Select from 'react-select';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { fetchReservationAction, reservationPaymentAction } from "../../store/actions/reservationActions";
+import { JsonToUrlEncoded } from "../../helpers/helpers";
 
 import Page from '../Page';
 
@@ -158,7 +159,43 @@ const BookingFormFormik = Formik({
     };
   },
   handleSubmit: (values, { props, setSubmitting }) => {
-    setTimeout(() => {
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    const data = {
+      nama: 'Oka Prinarjaya',
+      item: {
+        name: 'Pistol aer',
+        color: 'black',
+        price: 25.00
+      }
+    };
+
+    fetch('http://localhost:8484/web-provider/payment/create', {
+      method: 'POST',
+      headers: myHeaders,
+      body: JsonToUrlEncoded(data)
+    })
+      .then((response => {
+        return response.json();
+      }))
+      .then((data) => {
+        let approvalUrl = '';
+        for (let i = 0; i < data.links.length; i++) {
+          if (data.links[i].rel === 'approval_url') {
+            approvalUrl = data.links[i].href;
+            break;
+          }
+        }
+        setSubmitting(false);
+        window.location.href = approvalUrl;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // alert('Ok!');
+    /*setTimeout(() => {
       const data = {
         meetingPoints: {
           type: 'defined',
@@ -180,7 +217,7 @@ const BookingFormFormik = Formik({
       props.reservationPaymentAction(props.reservation.reservationId, data);
       setSubmitting(false);
       props.goToReservationDetail(props.reservation.reservationId, props.reservation.photographerId);
-    }, 1000);
+    }, 1000);*/
   }
 })(BookingForm);
 
