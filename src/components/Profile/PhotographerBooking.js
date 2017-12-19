@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -9,11 +10,67 @@ import get from 'lodash/get';
 import ReactRating from 'react-rating-float';
 import { Col, Panel, Row } from 'react-bootstrap';
 import Select from 'react-select';
+import dropin from 'braintree-web-drop-in';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { fetchReservationAction, reservationPaymentAction } from "../../store/actions/reservationActions";
 import { JsonToUrlEncoded } from "../../helpers/helpers";
 
 import Page from '../Page';
+
+class BrainTreeWebDropIn extends Component {
+  constructor() {
+    super();
+    this.state = {
+      braintreeInstance: null
+    };
+  }
+
+  componentDidMount() {
+    dropin.create({
+      authorization: 'sandbox_vfzk4g6x_4cm4s6c4wxpf7zp8',
+      paypal: {
+        flow: 'checkout',
+        amount: '10.00',
+        currency: 'USD',
+        "transactions": [{
+          "item_list": {
+            "items": [{
+              "name": "Photographer Reservation",
+              "sku": "OVEIMFPA",
+              "price": "10.00",
+              "currency": "USD",
+              "quantity": 1
+            }]
+          },
+          "amount": {
+            "currency": "USD",
+            "total": "10.00"
+          },
+          "description": "Pay reservation."
+        }]
+      },
+      container: ReactDOM.findDOMNode(this.refs.braintreewrapper)
+    }, (createError, instance) => {
+      this.setState({ braintreeInstance: instance })
+    });
+  }
+
+  clickMe = () => {
+    const { braintreeInstance } = this.state;
+    braintreeInstance.requestPaymentMethod((requestPaymentMethodError, payload) => {
+      console.log(payload.nonce);
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <button type="button" onClick={this.clickMe}>Click me!</button>
+        <div ref="braintreewrapper"/>
+      </div>
+    );
+  }
+}
 
 const BookingForm = props => {
   const {
@@ -135,13 +192,16 @@ const BookingForm = props => {
         </select>
       </Panel>*/}
 
+      <BrainTreeWebDropIn/>
+
       <button
         type="submit"
         className="button"
         disabled={isSubmitting}
       >
-        { isSubmitting ? 'Please wait...' : 'Submit' }
+        { isSubmitting ? 'Please wait, Processing your payment...' : 'Submit Payment' }
       </button>
+
     </form>
   );
 };
@@ -159,9 +219,6 @@ const BookingFormFormik = Formik({
     };
   },
   handleSubmit: (values, { props, setSubmitting }) => {
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-
     const data = {
       nama: 'Oka Prinarjaya',
       item: {
@@ -171,9 +228,9 @@ const BookingFormFormik = Formik({
       }
     };
 
-    fetch('http://localhost:8484/web-provider/payment/create', {
+    fetch(`${process.env.REACT_APP_WEB_PROVIDER_HOSTNAME}/payment/create`, {
       method: 'POST',
-      headers: myHeaders,
+      headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
       body: JsonToUrlEncoded(data)
     })
       .then((response => {
@@ -187,7 +244,6 @@ const BookingFormFormik = Formik({
             break;
           }
         }
-        setSubmitting(false);
         window.location.href = approvalUrl;
       })
       .catch((error) => {
