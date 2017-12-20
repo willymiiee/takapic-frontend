@@ -17,7 +17,7 @@ class BookingForm extends Component {
     } = this.props;
 
     dropin.create({
-      authorization: 'sandbox_vfzk4g6x_4cm4s6c4wxpf7zp8',
+      authorization: process.env.REACT_APP_BT_TOKENIZATION_KEY,
       paypal: {
         flow: 'checkout',
         amount: total,
@@ -161,7 +161,7 @@ const BookingFormFormik = Formik({
           amount: total.toString() + '.00'
         };
 
-        fetch(`${process.env.REACT_APP_WEB_PROVIDER_HOSTNAME}/payment/create`, {
+        fetch(`${process.env.REACT_APP_API_HOSTNAME}/api/payment/create`, {
           method: 'POST',
           headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
           body: JsonToUrlEncoded(dataSubmit)
