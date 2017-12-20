@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { Panel } from 'react-bootstrap';
 import dropin from 'braintree-web-drop-in';
 import firebase from "firebase";
+import Yup from 'yup';
 import { JsonToUrlEncoded } from "../../helpers/helpers";
 import { database } from "../../services/firebase";
 
@@ -31,6 +32,8 @@ class BookingForm extends Component {
 
   render() {
     const {
+      errors,
+      touched,
       values,
       handleChange,
       handleSubmit,
@@ -67,6 +70,11 @@ class BookingForm extends Component {
               autoComplete="off"
               onChange={handleChange}
             />
+            {
+              errors.numberOfAdults && touched.numberOfAdults && (
+                <label style={{color: 'red'}}>{errors.numberOfAdults}</label>
+              )
+            }
           </div>
 
           <div className="form-group">
@@ -79,6 +87,11 @@ class BookingForm extends Component {
               autoComplete="off"
               onChange={handleChange}
             />
+            {
+              errors.numberOfChildren && touched.numberOfChildren && (
+                <label style={{color: 'red'}}>{errors.numberOfChildren}</label>
+              )
+            }
           </div>
 
           <div className="form-group">
@@ -91,6 +104,11 @@ class BookingForm extends Component {
               autoComplete="off"
               onChange={handleChange}
             />
+            {
+              errors.numberOfInfants && touched.numberOfInfants && (
+                <label style={{color: 'red'}}>{errors.numberOfInfants}</label>
+              )
+            }
           </div>
 
           <h4>Q2. Preferred meeting point with your photographer</h4>
@@ -105,11 +123,22 @@ class BookingForm extends Component {
             placeholder="--- Choose ---"
           />
 
+          {
+            errors.meetingPointSelectedValue && touched.meetingPointSelectedValue && (
+              <label style={{color: 'red'}}>{errors.meetingPointSelectedValue}</label>
+            )
+          }
+
           <h4>
             <strong>Say Hello To Your Photographer</strong>
           </h4>
 
           <textarea name="messageToPhotographer" onChange={handleChange} value={values.messageToPhotographer}/>
+          {
+            errors.messageToPhotographer && touched.messageToPhotographer && (
+              <label style={{color: 'red'}}>{errors.messageToPhotographer}</label>
+            )
+          }
         </Panel>
 
         <p>
@@ -145,6 +174,13 @@ const BookingFormFormik = Formik({
       numberOfInfants: get(props, 'reservation.passengers.infants', 0)
     };
   },
+  validationSchema: Yup.object().shape({
+    meetingPointSelectedValue: Yup.string().required('Please meeting point'),
+    numberOfAdults: Yup.string().required('Please input number of adults will attend the photoshoot'),
+    numberOfChildren: Yup.string().required('Please input number of childrens will attend the photoshoot'),
+    numberOfInfants: Yup.string().required('Please input number of infants will attend the photoshoot'),
+    messageToPhotographer: Yup.string().required('Please write a message for photographer'),
+  }),
   handleSubmit: (values, { props, setSubmitting }) => {
     const { braintreeInstanceObject } = props;
 
