@@ -5,34 +5,23 @@ import { Formik } from "formik";
 import Select from 'react-select';
 import { Panel } from 'react-bootstrap';
 import dropin from 'braintree-web-drop-in';
+import firebase from "firebase";
 import { JsonToUrlEncoded } from "../../helpers/helpers";
+import { database } from "../../services/firebase";
 
 class BookingForm extends Component {
   componentDidMount() {
-    const { setBraintreeInstanceObject } = this.props;
+    const {
+      setBraintreeInstanceObject,
+      reservation: { total }
+    } = this.props;
 
     dropin.create({
       authorization: 'sandbox_vfzk4g6x_4cm4s6c4wxpf7zp8',
       paypal: {
         flow: 'checkout',
-        amount: '10.00',
-        currency: 'USD',
-        "transactions": [{
-          "item_list": {
-            "items": [{
-              "name": "Photographer Reservation",
-              "sku": "OVEIMFPA",
-              "price": "10.00",
-              "currency": "USD",
-              "quantity": 1
-            }]
-          },
-          "amount": {
-            "currency": "USD",
-            "total": "10.00"
-          },
-          "description": "Pay reservation."
-        }]
+        amount: total,
+        currency: 'USD'
       },
       container: ReactDOM.findDOMNode(this.refs.braintreewrapper)
     }, (createError, instance) => {
@@ -151,8 +140,6 @@ const BookingFormFormik = Formik({
     return {
       meetingPointSelectedValue: get(props, 'reservation.meetingPoints.id', ''),
       messageToPhotographer: get(props, 'reservation.message', ''),
-      billingCountry: get(props, 'reservation.payment.billingCountry', ''),
-      paymentMethod: get(props, 'reservation.payment.method', ''),
       numberOfAdults: get(props, 'reservation.passengers.adults', 0),
       numberOfChildren: get(props, 'reservation.passengers.childrens', 0),
       numberOfInfants: get(props, 'reservation.passengers.infants', 0)
@@ -160,60 +147,93 @@ const BookingFormFormik = Formik({
   },
   handleSubmit: (values, { props, setSubmitting }) => {
     const { braintreeInstanceObject } = props;
+
     if (braintreeInstanceObject) {
       braintreeInstanceObject.requestPaymentMethod((error, payload) => {
-        console.log('nonce = ', payload.nonce);
+        const {
+          reservation: { total, reservationId }
+        } = props;
+
+        const dataSubmit = {
+          paymentMethodNonce: payload.nonce,
+          paymentType: payload.type,
+          orderId: reservationId,
+          amount: total.toString() + '.00'
+        };
+
+        fetch(`${process.env.REACT_APP_WEB_PROVIDER_HOSTNAME}/payment/create`, {
+          method: 'POST',
+          headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
+          body: JsonToUrlEncoded(dataSubmit)
+        })
+          .then((response => {
+            return response.json();
+          }))
+          .then((data) => {
+            if (data.success) {
+              const paymentDetail = {
+                method: payload.type,
+                trxId: data.transaction.id,
+                status: data.transaction.status,
+                created: data.transaction.createdAt,
+                updated: data.transaction.updatedAt
+              };
+
+              if (payload.type === 'PayPalAccount') {
+                paymentDetail.paymentId = data.transaction.paypalAccount.paymentId;
+                paymentDetail.authorizationId = data.transaction.paypalAccount.authorizationId;
+                paymentDetail.payerId = data.transaction.paypalAccount.payerId;
+                paymentDetail.payerFirstName = data.transaction.paypalAccount.payerFirstName;
+                paymentDetail.payerLastName = data.transaction.paypalAccount.payerLastName;
+              } else {
+                paymentDetail.cardholderName = data.transaction.creditCard.cardholderName
+              }
+
+              const dataReservation = {
+                meetingPoints: {
+                  type: 'defined',
+                  id: values.meetingPointSelectedValue,
+                  detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
+                },
+                payment: paymentDetail,
+                passengers: {
+                  adults: values.numberOfAdults,
+                  childrens: values.numberOfChildren,
+                  infants: values.numberOfInfants
+                }
+              };
+
+              props.reservationPaymentAction(props.reservation.reservationId, dataReservation);
+
+              const newData = database
+                .database()
+                .ref('reservation_messages')
+                .child(props.reservation.reservationId)
+                .push();
+
+              newData.set({
+                created: firebase.database.ServerValue.TIMESTAMP,
+                sender: props.reservation.travellerId,
+                receiver: props.reservation.photographerId,
+                message: values.messageToPhotographer
+              });
+
+              props.goToReservationDetail(props.reservation.reservationId, props.reservation.photographerId);
+
+            } else {
+              alert('Payment failed!');
+            }
+
+            console.log(data);
+          })
+          .then(() => {
+            setSubmitting(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
     }
-    setSubmitting(false);
-    /*const data = {
-      nama: 'Oka Prinarjaya',
-      item: {
-        name: 'Pistol aer',
-        color: 'black',
-        price: 25.00
-      }
-    };
-
-    fetch(`${process.env.REACT_APP_WEB_PROVIDER_HOSTNAME}/payment/create`, {
-      method: 'POST',
-      headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
-      body: JsonToUrlEncoded(data)
-    })
-      .then((response => {
-        return response.json();
-      }))
-      .then((data) => {
-        //
-      })
-      .catch((error) => {
-        console.log(error);
-      });*/
-
-    // alert('Ok!');
-    /*setTimeout(() => {
-      const data = {
-        meetingPoints: {
-          type: 'defined',
-          id: values.meetingPointSelectedValue,
-          detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
-        },
-        message: values.messageToPhotographer,
-        payment: {
-          billingCountry: values.billingCountry || '-',
-          method: values.paymentMethod || '-'
-        },
-        passengers: {
-          adults: values.numberOfAdults,
-          childrens: values.numberOfChildren,
-          infants: values.numberOfInfants
-        }
-      };
-
-      props.reservationPaymentAction(props.reservation.reservationId, data);
-      setSubmitting(false);
-      props.goToReservationDetail(props.reservation.reservationId, props.reservation.photographerId);
-    }, 1000);*/
   }
 })(BookingForm);
 
