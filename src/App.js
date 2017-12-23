@@ -45,6 +45,7 @@ import Packages from "./components/About/Packages";
 import ContactUs from "./components/About/ContactUs";
 import HowItWorks from "./components/About/HowItWorks";
 import ReservationsList from './components/User/ReservationsList';
+import TestCloudinary from './components/TestCloudinary';
 
 import 'index.css';
 import 'element-theme-default';
@@ -192,6 +193,7 @@ const App = (props) => (
           path="/how-it-works"
           component={HowItWorks}
         />
+        <Route path="/test-cloudinary" component={TestCloudinary}/>
         <Route path="*" component={NotFoundPage} />
       </Switch>
     </ScrollToTop>
