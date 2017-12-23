@@ -70,10 +70,11 @@ class ReservationsList extends Component {
     return (
       <Page style={{whiteSpace:'normal'}}>
         <UserAccountPanel>
-          <h3>Your reservations list</h3>
-
-          <table className="basic-table">
-            <tbody>
+          <h3 className="margin-top-0">Your reservations list</h3>
+          <hr/>
+          <div className="table-responsive">
+            <table className="basic-table table table-list-reservation">
+              <tbody>
               <tr>
                 <th>#</th>
                 <th>Code</th>
@@ -103,7 +104,8 @@ class ReservationsList extends Component {
               }
 
             </tbody>
-          </table>
+            </table>
+          </div>
         </UserAccountPanel>
       </Page>
     );

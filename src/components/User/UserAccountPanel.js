@@ -7,7 +7,7 @@ const UserAccountPanel = (props) => {
       <div className="padding-bottom-30"/>
       <div className="container">
         <nav className="user-account-panel-menubar">
-          <ul>
+          <ul className="smooth-card padding-0">
             <li>
               <NavLink
                 to="/me/reservations"

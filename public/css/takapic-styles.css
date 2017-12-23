@@ -435,7 +435,8 @@ button.u:hover {
     text-align: center;
     padding: 15px 0;
     font-size: 0;
-    margin-top: 50px;
+    margin-top: 45px;
+    margin-bottom: 25px;
 }
 
 #result-view > .fa {
@@ -477,10 +478,11 @@ button.u:hover {
 }
 
 #result:not(.list-view) > div:hover {
-    -webkit-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
+    /*-webkit-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-    box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
+    box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.3);*/
+    transition: 0.5s;
+    /*animation: fadeIn 0.65s ease-in forwards;*/
 }
 
 #result > div > .photo {
@@ -501,6 +503,7 @@ button.u:hover {
     font-size: 0;
     bottom: 15px;
     left: 15px;
+    z-index: 2;
 }
 
 #result > div > .photographer > div {
@@ -535,6 +538,7 @@ button.u:hover {
     bottom: 30px;
     right: 15px;
     color: #fff;
+    z-index: 2;
 }
 
 #result > div > .price > b {
@@ -543,9 +547,18 @@ button.u:hover {
     margin-left: 5px;
 }
 
+#result > div > .bg-caption {
+    width: 100%;
+    background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%);
+    position: absolute;
+    bottom: 0;
+    height: 70px;
+    z-index: 1;
+}
+
 #result:not(.list-view) > div:hover > .photo > img {
     opacity: 0.3;
-    transition: opacity 0.3s;
+    transition: opacity 0.5s;
 }
 
 #result:not(.list-view) > div:hover > .photographer {
@@ -562,7 +575,7 @@ button.u:hover {
 
 #result:not(.list-view) > div:hover > .photographer > h4 {
     display: block;
-    font-size: 22px;
+    font-size: 18px;
     margin: 0;
 }
 
@@ -570,15 +583,15 @@ button.u:hover {
     display: block;
     position: absolute;
     width: 100%;
-    top: 140px;
+    top: 165px;
     font-size: 20px;
 }
 
 #result:not(.list-view) > div:hover > .price {
-    top: 175px;
+    top: 185px;
     right: auto;
     width: 100%;
-    line-height: 24px;
+    line-height: 16px;
 }
 
 #result:not(.list-view) > div:hover > .price > b {
@@ -658,8 +671,8 @@ button.u:hover {
 }
 
 #photographer-profile-photo {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
     border-radius: 60px;
     overflow: hidden;
     margin: 0 auto;
@@ -711,11 +724,13 @@ button.u:hover {
 
 #photographer-info > h3 {
     color: #666;
+    font-size: 16px;
 }
 
 #photographer-info > div > h1 {
     margin: 0;
     font-weight: bold;
+    font-size: 20px;
 }
 
 #photographer-info > div > h3 {
@@ -724,7 +739,7 @@ button.u:hover {
 }
 
 #photographer-info > div > p {
-    font-size: 18px;
+    font-size: 16px;
     margin: 0 0 30px;
 }
 
@@ -756,7 +771,7 @@ button.u:hover {
 
 #photographer-stats > div {
     display: inline-block;
-    width: 140px;
+    width: 112px;
     text-align: center;
 }
 
@@ -814,11 +829,15 @@ button.u:hover {
 
 #photographer-reservation > h4 {
     text-align: center;
-    font-size: 22px;
+    font-size: 16px;
     margin: 10px 0 30px;
 }
 
 #photographer-reservation > div {
+    font-size: 16px;
+}
+
+#photographer-reservation-calc-total {
     font-size: 18px;
 }
 
@@ -873,6 +892,10 @@ button.u:hover {
 #reservation-starting-time {
     position: relative;
     /*margin-right: 32px;*/
+}
+
+#reservation-starting-time input {
+    font-size: 16px;
 }
 
 #reservation-date {
@@ -981,7 +1004,7 @@ button.u:hover {
 }
 
 #reservation-package > .card-popup > i.active {
-    background: #000;
+    background: #d6d6d6;
     color: #fff;
 }
 
@@ -2039,10 +2062,10 @@ RESPONSIVE
     }
 
     #result:not(.list-view) > div:hover {
-        -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+        /*-webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
         -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-        transition: 0.3s;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);*/
+        transition: 0.5s;
         top: 0;
     }
 
@@ -2147,20 +2170,11 @@ RESPONSIVE
         padding-left: 18px;
     }
 
-    #photographer-info h3 {
-        font-size: 18px;
-    }
-
-    #photographer-info > div > h1 {
-        font-size: 24px;
-    }
-
     #photographer-info > div > h3 {
         margin: 5px 0 20px;
     }
 
     #photographer-info > div > p {
-        font-size: 16px;
         line-height: 25px;
         margin-bottom: 25px;
     }
@@ -2680,14 +2694,6 @@ RESPONSIVE
         padding-left: 18px;
     }
 
-    #photographer-info h3 {
-        font-size: 22px;
-    }
-
-    #photographer-info > div > h1 {
-        font-size: 32px;
-    }
-
     #photographer-rating > div {
         font-size: 26px;
     }
@@ -2909,16 +2915,7 @@ RESPONSIVE
         cursor: pointer;
     }
 
-    #photographer-info h3 {
-        font-size: 20px;
-    }
-
-    #photographer-info > div > h1 {
-        font-size: 28px;
-    }
-
     #photographer-info > div > p {
-        font-size: 16px;
         line-height: 25px;
     }
 
@@ -3014,15 +3011,15 @@ RESPONSIVE
     #result:not(.list-view) > div:hover > .photographer > div {
         width: 50px;
         height: 50px;
-        margin: 20px 0 5px;
+        margin: 45px 0 5px;
     }
 
     #result:not(.list-view) > div:hover > .ratings {
-        top: 105px;
+        top: 130px;
     }
 
     #result:not(.list-view) > div:hover > .price {
-        top: 140px;
+        top: 150px;
     }
 
     #photographer-photo-collection > div:not(:first-of-type) {
@@ -3031,7 +3028,7 @@ RESPONSIVE
 
     #photographer-stats > div {
         display: inline-block;
-        width: 150px;
+        width: 120px;
         text-align: center;
     }
 }
@@ -3063,7 +3060,7 @@ RESPONSIVE
     }
 
     #photographer-stats > div {
-        width: 160px;
+        width: 128px;
     }
 
     .poster {
@@ -4596,14 +4593,19 @@ figcaption.action-btn a .fa {
 .user-account-panel-menubar {
   margin: 0 auto;
 }
-
 .user-account-panel-menubar ul {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
+  margin-bottom: 25px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
-
 .user-account-panel-menubar ul li {
   display: inline-block;
+}
+
+.table-list-reservation > tbody > tr > td {
+  font-size: 14px;
 }
 
 .user-account-panel-menubar ul li a {
@@ -4612,30 +4614,16 @@ figcaption.action-btn a .fa {
   font-size: 15px;
   text-decoration: none;
   display: block;
+  transition: 0.4s;
 }
 
 .user-account-panel-menubar ul li a:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
-  color: #3AECCB;
+  border-bottom: solid 3px rgba(0,0,0,0.2);
+  transition: 0.4s;
 }
 
 .user-account-panel-menubar ul li .user-account-panel-menubar-item-active {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
-  color: #3AECCB;
-}
-
-.feature-container {
-  padding: 20px 20px 20px 20px;
-  box-shadow: 0 0 12px 0 rgba(0,0,0,0.06);
-  border-radius: 4px;
-}
-
-.feature-container h3 {
-  padding: 0;
-  margin: 0 0 20px 0;
-  font-size: 1.2em;
+  border-bottom: solid 3px #66676b;
 }
 
 .feature-container .messages-container {
@@ -4643,4 +4631,7 @@ figcaption.action-btn a .fa {
   border-radius: unset;
   background-color: transparent;
   border-top: 1px solid #dddddd;
+}
+.text-capitalize {
+    text-transform: capitalize;
 }
