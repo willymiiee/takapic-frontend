@@ -17,3 +17,15 @@ export const nl2br = str => {
     );
   });
 };
+
+export const JsonToUrlEncoded = (element, key, list) => {
+  let newList = list || [];
+  if (typeof(element) === 'object'){
+    for (let idx in element) {
+      JsonToUrlEncoded(element[idx], key ? key + '['+idx+']' : idx, newList);
+    }
+  } else {
+    newList.push(key+'='+encodeURIComponent(element));
+  }
+  return newList.join('&');
+};

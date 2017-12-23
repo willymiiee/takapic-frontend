@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { database } from "../../services/firebase";
@@ -75,35 +76,39 @@ class ReservationsList extends Component {
           <div className="table-responsive">
             <table className="basic-table table table-list-reservation">
               <tbody>
-              <tr>
-                <th>#</th>
-                <th>Code</th>
-                <th>Date</th>
-                { userType === USER_PHOTOGRAPHER ? null : <th>Destination</th> }
-                { userType === USER_PHOTOGRAPHER ? <th>Customer</th> : <th>Photographer</th> }
-                <th>Price</th>
-                <th>Status</th>
-              </tr>
+                <tr>
+                  <th>#</th>
+                  <th>Code</th>
+                  <th>Date</th>
+                  { userType === USER_PHOTOGRAPHER ? null : <th>Destination</th> }
+                  { userType === USER_PHOTOGRAPHER ? <th>Customer</th> : <th>Photographer</th> }
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>&nbsp;</th>
+                </tr>
 
-              {
-                isFetched && reservationsList && reservationsList.map((item, index) => (
-                  <tr key={index}>
-                    <td>{ index + 1 }</td>
-                    <td>{ item.reservationId }</td>
-                    <td>{ moment(item.startDateTime).format('MMMM Do YYYY') }</td>
-                    { userType === USER_PHOTOGRAPHER ? null : <td>{ item.destination }</td> }
+                {
+                  isFetched && reservationsList && reservationsList.map((item, index) => (
+                    <tr key={index}>
+                      <td>{ index + 1 }</td>
+                      <td>{ item.reservationId }</td>
+                      <td>{ moment(item.startDateTime).format('MMMM Do YYYY') }</td>
+                      { userType === USER_PHOTOGRAPHER ? null : <td>{ item.destination }</td> }
 
-                    { userType === USER_PHOTOGRAPHER
-                      ? <td>{ item.uidMapping[item.travellerId].displayName }</td>
-                      : <td>{ item.uidMapping[item.photographerId].displayName }</td>
-                    }
-                    <td>USD { item.total }</td>
-                    <td>{ item.status }</td>
-                  </tr>
-                ))
-              }
+                      { userType === USER_PHOTOGRAPHER
+                        ? <td>{ item.uidMapping[item.travellerId].displayName }</td>
+                        : <td>{ item.uidMapping[item.photographerId].displayName }</td>
+                      }
+                      <td>USD { item.total }</td>
+                      <td>{ item.status }</td>
+                      <td>
+                        <Link to={`/me/reservations/${item.reservationId}/${item.photographerId}`}>Go detail</Link>
+                      </td>
+                    </tr>
+                  ))
+                }
 
-            </tbody>
+              </tbody>
             </table>
           </div>
         </UserAccountPanel>

@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 import { database } from "../../services/firebase";
 
-export const fetchReservationAction = travellerId => {
+export const fetchReservationAction = reservationNumber => {
   return dispatch => {
     database
       .database()
       .ref('/reservations')
-      .child(travellerId)
+      .child(reservationNumber)
       .once('value')
       .then(snapshot => {
         const data = snapshot.val();
@@ -21,10 +21,16 @@ export const fetchReservationAction = travellerId => {
   };
 };
 
-export const reservationInitializeAction = (reservationId, information) => {
+export const resetEmptyReservationData = () => {
+  return dispatch => {
+    dispatch({ type: 'RESET_EMPTY_RESERVATION_DATA' });
+  };
+};
+
+export const reservationInitializeAction = (reservationNumber, information) => {
   return dispatch => {
     const db = database.database();
-    const reservationRefChild = db.ref('/reservations').child(reservationId);
+    const reservationRefChild = db.ref('/reservations').child(reservationNumber);
     information.created = firebase.database.ServerValue.TIMESTAMP;
     reservationRefChild.set(information);
 

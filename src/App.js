@@ -82,7 +82,9 @@ const App = (props) => (
         <PrivateRoute path="/booking/:photographerId/:reservationId" component={PhotographerBooking}/>
         <Route path="/sign-in" component={SignIn} />
         <Route path="/photographer/:photographerId" component={PhotographerDetail} />
-        <PrivateRoute path="/me/reservations/:reservationid" component={ReservationCreatedDetail} />
+
+        <PrivateRoute path="/me/reservations/:reservationid/:photographerId" component={ReservationCreatedDetail} />
+
         <PrivateRoute path="/me/reservations" component={ReservationsList} />
         <Route path="/search" component={Search} />
         <Route path="/traveller-registration" component={TravellerRegistration} />
