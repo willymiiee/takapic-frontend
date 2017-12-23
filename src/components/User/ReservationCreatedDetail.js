@@ -64,7 +64,6 @@ class ReservationCreatedDetail extends Component {
   messageTextChangeHandler = (evt) => {
     this.setState({ messageText: evt.target.value });
   };
-
   sendMessageHandler = () => {
     if (this.state.messageText !== '') {
       this.setState({ isSendingMessage: true });
@@ -121,7 +120,6 @@ class ReservationCreatedDetail extends Component {
                     />
                   }
                 </div>
-
                 <div className="message-content">
                   {
                     this.state.messages && Object.keys(this.state.messages).map((item) => {

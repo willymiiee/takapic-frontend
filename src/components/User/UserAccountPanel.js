@@ -60,7 +60,6 @@ const UserAccountPanel = (props) => {
     </div>
   );
 };
-
 export default connect(
   state => ({ user: state.userAuth })
 )(UserAccountPanel);

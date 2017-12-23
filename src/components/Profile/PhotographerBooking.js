@@ -77,6 +77,7 @@ class PhotographerBooking extends Component {
 
   goToReservationDetail = (reservationNumber, photographerId) => {
     this.props.history.push(`/me/reservations/${reservationNumber}/${photographerId}`);
+
   };
 
   render() {

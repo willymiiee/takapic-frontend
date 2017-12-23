@@ -28,6 +28,8 @@ class SingleItem extends Component {
 
     return (
       <div onClick={() => this.toDetail(uid)}>
+      
+        <div className="bg-caption"></div>
         <div className="photo">
           <img src={defaultDisplayPictureUrl} alt="" />
         </div>

@@ -310,7 +310,7 @@ class PhotographerDetailReservationForm extends Component {
             </div>
             {
               !loading && packageSelected
-                ? <span>{ packageSelected.packageName } Package</span>
+                ? <span className="text-capitalize">{ packageSelected.packageName } Package</span>
                 : null
             }
           </div>

@@ -47,7 +47,7 @@ class Search extends Component {
     e.preventDefault();
 
     let { destination, date } = this.state.search;
-    const destinationValStr = !destination ? '' : destination.label;
+    const destinationValStr = !destination ? null : destination.label;
     const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
 
     this.props.searchInformationLog(destinationValStr, dateValStr);
