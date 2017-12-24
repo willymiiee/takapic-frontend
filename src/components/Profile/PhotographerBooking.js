@@ -124,6 +124,7 @@ class PhotographerBooking extends Component {
         } else {
           meetingPlaceDisplay = <p>{`-`}</p>
         }
+
       } else {
         meetingPlaceDisplay = <p>
           {
@@ -148,6 +149,7 @@ class PhotographerBooking extends Component {
                   goToReservationDetail={this.goToReservationDetail}
                   braintreeInstanceObject={this.state.braintreeInstanceObject}
                   setBraintreeInstanceObject={this.setBraintreeInstanceObject}
+                  travellerDisplayName={this.props.user.userMetadata.displayName}
                 />
               </Col>
 

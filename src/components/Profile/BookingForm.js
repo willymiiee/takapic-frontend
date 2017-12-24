@@ -26,6 +26,10 @@ class BookingForm extends Component {
       },
       container: ReactDOM.findDOMNode(this.refs.braintreewrapper)
     }, (createError, instance) => {
+      if (createError) {
+        console.error('dropin.create Error: ', createError);
+        return;
+      }
       setBraintreeInstanceObject(instance);
     });
   }
@@ -186,89 +190,105 @@ const BookingFormFormik = Formik({
 
     if (braintreeInstanceObject) {
       braintreeInstanceObject.requestPaymentMethod((error, payload) => {
-        const {
-          reservation: { total, reservationId }
-        } = props;
+        if (error) {
+          console.error('braintreeInstanceObject.requestPaymentMethod Error: ', error);
+          setSubmitting(false);
+          alert(error.message);
+          return;
+        }
 
-        const dataSubmit = {
-          paymentMethodNonce: payload.nonce,
-          paymentType: payload.type,
-          orderId: reservationId,
-          amount: total.toString() + '.00'
-        };
+        if (payload) {
+          const {
+            reservation: { total, reservationId }
+          } = props;
 
-        fetch(`${process.env.REACT_APP_API_HOSTNAME}/api/payment/create`, {
-          method: 'POST',
-          headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
-          body: JsonToUrlEncoded(dataSubmit)
-        })
-          .then((response => {
-            return response.json();
-          }))
-          .then((data) => {
-            if (data.success) {
-              const paymentDetail = {
-                method: payload.type,
-                trxId: data.transaction.id,
-                status: data.transaction.status,
-                created: data.transaction.createdAt,
-                updated: data.transaction.updatedAt
-              };
+          const dataSubmit = {
+            paymentMethodNonce: payload.nonce,
+            paymentType: payload.type,
+            orderId: reservationId,
+            amount: total.toString() + '.00',
+            travellerDisplayName: props.travellerDisplayName
+          };
 
-              if (payload.type === 'PayPalAccount') {
-                paymentDetail.paymentId = data.transaction.paypalAccount.paymentId;
-                paymentDetail.authorizationId = data.transaction.paypalAccount.authorizationId;
-                paymentDetail.payerId = data.transaction.paypalAccount.payerId;
-                paymentDetail.payerFirstName = data.transaction.paypalAccount.payerFirstName;
-                paymentDetail.payerLastName = data.transaction.paypalAccount.payerLastName;
-              } else {
-                paymentDetail.cardholderName = data.transaction.creditCard.cardholderName
-              }
+          fetch(`${process.env.REACT_APP_API_HOSTNAME}/api/payment/create`, {
+            method: 'POST',
+            headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
+            body: JsonToUrlEncoded(dataSubmit)
+          })
+            .then((response => {
+              return response.json();
+            }))
+            .then((data) => {
+              if (data.success) {
+                const paymentDetail = {
+                  method: payload.type,
+                  trxId: data.transaction.id,
+                  status: data.transaction.status,
+                  created: data.transaction.createdAt,
+                  updated: data.transaction.updatedAt
+                };
 
-              const dataReservation = {
-                meetingPoints: {
-                  type: 'defined',
-                  id: values.meetingPointSelectedValue,
-                  detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
-                },
-                payment: paymentDetail,
-                passengers: {
-                  adults: values.numberOfAdults,
-                  childrens: values.numberOfChildren,
-                  infants: values.numberOfInfants
+                if (payload.type === 'PayPalAccount') {
+                  paymentDetail.paymentId = data.transaction.paypalAccount.paymentId;
+                  paymentDetail.authorizationId = data.transaction.paypalAccount.authorizationId;
+                  paymentDetail.payerId = data.transaction.paypalAccount.payerId;
+                  paymentDetail.payerFirstName = data.transaction.paypalAccount.payerFirstName;
+                  paymentDetail.payerLastName = data.transaction.paypalAccount.payerLastName;
+                } else {
+                  paymentDetail.cardholderName = data.transaction.creditCard.cardholderName
                 }
-              };
 
-              props.reservationPaymentAction(props.reservation.reservationId, dataReservation);
+                const dataReservation = {
+                  meetingPoints: {
+                    type: 'defined',
+                    id: values.meetingPointSelectedValue,
+                    detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
+                  },
+                  payment: paymentDetail,
+                  passengers: {
+                    adults: values.numberOfAdults,
+                    childrens: values.numberOfChildren,
+                    infants: values.numberOfInfants
+                  }
+                };
 
-              const newData = database
-                .database()
-                .ref('reservation_messages')
-                .child(props.reservation.reservationId)
-                .push();
+                props.reservationPaymentAction(props.reservation.reservationId, dataReservation);
 
-              newData.set({
-                created: firebase.database.ServerValue.TIMESTAMP,
-                sender: props.reservation.travellerId,
-                receiver: props.reservation.photographerId,
-                message: values.messageToPhotographer
-              });
+                const newData = database
+                  .database()
+                  .ref('reservation_messages')
+                  .child(props.reservation.reservationId)
+                  .push();
 
-              props.goToReservationDetail(props.reservation.reservationId, props.reservation.photographerId);
+                newData.set({
+                  created: firebase.database.ServerValue.TIMESTAMP,
+                  sender: props.reservation.travellerId,
+                  receiver: props.reservation.photographerId,
+                  message: values.messageToPhotographer
+                });
 
-            } else {
-              alert('Payment failed!');
-            }
+                props.goToReservationDetail(props.reservation.reservationId, props.reservation.photographerId);
 
-            console.log(data);
-          })
-          .then(() => {
-            setSubmitting(false);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
+              } else {
+                let errorMessage = 'Payment failed. Please contact and report to us.';
+                if (data.verification.status === 'processor_declined') {
+                  errorMessage = 'Credit card not verified / declined';
+                } else if (data.verification.status === 'failed') {
+                  errorMessage = 'Processor Network Unavailable';
+                }
+                alert(errorMessage);
+              }
+            })
+            .then(() => {
+              setSubmitting(false);
+            })
+            .catch((error) => {
+              console.error('Catch error', error);
+            });
+        } else {
+          alert('Please select a payment method to complete the payment');
+        }
+      });
     }
   }
 })(BookingForm);
