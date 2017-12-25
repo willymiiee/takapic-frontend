@@ -5,7 +5,7 @@ import axios from "axios/index";
 import { ProgressBar } from 'react-bootstrap';
 import uuidv4 from 'uuid/v4';
 import firebase from "firebase";
-import pica from 'pica';
+// import pica from 'pica';
 import { database } from "../../services/firebase";
 import { submitUploadPhotosPortfolio } from '../../store/actions/photographerServiceInfoActionsStep2';
 
@@ -52,11 +52,13 @@ class Step2IntiatePortofolio extends Component {
   }
 
   selectImagesHandler = (evt) => {
-    const picaInstance = pica();
+    // const picaInstance = pica();
     const files = evt.target.files;
 
     Object.keys(files).forEach((itemKey) => {
-      const fileItemObject = files[itemKey];
+      // Experimental images upload strategy - keep it commented-out.
+      // we will explore, enhance, and enable this feature soon as our product value
+      /*const fileItemObject = files[itemKey];
       const fileReader = new FileReader();
 
       fileReader.onloadend = (evtObj) => {
@@ -95,10 +97,17 @@ class Step2IntiatePortofolio extends Component {
             });
 
         };
-        // const imageItem = { imagePreview: evtObj.target.result, fileObject: fileItemObject };
-        // this.setState({ images: [ ...this.state.images, imageItem ] });
       };
+      fileReader.readAsDataURL(fileItemObject);*/
 
+      // Current used images upload strategy
+      const fileItemObject = files[itemKey];
+      const fileReader = new FileReader();
+
+      fileReader.onloadend = (evtObj) => {
+        const imageItem = { imagePreview: evtObj.target.result, fileObject: fileItemObject };
+        this.setState({ images: [ ...this.state.images, imageItem ] });
+      };
       fileReader.readAsDataURL(fileItemObject);
     });
   };

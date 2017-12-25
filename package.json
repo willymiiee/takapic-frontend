@@ -16,7 +16,6 @@
     "lodash.isequalwith": "^4.4.0",
     "lodash.shuffle": "^4.2.0",
     "moment": "^2.18.1",
-    "pica": "^4.0.1",
     "prettier": "^1.6.1",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.0",
