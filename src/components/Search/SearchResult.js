@@ -21,7 +21,7 @@ class SearchResult extends Component {
 
   render() {
     return (
-      <div id="result" className="grid-view-lalala search-result-page">
+      <div id="result" className="search-result-page">
         {
           this.state.listings.map((item, index) => (
             <SingleItem key={index} item={item} />

@@ -195,7 +195,7 @@ class Home extends Component {
             topPhotographers && !loadingHomepageData ? <TopPhotographers topPhotographers={topPhotographers}/> : null
           }
           </div>
-          <h1 className="title" style={{marginTop:'60px',marginBottom:'35px', fontSize:'24px'}}>Why be a Takapic traveller?</h1>
+          <h1 className="title why-be-traveller" style={{marginTop:'60px',marginBottom:'35px', fontSize:'24px'}}>Why be a Takapic traveller?</h1>
           <div className="row icons-container">
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">

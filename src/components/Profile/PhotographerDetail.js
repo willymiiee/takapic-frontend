@@ -160,11 +160,13 @@ class PhotographerDetail extends Component {
 
             <button
               id="photographer-reservation-btn-2"
-              className="button button-white padding-left-35 padding-right-35"
+              className="button radius-8 key-color"
               onClick={this.openModal}
             >
-              Reserve
+              Make Reservation
             </button>
+
+            <hr style={{marginTop:'50px', marginBottom:'50px'}} />
 
             <Modal id="reservation-modal" show={this.state.showModal}>
               <Modal.Body>
@@ -180,7 +182,7 @@ class PhotographerDetail extends Component {
             </Modal>
 
             <div className="row">
-              <div className="col-sm-6 col-md-6 margin-top-70">
+              <div className="col-sm-6 col-md-6">
                 <div id="photographer-info">
                   <h3 className="has-dot">About Me</h3>
                   <div className="has-border">
@@ -211,7 +213,7 @@ class PhotographerDetail extends Component {
                       />
                     </div>
 
-                    <div id="photographer-stats">
+                    <div id="photographer-stats" style={{marginLeft:'-10px'}}>
                       {
                         impressions.map((item, key) => (
                         <div style={{padding: 10}} key={key}>

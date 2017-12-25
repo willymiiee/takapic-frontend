@@ -345,6 +345,8 @@ button.u:hover {
     top: -7vw;
     left: 100%;
     transition: left 1.2s;
+    max-height: 130vh;
+    object-fit: cover;
 }
 
 #bg-slide > img:nth-child(2) {
@@ -480,6 +482,10 @@ button.u:hover {
 #result:not(.list-view) > div:hover {
     transition: 0.5s;
     box-shadow: 0px 3px 3px 3px rgba(0, 0, 0, 0.2)
+}
+
+#result:not(.list-view) .photographer h4 a {
+    color: white;
 }
 
 #result > div > .photo {
@@ -885,9 +891,13 @@ button.u:hover {
     font-style: normal;
 }
 
-#photographer-reservation-bottom {
+#photographer-reservation-botton {
     text-align: center;
     margin-bottom: 15px;
+}
+
+#photographer-reservation-botton button {
+    width: 100%;
 }
 
 #reservation-starting-time {
@@ -1920,7 +1930,7 @@ RESPONSIVE
         color: #fff;
         font-size: 16px;
         line-height: 20px;
-        margin-bottom: 30px;
+        margin-bottom: 65px;
     }
 
     #landing-page-search {
@@ -1999,14 +2009,14 @@ RESPONSIVE
     }
 
     #result > div:first-of-type {
-        margin-top: 70px;
+        margin-top: 85px;
     }
 
     #result > div,
     #result.list-view > div {
         width: 100%;
         height: 50vw;
-        margin: 40px 0;
+        margin: 60px 0 40px 0;
     }
 
     #result > div > .photographer,
@@ -2030,16 +2040,20 @@ RESPONSIVE
         font-size: 16px;
     }
     #result > div > .photographer > h4 {
-        position: absolute;
-        top: 50px;
-        left: 5px;
+        position: relative;
+    }
+    #result > div > .photographer > h4 > a {
         white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 150px;
+        display: inline-block;
+        overflow: hidden;
     }
 
     #result > div > .ratings,
     #result.list-view > div > .ratings {
         display: inline-block;
-        float: left;
+        float: right;
         position: relative;
         margin-left: 10px;
         font-size: 11px;
@@ -2052,13 +2066,12 @@ RESPONSIVE
 
     #result > div > .price,
     #result.list-view > div > .price {
-        position: relative;
+        position: absolute;
         float: right;
         color: #333;
-        bottom: auto;
         line-height: 24px;
-        top: -34px;
-        right: auto;
+        right: 0;
+        bottom: -33px;
     }
 
     #result > div > .price > b,
@@ -2142,7 +2155,7 @@ RESPONSIVE
 
     #photographer-reservation-btn-2 {
         display: block;
-        margin: 40px auto 10px;
+        width: 100%;
     }
 
     #photographer-photo-collection {
@@ -2373,12 +2386,17 @@ RESPONSIVE
         padding: 8px 12px;
     }
 
-    /*.scroll-view {*/
-        /*overflow: hidden;*/
-        /*height:unset;*/
-    /*}*/
+    /*adjust dana revision*/
     .search-result-page{
         margin-top:100px !important;
+    }
+    #top-photographer-home h1{
+        margin-top: 60px !important;
+        margin-bottom: 50px !important;
+    }
+    .title.why-be-traveller {
+        margin-top: 40px !important;
+        margin-bottom: 10px !important;
     }
 
 }
@@ -4296,7 +4314,7 @@ figcaption.action-btn a .fa {
     width:100%;
   }
   h1.title{
-    margin: 170px 0 50px;
+    margin: 165px 0 55px;
   }
   #search-box-home #select-date-home .react-datepicker-popper {
     left:-110px !important;

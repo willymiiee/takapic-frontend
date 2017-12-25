@@ -351,11 +351,11 @@ class PhotographerDetailReservationForm extends Component {
             </span>
           </div>
 
-          <div id="photographer-reservation-bottom">
+          <div id="photographer-reservation-botton">
             <button
               onClick={this.handleReserve}
               id="photographer-reservation-btn"
-              className="button button-white padding-left-40 padding-right-40"
+              className="button radius-8 key-color"
             >
               Reserve
             </button>
