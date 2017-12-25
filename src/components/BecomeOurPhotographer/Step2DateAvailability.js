@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import DayPicker, { DateUtils } from 'react-day-picker';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { database } from "../../services/firebase";
 
 import 'react-day-picker/lib/style.css';
 import Page from '../Page';
-
-const selectedDaysAction = selectedDays => {
-  return dispatch => {
-    dispatch({
-      type: 'USER_INIT_PROFILE_SETUP_SCHEDULE_SUCCESS',
-      payload: selectedDays
-    });
-  };
-};
 
 class Step2DateAvailability extends Component {
   constructor() {
     super();
     this.state = {
-      selectedDays: []
+      selectedDays: [],
+      isUploading: false
     };
   }
 
@@ -31,11 +25,31 @@ class Step2DateAvailability extends Component {
     } else {
       selectedDays.push(day);
     }
-    this.setState({selectedDays});
+    this.setState({ selectedDays });
   };
 
-  nextStepHandle = () => {
-    this.props.selectedDaysAction(this.state.selectedDays);
+  submitHandle = (evt) => {
+    evt.preventDefault();
+    this.setState({ isUploading: true });
+
+    database
+      .database()
+      .ref('photographer_service_information')
+      .child(this.props.user.uid)
+      .update({
+        notAvailableDates: this.state.selectedDays,
+        updated: firebase.database.ServerValue.TIMESTAMP
+      })
+      .then(() => {
+        this.setState({ isUploading: false });
+      })
+      .then(() => {
+        this.props.history.push('/become-our-photographer/step-2-3');
+      })
+      .catch((error) => {
+        this.setState({ isUploading: false });
+        console.log(error);
+      })
   };
 
   render() {
@@ -79,14 +93,19 @@ class Step2DateAvailability extends Component {
               </div>
             </div>
           </div>
+
           <hr/>
+
           <div style={{overflow: 'hidden'}}>
-            <Link to="/become-our-photographer/step-2-3"
-                  className="button"
-                  onClick={this.nextStepHandle}
-                  style={{float: 'right'}}>
-              Next
-            </Link>
+            <button
+              type="button"
+              className="button"
+              onClick={(evt) => !this.state.isUploading ? this.submitHandle(evt) : false}
+              style={{float: 'right'}}
+              disabled={this.state.isUploading}
+            >
+              { this.state.isUploading ? 'Processing...' : 'Next' }
+            </button>
 
             {/*<Link
               to="/become-our-photographer/step-2-1"
@@ -103,9 +122,6 @@ class Step2DateAvailability extends Component {
 
 export default connect(
   state => ({
-    userInitProfile: state.userInitProfile
-  }),
-  dispatch => ({
-    selectedDaysAction: selectedDays => dispatch(selectedDaysAction(selectedDays))
+    user: state.userAuth
   })
 )(Step2DateAvailability);

@@ -1,41 +1,34 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import get from 'lodash/get';
 import uuidv4 from 'uuid/v4';
-import { setMeetingPoint } from '../../store/actions/photographerServiceInfoActionsStep2';
+import { database } from "../../services/firebase";
 
 import MapWithASearchBox from './../MapWithASearchBox';
 import Page from '../Page';
 
 class Step2SetupMeetingPointA extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       meetingPoints: [],
-      mapLoaded: false,
+      isUploading: false
     };
-  }
-
-  componentDidMount() {
-    this.setState({ mapLoaded: true });
   }
 
   handleSubmit = event => {
     event.preventDefault();
-    let { meetingPoints } = this.state;
-    if (meetingPoints.length < 1) {
+    this.setState({ isUploading: true });
+
+    if (this.state.meetingPoints.length < 1) {
+      this.setState({ isUploading: false });
       alert('Please create at least one meeting point. You cannot leave this empty');
       return false;
-    } else {
-      const {
-        photographerServiceInfoStep2: { detailMasterPackage },
-        user: { uid },
-        userInitProfile: { notAvailableDates }
-      } = this.props;
 
-      let { meetingPoints } = this.state;
-      meetingPoints = meetingPoints.map(p => {
+    } else {
+      const newData = this.state.meetingPoints.map(p => {
         return {
           id: uuidv4(),
           lat: p.generalLocation.lat,
@@ -46,14 +39,24 @@ class Step2SetupMeetingPointA extends Component {
         };
       });
 
-      const params = {
-        reference: uid,
-        packagesPrice: detailMasterPackage,
-        meetingPoints,
-        notAvailableDates
-      };
-
-      this.props.setMeetingPoint(params);
+      database
+        .database()
+        .ref('photographer_service_information')
+        .child(this.props.user.uid)
+        .update({
+          meetingPoints: newData,
+          updated: firebase.database.ServerValue.TIMESTAMP
+        })
+        .then(() => {
+          this.setState({ isUploading: false });
+        })
+        .then(() => {
+          this.props.history.push('/become-our-photographer/step-2-4')
+        })
+        .catch((error) => {
+          this.setState({ isUploading: false });
+          console.log(error)
+        });
     }
   };
 
@@ -65,6 +68,17 @@ class Step2SetupMeetingPointA extends Component {
       const meetingPoints = [ ...this.state.meetingPoints, { generalLocation, specificLocation } ];
       this.setState({ meetingPoints });
     }
+  };
+
+  handleDeleteMeetingPointItem = (evt, key) => {
+    evt.preventDefault();
+
+    let { meetingPoints } = this.state;
+    meetingPoints = [
+      ...meetingPoints.slice(0, key),
+      ...meetingPoints.slice(key + 1),
+    ];
+    this.setState({meetingPoints});
   };
 
   render() {
@@ -84,12 +98,7 @@ class Step2SetupMeetingPointA extends Component {
             <div className="col-md-8">
               <h4>Please choose three different meeting points</h4>
               <hr/>
-              {
-                this.state.mapLoaded && (
-                  <MapWithASearchBox
-                    handleAddition={this.handleAddition}
-                  />)
-              }
+              <MapWithASearchBox handleAddition={this.handleAddition}/>
             </div>
 
             <div className="col-md-4 create-point-wrapper">
@@ -98,24 +107,21 @@ class Step2SetupMeetingPointA extends Component {
               {
                 this.state.meetingPoints.map((p, key) => (
                   <div key={key}>
-                    {/* ini list number meeting point */}
                     <div className="row">
-                      <div className="number-of-meetpoint col-xs-2">{key + 1}</div>
+                      <div className="number-of-meetpoint col-xs-2">
+                        { key + 1 }
+                      </div>
+
                       <div className="detail-of-meetpoint col-xs-8">
                         <stong>{p.generalLocation.meetingPointName}</stong>
                         <p>{p.generalLocation.formattedAddress}</p>
                         <h6>{p.specificLocation}</h6>
                       </div>
+
                       <button
                         className="delete-button col-xs-2"
-                        onClick={event => {
-                          let {meetingPoints} = this.state;
-                          meetingPoints = [
-                            ...meetingPoints.slice(0, key),
-                            ...meetingPoints.slice(key + 1),
-                          ];
-                          this.setState({meetingPoints});
-                        }}>
+                        onClick={(evt) => this.handleDeleteMeetingPointItem(evt, key)}
+                      >
                         <i className="fa fa-close"/>
                       </button>
                     </div>
@@ -131,14 +137,15 @@ class Step2SetupMeetingPointA extends Component {
 
           <div style={{ marginTop: '60px' }}>
             <hr />
-            <Link
-              to="/become-our-photographer/step-2-4"
+            <button
+              type="button"
               className="button"
-              onClick={this.handleSubmit}
+              onClick={(evt) => !this.state.isUploading ? this.handleSubmit(evt) : false}
               style={{float: 'right'}}
+              disabled={this.state.isUploading}
             >
-              Next
-            </Link>
+              { this.state.isUploading ? 'Processing...' : 'Next' }
+            </button>
 
             {/*<Link
               style={{float: 'right'}}
@@ -153,15 +160,7 @@ class Step2SetupMeetingPointA extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.userAuth,
-  photographerServiceInfoStep2: state.photographerServiceInfoStep2,
-  userInitProfile: state.userInitProfile
+  user: state.userAuth
 });
 
-const mapDispatchToProps = dispatch => ({
-  setMeetingPoint: payload => dispatch(setMeetingPoint(payload)),
-});
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Step2SetupMeetingPointA)
-);
+export default connect(mapStateToProps)(Step2SetupMeetingPointA);

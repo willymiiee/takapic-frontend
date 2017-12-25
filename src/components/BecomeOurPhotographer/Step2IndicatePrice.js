@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 // import { Link } from 'react-router-dom';
 import {
   FormControl,
@@ -74,7 +75,10 @@ class Step2IndicatePrice extends Component {
       .database()
       .ref('photographer_service_information')
       .child(this.props.user.uid)
-      .update({ packagesPrice: this.state.masterPackages })
+      .update({
+        packagesPrice: this.state.masterPackages,
+        updated: firebase.database.ServerValue.TIMESTAMP
+      })
       .then(() => {
         this.setState({ isUploading: false });
         this.props.history.push('/become-our-photographer/step-2-2');
