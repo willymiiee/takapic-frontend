@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import {
   FormControl,
   FormGroup,
   InputGroup,
   Table,
 } from 'react-bootstrap';
-import { setPricing } from '../../store/actions/photographerServiceInfoActionsStep2';
+import { database } from "../../services/firebase";
 
 import Page from '../Page';
 
 class Step2IndicatePrice extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       masterPackages: [
         {
@@ -40,7 +40,8 @@ class Step2IndicatePrice extends Component {
           requirement: 'Minimum 200 photos',
           price: 0
         }
-      ]
+      ],
+      isUploading: false
     };
   }
 
@@ -67,13 +68,27 @@ class Step2IndicatePrice extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.setPricing({ detailMasterPackage: this.state.masterPackages });
-    this.props.history.push('/become-our-photographer/step-2-2');
+    this.setState({ isUploading: true });
+
+    database
+      .database()
+      .ref('photographer_service_information')
+      .child(this.props.user.uid)
+      .update({ packagesPrice: this.state.masterPackages })
+      .then(() => {
+        this.setState({ isUploading: false });
+        this.props.history.push('/become-our-photographer/step-2-2');
+      })
+      .catch((error) => {
+        this.setState({ isUploading: false });
+        console.log(error);
+      });
   };
 
   render() {
     const { user: { userMetadata: { currency } } } = this.props;
     const { masterPackages } = this.state;
+
     return (
       <Page>
         <div className="container" id="photographer-landing">
@@ -83,8 +98,11 @@ class Step2IndicatePrice extends Component {
             <div />
             <div />
           </div>
+
           <hr />
+
           <h3>Please indicate your price for each package</h3>
+
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30">
               <Table striped bordered condensed hover>
@@ -95,6 +113,7 @@ class Step2IndicatePrice extends Component {
                     <th>Your Price</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {
                     masterPackages.map((item, index) => {
@@ -122,6 +141,7 @@ class Step2IndicatePrice extends Component {
                 </tbody>
               </Table>
             </div>
+
             <div className="col-sm-5 margin-top-15 margin-bottom-30">
               <div className="card tips">
                 <h3>About Pricing</h3>
@@ -137,16 +157,19 @@ class Step2IndicatePrice extends Component {
               </div>
             </div>
           </div>
+
           <hr />
+
           <div style={{overflow:'hidden'}}>
-            <Link
-                to="/become-our-photographer/step-2-2"
-                className="button"
-                onClick={this.handleSubmit}
-                style={{float:'right'}}
+            <button
+              type="button"
+              className="button"
+              onClick={(evt) => !this.state.isUploading ? this.handleSubmit(evt) : false}
+              style={{float:'right'}}
+              disabled={this.state.isUploading}
             >
-              Next
-            </Link>
+              { this.state.isUploading ? 'Processing...' : 'Next' }
+            </button>
 
             {/*<Link
                 to="/become-our-photographer/welcome-2"
@@ -163,13 +186,7 @@ class Step2IndicatePrice extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.userAuth,
+  user: state.userAuth
 });
 
-const mapDispatchToProps = dispatch => ({
-  setPricing: payload => dispatch(setPricing(payload)),
-});
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Step2IndicatePrice)
-);
+export default connect(mapStateToProps)(Step2IndicatePrice);

@@ -7,7 +7,6 @@ import uuidv4 from 'uuid/v4';
 import firebase from "firebase";
 // import pica from 'pica';
 import { database } from "../../services/firebase";
-import { submitUploadPhotosPortfolio } from '../../store/actions/photographerServiceInfoActionsStep2';
 
 import Page from '../Page';
 
@@ -29,7 +28,6 @@ const updatePhotographerServiceInfoPhotosPortofolio = (uid, data) => {
         const photos = data.map((item, index) => index === 0
           ? { ...item, defaultPicture: true }
           : { ...item, defaultPicture: false });
-        console.log('photos: ', photos);
 
         db
           .ref('photographer_service_information')
@@ -47,7 +45,8 @@ class Step2IntiatePortofolio extends Component {
     super();
     this.state = {
       images: [],
-      uploadedImagesPathList: []
+      uploadedImagesPathList: [],
+      isUploading: false
     };
   }
 
@@ -114,7 +113,7 @@ class Step2IntiatePortofolio extends Component {
 
   submitImagesHandler = (evt) => {
     evt.preventDefault();
-    if (this.state.images) {
+    if (this.state.images.length > 0) {
       let uploads = [];
       const images = this.state.images;
 
@@ -146,16 +145,24 @@ class Step2IntiatePortofolio extends Component {
               this.setState({ uploadedImagesPathList: [ ...this.state.uploadedImagesPathList, newItem ] });
             })
             .catch((error) => {
-              console.log(error);
+              console.error('Catch error: ', error);
             })
         );
       });
 
+      this.setState({ isUploading: true });
+
       Promise.all(uploads)
         .then(() => {
-          console.log('this.state.uploadedImagesPathList = ', this.state.uploadedImagesPathList);
           updatePhotographerServiceInfoPhotosPortofolio(this.props.user.uid, this.state.uploadedImagesPathList);
-        });
+        })
+        .then(() => {
+          this.setState({ isUploading: false });
+          this.props.history.push('/become-our-photographer/step-2-5');
+        })
+
+    } else {
+      alert('Please select one or more files to upload');
     }
   };
 
@@ -232,7 +239,7 @@ class Step2IntiatePortofolio extends Component {
                   }
                 </div>
 
-                <div style={{marginTop:'40px'}}>
+                <div style={{ marginTop:'40px' }}>
                   <input
                       accept="image/*"
                       ref={ref => (this._uploadFile = ref)}
@@ -241,9 +248,12 @@ class Step2IntiatePortofolio extends Component {
                       type="file"
                       onChange={this.selectImagesHandler}
                   />
+
                   <button
-                      className="button"
-                      onClick={() => this._uploadFile.click()}
+                    type="button"
+                    className="button"
+                    disabled={this.state.isUploading}
+                    onClick={() => this._uploadFile.click()}
                   >
                     Browse to add images
                   </button>
@@ -281,9 +291,9 @@ class Step2IntiatePortofolio extends Component {
           <button
             type="button"
             className="button pull-right"
-            onClick={this.submitImagesHandler}
+            onClick={(evt) => !this.state.isUploading ? this.submitImagesHandler(evt) : false }
           >
-            Done
+            { this.state.isUploading ? 'Uploading your images. Please wait...' : 'Done' }
           </button>
         </div>
       </Page>
@@ -296,11 +306,6 @@ const mapStateToProps = state => ({
   photographerServiceInfoStep2: state.photographerServiceInfoStep2,
 });
 
-const mapDispatchToProps = dispatch => ({
-  submitUploadPhotosPortfolio: payload =>
-    dispatch(submitUploadPhotosPortfolio(payload)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps)(
   Step2IntiatePortofolio
 );
