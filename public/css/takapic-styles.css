@@ -2048,6 +2048,7 @@ RESPONSIVE
         max-width: 150px;
         display: inline-block;
         overflow: hidden;
+        color: #222 !important;
     }
 
     #result > div > .ratings,
@@ -2116,26 +2117,26 @@ RESPONSIVE
 
     #result:not(.list-view) > div:hover > .ratings {
         display: inline-block;
-        float: left;
+        float: right;
         position: relative;
         margin-left: 10px;
         font-size: 11px;
-        top: -25px;
+        top: -30px;
         width: auto;
     }
 
-    #result:not(.list-view) > div:hover > .price {
-        position: relative;
+    div:hover > .price {
+        position: absolute;
         float: right;
         color: #333;
-        bottom: auto;
-        line-height: 24px;
-        top: -34px;
-        right: auto;
-        width: auto;
+        line-height: 24px !important;
+        right: 0;
+        bottom: -33px !important;
+        top: unset !important;
+        text-align: right;
     }
 
-    #result:not(.list-view) > div:hover > .price > b {
+      div:hover > .price > b {
         font-size: 20px;
         display: inline-block;
         margin-left: 5px;

@@ -59,96 +59,94 @@ class BookingForm extends Component {
         <Panel
           collapsible
           expanded={true}
-          header="1. About Your Booking"
+          header="About Your Booking"
           eventKey="1"
         >
-          <h4>Q1. Who is coming?</h4>
+          <h5 className="has-dot">Who is coming?</h5>
+          <div className="has-border" style={{paddingBottom:'0px'}}>
+            <div className="form-group">
+              <label>Adults</label>
+              <input
+                name="numberOfAdults"
+                type="text"
+                value={values.numberOfAdults}
+                className="form-control"
+                autoComplete="off"
+                onChange={handleChange}
+              />
+              {
+                errors.numberOfAdults && touched.numberOfAdults && (
+                  <label style={{color: 'red'}}>{errors.numberOfAdults}</label>
+                )
+              }
+            </div>
 
-          <div className="form-group">
-            <label>Adults</label>
-            <input
-              name="numberOfAdults"
-              type="text"
-              value={values.numberOfAdults}
-              className="form-control"
-              autoComplete="off"
-              onChange={handleChange}
+            <div className="form-group">
+              <label>Children</label>
+              <input
+                name="numberOfChildren"
+                type="text"
+                value={values.numberOfChildren}
+                className="form-control"
+                autoComplete="off"
+                onChange={handleChange}
+              />
+              {
+                errors.numberOfChildren && touched.numberOfChildren && (
+                  <label style={{color: 'red'}}>{errors.numberOfChildren}</label>
+                )
+              }
+            </div>
+
+            <div className="form-group">
+              <label>Infants</label>
+              <input
+                name="numberOfInfants"
+                type="text"
+                value={values.numberOfInfants}
+                className="form-control"
+                autoComplete="off"
+                onChange={handleChange}
+              />
+              {
+                errors.numberOfInfants && touched.numberOfInfants && (
+                  <label style={{color: 'red'}}>{errors.numberOfInfants}</label>
+                )
+              }
+            </div>
+          </div>
+          <hr/>
+          <h5 className="has-dot">Where Preferred meeting point with your photographer?</h5>
+          <div className="has-border" style={{paddingBottom:'0px'}}>
+            <Select
+              name="meetingPointSelectedValue"
+              options={meetingPointsList}
+              value={values.meetingPointSelectedValue}
+              onChange={_meetingPointChangeHandler}
+              clearable={false}
+              multi={false}
+              placeholder="--- Choose ---"
             />
             {
-              errors.numberOfAdults && touched.numberOfAdults && (
-                <label style={{color: 'red'}}>{errors.numberOfAdults}</label>
+              errors.meetingPointSelectedValue && touched.meetingPointSelectedValue && (
+                <label style={{color: 'red'}}>{errors.meetingPointSelectedValue}</label>
               )
             }
           </div>
-
-          <div className="form-group">
-            <label>Children</label>
-            <input
-              name="numberOfChildren"
-              type="text"
-              value={values.numberOfChildren}
-              className="form-control"
-              autoComplete="off"
-              onChange={handleChange}
-            />
+          <hr/>
+          <h5 className="has-dot">Say Hello To Your Photographer!</h5>
+          <div className="has-border" style={{paddingBottom:'0px'}}>
+            <textarea name="messageToPhotographer" onChange={handleChange} value={values.messageToPhotographer}/>
             {
-              errors.numberOfChildren && touched.numberOfChildren && (
-                <label style={{color: 'red'}}>{errors.numberOfChildren}</label>
+              errors.messageToPhotographer && touched.messageToPhotographer && (
+                <label style={{color: 'red'}}>{errors.messageToPhotographer}</label>
               )
             }
           </div>
-
-          <div className="form-group">
-            <label>Infants</label>
-            <input
-              name="numberOfInfants"
-              type="text"
-              value={values.numberOfInfants}
-              className="form-control"
-              autoComplete="off"
-              onChange={handleChange}
-            />
-            {
-              errors.numberOfInfants && touched.numberOfInfants && (
-                <label style={{color: 'red'}}>{errors.numberOfInfants}</label>
-              )
-            }
-          </div>
-
-          <h4>Q2. Preferred meeting point with your photographer</h4>
-
-          <Select
-            name="meetingPointSelectedValue"
-            options={meetingPointsList}
-            value={values.meetingPointSelectedValue}
-            onChange={_meetingPointChangeHandler}
-            clearable={false}
-            multi={false}
-            placeholder="--- Choose ---"
-          />
-
-          {
-            errors.meetingPointSelectedValue && touched.meetingPointSelectedValue && (
-              <label style={{color: 'red'}}>{errors.meetingPointSelectedValue}</label>
-            )
-          }
-
-          <h4>
-            <strong>Say Hello To Your Photographer</strong>
-          </h4>
-
-          <textarea name="messageToPhotographer" onChange={handleChange} value={values.messageToPhotographer}/>
-          {
-            errors.messageToPhotographer && touched.messageToPhotographer && (
-              <label style={{color: 'red'}}>{errors.messageToPhotographer}</label>
-            )
-          }
         </Panel>
-
-        <p>
+        <p style={{textAlign:'justify'}}>
           You'll only be charged if your request is accepted by the
           photographer. They'll have 24 hours to accept or decline.
-          <br/>
           <span style={{ fontWeight: 'bold' }}>100% Refundable</span>
         </p>
 
@@ -156,8 +154,9 @@ class BookingForm extends Component {
 
         <button
           type="submit"
-          className="button"
+          className="button radius-8 key-color"
           disabled={isSubmitting}
+          style={{width:'100%', marginTop:'20px', padding:'11px'}}
         >
           { isSubmitting ? 'Please wait, Processing your payment...' : 'Submit Payment' }
         </button>

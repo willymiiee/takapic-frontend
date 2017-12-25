@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
+import { nl2br } from "../../helpers/helpers";
+import CircularProgressbar from 'react-circular-progressbar';
 import ReactRating from 'react-rating-float';
 import { Col, Row } from 'react-bootstrap';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
@@ -90,6 +92,7 @@ class PhotographerBooking extends Component {
               locationMerge
             },
             meetingPoints,
+            selfDescription,
             serviceReviews: {
               rating,
               impressions
@@ -140,7 +143,69 @@ class PhotographerBooking extends Component {
           <div className="hidden-xs padding-bottom-60"/>
           <div className="container">
             <Row>
-              <Col sm={6} md={7}>
+              
+              <Col sm={6} lg={5}>
+                <div className="card" style={{borderRadius:'3px'}}>
+                  <div id="photographer-info">
+                    <h3 className="has-dot">About Photographer</h3>
+                    <div className="has-border">
+                      <h1>{ displayName }</h1>
+
+                      <p style={{fontSize:'16px'}}>{ locationMerge }</p>
+                    </div>
+                    
+                    <h3 className="has-dot">Photographer Reviews</h3>
+                    <div className="has-border">
+                      <div className="ratings-star" style={{marginBottom: '20px'}}>
+                        <h4 >
+                          { rating.label }
+                        </h4>
+                        <ReactRating
+                          rate={ rating.value }
+                          total={5}
+                        />
+                      </div>
+                      <div id="photographer-stats" style={{marginLeft:'-10px'}}>
+                        {
+                          impressions.map((item, key) => (
+                          <div style={{padding: 10, width:'100px'}} key={key}>
+                            <CircularProgressbar
+                              percentage={item.value * 100}
+                              initialAnimation
+                            />
+                            <b style={{fontSize:'14px', fontWeight: 'lighter', marginBottom:'0px'}}>{item.label}</b>
+                          </div>
+                        ))
+                        }
+                      </div>
+                    </div>
+                    
+                    <h3 className="has-dot">Photo Shoot Schedule</h3>
+                    <div className="has-border" style={{color:'#222'}}>
+                      { startDateAndTimeDisplay } - { toEndTime } ({ hours } hours)
+                    </div>
+                    
+                    <h3 className="has-dot">Meeting Place</h3>
+                    <div className="has-border" style={{color:'#222'}}>
+                      { meetingPlaceDisplay }
+                    </div>
+                    
+                    <h3 className="has-dot">Payment Summary</h3>
+                    <div className="has-border" style={{color:'#222'}}>
+                        Photographer Fee <span className="pull-right">USD { photographerFee }</span> <br/>
+                        Service Fee <span className="pull-right">USD { serviceFee }</span> <br/>
+                        Credit <span className="pull-right">USD { credit }</span> 
+                    </div>
+                    <hr/>
+                    <h3 className="has-dot radius-8" style={{padding: '16px', color: 'white', backgroundColor:'#9999'}}>
+                      <strong>
+                        Total <span className="pull-right">USD { total }</span>
+                      </strong>
+                    </h3>
+                  </div>
+                </div>
+              </Col>
+              <Col sm={6} lg={7}>
                 <BookingForm
                   reservation={this.props.reservation}
                   meetingPoints={meetingPoints}
@@ -153,64 +218,6 @@ class PhotographerBooking extends Component {
                 />
               </Col>
 
-              <Col sm={6} md={5}>
-                <div className="card">
-                  <h4>
-                    <strong>Photographer Detail</strong>
-                  </h4>
-
-                  <p>
-                    { displayName }
-                    <br/>
-                    { locationMerge }
-                    <br/>
-                  </p>
-
-                  <ReactRating rate={rating.value} total={5}/>
-
-                  <ul>
-                    {
-                      impressions && impressions.map((item, index) => (
-                        <li key={index}>
-                          <span style={{ fontWeight: 'bold' }}>
-                            { item.label }: </span> { item.value * 100 }%
-                        </li>
-                      ))
-                    }
-                  </ul>
-
-                  <h4>
-                    <strong>Photo Shoot Schedule</strong>
-                  </h4>
-                  <p>
-
-                    { startDateAndTimeDisplay } - { toEndTime } ({ hours } hours)
-                  </p>
-
-                  <h4>
-                    <strong>Meeting Place</strong>
-                  </h4>
-                  { meetingPlaceDisplay }
-
-                  <h4>Payment Summary</h4>
-                  <p>
-                    Photographer Fee <span className="pull-right">USD { photographerFee }</span>
-                  </p>
-
-                  <p>
-                    Service Fee <span className="pull-right">USD { serviceFee }</span>
-                  </p>
-                  <p>
-                    Credit <span className="pull-right">USD { credit }</span>
-                  </p>
-
-                  <h4>
-                    <strong>
-                      Total <span className="pull-right">USD { total }</span>
-                    </strong>
-                  </h4>
-                </div>
-              </Col>
             </Row>
           </div>
         </Page>
