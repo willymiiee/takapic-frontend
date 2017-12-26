@@ -165,10 +165,10 @@ class PhotographerBooking extends Component {
                           total={5}
                         />
                       </div>
-                      <div id="photographer-stats" style={{marginLeft:'-10px'}}>
+                      <div id="photographer-stats">
                         {
                           impressions.map((item, key) => (
-                          <div style={{padding: 10, width:'100px'}} key={key}>
+                          <div key={key}>
                             <CircularProgressbar
                               percentage={item.value * 100}
                               initialAnimation

@@ -245,6 +245,7 @@ class PhotographerDetailReservationForm extends Component {
     const that = this;
     window.$(function() {
       window.$('.input-start-date-lalala').pickadate({
+        min: new Date(),
         onSet: that.selectedDateHandler
       });
 

@@ -123,7 +123,7 @@ class Home extends Component {
             <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '120px'}}>
               <div className="search-box-destination">
                 <div style={{display:'flex'}}>
-                  <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Location</span>
+                  <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Where</span>
                   <Select.Async
                     multi={false}
                     value={this.state.search.destination}
@@ -139,7 +139,7 @@ class Home extends Component {
 
               <div className="search-box-date" id="select-date-home">
                 <div style={{display:'flex'}}>
-                  <span id="label-field-date" style={{paddingLeft:'15px', marginRight:'15px'}}>Date</span>
+                  <span id="label-field-date" style={{paddingLeft:'15px', marginRight:'15px'}}>When</span>
                   <DatePicker
                     dateFormat="MMMM Do YYYY"
                     selected={this.state.search.date}

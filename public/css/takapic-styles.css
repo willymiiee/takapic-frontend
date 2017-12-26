@@ -359,7 +359,20 @@ button.u:hover {
 
 #landing-page-top {
     text-align: center;
-    margin: 10vw 0 24vw;
+    margin: 11vw 0 24vw;
+}
+
+@media (min-width: 400px) {
+    #landing-page-top {
+        text-align: center;
+        margin: 12vw 0 24vw;
+    }
+}
+@media (max-width: 321px) {
+    #landing-page-top {
+        text-align: center;
+        margin: 6vw 0 24vw;
+    }
 }
 
 #landing-page-top > img {
@@ -774,12 +787,14 @@ button.u:hover {
 
 #photographer-stats {
     font-size: 0;
+    margin-left: -5px;
 }
 
 #photographer-stats > div {
     display: inline-block;
-    width: 112px;
+    width: 30%;
     text-align: center;
+    padding: 5px;
 }
 
 #photographer-stats > div > .circle-progress {
@@ -3050,10 +3065,14 @@ RESPONSIVE
         cursor: pointer;
     }
 
+    #photographer-stats {
+        margin-left: -10px;
+    }
+
     #photographer-stats > div {
         display: inline-block;
-        width: 120px;
         text-align: center;
+        padding: 10px;
     }
 }
 
@@ -3083,8 +3102,12 @@ RESPONSIVE
         cursor: pointer;
     }
 
+    #photographer-stats {
+        margin-left: -10px;
+    }
+
     #photographer-stats > div {
-        width: 128px;
+        padding: 10px;
     }
 
     .poster {
@@ -4110,6 +4133,7 @@ figcaption.action-btn a .fa {
 @media (max-width: 767px) {
     .search-box-custom-again .search-box-date input {
         padding:0 10px 0 20px !important;
+        height: 42px;
     }
 }
 
@@ -4125,13 +4149,13 @@ figcaption.action-btn a .fa {
 
 #search-box-home .Select-menu-outer {
   position: absolute;
-  left:-100px;
+  left:-80px;
   right:0;
   margin-top: 2px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 6px;
-  width:122.5% !important;
+  width:118% !important;
   text-align: left;
 }
 
@@ -4205,7 +4229,7 @@ figcaption.action-btn a .fa {
 
 @media (min-width: 992px) and (max-width: 1240px) {
   #search-box-home .Select-menu-outer {
-    width:132% !important;
+    width:124% !important;
   }
   .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
     width: 3.75em !important;
@@ -4214,7 +4238,7 @@ figcaption.action-btn a .fa {
 
 @media (min-width: 768px) and (max-width: 991px) {
   #search-box-home .Select-menu-outer {
-    width:150% !important;
+    width:137% !important;
   }
   .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
     width: 2.67em !important;
@@ -4249,6 +4273,7 @@ figcaption.action-btn a .fa {
   #label-field-destination {
     width:110px;
     margin-right: 0 !important;
+    padding-left: 18px !important;
   }
   .search-box-custom-again {
     display: block;

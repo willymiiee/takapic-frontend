@@ -156,7 +156,7 @@ class BookingForm extends Component {
           type="submit"
           className="button radius-8 key-color"
           disabled={isSubmitting}
-          style={{width:'100%', marginTop:'20px', padding:'11px'}}
+          style={{width:'100%', marginTop:'5px', padding:'11px'}}
         >
           { isSubmitting ? 'Please wait, Processing your payment...' : 'Submit Payment' }
         </button>

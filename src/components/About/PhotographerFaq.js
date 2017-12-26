@@ -23,7 +23,7 @@ const PhotographerFaq = props => {
                   <tr>
                     <td>Easy and Free Sign Up</td>
                     <td>Saves advertising fees </td>
-                    <td>Get charged tdansaction fee only upon confirmed jobs from customers</td>
+                    <td>Get charged transaction fee only upon confirmed jobs from customers</td>
                   </tr>
                   <tr>
                     <td>International Online Platform and Matching</td>
@@ -82,9 +82,12 @@ const PhotographerFaq = props => {
 
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h4 className="title-faq">If traveller visits a country for example Thailand for 10 days and they will be in 3 cities, how do they book a photographer? 1 for each city or 1 photographer follows the traveler in 3 cities.  What about the accommodation of photographer?  </h4>
-              <p className="content-faq">we aim to be present and offer the service in every city. It is more economical and hassle free for the traveller to book a photographer in each city rather than have one photographer travel together with the traveller. This may also be awkward for both parties and intrude onto private time.</p>
+              <p className="content-faq">We aim to be present and offer the service in every city. It is more economical and hassle free for the traveller to book a photographer in each city rather than have one photographer travel together with the traveller. This may also be awkward for both parties and intrude onto private time.</p>
             </div>
-
+            <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
+              <h4 className="title-faq">Is Takapic service completely free for me?  </h4>
+              <p className="content-faq">It is absolutely free to sign up and build your profile and portfolio on our platform. You will only get charged a transaction fee upon successful completed jobs for the traveller/customer. The transaction fee is 5% of your list price. So for example, if you list price is $100 in your local currency for 1 hour service and you complete a job for this, Takapic will take $5 and you will get $95 for the job. This transaction fee is to cater for exchange rate conversion, bank/credit card charges when you get paid back to your local currency.</p>
+            </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">Why is the price on my public photographer page higher than the one I listed?</h3>
               <p className="content-faq">Your photographer page shows the final price that the traveller will pay in US dollars as this is the commonly accepted currency worldwide. This includes exchange rate conversion, service fee, and tax (when applicable). What the traveller sees is what he pays & what you list is what you get paid.</p>
