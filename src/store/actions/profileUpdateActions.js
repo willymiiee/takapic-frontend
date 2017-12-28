@@ -7,20 +7,15 @@ import {
   fetchPhotographerServiceInformation,
   tellThemThatWasSuccessOrFailed
 } from './photographerServiceInfoActions'
+import axios from "axios/index";
 
 export const updateBasicInformation = (params) => {
   return dispatch => {
-    dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION" });
-    dispatch(setActiveTab(1));
-
-    // Update Photo Profile when file exist
-    if (params.state.values.fileImage) {
-      dispatch(updatePhotoProfile(params));
-      dispatch(fetchPhotographerServiceInformation(params.uid));
-    }
-
-    dispatch(updateBasicInformationUser(params));
-    dispatch(updateBasicInformationPhotographer(params));
+    const tasks = [];
+    tasks.push(dispatch(updateBasicInformationUser(params)));
+    tasks.push(dispatch(updateBasicInformationPhotographer(params)));
+    tasks.push(dispatch(setActiveTab(1)));
+    return Promise.all(tasks);
   }
 };
 
@@ -28,7 +23,6 @@ const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
   const db = database.database();
   const ref = db.ref('user_metadata');
   const userRef = ref.child(reference);
-
   userRef.update({ photoProfileUrl, updated: firebase.database.ServerValue.TIMESTAMP });
 };
 
@@ -49,44 +43,34 @@ const deletePhotoPortofolios = (uid, photos) => {
 export const updatePhotoProfile = (params) => {
   return dispatch => {
     let { uid, state } = params;
-    let { values: { fileImage, name } } = state;
+    let { values: { fileImage } } = state;
 
-    let fileExt = '.jpg';
-    if (fileImage.type === 'image/jpeg') {
-      fileExt = '.jpg';
-    } else if (fileImage.type === 'image/png') {
-      fileExt = '.png';
-    }
+    const formData = new FormData();
+    formData.append('upload_preset', 'test-user-photo-profile');
+    formData.append('file', fileImage);
 
-    const storageRef = database.storage().ref();
-    const photoPath = `pictures/user-photo-profile/${uid}${fileExt}`;
-    const pictureRef = storageRef.child(photoPath);
-
-    pictureRef
-      .put(fileImage, { contentType: fileImage.type })
-      .then(snapshot => {
-        const downloadURL = snapshot.downloadURL;
-
+    axios
+      .post('https://api.cloudinary.com/v1_1/dvdm9a68v/image/upload', formData)
+      .then((response) => {
         database.auth().currentUser.updateProfile({
-          displayName: name,
-          photoURL: downloadURL,
+          photoURL: response.data.secure_url
         });
 
-        updateUserMetadataPhotoProfile(uid, downloadURL);
-
+        updateUserMetadataPhotoProfile(uid, response.data.secure_url);
       })
+      .catch((error) => {
+        console.error('Catch error: ', error);
+      });
   };
 };
 
 export const updateBasicInformationUser = (params) => {
   return dispatch => {
     const { uid, state } = params;
-
-    dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION_USER" });
-
     const db = database.database();
     const ref = db.ref("/user_metadata");
     const metadataRef = ref.child(uid);
+
     metadataRef
       .update({
         displayName: state.values.name,
@@ -98,18 +82,6 @@ export const updateBasicInformationUser = (params) => {
         locationAdmLevel2: state.location.locationAdmLevel2,
         locationMerge: state.location.locationMerge,
         updated: firebase.database.ServerValue.TIMESTAMP
-      })
-      .then(() => {
-        dispatch({
-          type: "UPDATE_PROFILE_BASIC_INFORMATION_USER_SUCCESS",
-          payload: { status: "OK", message: "Data updated" }
-        });
-      })
-      .catch(error => {
-        dispatch({
-          type: "UPDATE_PROFILE_BASIC_INFORMATION_USER_ERROR",
-          error
-        });
       });
   };
 };
@@ -117,11 +89,8 @@ export const updateBasicInformationUser = (params) => {
 export const updateBasicInformationPhotographer = (params) => {
   return dispatch => {
     const { uid, state } = params;
-
-    dispatch({ type: "UPDATE_PROFILE_BASIC_INFORMATION_PHOTOGRAPHER" });
-
     const db = database.database();
-    const ref = db.ref("/photographer_service_information");
+    const ref = db.ref("photographer_service_information");
     const metadataRef = ref.child(uid);
     metadataRef
       .update({
@@ -131,20 +100,13 @@ export const updateBasicInformationPhotographer = (params) => {
         updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
-        dispatch({
-          type: "UPDATE_PROFILE_BASIC_INFORMATION_PHOTOGRAPHER_SUCCESS",
-          payload: { status: "OK", message: "Data updated" }
-        });
         dispatch(fetchPhotographerServiceInformation(params.uid));
       })
       .then(() => {
         dispatch(tellThemThatWasSuccessOrFailed('success'));
       })
       .catch(error => {
-        dispatch({
-          type: "UPDATE_PROFILE_BASIC_INFORMATION_PHOTOGRAPHER_ERROR",
-          error
-        });
+        console.error(error);
       });
   };
 };

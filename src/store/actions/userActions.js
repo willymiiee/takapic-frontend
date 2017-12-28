@@ -1,6 +1,15 @@
 import firebase from 'firebase';
-import { database, facebookAuthProvider, googleAuthProvider } from '../../services/firebase';
+import axios from "axios/index";
 import history from '../../services/history';
+import {
+  database,
+  facebookAuthProvider,
+  googleAuthProvider
+} from '../../services/firebase';
+import {
+  fetchPhotographerServiceInformation,
+  tellThemThatWasSuccessOrFailed
+} from "./photographerServiceInfoActions";
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
 const initialiazePhotographerProfileData = uid => {
@@ -13,7 +22,7 @@ const initialiazePhotographerProfileData = uid => {
       impressions: [
         { label: 'Friendly', value: 0.5 },
         { label: 'Skillful', value: 0.5 },
-        { label: 'Comprehensive', value: 0.5 }
+        { label: 'Creative', value: 0.5 }
       ]
     }
   };
@@ -285,5 +294,83 @@ export const searchInformationLog = (location, datetime) => {
       type: 'SEARCH_INFORMATION_SUBMIT_SEARCH_LOG',
       payload: { location, datetime }
     });
+  };
+};
+
+export const updatePhotographerServiceInfoPhotosPortofolio = (uid, data, isInitiation = true) => {
+  if (data) {
+    const db = database.database();
+
+    if (isInitiation) {
+      // Update defaultDisplayPictureUrl in user metadata
+      db
+        .ref('user_metadata')
+        .child(uid)
+        .update({
+          defaultDisplayPictureUrl: data[0].url,
+          updated: firebase.database.ServerValue.TIMESTAMP
+        })
+        .then(() => {
+
+          // Update photos portofolio in photographer service information
+          const photos = data.map((item, index) => index === 0
+            ? { ...item, defaultPicture: true }
+            : { ...item, defaultPicture: false });
+
+          db
+            .ref('photographer_service_information')
+            .child(uid)
+            .update({
+              photosPortofolio: photos,
+              updated: firebase.database.ServerValue.TIMESTAMP
+            });
+        });
+
+    } else {
+      db
+        .ref('photographer_service_information')
+        .child(uid)
+        .update({
+          photosPortofolio: data,
+          updated: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+  }
+};
+
+export const updateUserMetadataDefaultDisplayPicture = (reference, picture) => {
+  const db = database.database();
+  const ref = db.ref('/user_metadata');
+  const userRef = ref.child(reference);
+
+  userRef.update({ defaultDisplayPictureUrl: picture, updated: firebase.database.ServerValue.TIMESTAMP });
+};
+
+export const deletePortfolioPhotos = (uid, photosDeleted, imagesExisting) => {
+  return (dispatch) => {
+    if (photosDeleted.length > 0) {
+      const publicIdList = photosDeleted.map((item) => item.publicId);
+      axios({
+        method: 'DELETE',
+        url: 'http://localhost:8008/api/cloudinary-images/delete',
+        params: {
+          public_ids: publicIdList
+        }
+      })
+        .then((response) => {
+          database
+            .database()
+            .ref('photographer_service_information')
+            .child(uid)
+            .update({ photosPortofolio: imagesExisting })
+        })
+        .then(() => {
+          dispatch(fetchPhotographerServiceInformation(uid));
+          dispatch(tellThemThatWasSuccessOrFailed('success'));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 };

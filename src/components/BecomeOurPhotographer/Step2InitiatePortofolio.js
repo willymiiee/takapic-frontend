@@ -4,48 +4,17 @@ import { connect } from 'react-redux';
 import axios from "axios/index";
 import { ProgressBar } from 'react-bootstrap';
 import uuidv4 from 'uuid/v4';
-import firebase from "firebase";
 // import pica from 'pica';
-import { database } from "../../services/firebase";
+import { updatePhotographerServiceInfoPhotosPortofolio } from "../../store/actions/userActions";
 
 import Page from '../Page';
-
-const updatePhotographerServiceInfoPhotosPortofolio = (uid, data) => {
-  if (data) {
-    const db = database.database();
-
-    // Update defaultDisplayPictureUrl in user metadata
-    db
-      .ref('user_metadata')
-      .child(uid)
-      .update({
-        defaultDisplayPictureUrl: data[0].url,
-        updated: firebase.database.ServerValue.TIMESTAMP
-      })
-      .then(() => {
-
-        // Update photos portofolio in photographer service information
-        const photos = data.map((item, index) => index === 0
-          ? { ...item, defaultPicture: true }
-          : { ...item, defaultPicture: false });
-
-        db
-          .ref('photographer_service_information')
-          .child(uid)
-          .update({
-            photosPortofolio: photos,
-            updated: firebase.database.ServerValue.TIMESTAMP
-          });
-      });
-  }
-};
 
 class Step2IntiatePortofolio extends Component {
   constructor() {
     super();
     this.state = {
       images: [],
-      uploadedImagesPathList: [],
+      uploadedImagesList: [],
       isUploading: false
     };
   }
@@ -142,7 +111,7 @@ class Step2IntiatePortofolio extends Component {
                 defaultPicture: false
               };
 
-              this.setState({ uploadedImagesPathList: [ ...this.state.uploadedImagesPathList, newItem ] });
+              this.setState({ uploadedImagesList: [ ...this.state.uploadedImagesList, newItem ] });
             })
             .catch((error) => {
               console.error('Catch error: ', error);
@@ -154,7 +123,7 @@ class Step2IntiatePortofolio extends Component {
 
       Promise.all(uploads)
         .then(() => {
-          updatePhotographerServiceInfoPhotosPortofolio(this.props.user.uid, this.state.uploadedImagesPathList);
+          updatePhotographerServiceInfoPhotosPortofolio(this.props.user.uid, this.state.uploadedImagesList);
         })
         .then(() => {
           this.setState({ isUploading: false });
@@ -227,7 +196,7 @@ class Step2IntiatePortofolio extends Component {
                             : null
                         }
 
-                        <img src={photo.imagePreview} alt="This is the alt text" />
+                        <img src={photo.imagePreview} alt="This is the alt text"/>
 
                         {
                           !photo.hasOwnProperty('percentCompleted')

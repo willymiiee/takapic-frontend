@@ -83,7 +83,13 @@ class User extends Component{
     if (this.props.photographerServiceInformation.loading || this.props.profile.loading) {
       return (<Animator/>);
     } else {
-      const { photographerServiceInformation, activeTab, profile, tellThemThatWasSuccessOrFailedInfo } = this.props;
+      const {
+        user,
+        photographerServiceInformation,
+        activeTab,
+        profile,
+        tellThemThatWasSuccessOrFailedInfo
+      } = this.props;
 
       return (
         <Page style={{whiteSpace:'normal'}}>
@@ -101,7 +107,12 @@ class User extends Component{
 
               <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
                 <Tab eventKey={1} title="Basic Information">
-                  <BasicInformation photographerServiceInformation={photographerServiceInformation} state={this.state}/>
+                  <BasicInformation
+                    photographerServiceInformation={photographerServiceInformation}
+                    state={this.state}
+                    profile={this.props.profile}
+                    user={this.props.user}
+                  />
                 </Tab>
 
                 <Tab eventKey={2} title="Camera Equipment">
@@ -109,11 +120,19 @@ class User extends Component{
                 </Tab>
 
                 <Tab eventKey={3} title="Meeting Points">
-                  { this.state.activeTab === 3 ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/> : null }
+                  {
+                    this.state.activeTab === 3
+                      ? <MeetingPoints photographerServiceInformation={photographerServiceInformation}/>
+                      : null
+                  }
                 </Tab>
 
                 <Tab eventKey={4} title="Photos Portofolio">
-                  <PhotosPortofolio photographerServiceInformation={photographerServiceInformation} profile={profile}/>
+                  <PhotosPortofolio
+                    user={user}
+                    photographerServiceInformation={photographerServiceInformation}
+                    profile={profile}
+                  />
                 </Tab>
 
                 <Tab eventKey={5} title="Packages Price">

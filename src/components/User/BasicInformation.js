@@ -6,12 +6,19 @@ import {
   FormGroup,
   FormControl,
   Button,
-  InputGroup
+  InputGroup,
+  ProgressBar
 } from "react-bootstrap";
 import size from 'lodash/size';
 import isEqual from 'lodash/isEqual';
+import axios from "axios/index";
+import firebase from "firebase";
+import sha1 from 'js-sha1';
 
+import store from '../../store';
 import { updateBasicInformation } from '../../store/actions/profileUpdateActions';
+import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
+import { database } from "../../services/firebase";
 
 class BasicInformation extends Component {
   constructor() {
@@ -77,7 +84,9 @@ class BasicInformation extends Component {
           value: ""
         },
         currency: "",
-      }
+      },
+      photoProfileUploadPercentage: 0,
+      uploadSigned: false
     };
   }
 
@@ -88,6 +97,7 @@ class BasicInformation extends Component {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps, this.props)) {
       this.setLocalState(nextProps);
+      window.scrollTo(0, 0);
     }
   }
 
@@ -150,13 +160,57 @@ class BasicInformation extends Component {
   };
 
   imageSelectedAction = fileObject => {
-    let {values} = this.state;
+    let { values } = this.state;
     let fileReader = new FileReader();
 
-    fileReader.onloadend = () => {
-      values.fileImage = fileObject;
-      values.photoProfileUrl = fileReader.result;
-      this.setState({values});
+    fileReader.onloadend = (evt) => {
+      values.photoProfileUrl = evt.target.result;
+      this.setState({ values });
+
+      const formData = new FormData();
+      const nowDateTime = Date.now();
+      const imageVersion = 'v' + nowDateTime.toString();
+      const signature = sha1(`public_id=${this.props.user.uid}&timestamp=${nowDateTime}&upload_preset=test-user-photo-profileA-tNTaJsm34tgPQUjjQTyRPyDf8`);
+      formData.append('upload_preset', 'test-user-photo-profile');
+      formData.append('public_id', this.props.user.uid);
+      formData.append('timestamp', nowDateTime);
+      formData.append('api_key', '323986611418769');
+      formData.append('signature', signature);
+      formData.append('file', fileObject);
+
+      const uploadConfig = {
+        onUploadProgress: (progressEvent) => {
+          const percentageComplete = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+          this.setState({ photoProfileUploadPercentage: percentageComplete });
+        }
+      };
+
+      axios
+        .post('https://api.cloudinary.com/v1_1/dvdm9a68v/image/upload', formData, uploadConfig)
+        .then((response) => {
+          database.auth().currentUser.updateProfile({
+            photoURL: response.data.secure_url
+          });
+
+          database
+            .database()
+            .ref('user_metadata')
+            .child(this.props.user.uid)
+            .update({
+              photoProfileUrl: response.data.secure_url,
+              photoProfileUrlPublicId: imageVersion,
+              updated: firebase.database.ServerValue.TIMESTAMP
+            });
+
+          return response.data.secure_url;
+        })
+        .then((photoProfileUrl) => {
+          values.photoProfileUrl = photoProfileUrl;
+          this.setState({ values, uploadSigned: true, photoProfileUploadPercentage: 0  });
+        })
+        .catch((error) => {
+          console.error('Catch error: ', error);
+        });
     };
     fileReader.readAsDataURL(fileObject);
   };
@@ -204,7 +258,7 @@ class BasicInformation extends Component {
   };
 
   _resetCity = () => {
-    const {location, values} = this.state
+    const {location, values} = this.state;
 
     location.locationAdmLevel1 = "";
     location.locationAdmLevel2 = "";
@@ -257,8 +311,7 @@ class BasicInformation extends Component {
 
   _handleSelectLanguages = value => {
     const {selected} = this.state;
-    const languages = value.map(item => item.value);
-    selected.languages = languages;
+    selected.languages = value.map(item => item.value);
     this.setState({selected});
   };
 
@@ -266,14 +319,17 @@ class BasicInformation extends Component {
     event.preventDefault();
     const {
       photographerServiceInformation: {
-        data: {
-          userMetadata: {uid}
-        }
+        data: { userMetadata: { uid } }
       }
     } = this.props;
 
-    const params = {state: this.state, uid};
-    this.props.updateBasicInformation(params);
+    const params = { state: this.state, uid };
+    store.dispatch({ type: "PROFILE_MANAGER_UPDATING_START" });
+    this.props.updateBasicInformation(params)
+      .then(() => {
+        this.props.fetchPhotographerServiceInformation(uid);
+        store.dispatch({ type: "PROFILE_MANAGER_UPDATING_SUCCESS" });
+      });
   };
 
   render() {
@@ -287,14 +343,33 @@ class BasicInformation extends Component {
             <div
               id="filedrag-photo"
               className="center-block img-responsive">
-              <div className="ph">
-                {values.photoProfileUrl && (
-                  <img
-                    src={values.photoProfileUrl}
-                    className="center-block img-circle img-profile"
-                    alt="This is alt text"
-                  />
-                )}
+              <div className="ph" style={{ position: 'relative', margin: '0 auto' }}>
+                {
+                  values.photoProfileUrl && (
+                    <img
+                      src={values.photoProfileUrl}
+                      className="center-block img-circle img-profile"
+                      alt="This is alt text"
+                    />
+                  )
+                }
+
+                {
+                  this.state.photoProfileUploadPercentage > 0 && this.state.photoProfileUploadPercentage <= 100 && !this.state.uploadSigned
+                    ? (
+                      <ProgressBar
+                        striped
+                        bsStyle="success"
+                        now={this.state.photoProfileUploadPercentage}
+                        style={{
+                          margin: '0 auto',
+                          marginTop: '10px',
+                          width: '100%'
+                        }}
+                      />
+                    )
+                    : null
+                }
               </div>
             </div>
           </div>
@@ -404,7 +479,9 @@ class BasicInformation extends Component {
           />
         </FormGroup>
         <hr/>
-        <Button onClick={this.handleUpdate} style={{float: 'right'}} className="button">Update Profile</Button>
+        <Button type="button" onClick={this.handleUpdate} style={{float: 'right'}} className="button">
+          { this.props.profile.loading ? 'Updating... Please wait.' : 'Update' }
+        </Button>
       </Form>
     );
   }
@@ -413,6 +490,7 @@ class BasicInformation extends Component {
 export default connect(
   null,
   dispatch => ({
-    updateBasicInformation: paramsObject => dispatch(updateBasicInformation(paramsObject))
+    updateBasicInformation: (paramsObject) => dispatch(updateBasicInformation(paramsObject)),
+    fetchPhotographerServiceInformation: (uid) => dispatch(fetchPhotographerServiceInformation(uid))
   })
 )(BasicInformation);
