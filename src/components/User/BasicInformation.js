@@ -163,19 +163,25 @@ class BasicInformation extends Component {
     let { values } = this.state;
     let fileReader = new FileReader();
 
+    let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
+    urlUploadRequest += '/image/upload';
+
+    const nowDateTime = Date.now();
+    let signature = `public_id=${this.props.user.uid}`;
+    signature += `&timestamp=${nowDateTime}`;
+    signature += `&upload_preset=${process.env.REACT_APP_CLOUDINARY_PHOTO_PROFILE_PRESET}`;
+    signature += process.env.REACT_APP_CLOUDINARY_API_SECRET;
+
     fileReader.onloadend = (evt) => {
       values.photoProfileUrl = evt.target.result;
       this.setState({ values });
 
       const formData = new FormData();
-      const nowDateTime = Date.now();
-      const imageVersion = 'v' + nowDateTime.toString();
-      const signature = sha1(`public_id=${this.props.user.uid}&timestamp=${nowDateTime}&upload_preset=test-user-photo-profileA-tNTaJsm34tgPQUjjQTyRPyDf8`);
-      formData.append('upload_preset', 'test-user-photo-profile');
+      formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTO_PROFILE_PRESET);
       formData.append('public_id', this.props.user.uid);
       formData.append('timestamp', nowDateTime);
-      formData.append('api_key', '323986611418769');
-      formData.append('signature', signature);
+      formData.append('api_key', process.env.REACT_APP_CLOUDINARY_API_KEY);
+      formData.append('signature', sha1(signature));
       formData.append('file', fileObject);
 
       const uploadConfig = {
@@ -186,7 +192,7 @@ class BasicInformation extends Component {
       };
 
       axios
-        .post('https://api.cloudinary.com/v1_1/dvdm9a68v/image/upload', formData, uploadConfig)
+        .post(urlUploadRequest, formData, uploadConfig)
         .then((response) => {
           database.auth().currentUser.updateProfile({
             photoURL: response.data.secure_url
@@ -198,7 +204,7 @@ class BasicInformation extends Component {
             .child(this.props.user.uid)
             .update({
               photoProfileUrl: response.data.secure_url,
-              photoProfileUrlPublicId: imageVersion,
+              photoProfilePublicId: response.data.public_id,
               updated: firebase.database.ServerValue.TIMESTAMP
             });
 

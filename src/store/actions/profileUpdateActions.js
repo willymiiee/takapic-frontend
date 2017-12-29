@@ -40,30 +40,6 @@ const deletePhotoPortofolios = (uid, photos) => {
   }
 };
 
-export const updatePhotoProfile = (params) => {
-  return dispatch => {
-    let { uid, state } = params;
-    let { values: { fileImage } } = state;
-
-    const formData = new FormData();
-    formData.append('upload_preset', 'test-user-photo-profile');
-    formData.append('file', fileImage);
-
-    axios
-      .post('https://api.cloudinary.com/v1_1/dvdm9a68v/image/upload', formData)
-      .then((response) => {
-        database.auth().currentUser.updateProfile({
-          photoURL: response.data.secure_url
-        });
-
-        updateUserMetadataPhotoProfile(uid, response.data.secure_url);
-      })
-      .catch((error) => {
-        console.error('Catch error: ', error);
-      });
-  };
-};
-
 export const updateBasicInformationUser = (params) => {
   return dispatch => {
     const { uid, state } = params;

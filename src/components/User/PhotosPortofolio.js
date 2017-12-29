@@ -78,6 +78,9 @@ class PhotosPortofolio extends Component {
 
   submitImagesHandler = (evt) => {
     evt.preventDefault();
+    let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
+    urlUploadRequest += '/image/upload';
+
     if (this.state.imagesNewAdded.length > 0) {
       let uploads = [];
       const images = this.state.imagesNewAdded;
@@ -86,7 +89,7 @@ class PhotosPortofolio extends Component {
 
       images.forEach((item, index) => {
         const formData = new FormData();
-        formData.append('upload_preset', 'test-takapic-photos-portfolio-upload');
+        formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTOS_PORTFOLIO_PRESET);
         formData.append('file', item.fileObject);
 
         const uploadConfig = {
@@ -98,7 +101,7 @@ class PhotosPortofolio extends Component {
 
         uploads.push(
           axios
-            .post('https://api.cloudinary.com/v1_1/dvdm9a68v/image/upload', formData, uploadConfig)
+            .post(urlUploadRequest, formData, uploadConfig)
             .then((response) => {
               const newItem = {
                 id: uuidv4(),

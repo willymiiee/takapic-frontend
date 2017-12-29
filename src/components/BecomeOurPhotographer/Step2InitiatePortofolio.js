@@ -86,9 +86,12 @@ class Step2IntiatePortofolio extends Component {
       let uploads = [];
       const images = this.state.images;
 
+      let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
+      urlUploadRequest += '/image/upload';
+
       images.forEach((item, index) => {
         const formData = new FormData();
-        formData.append('upload_preset', 'test-takapic-photos-portfolio-upload');
+        formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTOS_PORTFOLIO_PRESET);
         formData.append('file', item.fileObject);
 
         const uploadConfig = {
@@ -100,7 +103,7 @@ class Step2IntiatePortofolio extends Component {
 
         uploads.push(
           axios
-            .post('https://api.cloudinary.com/v1_1/dvdm9a68v/image/upload', formData, uploadConfig)
+            .post(urlUploadRequest, formData, uploadConfig)
             .then((response) => {
               const newItem = {
                 id: uuidv4(),
