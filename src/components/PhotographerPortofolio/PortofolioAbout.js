@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import cloudinary from 'cloudinary-core';
 import {
   fetchPhotographerServiceInformation,
   resetPhotographerServiceInformationData
 } from "../../store/actions/photographerServiceInfoActions";
+import { nl2br } from "../../helpers/helpers";
 
 import Animator from '../common/Animator';
 import Page from '../Page';
 import PersonalInfoAndNav from './PersonalInfoAndNav';
 
 class PortofolioAbout extends Component {
+  constructor() {
+    super();
+    this.cloudinaryInstance = cloudinary.Cloudinary.new({
+      cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      secure: true
+    });
+  }
+
   componentDidMount() {
     this.fetchPhotographerInformation();
   }
@@ -46,7 +56,7 @@ class PortofolioAbout extends Component {
             userMetadata: photographerUserMetadata,
             userMetadata: {
               currency,
-              defaultDisplayPictureUrl
+              defaultDisplayPicturePublicId
             },
             selfDescription,
             cameraEquipment: { body, lens },
@@ -101,11 +111,14 @@ class PortofolioAbout extends Component {
                 >
                   <div className="photographer-portofolio-about-heading-image-wrapper">
                     <div className="photographer-portofolio-about-heading-image-sub-wrapper">
-                      <img src={defaultDisplayPictureUrl} alt="This is an alt text"/>
+                      <img
+                        src={this.cloudinaryInstance.url(defaultDisplayPicturePublicId, { width: 600, crop: 'scale', quality: 'auto:best' })}
+                        alt="This is an alt text"
+                      />
                     </div>
                   </div>
 
-                  <p className="self-description">{ selfDescription }</p>
+                  <p className="self-description">{ nl2br(selfDescription) }</p>
                   <hr/>
                   <div className="row margin-0">
                     <div className="equipment col-sm-4" style={{padding:'0 8px 0 0'}}>

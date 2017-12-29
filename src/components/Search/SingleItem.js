@@ -1,59 +1,56 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
+import cloudinary from 'cloudinary-core';
 
 class SingleItem extends Component {
-  constructor(props) {
-    super(props);
-    this.toDetail = this.toDetail.bind(this);
+  constructor() {
+    super();
+    this.cloudinaryInstance = cloudinary.Cloudinary.new({
+      cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      secure: true
+    });
   }
 
-  toDetail(id) {
+  toDetail = (id) => {
     this.props.history.push({
       pathname: '/photographer/' + id,
     });
-  }
+  };
 
   render() {
     const {
       displayName: name,
-      photoProfileUrl,
+      photoProfilePublicId,
       priceStartFrom,
       uid,
-      defaultDisplayPictureUrl,
+      defaultDisplayPicturePublicId,
       rating
     } = this.props.item;
 
     return (
       <div onClick={() => this.toDetail(uid)}>
       
-        <div className="bg-caption"></div>
+        <div className="bg-caption"/>
+
         <div className="photo">
-          <img src={defaultDisplayPictureUrl} alt="" />
+          <img
+            src={this.cloudinaryInstance.url(defaultDisplayPicturePublicId, { width: 1280, crop: 'scale', quality: 'auto:best' })}
+            alt=""
+          />
         </div>
+
         <div className="photographer">
           <div>
             <img
-              src={
-                photoProfileUrl ||
-                '/images/photographer/outlook-photography-jobs-2.jpg'
-              }
+              src={this.cloudinaryInstance.url(photoProfilePublicId, { width: 100, crop: 'scale' })}
               alt=""
             />
           </div>
-          <h4>
-            <Link
-              className="photographer-link"
-              to={{
-                pathname: '/photographer/123',
-                state: { date: '' },
-              }}
-            >
-              {name}
-            </Link>
-          </h4>
+
+          <h4>{ name }</h4>
+
         </div>
         <div className="ratings">
           <StarRatingComponent

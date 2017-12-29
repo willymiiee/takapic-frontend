@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import orderBy from 'lodash/orderBy';
+import cloudinary from 'cloudinary-core';
+import Gallery from 'react-grid-gallery';
 import {
   fetchPhotographerServiceInformation,
   resetPhotographerServiceInformationData
 } from "../../store/actions/photographerServiceInfoActions";
-import { Modal } from 'react-bootstrap';
 
 import Animator from '../common/Animator';
 import Page from '../Page';
 import PersonalInfoAndNav from './PersonalInfoAndNav';
 
-import MasonryGalleryThumbnails from './ImagesGallery/MasonryGalleryThumbnails';
-import ImagePopupAndSlider from './ImagesGallery/ImagePopupAndSlider';
+const calculateAspectRatioFit = (srcWidth, srcHeight, maxWidth, maxHeight) => {
+  const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+  return { width: srcWidth * ratio, height: srcHeight * ratio };
+};
 
 class PortofolioGalleryyy extends Component {
   constructor() {
@@ -21,6 +25,11 @@ class PortofolioGalleryyy extends Component {
       showModal: false,
       initialSlide: 0,
     };
+
+    this.cloudinaryInstance = cloudinary.Cloudinary.new({
+      cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      secure: true
+    });
   }
 
   componentDidMount() {
@@ -38,27 +47,37 @@ class PortofolioGalleryyy extends Component {
     }
   }
 
-  close = () => {
-    this.setState({ showModal: false });
-  };
-
-  open = (evt, indexSlide) => {
-    evt.preventDefault();
-    this.setState({ showModal: true, initialSlide: indexSlide });
-  };
-
   render() {
     if (!this.props.photographerServiceInformation.loading) {
       const {
         photographerServiceInformation: {
           data: {
-            userMetadata: photographerUserMetadata,
-            photosPortofolio
+            photosPortofolio,
+            userMetadata: photographerUserMetadata
           }
         }
       } = this.props;
 
-      const imagesUrlList = photosPortofolio ? photosPortofolio.map(item => item.url) : [];
+      const photosPortofolioSort = orderBy(photosPortofolio, ['width'], ['desc']);
+      const galleries = photosPortofolioSort.map((item) => {
+        const calculateResizeThumb = calculateAspectRatioFit(item.width, item.height, 480, item.height);
+        const calculateResizeBig = calculateAspectRatioFit(item.width, item.height, 1280, item.height);
+
+        return {
+          src: this.cloudinaryInstance.url(item.publicId, {
+            width: Math.round(calculateResizeBig.width),
+            crop: 'scale',
+            quality: 'auto:best'
+          }),
+          thumbnail: this.cloudinaryInstance.url(item.publicId, {
+            width: Math.round(calculateResizeThumb.width),
+            crop: 'thumb',
+            quality: 'auto:best'
+          }),
+          thumbnailWidth: Math.round(calculateResizeThumb.width),
+          thumbnailHeight: Math.round(calculateResizeThumb.height)
+        };
+      });
 
       return (
         <Page>
@@ -74,16 +93,10 @@ class PortofolioGalleryyy extends Component {
                   id="photographer-portofolio-gallery"
                   className="photographer-portofolio-container"
                 >
-                  <div className="masonry-container">
-                    <MasonryGalleryThumbnails images={imagesUrlList} openFunc={this.open} />
-
-                    <Modal show={this.state.showModal} onHide={this.close}>
-                      <Modal.Header closeButton />
-                      <Modal.Body>
-                        <ImagePopupAndSlider initialSlide={this.state.initialSlide} images={imagesUrlList} />
-                      </Modal.Body>
-                    </Modal>
-                  </div>
+                  <Gallery
+                    images={galleries}
+                    margin={4}
+                  />
                 </div>
               </div>
               {/**/}

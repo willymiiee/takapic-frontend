@@ -7,7 +7,6 @@ import {
   fetchPhotographerServiceInformation,
   tellThemThatWasSuccessOrFailed
 } from './photographerServiceInfoActions'
-import axios from "axios/index";
 
 export const updateBasicInformation = (params) => {
   return dispatch => {
@@ -17,13 +16,6 @@ export const updateBasicInformation = (params) => {
     tasks.push(dispatch(setActiveTab(1)));
     return Promise.all(tasks);
   }
-};
-
-const updateUserMetadataPhotoProfile = (reference, photoProfileUrl) => {
-  const db = database.database();
-  const ref = db.ref('user_metadata');
-  const userRef = ref.child(reference);
-  userRef.update({ photoProfileUrl, updated: firebase.database.ServerValue.TIMESTAMP });
 };
 
 const deletePhotoPortofolios = (uid, photos) => {

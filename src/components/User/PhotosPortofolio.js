@@ -108,6 +108,9 @@ class PhotosPortofolio extends Component {
                 publicId: response.data.public_id,
                 imageFormat: response.data.format,
                 url: response.data.secure_url,
+                width: response.data.width,
+                height: response.data.height,
+                sizebytes: response.data.bytes,
                 theme: '-',
                 defaultPicture: false
               };
@@ -151,7 +154,7 @@ class PhotosPortofolio extends Component {
     }
   };
 
-  handleSetAsDefault = (event, pictureUrl, imageId) => {
+  handleSetAsDefault = (event, pictureUrl, picturePublicId, imageId) => {
     event.preventDefault();
     const {
       photographerServiceInformation: {
@@ -160,13 +163,14 @@ class PhotosPortofolio extends Component {
     } = this.props;
     const { imagesExisting } = this.state;
 
-    updateUserMetadataDefaultDisplayPicture(uid, pictureUrl);
+    updateUserMetadataDefaultDisplayPicture(uid, pictureUrl, picturePublicId);
     const newImages = imagesExisting.map((item) =>
       item.id === imageId
         ? { ...item, defaultPicture: true }
         : { ...item, defaultPicture: false }
     );
     this.setState({ imagesExisting: newImages });
+    updatePhotographerServiceInfoPhotosPortofolio(this.props.user.uid, newImages, false);
   };
 
   handleRemoveFromUploadBuffer = (event, indexPM1) => {
@@ -225,7 +229,7 @@ class PhotosPortofolio extends Component {
                               className="set-default-photo-profile-manager"
                               title="Set this photo as default photo display"
                               data-
-                              onClick={event => this.handleSetAsDefault(event, photo.url, photo.id)}
+                              onClick={event => this.handleSetAsDefault(event, photo.url, photo.publicId, photo.id)}
                             >
                               Set as default
                             </a>

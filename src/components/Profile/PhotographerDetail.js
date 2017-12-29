@@ -5,13 +5,22 @@ import ReactRating from 'react-rating-float';
 import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
 import { Modal } from 'react-bootstrap';
+import cloudinary from 'cloudinary-core';
 import { nl2br } from "../../helpers/helpers";
-import { fetchPhotographerServiceInformation, resetPhotographerServiceInformationData } from "../../store/actions/photographerServiceInfoActions";
+import {
+  fetchPhotographerServiceInformation,
+  resetPhotographerServiceInformationData
+} from "../../store/actions/photographerServiceInfoActions";
 
 import './../../react-slick.min.css';
 import Animator from '../common/Animator';
 import Page from '../Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';
+
+const cloudinaryInstance = cloudinary.Cloudinary.new({
+  cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+  secure: true
+});
 
 class PhotographerDetail extends Component {
   constructor() {
@@ -82,7 +91,7 @@ class PhotographerDetail extends Component {
               uid: photographerId,
               displayName,
               locationMerge,
-              photoProfileUrl
+              photoProfilePublicId
             },
             photosPortofolio,
             selfDescription,
@@ -102,7 +111,10 @@ class PhotographerDetail extends Component {
           const item = photosPortofolio[i];
           return (
             <a>
-              <img src={item.url} alt="This an alt text"/>
+              <img
+                src={cloudinaryInstance.url(item.publicId, { width: 100, crop: 'scale' })}
+                alt="This is an alt text of the content"
+              />
             </a>
           );
         },
@@ -126,8 +138,8 @@ class PhotographerDetail extends Component {
                   width="400"
                   height="300"
                   className="cover"
-                  src={photoProfileUrl}
-                  alt=""
+                  src={cloudinaryInstance.url(photoProfilePublicId, { width: 400, crop: 'scale' })}
+                  alt="This an alt text for user traveller profile"
                 />
               </div>
               <h2>{displayName}</h2>
@@ -143,16 +155,18 @@ class PhotographerDetail extends Component {
             {
               photosPortofolio
                 ?
-                <Slider {...settings}>
+                <Slider { ...settings }>
                   {
-                    photosPortofolio.map((item, index) => <div key={`portofolio-photo-${index}`} style={{textAlign: 'center'}}>
-                      <img
+                    photosPortofolio.map((item, index) => (
+                      <div key={`portofolio-photo-${index}`} style={{ textAlign: 'center' }}>
+                        <img
+                          src={cloudinaryInstance.url(item.publicId, { width: 1280, crop: 'scale', quality: 'auto:best' })}
                           className="img-photographer-detail"
-                        style={{display: 'inline-block'}}
-                        src={item.url}
-                        alt=""
-                      />
-                    </div>)
+                          style={{ display: 'inline-block' }}
+                          alt="This is an alt text of the content"
+                        />
+                      </div>
+                    ))
                   }
                 </Slider>
                 : null

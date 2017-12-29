@@ -1270,11 +1270,6 @@ button.u:hover {
     cursor: pointer;
 }
 
-.photographer-portofolio-container {
-    border-left: 1px solid #eee;
-    padding-left: 30px;
-}
-
 #photographer-portofolio-about-photo {
     height: 420px;
     margin-bottom: 15px;
@@ -2310,11 +2305,6 @@ RESPONSIVE
         margin-bottom: 5px;
     }
 
-    .photographer-portofolio-container {
-        border-left: none;
-        padding-left: 0;
-    }
-
     /*
     ----------------------------------------------------------------------------
     RESERVATION MODAL
@@ -2786,11 +2776,6 @@ RESPONSIVE
 
     #reservation-date {
         left: 207px;
-    }
-
-    .photographer-portofolio-container {
-        border-left: none;
-        padding-left: 0;
     }
 
     .poster > .text {
@@ -4835,3 +4820,7 @@ figcaption.action-btn a .fa {
 /*-------------------------
 	Photos Uploader - end
 --------------------------*/
+
+.photographer-portofolio-container img {
+  margin-left: 0 !important;
+}

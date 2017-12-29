@@ -338,12 +338,16 @@ export const updatePhotographerServiceInfoPhotosPortofolio = (uid, data, isIniti
   }
 };
 
-export const updateUserMetadataDefaultDisplayPicture = (reference, picture) => {
+export const updateUserMetadataDefaultDisplayPicture = (reference, pictureUrl, picturePublicId) => {
   const db = database.database();
   const ref = db.ref('/user_metadata');
   const userRef = ref.child(reference);
 
-  userRef.update({ defaultDisplayPictureUrl: picture, updated: firebase.database.ServerValue.TIMESTAMP });
+  userRef.update({
+    defaultDisplayPictureUrl: pictureUrl,
+    defaultDisplayPicturePublicId: picturePublicId,
+    updated: firebase.database.ServerValue.TIMESTAMP
+  });
 };
 
 export const deletePortfolioPhotos = (uid, photosDeleted, imagesExisting) => {

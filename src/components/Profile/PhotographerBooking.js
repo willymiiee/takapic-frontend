@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
-import { nl2br } from "../../helpers/helpers";
 import CircularProgressbar from 'react-circular-progressbar';
 import ReactRating from 'react-rating-float';
 import { Col, Row } from 'react-bootstrap';
@@ -92,7 +91,6 @@ class PhotographerBooking extends Component {
               locationMerge
             },
             meetingPoints,
-            selfDescription,
             serviceReviews: {
               rating,
               impressions
