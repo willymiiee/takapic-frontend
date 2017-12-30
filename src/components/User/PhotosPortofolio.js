@@ -4,6 +4,8 @@ import { ProgressBar, Button } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 import uuidv4 from "uuid/v4";
 import axios from "axios";
+import cloudinary from 'cloudinary-core';
+
 import {
   updatePhotographerServiceInfoPhotosPortofolio,
   updateUserMetadataDefaultDisplayPicture,
@@ -25,6 +27,11 @@ class PhotosPortofolio extends Component {
       defaultDisplayPictureUrl: null,
       isUploading: false
     };
+
+    this.cloudinaryInstance = cloudinary.Cloudinary.new({
+      cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      secure: true
+    });
   }
 
   componentDidMount() {
@@ -60,6 +67,10 @@ class PhotosPortofolio extends Component {
         imagesExisting: typeof photosPortofolioNext === 'undefined' ? [] : photosPortofolioNext
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.cloudinaryInstance = null;
   }
 
   selectImagesHandler = (evt) => {
@@ -214,7 +225,10 @@ class PhotosPortofolio extends Component {
                         }}
                       />
 
-                      <img src={photo.url} alt="This is the alt text"/>
+                      <img
+                        src={this.cloudinaryInstance.url(photo.publicId, { width: 320, crop: 'scale' })}
+                        alt="This is the alt text"
+                      />
 
                       <i
                         title="Remove Photo"

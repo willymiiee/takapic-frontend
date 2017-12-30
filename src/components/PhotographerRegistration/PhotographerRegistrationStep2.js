@@ -1,37 +1,84 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { uploadPhotoProfile, imageSelectedAction } from '../../store/actions/userInitProfileActions';
+import { withRouter } from 'react-router-dom';
+import sha1 from "js-sha1";
+import axios from 'axios';
+import firebase from "firebase";
+import { database } from "../../services/firebase";
 
 import Page from '../Page';
 
 class PhotographerRegistrationStep2 extends Component {
   constructor() {
     super();
-    this.fileSelectChangeHandler = this.fileSelectChangeHandler.bind(this);
-    this.uploadPhotoProfileHandler = this.uploadPhotoProfileHandler.bind(this);
+    this.state = {
+      imagePreview: null,
+      fileObject: null,
+      isUploading: false
+    };
   }
 
-  fileSelectChangeHandler(evt) {
+  fileSelectChangeHandler = (evt) => {
     evt.preventDefault();
-    this.props.imageSelectedAction(evt.target.files[0]);
-  }
+    const fileObject = evt.target.files[0];
+    const fileReader = new FileReader();
 
-  uploadPhotoProfileHandler(evt) {
+    fileReader.onloadend = (evtReader) => {
+      this.setState({ imagePreview: evtReader.target.result, fileObject })
+    };
+    fileReader.readAsDataURL(fileObject);
+  };
+
+  uploadPhotoProfileHandler = (evt) => {
     evt.preventDefault();
-    const { userInitProfile: { file } } = this.props;
-    if (file) {
-      const {
-        user: { uid, userMetadata: { displayName } }
-      } = this.props;
+    if (this.state.fileObject) {
+      let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
+      urlUploadRequest += '/image/upload';
 
-      this.props.uploadPhotoProfile(file, uid, displayName);
-    } else {
-      alert('Please choose an image for your photo profile');
+      const nowDateTime = Date.now();
+      let signature = `public_id=${this.props.user.uid}`;
+      signature += `&timestamp=${nowDateTime}`;
+      signature += `&upload_preset=${process.env.REACT_APP_CLOUDINARY_PHOTO_PROFILE_PRESET}`;
+      signature += process.env.REACT_APP_CLOUDINARY_API_SECRET;
+
+      const formData = new FormData();
+      formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTO_PROFILE_PRESET);
+      formData.append('public_id', this.props.user.uid);
+      formData.append('timestamp', nowDateTime);
+      formData.append('api_key', process.env.REACT_APP_CLOUDINARY_API_KEY);
+      formData.append('signature', sha1(signature));
+      formData.append('file', this.state.fileObject);
+
+      this.setState({ isUploading: true });
+
+      axios
+        .post(urlUploadRequest, formData)
+        .then((response) => {
+          database.auth().currentUser.updateProfile({
+            photoURL: response.data.secure_url
+          });
+
+          database
+            .database()
+            .ref('user_metadata')
+            .child(this.props.user.uid)
+            .update({
+              photoProfileUrl: response.data.secure_url,
+              photoProfilePublicId: response.data.public_id,
+              updated: firebase.database.ServerValue.TIMESTAMP
+            });
+        })
+        .then(() => {
+          this.setState({ isUploading: false });
+          this.props.history.push('/photographer-registration/s3');
+        })
+        .catch((error) => {
+          console.error('Catch error: ', error);
+        });
     }
-  }
+  };
 
   render() {
-    const { userInitProfile: { imagePreviewUrl, file } } = this.props;
     return (
       <Page>
         <div className="container" id="photographer-landing">
@@ -50,13 +97,15 @@ class PhotographerRegistrationStep2 extends Component {
                   className="center-block img-responsive"
                 >
                   <div className="ph">
-                    {imagePreviewUrl && (
-                      <img
-                        src={imagePreviewUrl}
-                        className="center-block img-circle img-profile"
-                        alt="This is alt text"
-                      />
-                    )}
+                    {
+                      this.state.imagePreview && (
+                        <img
+                          src={this.state.imagePreview}
+                          className="center-block img-circle img-profile"
+                          alt="This is alt text"
+                        />
+                      )
+                    }
                   </div>
                 </div>
               </div>
@@ -72,7 +121,7 @@ class PhotographerRegistrationStep2 extends Component {
                   />
                 </div>
                 <div className="input-profile-name">
-                  { file ? file.name : 'Choose file'}
+                  { this.state.fileObject ? this.state.fileObject.name : 'Choose file'}
                 </div>
               </div>
 
@@ -80,7 +129,7 @@ class PhotographerRegistrationStep2 extends Component {
                 className="button next-btn"
                 onClick={this.uploadPhotoProfileHandler}
               >
-                {this.props.userInitProfile.isUploadingPhotoProfile ? (
+                {this.state.isUploading ? (
                   'Uploading your photo profile, please wait...'
                 ) : (
                   'Next'
@@ -94,14 +143,6 @@ class PhotographerRegistrationStep2 extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    user: state.userAuth,
-    userInitProfile: state.userInitProfile,
-  }),
-  dispatch => ({
-    uploadPhotoProfile: (fileObject, uid, displayName) =>
-      dispatch(uploadPhotoProfile(fileObject, uid, displayName)),
-    imageSelectedAction: fileObject => dispatch(imageSelectedAction(fileObject))
-  })
-)(PhotographerRegistrationStep2);
+export default withRouter(
+  connect(state => ({ user: state.userAuth }))(PhotographerRegistrationStep2)
+);

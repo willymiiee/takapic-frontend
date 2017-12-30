@@ -13,6 +13,10 @@ class SingleItem extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.cloudinaryInstance = null;
+  }
+
   toDetail = (id) => {
     this.props.history.push({
       pathname: '/photographer/' + id,
@@ -22,7 +26,7 @@ class SingleItem extends Component {
   render() {
     const {
       displayName: name,
-      photoProfilePublicId,
+      photoProfileUrl,
       priceStartFrom,
       uid,
       defaultDisplayPicturePublicId,
@@ -44,7 +48,7 @@ class SingleItem extends Component {
         <div className="photographer">
           <div>
             <img
-              src={this.cloudinaryInstance.url(photoProfilePublicId, { width: 100, crop: 'scale' })}
+              src={photoProfileUrl}
               alt=""
             />
           </div>

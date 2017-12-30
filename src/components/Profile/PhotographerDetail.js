@@ -91,7 +91,7 @@ class PhotographerDetail extends Component {
               uid: photographerId,
               displayName,
               locationMerge,
-              photoProfilePublicId
+              photoProfileUrl
             },
             photosPortofolio,
             selfDescription,
@@ -138,12 +138,14 @@ class PhotographerDetail extends Component {
                   width="400"
                   height="300"
                   className="cover"
-                  src={cloudinaryInstance.url(photoProfilePublicId, { width: 400, crop: 'scale' })}
+                  src={photoProfileUrl}
                   alt="This an alt text for user traveller profile"
                 />
               </div>
-              <h2>{displayName}</h2>
-              <p>{locationMerge}</p>
+
+              <h2>{ displayName }</h2>
+              <p>{ locationMerge }</p>
+
               <Link
                 to={`/photographer-portofolio/${photographerId}/gallery`}
                 className="button button-white"

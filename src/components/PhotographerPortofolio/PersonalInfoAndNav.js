@@ -1,17 +1,11 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import ReactRating from 'react-rating-float';
-import cloudinary from 'cloudinary-core';
-
-const cloudinaryInstance = cloudinary.Cloudinary.new({
-  cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
-  secure: true
-});
 
 const PersonalInfoAndNav = props => {
   const {
     photographerUserMetadata: {
-      photoProfilePublicId,
+      photoProfileUrl,
       displayName,
       locationMerge,
       rating,
@@ -22,7 +16,7 @@ const PersonalInfoAndNav = props => {
   return (
     <div id="photographer-portofolio-left">
       <img
-        src={cloudinaryInstance.url(photoProfilePublicId, { width: 400, crop: 'scale' })}
+        src={photoProfileUrl}
         alt="This is a photographer face"
       />
       <h3>{ displayName }</h3>

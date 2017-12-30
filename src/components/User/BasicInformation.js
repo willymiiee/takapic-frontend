@@ -118,12 +118,12 @@ class BasicInformation extends Component {
       const {
         photographerServiceInformation,
         photographerServiceInformation: {
-          data: {userMetadata, selfDescription}
+          data: { userMetadata, selfDescription }
         },
-        state: {currencies}
+        state: { currencies }
       } = props;
 
-      const {location, selected, values} = this.state;
+      const { location, selected, values } = this.state;
 
       if (photographerServiceInformation && userMetadata) {
         const currency = currencies[photographerServiceInformation.data.location.country];
@@ -132,7 +132,7 @@ class BasicInformation extends Component {
         location.countryName = photographerServiceInformation.data.location.countryName || "";
         location.locationAdmLevel1 = photographerServiceInformation.data.location.locationAdmLevel1 || "";
         location.locationAdmLevel2 = photographerServiceInformation.data.location.locationAdmLevel2 || "";
-        location.locationMerge = photographerServiceInformation.data.location.locationMerge
+        location.locationMerge = photographerServiceInformation.data.location.locationMerge;
 
         values.photoProfileUrl = userMetadata.photoProfileUrl || "";
         values.name = userMetadata.displayName || "";
@@ -339,8 +339,8 @@ class BasicInformation extends Component {
   };
 
   render() {
-    const {state} = this.props;
-    const {languages, location, selected, values} = this.state;
+    const { state } = this.props;
+    const { languages, location, selected, values } = this.state;
 
     return (
       <Form>

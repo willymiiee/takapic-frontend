@@ -308,6 +308,7 @@ export const updatePhotographerServiceInfoPhotosPortofolio = (uid, data, isIniti
         .child(uid)
         .update({
           defaultDisplayPictureUrl: data[0].url,
+          defaultDisplayPicturePublicId: data[0].publicId,
           updated: firebase.database.ServerValue.TIMESTAMP
         })
         .then(() => {

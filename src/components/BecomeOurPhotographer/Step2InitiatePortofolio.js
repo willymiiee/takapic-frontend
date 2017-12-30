@@ -89,6 +89,8 @@ class Step2IntiatePortofolio extends Component {
       let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
       urlUploadRequest += '/image/upload';
 
+      this.setState({ isUploading: true });
+
       images.forEach((item, index) => {
         const formData = new FormData();
         formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTOS_PORTFOLIO_PRESET);
@@ -110,6 +112,9 @@ class Step2IntiatePortofolio extends Component {
                 publicId: response.data.public_id,
                 imageFormat: response.data.format,
                 url: response.data.secure_url,
+                width: response.data.width,
+                height: response.data.height,
+                sizebytes: response.data.bytes,
                 theme: '-',
                 defaultPicture: false
               };
@@ -121,8 +126,6 @@ class Step2IntiatePortofolio extends Component {
             })
         );
       });
-
-      this.setState({ isUploading: true });
 
       Promise.all(uploads)
         .then(() => {
