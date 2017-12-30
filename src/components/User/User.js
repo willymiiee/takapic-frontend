@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Tabs, Tab } from "react-bootstrap";
 import {
   fetchPhotographerServiceInformation,
@@ -99,7 +99,16 @@ class User extends Component{
                 tellThemThatWasSuccessOrFailedInfo.whatsup === 'success'
                   ? (
                     <div className="notification success">
-                      <p><span>Success!</span> You did it, enjoy it.</p>
+                      <p>
+                        <span>Success!</span> You did it, enjoy it.
+                        &nbsp;
+                        <Link
+                          style={{textDecoration:"underline", color:"black"}}
+                          to={`/photographer-portofolio/${this.props.user.uid}/gallery`}
+                        >
+                          See your portfolio
+                        </Link>
+                      </p>
                     </div>
                   )
                   : null

@@ -102,7 +102,9 @@ class ReservationsList extends Component {
                       <td>USD { item.total }</td>
                       <td>{ item.status }</td>
                       <td>
-                        <Link to={`/me/reservations/${item.reservationId}/${item.photographerId}`}>Go detail</Link>
+                        <Link to={`/me/reservations/${item.reservationId}/${item.photographerId}`}>
+                          View detail
+                        </Link>
                       </td>
                     </tr>
                   ))

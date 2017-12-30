@@ -4824,3 +4824,7 @@ figcaption.action-btn a .fa {
 .photographer-portofolio-container img {
   margin-left: 0 !important;
 }
+
+.react-select-hide-placeholder {
+  display: none !important;
+}

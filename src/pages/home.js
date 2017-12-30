@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import Select from 'react-select';
+import moment from 'moment';
 import store from '../store';
 import { searchInformationLog } from "../store/actions/userActions";
+import { reactSelectNewOptionCreator } from "../helpers/helpers";
 
 import '../react-date-picker-custom.css';
 import TopPhotographers from '../components/TopPhotographers';
@@ -38,6 +40,27 @@ class Home extends Component {
       }
     };
     this.interval = null;
+  }
+
+  componentDidMount() {
+    const {
+      homepageData: {
+        loading: loadingHomepageData
+      }
+    } = this.props;
+
+    if (loadingHomepageData) {
+      store.dispatch(fetchHomepageData());
+    }
+
+    let bgSlide = window.$('#bg-slide');
+    this.interval = setInterval(function() {
+      window.$('#bg-slide > img:first').appendTo(bgSlide);
+    }, 6000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   handleSearchSubmit = (e) => {
@@ -77,27 +100,6 @@ class Home extends Component {
       });
   }
 
-  componentDidMount() {
-    const {
-      homepageData: {
-        loading: loadingHomepageData
-      }
-    } = this.props;
-
-    if (loadingHomepageData) {
-      store.dispatch(fetchHomepageData());
-    }
-
-    let bgSlide = window.$('#bg-slide');
-    this.interval = setInterval(function() {
-      window.$('#bg-slide > img:first').appendTo(bgSlide);
-    }, 6000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
   render() {
     const {
       homepageData: {
@@ -124,9 +126,14 @@ class Home extends Component {
               <div className="search-box-destination">
                 <div style={{display:'flex'}}>
                   <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Where</span>
-                  <Select.Async
+                  <Select.AsyncCreatable
                     multi={false}
+                    promptTextCreator={(label) => label}
+                    newOptionCreator={reactSelectNewOptionCreator}
                     value={this.state.search.destination}
+                    shouldKeyDownEventCreateNewOption={(keyCode) => {
+                      return (keyCode === 13 || keyCode === 9)
+                    }}
                     onChange={this.handleSearchDestinationChange}
                     valueKey="label"
                     labelKey="label"
@@ -142,6 +149,7 @@ class Home extends Component {
                   <span id="label-field-date" style={{paddingLeft:'15px', marginRight:'15px'}}>When</span>
                   <DatePicker
                     dateFormat="MMMM Do YYYY"
+                    minDate={moment()}
                     selected={this.state.search.date}
                     onChange={this.handleSearchDateChange}
                     placeholderText="Anytime"
@@ -163,7 +171,9 @@ class Home extends Component {
           <h1 className="title margin-bottom-40" style={{fontSize:'24px'}}>Featured Destination</h1>
 
           <div className="text-right margin-bottom-10">
-            <Link to="/" style={{fontSize:'14px'}}>See All</Link>
+            <Link to="/search/?destination=&date=" style={{fontSize:'14px'}}>
+              See All
+            </Link>
           </div>
 
           <div className="row posters">

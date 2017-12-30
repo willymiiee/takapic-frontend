@@ -5,11 +5,13 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
+
 import {
   fetchPhotographerListings,
   resetListings
 } from "../../store/actions/photographerServiceInfoActions";
 import { searchInformationLog } from "../../store/actions/userActions";
+import { reactSelectNewOptionCreator } from "../../helpers/helpers";
 
 import Page from '../Page';
 import SearchResult from './SearchResult';
@@ -27,6 +29,16 @@ class Search extends Component {
         date: !date ? null : moment(date),
       }
     };
+  }
+
+  componentWillUnmount() {
+    this.props.resetListings();
+  }
+
+  componentDidMount() {
+    if (!this.props.photographerListings.isFetching && !this.props.photographerListings.isFetched) {
+      this.props.fetchPhotographerListings(this.props.location.search);
+    }
   }
 
   switchResultView = viewType => {
@@ -47,7 +59,7 @@ class Search extends Component {
     e.preventDefault();
 
     let { destination, date } = this.state.search;
-    const destinationValStr = !destination ? null : destination.label;
+    const destinationValStr = !destination ? '' : destination.label;
     const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
 
     this.props.searchInformationLog(destinationValStr, dateValStr);
@@ -80,16 +92,6 @@ class Search extends Component {
       });
   }
 
-  componentWillUnmount() {
-    this.props.resetListings();
-  }
-
-  componentDidMount() {
-    if (!this.props.photographerListings.isFetching && !this.props.photographerListings.isFetched) {
-      this.props.fetchPhotographerListings(this.props.location.search);
-    }
-  }
-
   render() {
     if (!this.props.photographerListings.isFetching && this.props.photographerListings.isFetched) {
       return (
@@ -101,9 +103,14 @@ class Search extends Component {
                 <div className="search-box-destination">
                   <div style={{display:'flex'}}>
                     <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Where</span>
-                    <Select.Async
+                    <Select.AsyncCreatable
                       multi={false}
+                      promptTextCreator={(label) => label}
+                      newOptionCreator={reactSelectNewOptionCreator}
                       value={this.state.search.destination}
+                      shouldKeyDownEventCreateNewOption={(keyCode) => {
+                        return (keyCode === 13 || keyCode === 9)
+                      }}
                       onChange={this.handleSearchDestinationChange}
                       valueKey="label"
                       labelKey="label"
@@ -119,6 +126,7 @@ class Search extends Component {
                     <span id="label-field-date" style={{paddingLeft:'15px', marginRight:'15px'}}>When</span>
                     <DatePicker
                       dateFormat="MMMM Do YYYY"
+                      minDate={moment()}
                       selected={this.state.search.date}
                       onChange={this.handleSearchDateChange}
                       placeholderText="Anytime"
@@ -162,11 +170,20 @@ class Search extends Component {
               />
             </div>
 
-
-            <SearchResult
-              listings={this.props.photographerListings.results}
-              currenciesRates={this.props.currenciesRates}
-            />
+            {
+              this.props.photographerListings.results.length > 0
+                ? (
+                  <SearchResult
+                    listings={this.props.photographerListings.results}
+                    currenciesRates={this.props.currenciesRates}
+                  />
+                )
+                : (
+                  <p style={{ fontSize: '1.5em' }}>
+                    No photographer found. Will be available soon
+                  </p>
+                )
+            }
           </div>
         </Page>
       );

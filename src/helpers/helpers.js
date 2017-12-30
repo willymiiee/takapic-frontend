@@ -1,5 +1,6 @@
 import React from 'react';
 import Hashids from 'hashids';
+import classnames from "classnames";
 
 export const generateReservationNumber = (userUID) => {
   const tsStr = Math.floor(Date.now()).toString(10);
@@ -28,4 +29,16 @@ export const JsonToUrlEncoded = (element, key, list) => {
     newList.push(key+'='+encodeURIComponent(element));
   }
   return newList.join('&');
+};
+
+export const reactSelectNewOptionCreator = ({ label, labelKey, valueKey }) => {
+  const show = !label;
+  const option = {};
+  option[valueKey] = label;
+  option[labelKey] = label;
+  option.className = classnames(
+    'Select-create-option-placeholder',
+    { 'react-select-hide-placeholder': show }
+  );
+  return option;
 };
