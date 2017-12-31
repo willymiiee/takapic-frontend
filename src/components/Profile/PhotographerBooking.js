@@ -12,6 +12,7 @@ import { fetchReservationAction, reservationPaymentAction } from "../../store/ac
 
 import Page from '../Page';
 import BookingForm from './BookingForm';
+import MeetingPointMap from './MeetingPointMap';
 
 class PhotographerBooking extends Component {
   constructor() {
@@ -115,26 +116,20 @@ class PhotographerBooking extends Component {
       const startDateAndTimeDisplay = moment(startDateTime).format('MMMM Do YYYY HH:mm a');
       const toEndTime = moment(startDateTime).add(hours, 'h').format('HH:mm a');
 
-      const meetingPointDetail = get(this.state, 'meetingPoints.detail');
-      let meetingPlaceDisplay = null;
-
+      let meetingPointDetail = get(this.state, 'meetingPoints.detail', null);
       if (!meetingPointDetail) {
-        const meetingPointsFromStore = get(this.props, 'reservation.meetingPoints.detail', null);
-        if (meetingPointsFromStore) {
-          meetingPlaceDisplay = <p>{ meetingPointsFromStore.meetingPointName + ' - ' + meetingPointsFromStore.placeLocationNotes }</p>
-        } else {
-          meetingPlaceDisplay = <p>{`-`}</p>
-        }
+        meetingPointDetail = get(this.props, 'reservation.meetingPoints.detail', null);
+      }
 
-      } else {
-        meetingPlaceDisplay = <p>
+      const meetingPlaceDisplay = (
+        <p>
           {
             !isEmpty(meetingPointDetail) && meetingPointDetail.hasOwnProperty('meetingPointName')
               ? meetingPointDetail.meetingPointName + ' - ' + meetingPointDetail.placeLocationNotes
               : '-'
           }
         </p>
-      }
+      );
 
       return (
         <Page>
@@ -186,6 +181,10 @@ class PhotographerBooking extends Component {
                     <h3 className="has-dot">Meeting Place</h3>
                     <div className="has-border" style={{color:'#222'}}>
                       { meetingPlaceDisplay }
+
+                      {
+                        meetingPointDetail ? <MeetingPointMap lat={meetingPointDetail.lat} long={meetingPointDetail.long}/> : null
+                      }
                     </div>
                     
                     <h3 className="has-dot">Payment Summary</h3>
