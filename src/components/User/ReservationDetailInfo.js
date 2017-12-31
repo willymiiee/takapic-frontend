@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from "moment/moment";
 
+import MeetingPointMap from '../Profile/MeetingPointMap';
+
 const ReservationDetailInfo = (props) => {
   const {
     reservation: {
@@ -11,7 +13,9 @@ const ReservationDetailInfo = (props) => {
         detail: {
           formattedAddress,
           meetingPointName,
-          placeLocationNotes
+          placeLocationNotes,
+          lat,
+          long
         }
       },
       reservationId,
@@ -88,7 +92,11 @@ const ReservationDetailInfo = (props) => {
           { placeLocationNotes }
         </p>
 
-        <p className="reservation-trip-details-item-title">Entrant:</p>
+        <MeetingPointMap lat={lat} long={long}/>
+
+        <p className="reservation-trip-details-item-title" style={{ marginTop: '20px' }}>
+          Entrant:
+        </p>
         <p>
           <span>Adults: </span>{ adults }
           <br/>
