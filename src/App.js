@@ -46,9 +46,6 @@ import ContactUs from "./components/About/ContactUs";
 import HowItWorks from "./components/About/HowItWorks";
 import ReservationsList from './components/User/ReservationsList';
 
-import 'index.css';
-import 'element-theme-default';
-
 history.listen((location, action) => {
   if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
     store.dispatch(resetPhotographerServiceInformationData());

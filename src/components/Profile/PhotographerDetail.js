@@ -34,37 +34,7 @@ class PhotographerDetail extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.photographerServiceInformation.loading) {
-      let photographerTop = window.$('#photographer-top');
-      let pageYOffset;
-
-      window.$.fn.generateCircleProgress = function (opt) {
-        window
-          .$(this)
-          .circleProgress({
-            startAngle: -Math.PI / 2,
-            value: opt.value,
-            fill: {gradient: opt.gradient},
-          })
-          .prepend('<div>' + opt.value * 100 + '%</div>');
-      };
-
-      window.$(function () {
-        window.$(window).scroll(function () {
-          if (
-            window.matchMedia('(min-width: 481px) and (max-width: 767px)').matches
-          ) {
-            pageYOffset = window.pageYOffset;
-            if (pageYOffset > 67) {
-              photographerTop.addClass('sticky');
-            } else {
-              photographerTop.removeClass('sticky');
-            }
-          }
-        });
-      });
-
-    } else {
+    if (this.props.photographerServiceInformation.loading) {
       const { match: { params: { photographerId } } } = this.props;
       this.props.fetchPhotographerServiceInformation(photographerId);
     }
