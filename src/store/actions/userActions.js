@@ -357,7 +357,7 @@ export const deletePortfolioPhotos = (uid, photosDeleted, imagesExisting) => {
       const publicIdList = photosDeleted.map((item) => item.publicId);
       axios({
         method: 'DELETE',
-        url: 'http://localhost:8008/api/cloudinary-images/delete',
+        url: `${process.env.REACT_APP_API_HOSTNAME}/api/cloudinary-images/delete`,
         params: {
           public_ids: publicIdList
         }
