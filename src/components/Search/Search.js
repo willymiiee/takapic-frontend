@@ -22,12 +22,12 @@ class Search extends Component {
     super(props);
     const searchQs = queryString.parse(this.props.location.search);
     const { destination, date } = searchQs;
-
     this.state = {
       search: {
         destination: !destination ? null : { label: destination },
         date: !date ? null : moment(date),
-      }
+      },
+      jancuk: null,
     };
   }
 
@@ -39,6 +39,12 @@ class Search extends Component {
     if (!this.props.photographerListings.isFetching && !this.props.photographerListings.isFetched) {
       this.props.fetchPhotographerListings(this.props.location.search);
     }
+  }
+
+  componentWillReceiveProps() {
+    const searchQs = queryString.parse(this.props.location.search);
+    const { destination } = searchQs;
+    this.setState({ search: { ...this.state.search, destination: !destination ? null : { label: destination } } });
   }
 
   switchResultView = viewType => {
@@ -59,9 +65,16 @@ class Search extends Component {
     e.preventDefault();
 
     let { destination, date } = this.state.search;
-    const destinationValStr = !destination ? '' : destination.label;
-    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+    let destinationValStr = this.state.jancuk;
+    if (!destinationValStr) {
+      if (destination) {
+        destinationValStr = destination.label;
+      } else {
+        destinationValStr = '';
+      }
+    }
 
+    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
     this.props.searchInformationLog(destinationValStr, dateValStr);
 
     this.props.history.push({
@@ -74,6 +87,10 @@ class Search extends Component {
     this.setState({ search: { ...this.state.search, destination: value } });
   };
 
+  handleSearchDestinationBlur = (e) => {
+    this.setState({ jancuk: e.target.value });
+  };
+
   handleSearchDateChange = date => {
     this.setState({ search: { ...this.state.search, date } });
   };
@@ -82,10 +99,14 @@ class Search extends Component {
     if (!input) {
       return Promise.resolve({ options: [] });
     }
+
+    const result = [];
+    result.push({ label: input });
+
     return axios
       .get(`${process.env.REACT_APP_API_HOSTNAME}/api/locations?keyword=${input}`)
       .then(response => {
-        return { options: response.data.data };
+        return { options: result.concat(response.data.data) };
       })
       .catch(error => {
         console.error(error);
@@ -104,19 +125,18 @@ class Search extends Component {
                   <div style={{display:'flex'}}>
                     <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Where</span>
                     <Select.AsyncCreatable
-                      multi={false}
-                      promptTextCreator={(label) => label}
+                      promptTextCreator={() => false}
                       newOptionCreator={reactSelectNewOptionCreator}
                       value={this.state.search.destination}
-                      shouldKeyDownEventCreateNewOption={(keyCode) => {
-                        return (keyCode === 13 || keyCode === 9)
-                      }}
+                      shouldKeyDownEventCreateNewOption={(keyCode) => (keyCode === 13 || keyCode === 9)}
+                      onBlurResetsInput={false}
+                      onCloseResetsInput={false}
                       onChange={this.handleSearchDestinationChange}
+                      onBlur={this.handleSearchDestinationBlur}
                       valueKey="label"
                       labelKey="label"
                       loadOptions={this.retrieveLocations}
                       placeholder="Anywhere"
-                      className="no-select"
                     />
                   </div>
                 </div>

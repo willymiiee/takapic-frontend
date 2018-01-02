@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import cloudinary from 'cloudinary-core';
 
 import Page from '../Page';
 
@@ -17,6 +18,15 @@ class HowItWorks extends Component {
     this.matchClick = this.matchClick.bind(this);
     this.selectClick = this.selectClick.bind(this);
 
+    this.cloudinaryInstance = cloudinary.Cloudinary.new({
+      cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      secure: true
+    });
+
+  }
+
+  componentWillUnmount() {
+    this.cloudinaryInstance = null;
   }
 
   searchClick() {
@@ -68,7 +78,11 @@ class HowItWorks extends Component {
                       <span className="">"Search for a Takapic local photographer by where and when you want to go"</span>
                     </div>
                     <div className="col-sm-8" style={{paddingLeft: '0px', paddingRight: '0px'}}>
-                      <img className="image-responsive" src="/images/search.png" alt="This is an alt text with meaning full explanation"/>
+                      <img
+                        className="image-responsive"
+                        src={this.cloudinaryInstance.url('assets/search', { width: 800, crop: 'scale', quality: 'auto:best' })}
+                        alt="This is an alt text with meaning full explanation"
+                      />
                     </div>
                   </div>
                 </div>
@@ -82,7 +96,11 @@ class HowItWorks extends Component {
                       <span className="">"View available photographers’ style and photos and choose one that you like at a price that suits you"</span>
                     </div>
                     <div className="col-sm-8" style={{paddingLeft: '0px', paddingRight: '0px'}}>
-                      <img className="image-responsive" src="/images/match.png" alt="This is an alt text with meaning full explanation"/>
+                      <img
+                        className="image-responsive"
+                        src={this.cloudinaryInstance.url('assets/match', { width: 800, crop: 'scale', quality: 'auto:best' })}
+                        alt="This is an alt text with meaning full explanation"
+                      />
                     </div>
                   </div>
                 </div>
@@ -96,7 +114,11 @@ class HowItWorks extends Component {
                       <span className="">"Request to book the photographer, confirm shoot times and meet up place, and pay it all through Takapic’s secure platform"</span>
                     </div>
                     <div className="col-sm-8" style={{paddingLeft: '0px', paddingRight: '0px'}}>
-                      <img className="image-responsive" src="/images/book.png" alt="This is an alt text with meaning full explanation"/>
+                      <img
+                        className="image-responsive"
+                        src={this.cloudinaryInstance.url('assets/book', { width: 800, crop: 'scale', quality: 'auto:best' })}
+                        alt="This is an alt text with meaning full explanation"
+                      />
                     </div>
                   </div>
                 </div>
@@ -110,7 +132,11 @@ class HowItWorks extends Component {
                       <span className="">"Within 48 hours of your photoshoot, you can view the photos on your personal Takapic online gallery which you can download to keep or share on social media"</span>
                     </div>
                     <div className="col-sm-8" style={{paddingLeft: '0px', paddingRight: '0px'}}>
-                      <img className="image-responsive" src="/images/select.png" alt="This is an alt text with meaning full explanation"/>
+                      <img
+                        className="image-responsive"
+                        src={this.cloudinaryInstance.url('assets/select', { width: 800, crop: 'scale', quality: 'auto:best' })}
+                        alt="This is an alt text with meaning full explanation"
+                      />
                     </div>
                   </div>
                 </div>
@@ -124,7 +150,7 @@ class HowItWorks extends Component {
                 </Link>
               </div>
               <div className="embed-responsive embed-responsive-16by9">
-                <iframe title="Video promo" className="embed-responsive-item" src="https://www.youtube.com/embed/Yy-9EVSWsSg"></iframe>
+                <iframe title="Video promo" className="embed-responsive-item" src="https://www.youtube.com/embed/Yy-9EVSWsSg"/>
               </div>
 
             </div>

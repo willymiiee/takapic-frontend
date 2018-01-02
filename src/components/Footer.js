@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import withLocale from 'hoc/withLocale';
+import withLocale from '../hoc/withLocale';
 import { Link } from 'react-router-dom';
 
 class Footer extends Component {
@@ -16,7 +16,7 @@ class Footer extends Component {
             <div className="col-sm-4 margin-bottom-30">
               <img
                 className="footer-logo"
-                src="/images/takapic-logo/CL h small.png"
+                src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882216/assets/CL_h_small.png"
                 alt=""
                 style={{width:'120px',height:'auto'}}
               />
@@ -35,13 +35,12 @@ class Footer extends Component {
                 <option>Rupiah</option>
               </select>
               <div>
-                <a href="https://www.algolia.com/">
+                <a href="https://www.algolia.com/" target="_blank" rel="noopener noreferrer">
                   <img
-                      style={{height: '17px'}}
+                    style={{height: '17px'}}
                     className="footer-logo"
-                    src="/images/search-by-algolia.png"
+                    src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881409/assets/search-by-algolia.png"
                     alt=""
-                    target="_blank"
                   />
                 </a>
               </div>
