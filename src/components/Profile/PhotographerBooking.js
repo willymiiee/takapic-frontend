@@ -13,6 +13,7 @@ import { fetchReservationAction, reservationPaymentAction } from "../../store/ac
 import Page from '../Page';
 import BookingForm from './BookingForm';
 import MeetingPointMap from './MeetingPointMap';
+import Animator from '../common/Animator';
 
 class PhotographerBooking extends Component {
   constructor() {
@@ -220,7 +221,7 @@ class PhotographerBooking extends Component {
         </Page>
       );
     }
-    return null;
+    return <Animator/>;
   }
 }
 
