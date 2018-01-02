@@ -199,7 +199,7 @@ class Search extends Component {
                   />
                 )
                 : (
-                  <p style={{ fontSize: '1.5em' }}>
+                  <p className="no-photographer-found">
                     No photographer found. Will be available soon
                   </p>
                 )
