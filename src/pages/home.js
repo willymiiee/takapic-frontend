@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import Select from 'react-select';
 import moment from 'moment';
+import cloudinary from 'cloudinary-core';
 import store from '../store';
 import { searchInformationLog } from "../store/actions/userActions";
 import { reactSelectNewOptionCreator } from "../helpers/helpers";
@@ -37,9 +38,15 @@ class Home extends Component {
       search: {
         destination: null,
         date: null
-      }
+      },
+      jancuk: null
     };
     this.interval = null;
+
+    this.cloudinaryInstance = cloudinary.Cloudinary.new({
+      cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      secure: true
+    });
   }
 
   componentDidMount() {
@@ -60,16 +67,22 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
+    this.cloudinaryInstance = null;
     clearInterval(this.interval);
   }
 
   handleSearchSubmit = (e) => {
     e.preventDefault();
-
     let { destination, date } = this.state.search;
-    const destinationValStr = !destination ? '' : destination.label;
-    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+    let destinationValStr = null;
 
+    if (!destination) {
+      destinationValStr = this.state.jancuk || '';
+    } else {
+      destinationValStr = destination.label;
+    }
+
+    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
     this.props.searchInformationLog(destinationValStr, dateValStr);
 
     this.props.history.push({
@@ -82,6 +95,10 @@ class Home extends Component {
     this.setState({ search: { ...this.state.search, destination: value } });
   };
 
+  handleSearchDestinationBlur = (e) => {
+    this.setState({ jancuk: e.target.value });
+  };
+
   handleSearchDateChange = date => {
     this.setState({ search: { ...this.state.search, date } });
   };
@@ -90,10 +107,14 @@ class Home extends Component {
     if (!input) {
       return Promise.resolve({ options: [] });
     }
+
+    const result = [];
+    result.push({ label: input });
+
     return axios
       .get(`${process.env.REACT_APP_API_HOSTNAME}/api/locations?keyword=${input}`)
       .then(response => {
-        return { options: response.data.data };
+        return { options: result.concat(response.data.data) };
       })
       .catch(error => {
         console.error(error);
@@ -111,14 +132,14 @@ class Home extends Component {
     return (
       <Page>
         <div id="bg-slide">
-          <img src="/images/insung-yoon-259475.jpg" alt="This is an alt text"/>
-          <img src="/images/hero_1.jpg" alt="This is an alt text"/>
-          <img src="/images/hero_2.jpg" alt="This is an alt text"/>
+          <img src={this.cloudinaryInstance.url('assets/insung-yoon-259475', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
+          <img src={this.cloudinaryInstance.url('assets/hero_1', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
+          <img src={this.cloudinaryInstance.url('assets/hero_2', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
         </div>
 
         <div className="container">
           <div id="landing-page-top">
-            <img src="/images/takapic-logo/CL small w.png" alt="This is an alt text"/>
+            <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881033/assets/CL_small_w.png" alt="This is an alt text"/>
             <h1>Capture your travel moments</h1>
             <p>Connect with a Takapic photographer</p>
 
@@ -127,19 +148,18 @@ class Home extends Component {
                 <div style={{display:'flex'}}>
                   <span id="label-field-destination" style={{paddingLeft:'24px',marginRight:'5px'}}>Where</span>
                   <Select.AsyncCreatable
-                    multi={false}
-                    promptTextCreator={(label) => label}
+                    promptTextCreator={() => false}
                     newOptionCreator={reactSelectNewOptionCreator}
                     value={this.state.search.destination}
-                    shouldKeyDownEventCreateNewOption={(keyCode) => {
-                      return (keyCode === 13 || keyCode === 9)
-                    }}
+                    shouldKeyDownEventCreateNewOption={(keyCode) => (keyCode === 13 || keyCode === 9)}
+                    onBlurResetsInput={false}
+                    onCloseResetsInput={false}
                     onChange={this.handleSearchDestinationChange}
+                    onBlur={this.handleSearchDestinationBlur}
                     valueKey="label"
                     labelKey="label"
                     loadOptions={this.retrieveLocations}
                     placeholder="Anywhere"
-                    className="no-select"
                   />
                 </div>
               </div>
@@ -180,21 +200,21 @@ class Home extends Component {
             <div className="col-xs-4">
               <Link to="/search/?destination=Bali,%20Indonesia&date=" className="poster">
                 <div className="text">BALI</div>
-                <img src="images/location/bali.jpg" alt="Featured destination - Bali"/>
+                <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881230/assets/bali.jpg" alt="Featured destination - Bali"/>
               </Link>
             </div>
 
             <div className="col-xs-4">
               <Link to="/search/?destination=Seoul,%20South%20Korea&date=" className="poster">
                 <div className="text">SEOUL</div>
-                <img src="images/location/seoul.jpg" alt="Featured destination - Seoul"/>
+                <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881230/assets/seoul.jpg" alt="Featured destination - Seoul"/>
               </Link>
             </div>
 
             <div className="col-xs-4">
               <Link to="/search/?destination=Paris,%20France&date=" className="poster">
                 <div className="text">PARIS</div>
-                <img src="images/location/paris.jpg" alt="Featured destination - Paris"/>
+                <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881230/assets/paris.jpg" alt="Featured destination - Paris"/>
               </Link>
             </div>
           </div>

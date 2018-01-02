@@ -42,7 +42,7 @@ const SignIn = props => {
                       onClick={() => props.userSignupByFacebook(USER_TRAVELLER)}
                     >
                       <img
-                        src="https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png"
+                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
                         alt="Facebook login"
                       />Facebook
                     </button>
@@ -53,7 +53,7 @@ const SignIn = props => {
                       onClick={() => props.userSignupByGoogle(USER_TRAVELLER)}
                     >
                       <img
-                        src="http://pngimg.com/uploads/gmail_logo/gmail_logo_PNG5.png"
+                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882563/assets/gmail_logo_PNG5-edited.png"
                         alt=""
                       />Gmail
                     </button>
