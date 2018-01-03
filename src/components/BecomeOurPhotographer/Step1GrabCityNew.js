@@ -5,24 +5,10 @@ import { Formik } from 'formik';
 import Yup from 'yup';
 import Select from 'react-select';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import firebase from 'firebase';
+import { database } from "../../services/firebase";
 
 import Page from '../Page';
-
-const cityCollectAction = dataObject => {
-  return dispatch => {
-    dispatch({
-      type: 'BECOME_OUR_PHOTOGRAPHER_PLACES_CHANGED',
-      payload: dataObject
-    });
-
-    dispatch({
-      type: 'USER_AUTH_UPDATE_METADATA',
-      payload: {
-        currency: dataObject.currency
-      }
-    })
-  };
-};
 
 class CityCollectForm extends Component {
   constructor() {
@@ -107,7 +93,7 @@ class CityCollectForm extends Component {
             options={this.state.options}
             onSearch={this._getOptions}
             onChange={this._handleSelectCity}
-            placeholder={this.state.countryCode ? 'Search and choose your city' : 'Please select a country first'}
+            placeholder={this.state.countryCode ? 'Search and choose your city' : 'Please select a country'}
             renderMenuItemChildren={this._renderMenuItemChildren}
             disabled={!this.state.countryCode}
             isLoading={false}
@@ -146,10 +132,40 @@ const CityCollectFormik = Formik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     setTimeout(() => {
-      props.cityCollectAction(values);
-      setSubmitting(false);
-      props.history.push('/become-our-photographer/step-1-2');
-    }, 2000);
+      const db = database.database();
+      const locationMergeList = [values.locationAdmLevel2, values.locationAdmLevel1, values.countryName];
+      const locationUpdate = {
+        country: values.country,
+        countryName: values.countryName,
+        locationAdmLevel1: values.locationAdmLevel1,
+        locationAdmLevel2: values.locationAdmLevel2,
+        locationMerge: locationMergeList.filter((item) => item !== '').join(', ')
+      };
+
+      db
+        .ref('photographer_service_information')
+        .child(props.uid)
+        .update({
+          location: locationUpdate,
+          updated: firebase.database.ServerValue.TIMESTAMP
+        })
+        .then(() => {
+          locationUpdate.currency = values.currency;
+          locationUpdate.updated = firebase.database.ServerValue.TIMESTAMP;
+
+          db
+            .ref('user_metadata')
+            .child(props.uid)
+            .update(locationUpdate);
+        })
+        .then(() => {
+          setSubmitting(false);
+          props.history.push('/become-our-photographer/step-1-2');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, 1000);
   }
 })(CityCollectForm);
 
@@ -198,10 +214,11 @@ class Step1GrabCityNew extends Component {
                 <div className="row">
                   <div className="col-sm-12">
                     <CityCollectFormik
-                        countries={this.state.countries}
-                        currencies={this.state.currencies}
-                        cityCollectAction={this.props.cityCollectAction}
-                        history={this.props.history}
+                      uid={this.props.user.uid}
+                      countries={this.state.countries}
+                      currencies={this.state.currencies}
+                      cityCollectAction={this.props.cityCollectAction}
+                      history={this.props.history}
                     />
                   </div>
                 </div>
@@ -215,11 +232,9 @@ class Step1GrabCityNew extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.userAuth,
   countries: state.countries
 });
-const mapDispatchToProps = dispatch => ({
-  cityCollectAction: dataObject => dispatch(cityCollectAction(dataObject))
-});
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Step1GrabCityNew)
+  connect(mapStateToProps)(Step1GrabCityNew)
 );
