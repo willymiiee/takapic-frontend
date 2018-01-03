@@ -163,7 +163,7 @@ class PhotographerRegistrationStep1 extends Component {
 
               <div className="text-center social-media-signup">
                 <p>
-                  You can register to be our photographer using your existing
+                  You can register to be our photographer using your existing<br/>
                   Facebook or Google account
                 </p>
 

@@ -37,6 +37,7 @@ class PortofolioGalleryyy extends Component {
   }
 
   componentWillUnmount() {
+    this.cloudinaryInstance = null;
     this.props.resetPhotographerServiceInformationData();
   }
 

@@ -220,13 +220,22 @@ class Home extends Component {
           </div>
 
           <div id="top-photographer-home">
-          <h1 className="title" style={{marginTop:'80px',marginBottom:'80px',fontSize:'24px'}}>Top Photographers</h1>
-          {
-            topPhotographers && !loadingHomepageData ? <TopPhotographers topPhotographers={topPhotographers}/> : null
-          }
+            <h1 className="title" style={{marginTop:'80px',marginBottom:'80px',fontSize:'24px'}}>
+              Top Photographers
+            </h1>
+
+            {
+              topPhotographers && !loadingHomepageData
+                ? <TopPhotographers topPhotographers={topPhotographers}/>
+                : null
+            }
           </div>
-          <h1 className="title why-be-traveller" style={{marginTop:'60px',marginBottom:'35px', fontSize:'24px'}}>Why be a Takapic traveller?</h1>
-          <div className="row icons-container">
+
+          <h1 className="title why-be-traveller" style={{marginTop:'60px',marginBottom:'35px', fontSize:'24px'}}>
+            Why be a Takapic traveller?
+          </h1>
+
+          <div className="row icons-container" style={{ paddingBottom: '25px' }}>
             <div className="col-sm-4">
               <div className="icon-box-2 with-line">
                 <i className="im im-icon-Map2"/>

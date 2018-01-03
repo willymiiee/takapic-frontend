@@ -20,8 +20,10 @@ class Footer extends Component {
                 alt=""
                 style={{width:'120px',height:'auto'}}
               />
+
               <br />
               <br />
+
               <select
                 value={this.props.currentLocale}
                 onChange={this.onLanguageChange}
@@ -30,10 +32,12 @@ class Footer extends Component {
                 <option value="en-US">English</option>
                 <option value="id-ID">Mandarin</option>
               </select>
+
               <select className="selectpicker hide">
                 <option>Dollar</option>
                 <option>Rupiah</option>
               </select>
+
               <div>
                 <a href="https://www.algolia.com/" target="_blank" rel="noopener noreferrer">
                   <img
@@ -45,6 +49,7 @@ class Footer extends Component {
                 </a>
               </div>
             </div>
+
             <div className="col-sm-5 col-sm-offset-1 margin-bottom-30">
               <h4>Takapic</h4>
               <ul className="footer-links">
@@ -71,6 +76,7 @@ class Footer extends Component {
                 </li>
               </ul>
             </div>
+
             <div className="col-sm-2">
               <div id="footer-social">
                 <Link to="/">
@@ -85,6 +91,7 @@ class Footer extends Component {
               </div>
             </div>
           </div>
+
           <div className="row">
             <div className="col-md-12">
               <div className="copyrights" style={{fontSize:'14px'}}>
