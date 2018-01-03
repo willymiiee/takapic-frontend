@@ -3224,8 +3224,8 @@ PHASE 1 BOP - New Photographer Account Register
 
 #photographer-landing .social-media-btn button {
     background-color: #fff;
-    padding: 4px 8px;
-    height: 32px;
+    height: 53px;
+    font-size: 15px;
 }
 
 #photographer-landing .fb-btn {
@@ -3235,12 +3235,11 @@ PHASE 1 BOP - New Photographer Account Register
 }
 
 #photographer-landing .gmail-btn {
-    color: #dd4b39;
-    border: 1px solid #dd4b39;
+    border: 1px solid #ded7d6;
 }
 
 #photographer-landing .social-media-btn img {
-    max-height: 20px;
+    max-height: 46px;
     margin-right: 4px;
 }
 
@@ -4361,11 +4360,12 @@ figcaption.action-btn a .fa {
 .social-media-login-sign-in button {
   background-color: #fff;
   padding: 0 8px;
-  height: 32px;
+  height: 53px;
+  font-size: 15px;
 }
 
 .social-media-login-sign-in img {
-  max-height: 20px;
+  max-height: 46px;
   margin-right: 4px;
 }
 
@@ -4376,8 +4376,7 @@ figcaption.action-btn a .fa {
 }
 
 .social-media-login-sign-in .btn-sign-in-gmail {
-  color: #dd4b39;
-  border: 1px solid #dd4b39;
+  border: 1px solid #ded7d6;
 }
 
 

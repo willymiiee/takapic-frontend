@@ -163,30 +163,32 @@ class TravellerRegistration extends Component {
 
               <div className="text-center social-media-signup">
                 <p>
-                  You can sign up  using your existing Facebook or Gmail account
+                  You can sign up  using your existing Facebook or Google account
                 </p>
 
                 <div className="social-media-btn">
                   <button
                     type="button"
-                    className="btn fb-btn"
+                    className="fb-btn"
                     onClick={this.signUpFacebook}
                   >
                     <img
                       src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
-                      alt=""
-                    />Facebook
+                      alt="Sign up with Facebook"
+                    />
+                    Sign up with Facebook
                   </button>
 
                   <button
                     type="button"
-                    className="btn gmail-btn"
+                    className="gmail-btn"
                     onClick={this.signUpGoogle}
                   >
                     <img
-                      src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882563/assets/gmail_logo_PNG5-edited.png"
-                      alt=""
-                    />Gmail
+                      src="https://res.cloudinary.com/debraf3cg/image/upload/v1514972448/assets/btn_google_light_normal_ios.png"
+                      alt="Sign up with Google"
+                    />
+                    Sign up with Google
                   </button>
                 </div>
 
