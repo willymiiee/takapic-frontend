@@ -43,8 +43,9 @@ const SignIn = props => {
                     >
                       <img
                         src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
-                        alt="Facebook login"
-                      />Facebook
+                        alt="Sign in with Facebook"
+                      />
+                      Sign in with Facebook
                     </button>
 
                     <button
@@ -53,9 +54,10 @@ const SignIn = props => {
                       onClick={() => props.userSignupByGoogle(USER_TRAVELLER)}
                     >
                       <img
-                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882563/assets/gmail_logo_PNG5-edited.png"
-                        alt=""
-                      />Gmail
+                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1514972448/assets/btn_google_light_normal_ios.png"
+                        alt="Sign in with Google"
+                      />
+                      Sign in with Google
                     </button>
                   </div>
 
