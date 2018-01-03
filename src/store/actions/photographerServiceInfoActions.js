@@ -5,15 +5,6 @@ import { database } from '../../services/firebase';
 import history from '../../services/history';
 import queryString from "query-string";
 
-export const selfDescription = description => {
-  return dispatch => {
-    dispatch({
-      type: 'BECOME_OUR_PHOTOGRAPHER_SELF_INTRO',
-      payload: { selfDescription: description },
-    });
-  };
-};
-
 export const tellThemThatWasSuccessOrFailed = (whatsup) => {
   return dispatch => {
     dispatch({

@@ -3449,7 +3449,7 @@ PHASE 1 BOP - New Photographer Account Register
     width: 100%;
     height: 100vh;
     margin: 0;
-    background: url(http://phonetask.com/wp-content/uploads/2017/03/taking-photo-hiking-sport-adventure.jpg) center center no-repeat;
+    background: url(https://res.cloudinary.com/debraf3cg/image/upload/c_scale,q_auto:best,w_1280/v1514999112/assets/taking-photo-hiking-sport-adventure.jpg) center center no-repeat;
     background-size: cover;
 }
 
