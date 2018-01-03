@@ -9,7 +9,7 @@ const Step2Done = (props) => (
     <div className="container" id="photographer-landing">
       <div className="row">
         <div className="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-          <p
+          <div
             className="text-center margin-top-60"
             style={{ fontSize: '1em' }}
           >
@@ -22,7 +22,7 @@ const Step2Done = (props) => (
             <Link style={{textDecoration:"underline", color:"black"}} to={`/photographer-portofolio/${props.user.uid}/gallery`}>
               Portofolio Page
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

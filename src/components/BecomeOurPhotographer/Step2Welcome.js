@@ -1,17 +1,38 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Page from 'components/Page';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+import cloudinary from 'cloudinary-core';
+
+import Page from '../Page';
 
 export default connect(state => ({ user: state.userAuth }))(
   class Step2Welcome extends Component {
+    constructor(){
+      super();
+      this.cloudinaryInstance = cloudinary.Cloudinary.new({
+        cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+        secure: true
+      });
+    }
+
+    componentWillUnmount() {
+      this.cloudinaryInstance = null;
+    }
+
     render() {
       const { user } = this.props;
       return (
         <Page>
-          <div className="background-cover"
-               style={{background:"url('/images/hero_1.jpg') no-repeat center center", paddingBottom:'180px'}}>
+          <div
+            className="background-cover"
+            style={{
+              backgroundImage: `url(${this.cloudinaryInstance.url('assets/hero_1', { width: 1600, crop: 'scale', quality: 'auto:best' })})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center center',
+              paddingBottom: '80px'
+            }}
+          >
             <div className="container" id="photographer-landing">
               <div className="row">
                 <div className="col-sm-6 col-md-4">
