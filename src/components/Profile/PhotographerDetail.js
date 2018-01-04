@@ -6,7 +6,6 @@ import CircularProgressbar from 'react-circular-progressbar';
 import Slider from 'react-slick';
 import { Modal } from 'react-bootstrap';
 import cloudinary from 'cloudinary-core';
-import ReactGA from 'react-ga';
 import { nl2br } from "../../helpers/helpers";
 import {
   fetchPhotographerServiceInformation,
@@ -31,15 +30,11 @@ class PhotographerDetail extends Component {
       showModal: false
     };
 
-    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
-
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-
     if (this.props.photographerServiceInformation.loading) {
       const { match: { params: { photographerId } } } = this.props;
       this.props.fetchPhotographerServiceInformation(photographerId);

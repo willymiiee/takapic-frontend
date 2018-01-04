@@ -6,6 +6,7 @@ import {
   resetPhotographerServiceInformationData,
   fetchPhotographerListings
 } from "./store/actions/photographerServiceInfoActions";
+import withGATracker from './hoc/withGATracker';
 
 import ScrollToTop from './components/common/ScrollToTop';
 import Home from 'pages/home';
@@ -75,27 +76,27 @@ const App = (props) => (
   <Router history={history}>
     <ScrollToTop>
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={withGATracker(Home)} />
         <PrivateRoute path="/booking/:photographerId/:reservationId" component={PhotographerBooking}/>
         <Route path="/sign-in" component={SignIn} />
-        <Route path="/photographer/:photographerId" component={PhotographerDetail} />
+        <Route path="/photographer/:photographerId" component={withGATracker(PhotographerDetail)} />
 
         <PrivateRoute path="/me/reservations/:reservationid/:photographerId" component={ReservationCreatedDetail} />
 
         <PrivateRoute path="/me/reservations" component={ReservationsList} />
-        <Route path="/search" component={Search} />
-        <Route path="/traveller-registration" component={TravellerRegistration} />
+        <Route path="/search" component={withGATracker(Search)} />
+        <Route path="/traveller-registration" component={withGATracker(TravellerRegistration)} />
         <Route
           path="/photographer-portofolio/:photographerId/gallery"
-          component={PortofolioGalleryyy}
+          component={withGATracker(PortofolioGalleryyy)}
         />
         <Route
           path="/photographer-portofolio/:photographerId/about-me"
-          component={PortofolioAbout}
+          component={withGATracker(PortofolioAbout)}
         />
         <Route
           path="/welcome-photographer"
-          component={WelcomePhotographer}
+          component={withGATracker(WelcomePhotographer)}
         />
         <Route
           path="/photographer-registration/s1"
@@ -163,31 +164,31 @@ const App = (props) => (
         />
         <Route
           path="/traveller-faq"
-          component={TravellerFaq}
+          component={withGATracker(TravellerFaq)}
         />
         <Route
           path="/privacy-policy"
-          component={PrivacyPolicy}
+          component={withGATracker(PrivacyPolicy)}
         />
         <Route
           path="/about-us"
-          component={AboutUs}
+          component={withGATracker(AboutUs)}
         />
         <Route
           path="/packages"
-          component={Packages}
+          component={withGATracker(Packages)}
         />
         <Route
           path="/contact-us"
-          component={ContactUs}
+          component={withGATracker(ContactUs)}
         />
         <Route
           path="/photographer-faq"
-          component={PhotographerFaq}
+          component={withGATracker(PhotographerFaq)}
         />
         <Route
           path="/how-it-works"
-          component={HowItWorks}
+          component={withGATracker(HowItWorks)}
         />
         <Route path="*" component={NotFoundPage} />
       </Switch>

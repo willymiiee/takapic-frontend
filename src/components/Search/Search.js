@@ -5,7 +5,6 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
-import ReactGA from 'react-ga';
 
 import {
   fetchPhotographerListings,
@@ -30,8 +29,6 @@ class Search extends Component {
       },
       jancuk: null,
     };
-
-    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
   }
 
   componentWillUnmount() {
@@ -39,7 +36,6 @@ class Search extends Component {
   }
 
   componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
     if (!this.props.photographerListings.isFetching && !this.props.photographerListings.isFetched) {
       this.props.fetchPhotographerListings(this.props.location.search);
     }
