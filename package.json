@@ -24,6 +24,7 @@
     "react-day-picker": "^6.2.1",
     "react-dom": "^15.6.1",
     "react-dom-factories": "^1.0.2",
+    "react-ga": "^2.4.0",
     "react-google-maps": "^8.3.5",
     "react-grid-gallery": "^0.4.7",
     "react-intl-universal": "^1.2.1",
