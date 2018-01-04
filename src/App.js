@@ -100,7 +100,7 @@ const App = (props) => (
         />
         <Route
           path="/photographer-registration/s1"
-          component={PhotographerRegistrationStep1}
+          component={withGATracker(PhotographerRegistrationStep1)}
         />
         <Route
           path="/photographer-registration/s1-checkmail"
