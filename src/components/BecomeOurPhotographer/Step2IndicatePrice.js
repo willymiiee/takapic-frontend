@@ -42,8 +42,20 @@ class Step2IndicatePrice extends Component {
           price: 0
         }
       ],
+      currency: null,
       isUploading: false
     };
+  }
+
+  componentWillMount() {
+    database
+      .database()
+      .ref('user_metadata/' + this.props.user.uid)
+      .child('currency')
+      .once('value')
+      .then((snapshot) => {
+        this.setState({ currency: snapshot.val() });
+      });
   }
 
   handleChange = (event, itemId) => {
@@ -71,13 +83,23 @@ class Step2IndicatePrice extends Component {
     event.preventDefault();
     this.setState({ isUploading: true });
 
-    database
-      .database()
+    const db = database.database();
+
+    db
       .ref('photographer_service_information')
       .child(this.props.user.uid)
       .update({
         packagesPrice: this.state.masterPackages,
         updated: firebase.database.ServerValue.TIMESTAMP
+      })
+      .then(() => {
+        db
+          .ref('user_metadata')
+          .child(this.props.user.uid)
+          .update({
+            priceStartFrom: this.state.masterPackages[0].price,
+            updated: firebase.database.ServerValue.TIMESTAMP
+          });
       })
       .then(() => {
         this.setState({ isUploading: false });
@@ -90,8 +112,7 @@ class Step2IndicatePrice extends Component {
   };
 
   render() {
-    const { user: { userMetadata: { currency } } } = this.props;
-    const { masterPackages } = this.state;
+    const { masterPackages, currency } = this.state;
 
     return (
       <Page>
@@ -112,9 +133,10 @@ class Step2IndicatePrice extends Component {
               <Table striped bordered condensed hover>
                 <thead>
                   <tr>
-                    <th>Package</th>
-                    <th>Requirement</th>
-                    <th>Your Price</th>
+                    <th style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>Package</th>
+                    <th style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>Requirement</th>
+                    <th style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>Your Price</th>
+                    <th style={{ textAlign: 'center' }}>Currency</th>
                   </tr>
                 </thead>
 
@@ -123,9 +145,9 @@ class Step2IndicatePrice extends Component {
                     masterPackages.map((item, index) => {
                       return (
                         <tr key={index}>
-                          <td>{ item.packageName }</td>
-                          <td>{ item.requirement }</td>
-                          <td>
+                          <td style={{ verticalAlign: 'middle', textAlign: 'center' }}>{ item.packageName }</td>
+                          <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>{ item.requirement }</td>
+                          <td style={{ verticalAlign: 'middle' }}>
                             <FormGroup style={{ marginBottom: 0 }}>
                               <InputGroup>
                                 <FormControl
@@ -134,10 +156,10 @@ class Step2IndicatePrice extends Component {
                                   onChange={event => this.handleChange(event, item.id)}
                                   onFocus={this.handleFocus}
                                 />
-                                <InputGroup.Button style={{ padding: 10 }}><p>{ currency }</p></InputGroup.Button>
                               </InputGroup>
                             </FormGroup>
                           </td>
+                          <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{ currency }</td>
                         </tr>
                       )
                     })
