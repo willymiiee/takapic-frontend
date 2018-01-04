@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import moment from "moment/moment";
 import { database } from "../../services/firebase";
-import { updateUserMetadataPriceStartFrom } from "./photographerServiceInfoActionsStep2";
 import {
   fetchPhotographerServiceInformation,
   tellThemThatWasSuccessOrFailed
@@ -18,7 +17,7 @@ export const updateBasicInformation = (params) => {
 };
 
 export const updateBasicInformationUser = (params) => {
-  return dispatch => {
+  return (dispatch) => {
     const { uid, state } = params;
     const db = database.database();
     const ref = db.ref("/user_metadata");
@@ -40,11 +39,12 @@ export const updateBasicInformationUser = (params) => {
 };
 
 export const updateBasicInformationPhotographer = (params) => {
-  return dispatch => {
+  return (dispatch) => {
     const { uid, state } = params;
     const db = database.database();
     const ref = db.ref("photographer_service_information");
     const metadataRef = ref.child(uid);
+
     metadataRef
       .update({
         selfDescription: state.values.selfDescription,
@@ -66,14 +66,14 @@ export const updateBasicInformationPhotographer = (params) => {
 
 export const updateCameraEquipment = (params) => {
   return dispatch => {
-    const { uid, bodies, lenses } = params;
-
-    dispatch({ type: "UPDATE_PROFILE_CAMERA_EQUIPMENT" });
+    dispatch({ type: "PROFILE_MANAGER_UPDATING_START" });
     dispatch(setActiveTab(2));
 
+    const { uid, bodies, lenses } = params;
     const db = database.database();
     const ref = db.ref("photographer_service_information");
     const metadataRef = ref.child(uid);
+
     metadataRef
       .update({
         cameraEquipment: { body: bodies, lens: lenses },
@@ -81,7 +81,7 @@ export const updateCameraEquipment = (params) => {
       })
       .then(() => {
         dispatch({
-          type: "UPDATE_PROFILE_CAMERA_EQUIPMENT_SUCCESS",
+          type: "PROFILE_MANAGER_UPDATING_SUCCESS",
           payload: { status: "OK", message: "Data updated" }
         });
         dispatch(fetchPhotographerServiceInformation(params.uid))
@@ -90,10 +90,7 @@ export const updateCameraEquipment = (params) => {
         dispatch(tellThemThatWasSuccessOrFailed('success'));
       })
       .catch(error => {
-        dispatch({
-          type: "UPDATE_PROFILE_CAMERA_EQUIPMENT_ERROR",
-          error
-        });
+        console.error(error);
       });
   };
 };
@@ -102,12 +99,13 @@ export const updateMeetingPoints = (params) => {
   return dispatch => {
     const { uid, state } = params;
 
-    dispatch({ type: "UPDATE_PROFILE_MEETING_POINT" });
+    dispatch({ type: "PROFILE_MANAGER_UPDATING_START" });
     dispatch(setActiveTab(3));
 
     const db = database.database();
     const ref = db.ref("/photographer_service_information");
     const metadataRef = ref.child(uid);
+
     metadataRef
       .update({
         meetingPoints: state.meetingPoints,
@@ -115,7 +113,7 @@ export const updateMeetingPoints = (params) => {
       })
       .then(() => {
         dispatch({
-          type: "UPDATE_PROFILE_MEETING_POINT_SUCCESS",
+          type: "PROFILE_MANAGER_UPDATING_SUCCESS",
           payload: { status: "OK", message: "Data updated" }
         });
         dispatch(fetchPhotographerServiceInformation(params.uid))
@@ -124,47 +122,50 @@ export const updateMeetingPoints = (params) => {
         dispatch(tellThemThatWasSuccessOrFailed('success'));
       })
       .catch(error => {
-        dispatch({
-          type: "UPDATE_PROFILE_MEETING_POINT_ERROR",
-          error
-        });
+        console.error(error)
       });
   };
 };
 
 export const updatePackagesPrice = (params) => {
   return dispatch => {
-    const { uid, state } = params;
-
-    let packagesPrice = Object.keys(state.packagesPrice).map(item => (state.packagesPrice[item]));
-
-    dispatch({ type: "UPDATE_PROFILE_PACKAGES_PRICE" });
+    dispatch({ type: "PROFILE_MANAGER_UPDATING_START" });
     dispatch(setActiveTab(5));
 
+    const { uid, state } = params;
+    let packagesPrice = Object.keys(state.packagesPrice).map(item => (state.packagesPrice[item]));
     const db = database.database();
-    const ref = db.ref("photographer_service_information");
-    const metadataRef = ref.child(uid);
-    metadataRef
+
+    db
+      .ref('photographer_service_information')
+      .child(uid)
       .update({
         packagesPrice: packagesPrice,
         updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
-        dispatch({
-          type: "UPDATE_PROFILE_PACKAGES_PRICE_SUCCESS",
-          payload: { status: "OK", message: "Data updated" }
-        });
-        updateUserMetadataPriceStartFrom(uid, packagesPrice[0].price);
-        dispatch(fetchPhotographerServiceInformation(params.uid));
+        db
+          .ref('user_metadata')
+          .child(uid)
+          .update({
+            priceStartFrom: packagesPrice[0].price,
+            updated: firebase.database.ServerValue.TIMESTAMP
+          })
+          .then(() => {
+            dispatch({
+              type: "PROFILE_MANAGER_UPDATING_SUCCESS",
+              payload: { status: "OK", message: "Data updated" }
+            });
+          });
+      })
+      .then(() => {
+        dispatch(fetchPhotographerServiceInformation(uid));
       })
       .then(() => {
         dispatch(tellThemThatWasSuccessOrFailed('success'));
       })
       .catch(error => {
-        dispatch({
-          type: "UPDATE_PROFILE_PACKAGES_PRICE_ERROR",
-          error
-        });
+        console.error(error);
       });
   };
 };
@@ -178,7 +179,7 @@ export const setActiveTab = (tabNumber) => {
 
 export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
   return dispatch => {
-    dispatch({ type: 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_START' });
+    dispatch({ type: 'PROFILE_MANAGER_UPDATING_START' });
     dispatch(setActiveTab(6));
 
     const notAvailableDatesAsDateStringList = notAvailableDates.map(item => moment(item).format('YYYY-MM-DD'));
@@ -191,7 +192,7 @@ export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
         updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
-        dispatch({ type: 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_SUCCESS' });
+        dispatch({ type: 'PROFILE_MANAGER_UPDATING_SUCCESS' });
       })
       .then(() => {
         dispatch(fetchPhotographerServiceInformation(uid));
@@ -201,7 +202,6 @@ export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
       })
       .catch((error) => {
         console.log(error);
-        dispatch({ type: 'PROFILE_MANAGER_GLOBAL_UPDATING_ANYTHING_ERROR' });
       })
   };
 };

@@ -55,7 +55,7 @@ class TopPhotographers extends Component {
                     <h5 className="name-photograph">{item.displayName}</h5>
 
                     <div className="location-photograph">
-                      {`${item.countryName}, ${item.locationAdmLevel1}`}
+                      { item.locationMerge }
                     </div>
 
                     <div className="ratings">

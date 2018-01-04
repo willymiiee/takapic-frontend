@@ -12,7 +12,8 @@ import {
   resetPhotographerServiceInformationData
 } from "../../store/actions/photographerServiceInfoActions";
 
-import './../../react-slick.min.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Animator from '../common/Animator';
 import Page from '../Page';
 import PhotographerDetailReservationForm from './PhotographerDetailReservationForm';

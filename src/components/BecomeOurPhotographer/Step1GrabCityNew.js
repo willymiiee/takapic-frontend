@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { Formik } from 'formik';
 import Yup from 'yup';
 import Select from 'react-select';
-import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import firebase from 'firebase';
+import axios from "axios";
 import { database } from "../../services/firebase";
 
 import Page from '../Page';
@@ -14,13 +14,13 @@ class CityCollectForm extends Component {
   constructor() {
     super();
     this.state = {
-      options: [],
       countryCode: '',
-      continent: ''
+      continent: '',
+      selectedCity: null
     }
   }
 
-  _handleSelectCountry = selectChoice => {
+  selectCountryHandler = selectChoice => {
     const { currencies } = this.props;
     const selectedCurrency = currencies[selectChoice.value];
     this.props.setFieldValue('country', selectChoice.value);
@@ -33,30 +33,33 @@ class CityCollectForm extends Component {
     });
   };
 
-  _handleSelectCity = selectChoice => {
-    this.props.setFieldValue('locationAdmLevel1', selectChoice[0].adm1);
-    this.props.setFieldValue('locationAdmLevel2', selectChoice[0].value);
+  selectCityHandler = (value) => {
+    if (value) {
+      this.props.setFieldValue('locationAdmLevel1', value.adm1);
+      this.props.setFieldValue('locationAdmLevel2', value.label);
+      this.setState({ selectedCity: { label: value.label }});
+    } else {
+      this.props.setFieldValue('locationAdmLevel1', '');
+      this.props.setFieldValue('locationAdmLevel2', '');
+      this.setState({ selectedCity: null });
+    }
   };
 
-  _getOptions = input => {
+  retrieveCitiesHandler = (input) => {
     if (!input) {
-      return;
+      return Promise.resolve({ options: [] });
     }
 
     const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
-    return fetch(`${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state.continent}&kwd=${input}`)
-      .then(response => response.json())
-      .then(result => {
-        this.setState({ options: result.data })
-      });
-  };
 
-  _renderMenuItemChildren = option => {
-    return (
-      <div key={option.value}>
-        <span>{ option.label + ' - ' + option.adm1 }</span>
-      </div>
-    );
+    return axios
+      .get(`${urlApi}?countryCode=${this.state.countryCode}&continent=${this.state.continent}&kwd=${input}`)
+      .then(response => {
+        return { options: response.data.data };
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   render() {
@@ -78,25 +81,22 @@ class CityCollectForm extends Component {
             value={values.country}
             options={countries}
             clearable={false}
-            onChange={this._handleSelectCountry}
+            onChange={this.selectCountryHandler}
           />
           {errors.country && touched.country && <label className="control-label">{errors.country}</label>}
         </div>
 
         <div className={`form-group ${errors.locationAdmLevel2 && touched.locationAdmLevel2 && 'has-error'}`}>
           <label style={{ fontSize: '1em' }}>City</label>
-          <AsyncTypeahead
+          <Select.Async
             name="locationAdmLevel2"
-            value={values.locationAdmLevel2}
-            multiple={false}
-            allowNew={false}
-            options={this.state.options}
-            onSearch={this._getOptions}
-            onChange={this._handleSelectCity}
-            placeholder={this.state.countryCode ? 'Search and choose your city' : 'Please select a country'}
-            renderMenuItemChildren={this._renderMenuItemChildren}
+            value={this.state.selectedCity}
+            onChange={this.selectCityHandler}
+            valueKey="label"
+            labelKey="label"
+            loadOptions={this.retrieveCitiesHandler}
+            placeholder={this.state.countryCode ? 'Search and choose your city' : 'Please select a country first'}
             disabled={!this.state.countryCode}
-            isLoading={false}
           />
           {errors.locationAdmLevel2 && touched.locationAdmLevel2 && <label className="control-label">{errors.locationAdmLevel2}</label>}
         </div>

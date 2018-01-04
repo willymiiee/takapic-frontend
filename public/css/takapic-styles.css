@@ -1757,42 +1757,6 @@ CUSTOMIZE LIBRARY
     height: 15px;
 }
 
-/*Perbaikan ukuran multi select*/
-.multi-select > .react-selectize-control {
-    height: 51px;
-}
-
-.multi-select
-> .react-selectize-control
-> .react-selectize-reset-button-container,
-.react-selectize-reset-button-container {
-    padding-top: 15px;
-}
-
-.multi-select > .react-selectize-control > .react-selectize-placeholder {
-    padding-top: 8px;
-}
-
-.multi-select
-> .react-selectize-control
-> .react-selectize-toggle-button-container {
-    padding-top: 15px;
-}
-
-.react-selectize-search-field-and-selected-values > .resizable-input {
-    height: 40px !important;
-}
-
-.multi-select
-> .react-selectize-control
-> .react-selectize-search-field-and-selected-values {
-    height: 51px;
-    padding-bottom: 5px;
-}
-.react-selectize.root-node {
-    width: 100% !important;
-}
-
 .gutter-sizer {
     width: 30px;
 }
@@ -3969,10 +3933,6 @@ figcaption.action-btn a .fa {
   width: 100%;
 }
 
-#photographer-landing .react-selectize.root-node {
-  width: auto;
-}
-
 .buttonNextPrevCoupleWrapper {
   display: flex;
 }
@@ -4406,13 +4366,7 @@ figcaption.action-btn a .fa {
     -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
     box-shadow: 0 0px 0px rgba(0,0,0,0);
 }
-.contact-us-select .react-selectize.root-node{
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-}
-.contact-us-select .react-selectize.default.root-node.multi-select .react-selectize-control{
-    border: none !important;
-}
+
 .contact-us-input input, .contact-us-input textarea{
     background-color: rgba(255,255,255,0.85);
     border: 1px solid #eee;

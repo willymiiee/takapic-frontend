@@ -1,18 +1,6 @@
 import { combineReducers } from 'redux';
 import { userAuth, userSignup } from './userReducers';
-import { userInitProfile } from './userInitProfileReducers';
-import photographerServiceInfo from './photographerServiceInfoReducers';
-import photographerServiceInfoStep2 from './photographerServiceInfoReducersStep2';
 import profileUpdate from './profileUpdateReducers';
-
-const photographerPhotosPortofolio = (state = [], action) => {
-  if (action.type === 'SUBMIT_UPLOAD_PHOTOS_PORTFOLIO_ITEM_SUCCESS') {
-    let newData = state.slice();
-    newData.splice(state.length, 0, action.payload);
-    return newData;
-  }
-  return state;
-};
 
 const photographerServiceInformation = (state = { loading: true, data: {} }, action) => {
   if (action.type === 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_DATA_RESET') {
@@ -104,10 +92,6 @@ const reservations = (state = { isFetching: false, isFetched: false, data: [] },
 const rootReducer = combineReducers({
   userAuth,
   userSignup,
-  userInitProfile,
-  photographerServiceInfo,
-  photographerServiceInfoStep2,
-  photographerPhotosPortofolio,
   photographerServiceInformation,
   homepageData,
   countries,

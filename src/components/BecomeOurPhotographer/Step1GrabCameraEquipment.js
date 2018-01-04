@@ -1,110 +1,69 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MultiSelect } from 'react-selectize';
-import {
-  Button,
-  FormGroup,
-  FormControl
-} from 'react-bootstrap';
-import { submitCameraEquipment } from '../../store/actions/photographerServiceInfoActions';
+import Select, { Creatable } from 'react-select';
+import firebase from 'firebase';
+import { database } from "../../services/firebase";
 
-import './../../styles/react-selectize.css';
 import Page from '../Page';
 
 class Step1GrabCameraEquipment extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       languages: [
         'English', 'Thai', 'Vietnamese', 'Tagalog', 'Korean', 'Japanese', 'Mandarin', 'Burmese', 'Malay', 'Bahasa Indonesia',
         'Spanish', 'Portuguese', 'Russian', 'German', 'French', 'Italian', 'Turkish', 'Polish', 'Ukrainian', 'Romanian', 'Dutch',
         'Croatian', 'Hungarian', 'Greek', 'Czech', 'Swedish', 'Hindi', 'Arabic', 'Bengali', 'Punjabi', 'Tamil', 'Urdu', 'Gujarati', 'Persian'
       ],
-      // speciality: ['Wedding', 'Snap'],
-      selected: {
-        bodies: [''],
-        lenses: [''],
-        languages: [],
-        speciality: [],
-      },
-    };
+      selectedLanguages: [],
+      selectedCameraBodies: [],
+      selectedCameraLens: [],
+      isUploading: false
+    }
   }
 
-  handleAddMoreBody = () => {
-    let {selected} = this.state;
-    selected.bodies = [...selected.bodies, ''];
-    this.setState({selected});
+  selectLanguagesChangeHandler = (value) => {
+    this.setState({ selectedLanguages: value });
   };
 
-  handleAddMoreLense = () => {
-    let {selected} = this.state;
-    selected.lenses = [...selected.lenses, ''];
-    this.setState({selected});
+  selectCameraBodiesChangeHandler = (value) => {
+    this.setState({ selectedCameraBodies: value });
   };
 
-  handleBody = (event, index) => {
-    const {selected} = this.state;
-    selected.bodies[index] = event.target.value;
-    this.setState({selected});
+  selectCameraLensChangeHandler = (value) => {
+    this.setState({ selectedCameraLens: value });
   };
 
-  handleLense = (event, index) => {
-    const {selected} = this.state;
-    selected.lenses[index] = event.target.value;
-    this.setState({selected});
-  };
-
-  handleLanguages = value => {
-    const {selected} = this.state;
-    const languages = value.map(item => item.value);
-    selected.languages = languages;
-    this.setState({selected});
-  };
-
-  /*handleSpeciality = value => {
-      const {selected} = this.state;
-      const speciality = value.map(item => item.value);
-      selected.speciality = speciality;
-      this.setState({selected});
-  };*/
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const { selected: { bodies, lenses, languages, speciality } } = this.state;
+  submitDataHandler = () => {
     if (
-      this.notEmpty(bodies) &&
-      this.notEmpty(lenses) &&
-      this.notEmpty(languages)
+      this.state.selectedCameraBodies.length > 0 &&
+      this.state.selectedCameraLens.length > 0 &&
+      this.state.selectedLanguages.length > 0
     ) {
-      const {
-        photographerServiceInfo: { location, selfDescription },
-        user: { uid }
-      } = this.props;
 
-      const currency = location.currency;
-      location.locationMerge = location.locationAdmLevel2 + ', ' + location.locationAdmLevel1 + ', ' + location.countryName;
-      delete location.currency;
+      this.setState({ isUploading: true });
 
-      const params = {
-        reference: uid,
-        bodies: bodies.filter(b => b !== ''),
-        lenses: lenses.filter(l => l !== ''),
-        languages,
-        speciality,
-        location,
-        selfDescription,
-        currency
-      };
+      database
+        .database()
+        .ref('photographer_service_information')
+        .child(this.props.user.uid)
+        .update({
+          cameraEquipment: {
+            body: this.state.selectedCameraBodies.map((item) => item.value),
+            lens: this.state.selectedCameraLens.map((item) => item.value)
+          },
+          languages: this.state.selectedLanguages.map((item) => item.value),
+          updated: firebase.database.ServerValue.TIMESTAMP
+        })
+        .then(() => {
+          this.setState({ isUploading: false });
+          this.props.history.push('/become-our-photographer/welcome-2');
+        });
 
-      this.props.submitCameraEquipment(params);
     } else {
-      alert('Please complete the form');
+      alert('Please complete the information');
     }
-  };
-
-  notEmpty = arr => {
-    return arr.length > 0;
   };
 
   render() {
@@ -119,65 +78,56 @@ class Step1GrabCameraEquipment extends Component {
                   <div/>
                   <div className="active"/>
                 </div>
+
                 <hr/>
+
                 <h3>What camera equipment do you have?</h3>
+
                 <div style={{marginBottom: '70px'}}>
                   Body
-                  {this.state.selected.bodies.map((item, key) => (
-                    <FormGroup key={key}>
-                      <FormControl
-                        type="text"
-                        value={item}
-                        onChange={event => this.handleBody(event, key)}
-                      />
-                    </FormGroup>
-                  ))}
-                  <Button onClick={this.handleAddMoreBody} style={{float: 'right'}}>Add More</Button>
+                  <Creatable
+                    multi={true}
+                    options={[]}
+                    value={this.state.selectedCameraBodies}
+                    onChange={this.selectCameraBodiesChangeHandler}
+                  />
                 </div>
+
                 <div style={{marginBottom: '70px'}}>
                   Lens
-                  {this.state.selected.lenses.map((item, key) => (
-                    <FormGroup key={key}>
-                      <FormControl
-                        type="text"
-                        value={item}
-                        onChange={event => this.handleLense(event, key)}
-                      />
-                    </FormGroup>
-                  ))}
-                  <Button onClick={this.handleAddMoreLense} style={{float: 'right'}}>Add More</Button>
+                  <Creatable
+                    multi={true}
+                    options={[]}
+                    value={this.state.selectedCameraLens}
+                    onChange={this.selectCameraLensChangeHandler}
+                  />
                 </div>
+
                 <hr/>
+
                 <h3>Language Spoken</h3>
-                <MultiSelect
-                  placeholder="Select your language"
+
+                <Select
+                  multi={true}
                   options={this.state.languages.map(item => ({
                     label: item,
                     value: item,
                   }))}
-                  onValuesChange={this.handleLanguages}
+                  value={this.state.selectedLanguages}
+                  onChange={this.selectLanguagesChangeHandler}
                 />
 
-                {/*<h3>Speciality</h3>*/}
-
-                {/*<MultiSelect
-                    placeholder="Select your speciality"
-                    options={this.state.speciality.map(item => ({
-                        label: item,
-                        value: item,
-                    }))}
-                    onValuesChange={this.handleSpeciality}
-                />*/}
                 <hr/>
+
                 <div style={{overflow: 'hidden'}}>
-                  <Link
-                    to="/become-our-photographer/welcome-2"
+                  <button
+                    type="button"
                     className="button"
-                    onClick={this.handleSubmit}
+                    onClick={this.submitDataHandler}
                     style={{float: 'right'}}
                   >
-                    Done
-                  </Link>
+                    { this.state.isUploading ? 'Processing...' : 'Done' }
+                  </button>
 
                   {/*<Link
                     to="/become-our-photographer/step-1-2"
@@ -196,12 +146,6 @@ class Step1GrabCameraEquipment extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    user: state.userAuth,
-    photographerServiceInfo: state.photographerServiceInfo,
-  }),
-  dispatch => ({
-    submitCameraEquipment: paramsObject => dispatch(submitCameraEquipment(paramsObject))
-  })
-)(Step1GrabCameraEquipment);
+export default withRouter(
+  connect(state => ({ user: state.userAuth }))(Step1GrabCameraEquipment)
+);

@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import cloudinary from 'cloudinary-core';
+import Select from 'react-select';
 import {
   FormGroup,
   FormControl
 } from 'react-bootstrap';
 
 import Page from '../Page';
-import './../../styles/react-selectize.css';
-import { MultiSelect } from 'react-selectize';
 
 class ContactUs extends Component{
   constructor() {
     super();
     this.state = {
-      option: [
+      options: [
         'Booking booking a photographer',
         'Changing or canceling a booking',
         'Signing up/in issues',
         'Partnership',
         'Becoming a photographer',
         'Others'
-      ]
+      ],
+      selectedOption: ''
     };
 
     this.cloudinaryInstance = cloudinary.Cloudinary.new({
@@ -42,6 +42,10 @@ class ContactUs extends Component{
     this.cloudinaryInstance = null;
     clearInterval(this.interval);
   }
+
+  selectChangeHandler = (value) => {
+    this.setState({ selectedOption: value });
+  };
 
   render(){
     return (
@@ -66,13 +70,15 @@ class ContactUs extends Component{
               What would you like to tell us about?
             </h1>
 
-            <div className="search-box-custom-again contact-us-select" style={{ marginTop: '90px', borderRadius:'0px'}}>
-              <MultiSelect
-                placeholder="I want to tell about.."
-                options={this.state.option.map(item => ({
+            <div className="contact-us-select" style={{ marginTop: '90px', borderRadius:'0px'}}>
+              <Select
+                clearable={false}
+                options={this.state.options.map(item => ({
                   label: item,
                   value: item,
                 }))}
+                value={this.state.selectedOption.value}
+                onChange={this.selectChangeHandler}
               />
             </div>
 
