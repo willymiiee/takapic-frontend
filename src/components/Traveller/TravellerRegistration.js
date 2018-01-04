@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import Yup from 'yup';
-import ReactGA from 'react-ga';
 import {
   userSignupByEmailPassword,
   userSignupByFacebook,
@@ -134,14 +133,8 @@ const TravellerRegistrationFormik = Formik({
 class TravellerRegistration extends Component {
   constructor() {
     super();
-    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
-
     this.signUpFacebook = this.signUpFacebook.bind(this);
     this.signUpGoogle = this.signUpGoogle.bind(this);
-  }
-
-  componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   signUpFacebook() {

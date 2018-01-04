@@ -6,7 +6,6 @@ import axios from 'axios';
 import Select from 'react-select';
 import moment from 'moment';
 import cloudinary from 'cloudinary-core';
-import ReactGA from 'react-ga';
 import store from '../store';
 import { searchInformationLog } from "../store/actions/userActions";
 import { reactSelectNewOptionCreator } from "../helpers/helpers";
@@ -48,13 +47,9 @@ class Home extends Component {
       cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
       secure: true
     });
-
-    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
   }
 
   componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-
     const {
       homepageData: {
         loading: loadingHomepageData
