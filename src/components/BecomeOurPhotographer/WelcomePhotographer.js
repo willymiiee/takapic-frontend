@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 import Page from '../Page';
+
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const WelcomePhotographer = props => {
   return (
