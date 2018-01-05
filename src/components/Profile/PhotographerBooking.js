@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
@@ -9,6 +9,7 @@ import ReactRating from 'react-rating-float';
 import { Col, Row } from 'react-bootstrap';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { fetchReservationAction, reservationPaymentAction } from "../../store/actions/reservationActions";
+import { RESERVATION_UNPAID } from "../../services/userTypes";
 
 import Page from '../Page';
 import BookingForm from './BookingForm';
@@ -80,10 +81,14 @@ class PhotographerBooking extends Component {
 
   goToReservationDetail = (reservationNumber, photographerId) => {
     this.props.history.push(`/me/reservations/${reservationNumber}/${photographerId}`);
-
   };
 
   render() {
+    if (!isEmpty(this.props.reservation) && this.props.reservation.status !== RESERVATION_UNPAID) {
+      const { reservationId, photographerId } = this.props.reservation;
+      return <Redirect to={{ pathname: `/me/reservations/${reservationId}/${photographerId}` }}/>;
+    }
+
     if (!this.props.photographerServiceInformation.loading && !isEmpty(this.props.reservation)) {
       const {
         photographerServiceInformation: {
@@ -220,8 +225,10 @@ class PhotographerBooking extends Component {
           </div>
         </Page>
       );
+
+    } else {
+      return <Animator/>;
     }
-    return <Animator/>;
   }
 }
 
