@@ -40,11 +40,6 @@ const PhotographerFaq = props => {
                     <td>Helps you understand your service quality vs peers as judged by your customers</td>
                     <td>Improve your service quality and get priority tdeatment if you are consistent highly rated photographer on the platform</td>
                   </tr>
-                  <tr>
-                    <td>Monthly competition for top photographer</td>
-                    <td>Additional revenue/bonus</td>
-                    <td>Recognition from customer of your quality of photos and reward from us for a job well done</td>
-                  </tr>
                   </tbody>
                 </table>
               </div>
@@ -89,8 +84,8 @@ const PhotographerFaq = props => {
               <p className="content-faq">It is absolutely free to sign up and build your profile and portfolio on our platform. You will only get charged a transaction fee upon successful completed jobs for the traveller/customer. The transaction fee is 5% of your list price. So for example, if you list price is $100 in your local currency for 1 hour service and you complete a job for this, Takapic will take $5 and you will get $95 for the job. This transaction fee is to cater for exchange rate conversion, bank/credit card charges when you get paid back to your local currency.</p>
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
-              <h3 className="title-faq">Why is the price on my public photographer page higher than the one I listed?</h3>
-              <p className="content-faq">Your photographer page shows the final price that the traveller will pay in US dollars as this is the commonly accepted currency worldwide. This includes exchange rate conversion, service fee, and tax (when applicable). What the traveller sees is what he pays & what you list is what you get paid.</p>
+              <h3 className="title-faq">Why is the price on my public photographer page higher than the one I listed and is in US dollars?</h3>
+              <p className="content-faq">Your photographer page shows the final price that the traveller will pay in US dollars as this is the commonly accepted currency worldwide. This includes exchange rate conversion, traveller service fee, and tax (when applicable). What the traveller sees is what he pays & what you list is what you get paid less the transaction fee.</p>
             </div>
           </div>
         </div>

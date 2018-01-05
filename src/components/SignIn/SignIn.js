@@ -27,7 +27,7 @@ const SignIn = props => {
         className="container"
         id="sign-in-main-custom">
         <div className="row">
-          <div className="col-md-6 col-md-offset-3 col-xs-12">
+          <div className="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
             <div className="panel card radius-0 padding-16">
               <div className="panel-body">
                 <div className="mfp-content">
@@ -35,30 +35,31 @@ const SignIn = props => {
                     <h3>Sign In</h3>
                   </div>
 
-                  <div className="social-media-login-sign-in">
-                    <button
-                      type="button"
-                      className="btn-sign-in-facebook"
-                      onClick={() => props.userSignupByFacebook(USER_TRAVELLER)}
-                    >
-                      <img
-                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
-                        alt="Sign in with Facebook"
-                      />
-                      Sign in with Facebook
-                    </button>
-
-                    <button
-                      type="button"
-                      className="btn-sign-in-gmail"
-                      onClick={() => props.userSignupByGoogle(USER_TRAVELLER)}
-                    >
-                      <img
-                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1514972448/assets/btn_google_light_normal_ios.png"
-                        alt="Sign in with Google"
-                      />
-                      Sign in with Google
-                    </button>
+                  <div className="social-media-login-sign-in row">
+                    <div className="col-sm-6">
+                      <div
+                        type="button"
+                        className="btn-sign-in-facebook"
+                        onClick={() => props.userSignupByFacebook(USER_TRAVELLER)}>
+                        <img
+                          src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
+                          alt="Sign in with Facebook"
+                        />
+                        Sign in with Facebook
+                      </div>
+                    </div>
+                    <div className="col-sm-6">
+                      <div
+                        type="button"
+                        className="btn-sign-in-gmail"
+                        onClick={() => props.userSignupByGoogle(USER_TRAVELLER)}>
+                        <img
+                          src="https://res.cloudinary.com/debraf3cg/image/upload/v1515164506/assets/google.png"
+                          alt="Sign in with Google"
+                        />
+                        Sign in with Google
+                      </div>
+                    </div>
                   </div>
 
                   <div className="sign-in-form style-1">
