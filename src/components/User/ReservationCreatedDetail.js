@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import size from 'lodash/size';
@@ -12,9 +13,11 @@ import {
   fetchReservationAction,
   resetEmptyReservationData
 } from "../../store/actions/reservationActions";
+import { RESERVATION_REQUESTED } from "../../services/userTypes";
 
 import './ReservationCreatedDetail.css';
 import Page from '../Page';
+import Animator from '../common/Animator';
 import UserAccountPanel from './UserAccountPanel';
 import ReservationDetailInfo from './ReservationDetailInfo';
 
@@ -96,82 +99,88 @@ class ReservationCreatedDetail extends Component {
 
   render() {
     if (size(this.props.reservation) > 0) {
-      const {
-        reservation: { uidMapping },
-        user: { uid }
-      } = this.props;
-      const defaultImg = 'http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70';
+      if (this.props.reservation.status === RESERVATION_REQUESTED) {
+        const {
+          reservation: {uidMapping},
+          user: {uid}
+        } = this.props;
+        const defaultImg = 'https://res.cloudinary.com/debraf3cg/image/upload/v1515151388/assets/default-profile.png';
 
-      return (
-        <Page style={{whiteSpace: 'normal'}}>
-          <UserAccountPanel>
-            <h3>Reservation details</h3>
+        return (
+          <Page style={{whiteSpace: 'normal'}}>
+            <UserAccountPanel>
+              <h3>Reservation details</h3>
 
-            <div className="messages-container margin-top-0">
-              <div className="messages-container-inner">
+              <div className="messages-container margin-top-0">
+                <div className="messages-container-inner">
 
-                <div className="messages-inbox">
-                  {
-                    size(this.props.reservation) > 0 &&
-                    !this.props.photographerServiceInformation.loading &&
-                    <ReservationDetailInfo
-                      reservation={this.props.reservation}
-                      photographerServiceInformation={this.props.photographerServiceInformation}
-                    />
-                  }
-                </div>
-                <div className="message-content">
-                  {
-                    this.state.messages && Object.keys(this.state.messages).map((item) => {
-                      const photoProfileUrl = uidMapping[this.state.messages[item].sender].photoProfileUrl;
-
-                      return (
-                        <div
-                          key={item}
-                          className={this.state.messages[item].sender === uid ? 'message-bubble me' : 'message-bubble'}
-                        >
-                          <div className="message-avatar">
-                            <img src={photoProfileUrl !== '-' ? photoProfileUrl : defaultImg} alt="This an alt text"/>
-                          </div>
-
-                          <div className="message-text">
-                            <p style={{ fontWeight: 'bold', fontSize: '0.6em' }}>
-                              { moment(this.state.messages[item].created).format('dddd, MMMM Do YYYY HH:mm a') }
-                            </p>
-                            <p>{this.state.messages[item].message}</p>
-                          </div>
-                        </div>
-                      )
-                    })
-                  }
-
-                  <div className="clearfix"/>
-
-                  <div className="message-reply">
-                    <textarea
-                      cols={40}
-                      rows={1}
-                      placeholder="Your Message"
-                      value={this.state.messageText}
-                      onChange={this.messageTextChangeHandler}
-                    />
-
-                    <button
-                      className="button"
-                      onClick={this.sendMessageHandler}
-                    >
-                      {this.state.isSendingMessage ? 'Sending...' : 'Send Message'}
-                    </button>
+                  <div className="messages-inbox">
+                    {
+                      size(this.props.reservation) > 0 &&
+                      !this.props.photographerServiceInformation.loading &&
+                      <ReservationDetailInfo
+                        reservation={this.props.reservation}
+                        photographerServiceInformation={this.props.photographerServiceInformation}
+                      />
+                    }
                   </div>
-                </div>
+                  <div className="message-content">
+                    {
+                      this.state.messages && Object.keys(this.state.messages).map((item) => {
+                        const photoProfileUrl = uidMapping[this.state.messages[item].sender].photoProfileUrl;
 
+                        return (
+                          <div
+                            key={item}
+                            className={this.state.messages[item].sender === uid ? 'message-bubble me' : 'message-bubble'}
+                          >
+                            <div className="message-avatar">
+                              <img src={photoProfileUrl !== '-' ? photoProfileUrl : defaultImg} alt="This an alt text"/>
+                            </div>
+
+                            <div className="message-text">
+                              <p style={{fontWeight: 'bold', fontSize: '0.6em'}}>
+                                {moment(this.state.messages[item].created).format('dddd, MMMM Do YYYY HH:mm a')}
+                              </p>
+                              <p>{this.state.messages[item].message}</p>
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+
+                    <div className="clearfix"/>
+
+                    <div className="message-reply">
+                      <textarea
+                        cols={40}
+                        rows={1}
+                        placeholder="Your Message"
+                        value={this.state.messageText}
+                        onChange={this.messageTextChangeHandler}
+                      />
+
+                      <button
+                        className="button"
+                        onClick={this.sendMessageHandler}
+                      >
+                        {this.state.isSendingMessage ? 'Sending...' : 'Send Message'}
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
               </div>
-            </div>
-          </UserAccountPanel>
-        </Page>
-      );
+            </UserAccountPanel>
+          </Page>
+        );
+
+      } else {
+        return <Redirect to={{ pathname: '/me/reservations' }}/>;
+      }
     }
-    return null;
+
+    return <Animator/>
   }
 }
 

@@ -6,7 +6,7 @@ import moment from 'moment';
 import { reservationInitializeAction } from "../../store/actions/reservationActions";
 import { searchInformationLog } from "../../store/actions/userActions";
 import { generateReservationNumber } from "../../helpers/helpers";
-import{ RESERVATION_REQUESTED } from "../../services/userTypes";
+import{ RESERVATION_UNPAID } from "../../services/userTypes";
 
 const StartServicePrice = props => {
   const { loading, packagesPrice } = props;
@@ -115,7 +115,7 @@ class PhotographerDetailReservationForm extends Component {
           serviceFee: Math.round(photographerFee * serviceFee),
           credit,
           total,
-          status: RESERVATION_REQUESTED,
+          status: RESERVATION_UNPAID,
           destination: locationDestinationFix
         };
 

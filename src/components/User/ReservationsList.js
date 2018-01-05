@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { database } from "../../services/firebase";
-import { USER_PHOTOGRAPHER } from "../../services/userTypes";
+import {USER_PHOTOGRAPHER, RESERVATION_UNPAID, RESERVATION_REQUESTED} from "../../services/userTypes";
 
 import Page from '../Page';
 import UserAccountPanel from './UserAccountPanel';
@@ -65,8 +65,13 @@ class ReservationsList extends Component {
   render() {
     const {
       user: { userMetadata: { userType } },
-      reservations: { isFetched, data:reservationsList }
+      reservations: { isFetched, data: reservationsList }
     } = this.props;
+
+    let reservationsListFiltered = reservationsList;
+    if (userType === USER_PHOTOGRAPHER) {
+      reservationsListFiltered = reservationsList.filter((item) => item.status === RESERVATION_REQUESTED);
+    }
 
     return (
       <Page style={{whiteSpace:'normal'}}>
@@ -88,7 +93,7 @@ class ReservationsList extends Component {
                 </tr>
 
                 {
-                  isFetched && reservationsList && reservationsList.map((item, index) => (
+                  isFetched && reservationsList && reservationsListFiltered.map((item, index) => (
                     <tr key={index}>
                       <td>{ index + 1 }</td>
                       <td>{ item.reservationId }</td>
@@ -102,9 +107,19 @@ class ReservationsList extends Component {
                       <td>USD { item.total }</td>
                       <td>{ item.status }</td>
                       <td>
-                        <Link to={`/me/reservations/${item.reservationId}/${item.photographerId}`}>
-                          View detail
-                        </Link>
+                        {
+                          item.status !== RESERVATION_UNPAID
+                            ? (
+                              <Link to={`/me/reservations/${item.reservationId}/${item.photographerId}`} style={{ textDecoration: 'underline' }}>
+                                View detail
+                              </Link>
+                            )
+                            : (
+                              <Link to={`/booking/${item.photographerId}/${item.reservationId}/`} style={{ textDecoration: 'underline' }}>
+                                Process payment
+                              </Link>
+                            )
+                        }
                       </td>
                     </tr>
                   ))

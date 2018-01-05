@@ -9,6 +9,7 @@ import firebase from "firebase";
 import Yup from 'yup';
 import { JsonToUrlEncoded } from "../../helpers/helpers";
 import { database } from "../../services/firebase";
+import { RESERVATION_REQUESTED } from "../../services/userTypes";
 
 class BookingForm extends Component {
   componentDidMount() {
@@ -238,6 +239,7 @@ const BookingFormFormik = Formik({
                 }
 
                 const dataReservation = {
+                  status: RESERVATION_REQUESTED,
                   meetingPoints: {
                     type: 'defined',
                     id: values.meetingPointSelectedValue,
