@@ -28,7 +28,7 @@ const Step1GrabInterestingSelfIntroduction = props => {
             </div>
             <hr />
 
-            <h3>Tell travellers something interesting about yourself</h3>
+            <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Tell travellers something interesting about yourself</h3>
 
             <form onSubmit={handleSubmit}>
               <textarea
@@ -38,23 +38,13 @@ const Step1GrabInterestingSelfIntroduction = props => {
                 placeholder="I am.."
               />
 
-              <div style={{overflow:'hidden'}}>
-                <button
-                  type="submit"
-                  className="button next-btn"
-                  style={{float:'right'}}
-                  disabled={isSubmitting}
-                >
-                  { isSubmitting ? 'Please wait...' : 'Next' }
-                </button>
-                {/*<Link
-                    to="/become-our-photographer/step-1-1"
-                    className="button button-white-no-shadow u"
-                    style={{float:'right'}}
-                >
-                  Back
-                </Link>*/}
-              </div>
+              <button
+                type="submit"
+                className="button key-color radius-5 width1 margin-top-40 margin-bottom-15"
+                disabled={isSubmitting}
+              >
+                { isSubmitting ? 'Please wait...' : 'Next' }
+              </button>
             </form>
             </div>
           </div>

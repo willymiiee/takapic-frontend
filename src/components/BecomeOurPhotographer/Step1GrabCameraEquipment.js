@@ -81,7 +81,7 @@ class Step1GrabCameraEquipment extends Component {
 
                 <hr/>
 
-                <h3>What camera equipment do you have?</h3>
+                <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>What camera equipment do you have?</h3>
 
                 <div style={{marginBottom: '70px'}}>
                   Body
@@ -118,25 +118,13 @@ class Step1GrabCameraEquipment extends Component {
                 />
 
                 <hr/>
-
-                <div style={{overflow: 'hidden'}}>
-                  <button
-                    type="button"
-                    className="button"
-                    onClick={this.submitDataHandler}
-                    style={{float: 'right'}}
-                  >
-                    { this.state.isUploading ? 'Processing...' : 'Done' }
-                  </button>
-
-                  {/*<Link
-                    to="/become-our-photographer/step-1-2"
-                    className="button button-white-no-shadow u"
-                    style={{float: 'right'}}
-                  >
-                    Back
-                  </Link>*/}
-                </div>
+                <button
+                  type="button"
+                  className="button key-color radius-5 width1 margin-top-40 margin-bottom-15"
+                  onClick={this.submitDataHandler}
+                >
+                  { this.state.isUploading ? 'Processing...' : 'Done' }
+                </button>
               </div>
             </div>
           </div>

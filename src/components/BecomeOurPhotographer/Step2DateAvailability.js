@@ -64,7 +64,7 @@ class Step2DateAvailability extends Component {
           </div>
           <hr/>
 
-          <h3>Please let travellers know when you are <strong>NOT</strong> available for them</h3>
+          <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Please let travellers know when you are <strong>NOT</strong> available for them</h3>
 
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30">
@@ -96,24 +96,14 @@ class Step2DateAvailability extends Component {
 
           <hr/>
 
-          <div style={{overflow: 'hidden'}}>
-            <button
-              type="button"
-              className="button"
-              onClick={(evt) => !this.state.isUploading ? this.submitHandle(evt) : false}
-              style={{float: 'right'}}
-              disabled={this.state.isUploading}
-            >
-              { this.state.isUploading ? 'Processing...' : 'Next' }
-            </button>
-
-            {/*<Link
-              to="/become-our-photographer/step-2-1"
-              className="button button-white-no-shadow u"
-              style={{float:'right'}}>
-              Back
-            </Link>*/}
-          </div>
+          <button
+            type="button"
+            className="button key-color radius-5 width1 margin-top-40 margin-bottom-15"
+            onClick={(evt) => !this.state.isUploading ? this.submitHandle(evt) : false}
+            disabled={this.state.isUploading}
+          >
+            { this.state.isUploading ? 'Processing...' : 'Next' }
+          </button>
         </div>
       </Page>
     );

@@ -67,10 +67,10 @@ const PhoneNumberCollectForm = props => {
 
       <button
         type="submit"
-        className="button next-btn"
+        className="button key-color radius-5 width50"
         disabled={isSubmitting}
       >
-        { isSubmitting ? 'Please wait...' : 'Next' }
+        { isSubmitting ? 'Please wait...' : 'Next Step' }
       </button>
     </form>
   );

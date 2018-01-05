@@ -126,7 +126,7 @@ class Step2IndicatePrice extends Component {
 
           <hr />
 
-          <h3>Please indicate your price for each package</h3>
+          <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Please indicate your price for each package</h3>
 
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30">
@@ -186,25 +186,14 @@ class Step2IndicatePrice extends Component {
 
           <hr />
 
-          <div style={{overflow:'hidden'}}>
-            <button
-              type="button"
-              className="button"
-              onClick={(evt) => !this.state.isUploading ? this.handleSubmit(evt) : false}
-              style={{float:'right'}}
-              disabled={this.state.isUploading}
-            >
-              { this.state.isUploading ? 'Processing...' : 'Next' }
-            </button>
-
-            {/*<Link
-                to="/become-our-photographer/welcome-2"
-                className="button button-white-no-shadow u"
-                style={{float:'right'}}
-            >
-              Back
-            </Link>*/}
-          </div>
+          <button
+            type="button"
+            className="button key-color radius-5 width1"
+            onClick={(evt) => !this.state.isUploading ? this.handleSubmit(evt) : false}
+            disabled={this.state.isUploading}
+          >
+            { this.state.isUploading ? 'Processing...' : 'Next' }
+          </button>
         </div>
       </Page>
     );

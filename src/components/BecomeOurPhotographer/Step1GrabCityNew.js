@@ -100,16 +100,13 @@ class CityCollectForm extends Component {
           />
           {errors.locationAdmLevel2 && touched.locationAdmLevel2 && <label className="control-label">{errors.locationAdmLevel2}</label>}
         </div>
-
-        <div style={{ display: 'flex', float: 'right' }}>
-          <button
-            type="submit"
-            className="button next-btn"
-            disabled={isSubmitting}
-          >
-            { isSubmitting ? 'Please wait...' : 'Next' }
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="button key-color radius-5 width1 margin-top-40 margin-bottom-15"
+          disabled={isSubmitting}
+        >
+          { isSubmitting ? 'Please wait...' : 'Next' }
+        </button>
 
         <input name="countryName" type="hidden" value={values.countryName}/>
         <input name="locationAdmLevel1" type="hidden" value={values.locationAdmLevel1}/>
@@ -210,7 +207,7 @@ class Step1GrabCityNew extends Component {
                   <div />
                 </div>
                 <hr />
-                <h3>Which city do you live in?</h3>
+                <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Which city do you live in?</h3>
                 <div className="row">
                   <div className="col-sm-12">
                     <CityCollectFormik

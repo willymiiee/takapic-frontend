@@ -57,7 +57,7 @@ export default connect(state => ({ user: state.userAuth }))(
                     <p>Pricing, Photos, Schedule, Preferred Meeting Points</p>
                     <Link
                       to="/become-our-photographer/step-2-1"
-                      className="button"
+                      className="button key-color radius-5"
                     >
                       Continue
                     </Link>

@@ -17,7 +17,7 @@ const PhotographerRegistrationStepFinish = (props) => (
                 <p>You can now start your work on Takapic</p>
                 <Link
                   to="/become-our-photographer/welcome-1"
-                  className="btn start-explore-btn center-block"
+                  className="button key-color radius-5 width80"
                   type="button"
                 >
                   Start Exploring

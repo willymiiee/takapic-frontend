@@ -109,8 +109,8 @@ class PhotographerRegistrationStep2 extends Component {
                   </div>
                 </div>
               </div>
-              <div className="form-group browse-profile-holder width-full">
-                <div className="browse-profile-btn">
+              <div className="form-group browse-profile-holder width-full radius-5">
+                <div className="browse-profile-btn radius-5">
                   <span>Browse</span>
                   <input
                     className="input-file choose-file"
@@ -126,13 +126,13 @@ class PhotographerRegistrationStep2 extends Component {
               </div>
 
               <button
-                className="button next-btn"
+                className="button key-color radius-5 width50"
                 onClick={this.uploadPhotoProfileHandler}
               >
                 {this.state.isUploading ? (
                   'Uploading your photo profile, please wait...'
                 ) : (
-                  'Next'
+                  'Next Step'
                 )}
               </button>
             </div>

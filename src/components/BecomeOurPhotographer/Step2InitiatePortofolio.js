@@ -158,7 +158,7 @@ class Step2IntiatePortofolio extends Component {
           </div>
 
           <hr />
-          <h3>Let start building your portfolio! (Maximum 10 photos)</h3>
+          <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Let start building your portfolio! (Maximum 10 photos)</h3>
 
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30">
@@ -226,7 +226,7 @@ class Step2IntiatePortofolio extends Component {
 
                   <button
                     type="button"
-                    className="button"
+                    className="button key-color radius-5 width1 pull-left"
                     disabled={this.state.isUploading}
                     onClick={() => this._uploadFile.click()}
                   >
@@ -256,16 +256,9 @@ class Step2IntiatePortofolio extends Component {
 
           <hr />
 
-          {/*<Link
-            to="/become-our-photographer/step-2-3"
-            className="button button-white-no-shadow u"
-          >
-            Back
-          </Link>*/}
-
           <button
             type="button"
-            className="button pull-right"
+            className="button key-color radius-5 width1 margin-top-40 margin-bottom-15"
             onClick={(evt) => !this.state.isUploading ? this.submitImagesHandler(evt) : false }
           >
             { this.state.isUploading ? 'Uploading your images. Please wait...' : 'Done' }

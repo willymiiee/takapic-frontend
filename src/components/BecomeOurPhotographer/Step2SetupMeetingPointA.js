@@ -96,13 +96,13 @@ class Step2SetupMeetingPointA extends Component {
 
           <div className="row">
             <div className="col-md-8">
-              <h4>Please choose three different meeting points</h4>
+              <h4 style={{fontWeight:'bold',marginBottom:'24px'}}>Please choose three different meeting points</h4>
               <hr/>
               <MapWithASearchBox handleAddition={this.handleAddition}/>
             </div>
 
             <div className="col-md-4 create-point-wrapper">
-              <h4>Your Created Point</h4>
+              <h4 style={{fontWeight:'bold'}}>Your Created Point</h4>
               <hr/>
               {
                 this.state.meetingPoints.map((p, key) => (
@@ -139,19 +139,12 @@ class Step2SetupMeetingPointA extends Component {
             <hr />
             <button
               type="button"
-              className="button"
+              className="button key-color radius-5 width1 margin-top-40 margin-bottom-15"
               onClick={(evt) => !this.state.isUploading ? this.handleSubmit(evt) : false}
-              style={{float: 'right'}}
               disabled={this.state.isUploading}
             >
               { this.state.isUploading ? 'Processing...' : 'Next' }
             </button>
-
-            {/*<Link
-              style={{float: 'right'}}
-              to="/become-our-photographer/step-2-2" className="button">
-              Back
-            </Link>*/}
           </div>
         </div>
       </Page>
