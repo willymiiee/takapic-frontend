@@ -4315,30 +4315,52 @@ figcaption.action-btn a .fa {
 }
 
 .social-media-login-sign-in {
-  text-align: center;
+  text-align: left;
+  margin-bottom: 36px;
+  margin-left: 0;
+  margin-right: 0;
 }
-.social-media-login-sign-in button {
-  background-color: #fff;
-  padding: 0 8px;
-  height: 53px;
-  font-size: 15px;
+.social-media-login-sign-in > div {
+  padding: 0;
 }
-
+.social-media-login-sign-in > div > div {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2);
+    border-radius: 3px;
+    /*display: flex;*/
+}
 .social-media-login-sign-in img {
-  max-height: 46px;
-  margin-right: 4px;
+  max-height: 44px;
+  margin-right: 16px;
 }
 
 .social-media-login-sign-in .btn-sign-in-facebook {
-  color: #3b5998;
-  border: 1px solid #3b5998;
-  margin-right: 4px;
+  /*color: #3b5998;*/
+  max-width: 230px;
+  margin: 0 3px 0 auto;
+  font-size: 16px;
 }
 
 .social-media-login-sign-in .btn-sign-in-gmail {
-  border: 1px solid #ded7d6;
+  max-width: 230px;
+  margin: 0 auto 0 3px;
+  font-size: 16px;
+}
+.social-media-login-sign-in .btn-sign-in-gmail img {
+  box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.1);
 }
 
+@media (max-width: 767px) {
+  .social-media-login-sign-in .btn-sign-in-facebook {
+    max-width: 100%;
+    margin: 0;
+    margin-bottom: 16px;
+  }
+
+  .social-media-login-sign-in .btn-sign-in-gmail {
+    max-width: 100%;
+    margin: 0;
+  }
+}
 
 .content-faq{
     font-size: 15px;
