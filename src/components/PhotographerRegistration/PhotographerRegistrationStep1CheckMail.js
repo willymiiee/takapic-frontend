@@ -21,8 +21,7 @@ class PhotographerRegistrationStep1CheckMail extends Component {
                 <h2 className="text-center">Check your email!</h2>
               </a>
               <div className="checkmail-text text-center">
-                <p>Tap the link in the email we sent you.</p>
-                <p>
+                <p>Tap the link in the email we sent you. <br/>
                   Confirming your email address helps us send you trip
                   information.
                 </p>

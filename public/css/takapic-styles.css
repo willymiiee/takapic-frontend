@@ -1653,13 +1653,13 @@ img.cover {
 
 .steps > div {
     display: inline-block;
-    height: 10px;
-    margin: 0 5px;
+    height: 5px;
+    margin: 0 2px;
     background: #ddd;
 }
 
 .steps > div.active {
-    background: #089add;
+    background: #46ebcb;
 }
 
 .steps.steps-3 > div {
@@ -2131,6 +2131,7 @@ RESPONSIVE
     #photographer-reservation-btn-2 {
         display: block;
         width: 100%;
+        margin-top: 30px;
     }
 
     #photographer-photo-collection {
@@ -3130,6 +3131,12 @@ p.l-h-22 {
 .margin-top-0{
   margin-top: 0 !important;
 }
+.margin-top-40{
+  margin-top: 40 !important;
+}
+.margin-bottom-15{
+  margin-top: 15 !important;
+}
 .radius-16 {
     border-radius: 16px !important;
 }
@@ -3173,46 +3180,18 @@ PHASE 1 BOP - New Photographer Account Register
     padding: 24px;
 }
 
-#photographer-landing .social-media-signup {
-    margin-bottom: 32px;
-}
-
-#photographer-landing .social-media-signup p {
-    font-size: 16px;
-    color: #414141;
-}
-
-#photographer-landing .social-media-btn {
-    margin: 16px 0;
-}
-
-#photographer-landing .social-media-btn button {
-    background-color: #fff;
-    height: 53px;
-    font-size: 15px;
-}
-
-#photographer-landing .fb-btn {
-    color: #3b5998;
-    border: 1px solid #3b5998;
-    margin-right: 4px;
-}
-
-#photographer-landing .gmail-btn {
-    border: 1px solid #ded7d6;
-}
-
-#photographer-landing .social-media-btn img {
-    max-height: 46px;
-    margin-right: 4px;
-}
-
 #photographer-landing .setup-content {
-    width: 50%;
+    width: 65%;
     margin: 32px auto 0 auto;
     box-shadow: 2px 6px 10px #ccc;
     border-radius: 0;
     border: 0;
+}
+
+@media (max-width: 1024px) {
+    #photographer-landing .setup-content {
+        width: 80%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -3237,6 +3216,7 @@ PHASE 1 BOP - New Photographer Account Register
 
 #photographer-landing .setup-content .form-group {
     margin-bottom: 32px;
+    display: flex;
 }
 
 #photographer-landing .setup-content label {
@@ -3261,7 +3241,7 @@ PHASE 1 BOP - New Photographer Account Register
 }
 
 #photographer-landing .checkmail-wrapper h2 {
-    color: #5cb85c;
+    color: #30cea9;
 }
 
 #photographer-landing .checkmail-wrapper .checkmail-icon {
@@ -3270,7 +3250,7 @@ PHASE 1 BOP - New Photographer Account Register
 
 #photographer-landing .checkmail-wrapper .checkmail-icon i {
     padding: 20px;
-    background: #5cb85c;
+    background: #46ebcb;
     border-radius: 50%;
     color: white;
 }
@@ -3297,13 +3277,12 @@ PHASE 1 BOP - New Photographer Account Register
 .input-profile-name {
     margin-left: 12px;
     color: #aaa;
-    font-size: 18px;
+    font-size: 16px;
     max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
-    vertical-align: middle;
     white-space: nowrap;
+    padding-top: 3px;
 }
 
 ::-webkit-file-upload-button {
@@ -3333,7 +3312,6 @@ PHASE 1 BOP - New Photographer Account Register
 .browse-profile-btn {
     position: relative;
     cursor: pointer;
-    display: inline-block;
     padding: 2px 16px;
     background: #aaa;
     color: #fff;
@@ -4345,8 +4323,8 @@ figcaption.action-btn a .fa {
   margin: 0 auto 0 3px;
   font-size: 16px;
 }
-.social-media-login-sign-in .btn-sign-in-gmail img {
-  box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.1);
+.social-media-login-sign-in .btn-sign-in-facebook img {
+  padding: 5px;
 }
 
 @media (max-width: 767px) {
@@ -4555,8 +4533,49 @@ figcaption.action-btn a .fa {
     -moz-border-radius: 8px !important;
     border-radius: 8px !important;
 }
+.radius-5 {
+    -webkit-border-radius:5px !important;
+    -moz-border-radius:5px !important;
+    border-radius:5px !important;
+}
 .key-color{
     background-color: #3AECCB !important;
+}
+
+.button.key-color:hover{
+  cursor: pointer;
+  background-color: #88f3df !important;
+}
+.key-color.width80 {
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+.key-color.width50 {
+  width: 50%;
+  margin: 0 auto;
+  display: block;
+}
+.key-color.width1 {
+  width: 200px;
+  margin: 0 auto;
+  display: block;
+}
+.button.key-color:active {
+    color: white;
+    -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+}
+.pull-left {
+  margin-right: auto;
+  margin-left: 0;
+  display: block;
+}
+@media (max-width: 480px) {
+  .key-color.width50, .key-color.width80, .key-color.width1 {
+    width: 100%;
+  }
 }
 
 #top-photographer-home .btn-photographer-detail {
