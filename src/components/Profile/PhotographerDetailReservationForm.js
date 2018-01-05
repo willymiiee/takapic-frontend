@@ -37,7 +37,7 @@ class PhotographerDetailReservationForm extends Component {
           opened: false,
         },
         photographerFee: 0,
-        serviceFee: 0.15,
+        serviceFee: 0.10,
         credit: 0,
         total: 0,
       }
