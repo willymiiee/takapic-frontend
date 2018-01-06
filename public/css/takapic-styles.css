@@ -4327,6 +4327,11 @@ figcaption.action-btn a .fa {
   padding: 5px;
 }
 
+.social-media-login-sign-in > div > div:hover {
+    cursor: pointer;
+    background-color: #f9f9f9; 
+}
+
 @media (max-width: 767px) {
   .social-media-login-sign-in .btn-sign-in-facebook {
     max-width: 100%;
@@ -4578,6 +4583,26 @@ figcaption.action-btn a .fa {
   }
 }
 
+.form-flex > .form-group {
+    display: flex !important;
+    margin-bottom: 0px !important;
+    margin-top: 20px;
+}
+.form-flex .error-msg {
+    text-align: right;
+    font-size: 12px !important;
+    color: #a94442;
+}
+.form-flex > .form-group > label {
+    width: 140px;
+    text-align: right;
+    padding-right: 16px;
+    margin: auto !important;
+}
+.form-flex > .form-group > input {
+    margin-bottom: 0;
+}
+
 #top-photographer-home .btn-photographer-detail {
     /*take out button detail in homepage*/
     display: none;
@@ -4689,6 +4714,8 @@ figcaption.action-btn a .fa {
 .text-capitalize {
     text-transform: capitalize;
 }
+
+
 
 /*-------------------------
 	Photos Uploader - start

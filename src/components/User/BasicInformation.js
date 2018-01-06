@@ -379,7 +379,7 @@ class BasicInformation extends Component {
               </div>
             </div>
           </div>
-          <div className="browse-profile-holder" style={{marginTop: '30px'}}>
+          <div className="browse-profile-holder" style={{marginTop: '30px', display:'flex'}}>
             <div className="browse-profile-btn">
               <span>Browse</span>
               <input
