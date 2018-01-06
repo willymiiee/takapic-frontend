@@ -214,7 +214,10 @@ class PhotographerDetailReservationForm extends Component {
   componentWillMount() {
     const {
       photographerServiceInformation: {
-        data: { packagesPrice, userMetadata: { currency } }
+        data: {
+          packagesPrice,
+          userMetadata: { currency }
+        }
       },
       currenciesRates
     } = this.props;
@@ -242,10 +245,25 @@ class PhotographerDetailReservationForm extends Component {
   }
 
   componentDidMount() {
+    const {
+      photographerServiceInformation: {
+        data: { notAvailableDates }
+      }
+    } = this.props;
+
+    const notAvailableDatesFix = typeof notAvailableDates === 'undefined' ? [] : notAvailableDates;
+    const notAvailableDatesFormatted = notAvailableDatesFix
+      .map((item) => item.split('-'))
+      .map((item) => {
+        const d = new Date(item);
+        return [d.getFullYear(), d.getMonth(), d.getDate()];
+      });
+
     const that = this;
     window.$(function() {
       window.$('.input-start-date-lalala').pickadate({
         min: new Date(),
+        disable: notAvailableDatesFormatted,
         onSet: that.selectedDateHandler
       });
 

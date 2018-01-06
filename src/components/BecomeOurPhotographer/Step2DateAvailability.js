@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import DayPicker, { DateUtils } from 'react-day-picker';
+import moment from 'moment';
 // import { Link } from 'react-router-dom';
 import { database } from "../../services/firebase";
 
@@ -32,16 +33,24 @@ class Step2DateAvailability extends Component {
     evt.preventDefault();
     this.setState({ isUploading: true });
 
-    database
-      .database()
+    const db = database.database();
+    const notAvailableDatesAsDateStringList = this.state.selectedDays.map(item => moment(item).format('YYYY-MM-DD'));
+
+    db
       .ref('photographer_service_information')
       .child(this.props.user.uid)
       .update({
-        notAvailableDates: this.state.selectedDays,
+        notAvailableDates: notAvailableDatesAsDateStringList,
         updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
-        this.setState({ isUploading: false });
+        db
+          .ref('user_metadata')
+          .child(this.props.user.uid)
+          .update({ notAvailableDates: notAvailableDatesAsDateStringList })
+          .then(() => {
+            this.setState({ isUploading: false });
+          });
       })
       .then(() => {
         this.props.history.push('/become-our-photographer/step-2-3');
@@ -49,7 +58,7 @@ class Step2DateAvailability extends Component {
       .catch((error) => {
         this.setState({ isUploading: false });
         console.log(error);
-      })
+      });
   };
 
   render() {
