@@ -182,9 +182,10 @@ export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
     dispatch({ type: 'PROFILE_MANAGER_UPDATING_START' });
     dispatch(setActiveTab(6));
 
+    const db = database.database();
     const notAvailableDatesAsDateStringList = notAvailableDates.map(item => moment(item).format('YYYY-MM-DD'));
-    database
-      .database()
+
+    db
       .ref('photographer_service_information')
       .child(uid)
       .update({
@@ -192,7 +193,13 @@ export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
         updated: firebase.database.ServerValue.TIMESTAMP
       })
       .then(() => {
-        dispatch({ type: 'PROFILE_MANAGER_UPDATING_SUCCESS' });
+        db
+          .ref('user_metadata')
+          .child(uid)
+          .update({ notAvailableDates: notAvailableDatesAsDateStringList })
+          .then(() => {
+            dispatch({ type: 'PROFILE_MANAGER_UPDATING_SUCCESS' });
+          });
       })
       .then(() => {
         dispatch(fetchPhotographerServiceInformation(uid));
@@ -202,6 +209,6 @@ export const updateScheduleNotAvailableDates = (uid, notAvailableDates) => {
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
   };
 };
