@@ -6,7 +6,7 @@ import moment from 'moment';
 import { reservationInitializeAction } from "../../store/actions/reservationActions";
 import { searchInformationLog } from "../../store/actions/userActions";
 import { generateReservationNumber } from "../../helpers/helpers";
-import{ RESERVATION_UNPAID } from "../../services/userTypes";
+import{ RESERVATION_UNPAID, USER_TRAVELLER } from "../../services/userTypes";
 
 const StartServicePrice = props => {
   const { loading, packagesPrice } = props;
@@ -275,7 +275,9 @@ class PhotographerDetailReservationForm extends Component {
   }
 
   render() {
-    const { photographerServiceInformation: { loading } } = this.props;
+    const {
+      photographerServiceInformation: { loading }
+    } = this.props;
 
     const {
       packagesPrice: packagesPriceProcessed,
@@ -283,6 +285,7 @@ class PhotographerDetailReservationForm extends Component {
     } = this.state;
 
     const packageSelected = packagesPriceProcessed.filter(item => item.id === packageId)[0];
+    const userType = get(this.props.user, 'userMetadata.userType', null);
 
     return (
       <div>
@@ -371,17 +374,19 @@ class PhotographerDetailReservationForm extends Component {
           </div>
 
           <div id="photographer-reservation-botton">
-            <button
-              onClick={this.handleReserve}
-              id="photographer-reservation-btn"
-              className="button radius-8 key-color"
-            >
-              Reserve
-            </button>
-            {/*<div style={{color:'#999'}}>
-              or<br />
-              <a style={{color:'#999', textDecoration:'underline'}} href="/">Contact to your photographer</a>
-            </div>*/}
+            {
+              !userType || userType === USER_TRAVELLER
+                ? (
+                  <button
+                    onClick={this.handleReserve}
+                    id="photographer-reservation-btn"
+                    className="button radius-8 key-color"
+                  >
+                    Reserve
+                  </button>
+                )
+                : null
+            }
           </div>
         </div>
       </div>
