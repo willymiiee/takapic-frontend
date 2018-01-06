@@ -26,23 +26,23 @@ const PhotographerRegisterStep1Form = props => {
     <div>
       { message && <p style={{ color: 'red', marginBottom: '25px', width: '100%', textAlign: 'center', fontSize: '1em' }}>{ message }</p> }
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-flex">
         <div className={`form-group ${errors.completeName && touched.completeName && 'has-error'}`}>
-          <label className="control-label">Your complete name</label>
+          <label className="control-label">Name</label>
           <input
             name="completeName"
             type="text"
             value={values.completeName}
             onChange={handleChange}
             className="form-control"
-            placeholder="Enter your complete name"
+            placeholder="Enter your full name"
             autoComplete="off"
           />
-          {errors.completeName && touched.completeName && <label className="control-label">{errors.completeName}</label>}
         </div>
+        {errors.completeName && touched.completeName && <label className="control-label error-msg">{errors.completeName}</label>}
 
         <div className={`form-group ${errors.email && touched.email && 'has-error'}`}>
-          <label className="control-label">Your valid email</label>
+          <label className="control-label">Email</label>
           <input
             name="email"
             type="text"
@@ -52,43 +52,43 @@ const PhotographerRegisterStep1Form = props => {
             placeholder="Enter your valid email address"
             autoComplete="off"
           />
-          {errors.email && touched.email && <label className="control-label">{errors.email}</label>}
         </div>
+        {errors.email && touched.email && <label className="control-label error-msg">{errors.email}</label>}
 
         <div className={`form-group ${errors.password && touched.password && 'has-error'}`}>
-          <label className="control-label">Choose a password</label>
+          <label className="control-label">Password</label>
           <input
             name="password"
             type="password"
             value={values.password}
             onChange={handleChange}
             className="form-control lalalalilili"
-            placeholder="Choose a password"
+            placeholder="Create a password"
             autoComplete="off"
           />
-          {errors.password && touched.password && <label className="control-label">{errors.password}</label>}
         </div>
+        {errors.password && touched.password && <label className="control-label error-msg">{errors.password}</label>}
 
         <div className={`form-group ${errors.passwordConfirm && touched.passwordConfirm && 'has-error'}`}>
-          <label className="control-label">Confirm / retype your password</label>
+          <label className="control-label">Password Confirmation</label>
           <input
             name="passwordConfirm"
             type="password"
             value={values.passwordConfirm}
             onChange={handleChange}
             className="form-control"
-            placeholder="Confirm / retype your password"
+            placeholder="Retype your password"
             autoComplete="off"
           />
-          {errors.passwordConfirm && touched.passwordConfirm && <label className="control-label">{errors.passwordConfirm}</label>}
         </div>
+        {errors.passwordConfirm && touched.passwordConfirm && <label className="control-label error-msg">{errors.passwordConfirm}</label>}
 
         <button
           type="submit"
-          className="button next-btn"
+          className="button radius-5 key-color width50 margin-top-40 margin-bottom-15"
           disabled={isSubmitting}
         >
-          { isSubmitting ? 'Signing you up, Please wait...' : 'Next' }
+          { isSubmitting ? 'Signing you up, Please wait...' : 'Next Step' }
         </button>
       </form>
     </div>
@@ -158,7 +158,7 @@ class PhotographerRegistrationStep1 extends Component {
           <div className="panel setup-content" id="step-1">
             <div className="panel-body">
               <h2 className="text-center">
-                Register as a takapic photographer
+                Get started as photographer
               </h2>
 
               <div className="text-center social-media-signup">
@@ -167,30 +167,31 @@ class PhotographerRegistrationStep1 extends Component {
                   Facebook or Google account
                 </p>
 
-                <div className="social-media-btn">
-                  <button
-                    type="button"
-                    className="fb-btn"
-                    onClick={this.signUpFacebook}
-                  >
-                    <img
-                      src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
-                      alt="Sign up with Facebook"
-                    />
-                    Sign up with Facebook
-                  </button>
-
-                  <button
-                    type="button"
-                    className="gmail-btn"
-                    onClick={this.signUpGoogle}
-                  >
-                    <img
-                      src="https://res.cloudinary.com/debraf3cg/image/upload/v1514972448/assets/btn_google_light_normal_ios.png"
-                      alt="Sign up with Google"
-                    />
-                    Sign up with Google
-                  </button>
+                <div className="social-media-login-sign-in row">
+                  <div className="col-sm-6">
+                    <div
+                      type="button"
+                      className="btn-sign-in-facebook"
+                      onClick={this.signUpFacebook}>
+                      <img
+                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
+                        alt="Sign up with Facebook"
+                      />
+                      Sign up with Facebook
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div
+                      type="button"
+                      className="btn-sign-in-gmail"
+                      onClick={this.signUpGoogle}>
+                      <img
+                        src="https://res.cloudinary.com/debraf3cg/image/upload/v1515164506/assets/google.png"
+                        alt="Sign up with Google"
+                      />
+                      Sign up with Google
+                    </div>
+                  </div>
                 </div>
 
                 <p>or fill the form below</p>

@@ -26,7 +26,7 @@ const TravellerRegistrationForm = props => {
     <div>
       { message && <p style={{ color: 'red', marginBottom: '25px', width: '100%', textAlign: 'center', fontSize: '1em' }}>{ message }</p> }
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-flex">
         <div className={`form-group ${errors.completeName && touched.completeName && 'has-error'}`}>
           <label className="control-label">Name</label>
           <input
@@ -38,8 +38,8 @@ const TravellerRegistrationForm = props => {
             placeholder="Enter your full name"
             autoComplete="off"
           />
-          {errors.completeName && touched.completeName && <label className="control-label">{errors.completeName}</label>}
         </div>
+        {errors.completeName && touched.completeName && <label className="control-label error-msg">{errors.completeName}</label>}
 
         <div className={`form-group ${errors.email && touched.email && 'has-error'}`}>
           <label className="control-label">Email</label>
@@ -52,8 +52,8 @@ const TravellerRegistrationForm = props => {
             placeholder="Enter your valid email address"
             autoComplete="off"
           />
-          {errors.email && touched.email && <label className="control-label">{errors.email}</label>}
         </div>
+        {errors.email && touched.email && <label className="control-label error-msg">{errors.email}</label>}
 
         <div className={`form-group ${errors.password && touched.password && 'has-error'}`}>
           <label className="control-label">Password</label>
@@ -66,8 +66,8 @@ const TravellerRegistrationForm = props => {
             placeholder="Create a password"
             autoComplete="off"
           />
-          {errors.password && touched.password && <label className="control-label">{errors.password}</label>}
         </div>
+        {errors.password && touched.password && <label className="control-label error-msg">{errors.password}</label>}
 
         <div className={`form-group ${errors.passwordConfirm && touched.passwordConfirm && 'has-error'}`}>
           <label className="control-label">Password Confirmation</label>
@@ -80,12 +80,12 @@ const TravellerRegistrationForm = props => {
             placeholder="Retype your password"
             autoComplete="off"
           />
-          {errors.passwordConfirm && touched.passwordConfirm && <label className="control-label">{errors.passwordConfirm}</label>}
         </div>
+        {errors.passwordConfirm && touched.passwordConfirm && <label className="control-label error-msg">{errors.passwordConfirm}</label>}
 
         <button
           type="submit"
-          className="button radius-5 key-color width50"
+          className="button radius-5 key-color width50 margin-top-40 margin-bottom-15"
           disabled={isSubmitting}
         >
           { isSubmitting ? 'Signing you up, Please wait...' : 'Next Step' }
@@ -158,7 +158,7 @@ class TravellerRegistration extends Component {
           <div className="panel setup-content" id="step-1">
             <div className="panel-body">
               <h2 className="text-center" style={{fontWeight:'bold'}}>
-                Get started as photographer
+                Hi Traveller!
               </h2>
 
               <div className="text-center social-media-signup">
