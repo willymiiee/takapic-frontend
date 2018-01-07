@@ -79,7 +79,18 @@ export const userSignupByEmailPassword = (
       .then(function(result) {
 
         // Here we send email the email verification
-        result.sendEmailVerification();
+        axios
+          .post(process.env.REACT_APP_API_HOSTNAME + '/api/email-service/email-verification', {
+            receiverEmail: email,
+            receiverName: displayName,
+            uid: result.uid
+          })
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
         createUserMetadata(result.uid, email, userType, displayName)
           .then(() => {
@@ -245,18 +256,18 @@ export const loggingIn = (email, password) => {
               refreshToken: user.refreshToken
             };
 
-            dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-            fetchUserMetadata(user.uid, dispatch);
+            /*dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+            fetchUserMetadata(user.uid, dispatch);*/
 
-            /*if (!user.emailVerified) {
+            if (!user.emailVerified) {
               dispatch({
                 type: 'USER_AUTH_LOGIN_ERROR',
                 payload: { message: 'User not verified.' },
               });
             } else {
               dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-              fetchUserMetadata('email', email, dispatch);
-            }*/
+              fetchUserMetadata(user.uid, dispatch);
+            }
           }
         });
       })
