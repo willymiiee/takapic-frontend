@@ -8831,7 +8831,7 @@ a.dashboard-responsive-nav-trigger {
 }
 
 .messages-container-inner .messages-inbox {
-  max-width: 340px;
+  /*max-width: 340px;*/
   border-right: 1px solid #eaeaea;
 }
 
@@ -13182,7 +13182,7 @@ h4 span.headline-detail {
     max-width: 100%;
     width: 100%;
     border-right: none;
-    display: none;
+    /*display: none;*/
   }
 
   /* Dashboard Nav - END */
