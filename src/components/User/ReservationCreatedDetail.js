@@ -125,6 +125,11 @@ class ReservationCreatedDetail extends Component {
                     }
                   </div>
                   <div className="message-content">
+                    <div className="header-message-content">
+                      Chat
+                      <i className="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                    <div className="list-message">
                     {
                       this.state.messages && Object.keys(this.state.messages).map((item) => {
                         const photoProfileUrl = uidMapping[this.state.messages[item].sender].photoProfileUrl;
@@ -139,7 +144,7 @@ class ReservationCreatedDetail extends Component {
                             </div>
 
                             <div className="message-text">
-                              <p style={{fontWeight: 'bold', fontSize: '0.6em'}}>
+                              <p className="time">
                                 {moment(this.state.messages[item].created).format('dddd, MMMM Do YYYY HH:mm a')}
                               </p>
                               <p>{this.state.messages[item].message}</p>
@@ -148,13 +153,13 @@ class ReservationCreatedDetail extends Component {
                         )
                       })
                     }
+                    </div>
 
                     <div className="clearfix"/>
 
                     <div className="message-reply">
-                      <textarea
-                        cols={40}
-                        rows={1}
+                      <input
+                        type="text"
                         placeholder="Your Message"
                         value={this.state.messageText}
                         onChange={this.messageTextChangeHandler}
@@ -164,7 +169,8 @@ class ReservationCreatedDetail extends Component {
                         className="button"
                         onClick={this.sendMessageHandler}
                       >
-                        {this.state.isSendingMessage ? 'Sending...' : 'Send Message'}
+                        {this.state.isSendingMessage ? 'Sending..' : 'Send'}
+
                       </button>
                     </div>
                   </div>
