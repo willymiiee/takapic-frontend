@@ -62,65 +62,74 @@ const ReservationDetailInfo = (props) => {
         </div>
       </div>
 
+      <hr/>
+
       <div className="reservation-status-details-wrapper">
-        <h4>Reservation Number</h4>
-        <p>{ reservationId }</p>
+        <h4 className="has-dot">Reservation Number</h4>
+        <p className="has-border">{ reservationId }</p>
       </div>
 
       <div className="reservation-status-details-wrapper">
-        <h4>Status Reservation</h4>
-        <p>{ status }</p>
+        <h4 className="has-dot">Status Reservation</h4>
+        <p className="has-border">{ status }</p>
       </div>
 
       <div className="reservation-status-details-wrapper">
-        <h4>Created</h4>
-        <p>{ moment(created).format('MMMM Do YYYY HH:mm a') }</p>
+        <h4 className="has-dot">Created</h4>
+        <p className="has-border">{ moment(created).format('MMMM Do YYYY HH:mm a') }</p>
       </div>
 
       <div className="reservation-trip-details-wrapper">
-        <h4>Trip Details</h4>
+        <h4 className="has-dot">Trip Details</h4>
+        <div className="has-border border-child">
+          <p className="reservation-trip-details-item-title">Photo shoot schedule:</p>
+          <p>{ startDateAndTimeDisplay } - { toEndTime } ( { hours } hours )</p>
+        </div>
 
-        <p className="reservation-trip-details-item-title">Photo shoot schedule:</p>
-        <p>{ startDateAndTimeDisplay } - { toEndTime } ( { hours } hours )</p>
-
-        <p className="reservation-trip-details-item-title">Meeting point:</p>
-        <p>
-          { meetingPointName }
-          <br/>
-          { formattedAddress }
-          <br/>
-          { placeLocationNotes }
-        </p>
+        <div className="has-border border-child">
+          <p className="reservation-trip-details-item-title">Meeting point:</p>
+          <p>
+            { meetingPointName }
+            <br/>
+            { formattedAddress }
+            <br/>
+            { placeLocationNotes }
+          </p>
+        </div>
 
         <MeetingPointMap lat={lat} long={long}/>
 
-        <p className="reservation-trip-details-item-title" style={{ marginTop: '20px' }}>
-          Entrant:
-        </p>
-        <p>
-          <span>Adults: </span>{ adults }
-          <br/>
-          <span>Childrens: </span>{ childrens }
-          <br/>
-          <span>Infants: </span>{ infants }
-        </p>
+
+        <div className="has-border border-child" style={{ marginTop: '20px' }}>
+          <p className="reservation-trip-details-item-title">
+            Entrant:
+          </p>
+          <p>
+            <span>{ adults } Adults</span>
+            <br/>
+            <span>{ childrens } Childrens</span>
+            <br/>
+            <span>{ infants } Infants</span>
+          </p>
+        </div>
       </div>
-
+      <hr/>
       <div className="reservation-payment-details-wrapper">
-        <h4>Payment</h4>
+        <h4 className="has-dot">Payment</h4>
+        <div className="has-border">
+          <p style={{marginBottom:'10px'}}>
+            Photographer Fee <span className="pull-right">USD { photographerFee }</span>
+          </p>
 
-        <p>
-          Photographer Fee <span className="pull-right">USD { photographerFee }</span>
-        </p>
-
-        <p>
-          Service Fee <span className="pull-right">USD { serviceFee }</span>
-        </p>
-        <p>
-          Credit <span className="pull-right">USD { credit }</span>
-        </p>
-
-        <p>
+          <p style={{marginBottom:'10px'}}>
+            Service Fee <span className="pull-right">USD { serviceFee }</span>
+          </p>
+          <p style={{marginBottom:'0px'}}>
+            Credit <span className="pull-right">USD { credit }</span>
+          </p>
+        </div>
+        <hr/>
+        <p className="like-btn grey-color">
           <strong>
             Total <span className="pull-right">USD { total }</span>
           </strong>

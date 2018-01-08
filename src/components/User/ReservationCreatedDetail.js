@@ -27,8 +27,18 @@ class ReservationCreatedDetail extends Component {
     this.state = {
       messages: null,
       messageText: '',
-      isSendingMessage: false
+      isSendingMessage: false,
+      chatShow: true
     };
+    this.minimize = this.minimize.bind(this);
+    this.maxsimize = this.maxsimize.bind(this);
+  }
+
+  minimize() {
+    this.setState({chatShow: false});
+  }
+  maxsimize() {
+    this.setState({chatShow: true});
   }
 
   componentDidMount() {
@@ -126,10 +136,10 @@ class ReservationCreatedDetail extends Component {
                   </div>
                   <div className="message-content">
                     <div className="header-message-content">
-                      Chat
-                      <i className="fa fa-minus" aria-hidden="true"></i>
+                      <p className={this.state.chatShow ? "" : "pointer"} onClick={this.maxsimize}>Chat</p>
+                      <i className={this.state.chatShow ? "fa fa-minus" : ""} aria-hidden="true" onClick={this.minimize}></i>
                     </div>
-                    <div className="list-message">
+                    <div className= {this.state.chatShow ? "list-message" : "list-message hide"}>
                     {
                       this.state.messages && Object.keys(this.state.messages).map((item) => {
                         const photoProfileUrl = uidMapping[this.state.messages[item].sender].photoProfileUrl;
@@ -155,12 +165,10 @@ class ReservationCreatedDetail extends Component {
                     }
                     </div>
 
-                    <div className="clearfix"/>
-
-                    <div className="message-reply">
+                    <div className={this.state.chatShow ? "message-reply" : "message-reply hide"}>
                       <input
                         type="text"
-                        placeholder="Your Message"
+                        placeholder="Say something.."
                         value={this.state.messageText}
                         onChange={this.messageTextChangeHandler}
                       />

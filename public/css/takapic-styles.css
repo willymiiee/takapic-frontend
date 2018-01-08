@@ -1593,6 +1593,13 @@ img.cover {
     border-left: 2px solid #eee;
     padding: 15px 0 20px 23px;
 }
+.border-child {
+    padding: 10px 0 10px 23px;
+    margin-bottom: 10px;
+}
+.border-child p {
+    margin-bottom: 0px;
+}
 
 .tags {
     font-size: 0;
@@ -4576,6 +4583,16 @@ figcaption.action-btn a .fa {
   margin-right: auto;
   margin-left: 0;
   display: block;
+}
+.like-btn {
+    padding: 16px 23px;
+    border-radius: 10px;
+}
+.grey-color {
+    background-color: #66676b !important;
+}
+.like-btn.key-color,.like-btn.grey-color {
+    color: white;
 }
 @media (max-width: 480px) {
   .key-color.width50, .key-color.width80, .key-color.width1 {
