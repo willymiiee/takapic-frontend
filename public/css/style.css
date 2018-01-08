@@ -8832,7 +8832,7 @@ a.dashboard-responsive-nav-trigger {
 
 .messages-container-inner .messages-inbox {
   /*max-width: 340px;*/
-  border-right: 1px solid #eaeaea;
+  /*border-right: 1px solid #eaeaea;*/
 }
 
 .messages-container-inner .messages-inbox ul li a {
