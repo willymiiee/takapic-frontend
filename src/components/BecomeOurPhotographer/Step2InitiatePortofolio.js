@@ -161,7 +161,7 @@ class Step2IntiatePortofolio extends Component {
           <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Let start building your portfolio! (Maximum 10 photos)</h3>
 
           <div className="row">
-            <div className="col-sm-7 margin-top-15 margin-bottom-30">
+            <div className="col-sm-7 margin-top-15 margin-bottom-70">
               <div>
 
                 <div id="photo-preview">
@@ -214,7 +214,7 @@ class Step2IntiatePortofolio extends Component {
                   }
                 </div>
 
-                <div style={{ marginTop:'40px' }}>
+                <div>
                   <input
                       accept="image/*"
                       ref={ref => (this._uploadFile = ref)}

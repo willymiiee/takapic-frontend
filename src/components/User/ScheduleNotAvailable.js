@@ -86,7 +86,7 @@ class ScheduleNotAvailable extends Component {
           </div>
 
           <div className="col-sm-5 margin-top-15 margin-bottom-30">
-            <div className="card tips" style={{height: '340px'}}>
+            <div className="card tips" style={{height: '380px'}}>
               <h3>About setting your schedule</h3>
               <p>
                 Please block out days which you are <strong>NOT</strong> available. The default setting is all days

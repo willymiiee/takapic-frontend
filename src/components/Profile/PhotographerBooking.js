@@ -141,8 +141,19 @@ class PhotographerBooking extends Component {
         <Page>
           <div className="hidden-xs padding-bottom-60"/>
           <div className="container">
-            <Row>
-              
+            <Row className="m-padding-top-40">
+              <Col sm={6} lg={7}>
+                <BookingForm
+                  reservation={this.props.reservation}
+                  meetingPoints={meetingPoints}
+                  meetingPointChangeHandler={this.meetingPointChangeHandler}
+                  reservationPaymentAction={this.props.reservationPaymentAction}
+                  goToReservationDetail={this.goToReservationDetail}
+                  braintreeInstanceObject={this.state.braintreeInstanceObject}
+                  setBraintreeInstanceObject={this.setBraintreeInstanceObject}
+                  travellerDisplayName={this.props.user.userMetadata.displayName}
+                />
+              </Col>
               <Col sm={6} lg={5}>
                 <div className="card" style={{borderRadius:'3px'}}>
                   <div id="photographer-info">
@@ -208,19 +219,6 @@ class PhotographerBooking extends Component {
                   </div>
                 </div>
               </Col>
-              <Col sm={6} lg={7}>
-                <BookingForm
-                  reservation={this.props.reservation}
-                  meetingPoints={meetingPoints}
-                  meetingPointChangeHandler={this.meetingPointChangeHandler}
-                  reservationPaymentAction={this.props.reservationPaymentAction}
-                  goToReservationDetail={this.goToReservationDetail}
-                  braintreeInstanceObject={this.state.braintreeInstanceObject}
-                  setBraintreeInstanceObject={this.setBraintreeInstanceObject}
-                  travellerDisplayName={this.props.user.userMetadata.displayName}
-                />
-              </Col>
-
             </Row>
           </div>
         </Page>
