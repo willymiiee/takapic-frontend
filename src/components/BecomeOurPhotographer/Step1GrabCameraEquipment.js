@@ -69,7 +69,7 @@ class Step1GrabCameraEquipment extends Component {
   render() {
     return (
       <Page>
-        <div className="container" id="photographer-landing">
+        <div className="container become-photographer-step3" id="photographer-landing">
           <div className="row">
             <div className="col-md-10 col-md-offset-1">
               <div className="card radius-0">
