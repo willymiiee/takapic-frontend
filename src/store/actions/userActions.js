@@ -256,9 +256,6 @@ export const loggingIn = (email, password) => {
               refreshToken: user.refreshToken
             };
 
-            /*dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-            fetchUserMetadata(user.uid, dispatch);*/
-
             if (!user.emailVerified) {
               dispatch({
                 type: 'USER_AUTH_LOGIN_ERROR',
