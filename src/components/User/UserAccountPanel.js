@@ -42,7 +42,7 @@ const UserAccountPanel = (props) => {
       <div className="padding-bottom-30"/>
       <div className="container">
         <nav className="user-account-panel-menubar">
-          <ul className="smooth-card padding-0">
+          <ul className="smooth-card padding-0 m-horizontal-scroll">
             {
               userType && menus.hasOwnProperty(userType) && menus[userType].map((item, index) => (
                 <li key={index}>

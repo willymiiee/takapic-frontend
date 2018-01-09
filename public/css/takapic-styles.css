@@ -3564,6 +3564,11 @@ PHASE 1 BOP - New Photographer Account Register
     line-height:20px !important;
 }
 
+.become-photographer-step3 .Select--multi .Select-value {
+    line-height: 21px !important;
+    margin-bottom: 4px;
+}
+
 /*
 ----------------------------------------------------------------------------
 MASONRY STYLES
