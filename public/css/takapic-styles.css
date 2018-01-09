@@ -1824,16 +1824,15 @@ RESPONSIVE
     }
 
     #nav-menu:hover > div {
-        display: inline-block;
+        display: block;
         position: absolute;
-        right: 10px;
-        top: 40px;
-        width: 215px;
-        padding: 5px 0;
+        right: 0;
+        left: 0;
+        padding: 10px 0;
         background: #fff;
         -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
         -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2);
     }
 
     #nav-search {
@@ -2405,18 +2404,16 @@ RESPONSIVE
         color: #333;
         text-decoration: none;
     }
-
     #nav-menu:hover > div {
-        display: inline-block;
+        display: block;
         position: absolute;
-        right: 10px;
-        top: 40px;
-        width: 215px;
-        padding: 5px 0;
+        right: 0;
+        left: 0;
+        padding: 10px 0;
         background: #fff;
         -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
         -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2);
     }
 
     #promo-brand {
@@ -3132,6 +3129,9 @@ p.l-h-22 {
 .padding-0 {
   padding: 0 !important;
 }
+.padding-top-40 {
+    padding-top: 40px !important;
+}
 .margin-0 {
   margin: 0 !important;
 }
@@ -3140,6 +3140,9 @@ p.l-h-22 {
 }
 .margin-top-40{
   margin-top: 40 !important;
+}
+.margin-top-70{
+  margin-top: 70 !important;
 }
 .margin-bottom-15{
   margin-top: 15 !important;
@@ -3205,6 +3208,9 @@ PHASE 1 BOP - New Photographer Account Register
     #photographer-landing .setup-content {
         width: 100%;
         margin: 16px auto 0 auto;
+    }
+    .m-padding-top-40 {
+        padding-top: 40px !important;
     }
 }
 
@@ -3455,6 +3461,17 @@ PHASE 1 BOP - New Photographer Account Register
 }
 
 /*I try to fix input on maps on mobile*/
+@media (max-width: 480px) {
+  #photographer-landing-finish #success-page .wrapper{
+    width: 80%;
+    z-index: 9;
+    top: -80px;
+  }
+  #photographer-landing-finish #success-page .inner-wrapper {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
 @media (max-width: 1024px) {
     .input-place-location-name{
         width: 94% !important;
@@ -4594,11 +4611,6 @@ figcaption.action-btn a .fa {
 .like-btn.key-color,.like-btn.grey-color {
     color: white;
 }
-@media (max-width: 480px) {
-  .key-color.width50, .key-color.width80, .key-color.width1 {
-    width: 100%;
-  }
-}
 
 .form-flex > .form-group {
     display: flex !important;
@@ -4619,6 +4631,20 @@ figcaption.action-btn a .fa {
 .form-flex > .form-group > input {
     margin-bottom: 0;
 }
+
+@media (max-width: 480px) {
+  .key-color.width50, .key-color.width80, .key-color.width1 {
+    width: 100%;
+  }
+  .form-flex > .form-group {
+    display: block !important;
+  }
+  .form-flex > .form-group > label {
+    width: 100%;
+    text-align: left;
+  }
+}
+
 
 #top-photographer-home .btn-photographer-detail {
     /*take out button detail in homepage*/
@@ -4726,12 +4752,69 @@ figcaption.action-btn a .fa {
   border-radius: unset;
   background-color: transparent;
   border-top: 1px solid #dddddd;
+  padding-top: 20px;
 }
 
 .text-capitalize {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
+.horizontal-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .m-horizontal-scroll {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  .nav-tabs>li {
+    float: unset;
+    display: inline-block;
+  }
+  .tab-content {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  #userInformation-pane-3 .row, #userInformation-pane-4 .row, #userInformation-pane-5 .row {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .m-padding-x-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .m-margin-x-0 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  #userInformation-pane-5 td .form-group {
+    min-width: 220px;
+  }
+  /*.m-fixed-btn {
+    z-index: 9;
+    bottom: 6px;
+    right: 16px;
+    left: 16px;
+    top: unset !important;
+    position: fixed !important;
+    width: calc(100% - 32px) !important;
+  }*/
+  .m-fixed-btn-holder {
+    z-index: 9;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 6px 16px;
+    top: unset !important;
+    position: fixed !important;
+    width: 100% !important;
+    background-color: white;
+  }
+}
 
 
 /*-------------------------
@@ -4906,7 +4989,6 @@ figcaption.action-btn a .fa {
 }
 
 /* End of CircularProgressbar Plugin */
-
 .no-photographer-found {
   font-size: 1.2em;
 }

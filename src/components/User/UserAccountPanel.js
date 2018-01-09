@@ -11,7 +11,7 @@ const UserAccountPanel = (props) => {
       <div className="padding-bottom-30"/>
       <div className="container">
         <nav className="user-account-panel-menubar">
-          <ul className="smooth-card padding-0">
+          <ul className="smooth-card padding-0 horizontal-scroll">
             <li>
               <NavLink
                 to="/me/reservations"
@@ -53,7 +53,7 @@ const UserAccountPanel = (props) => {
       </div>
 
       <div className="container">
-        <div className="feature-container smooth-card radius-0">
+        <div className="feature-container smooth-card radius-0 m-padding-16">
           { props.children }
         </div>
       </div>

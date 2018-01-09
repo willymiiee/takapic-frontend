@@ -94,20 +94,20 @@ class Step2SetupMeetingPointA extends Component {
 
           <br/>
 
-          <div className="row">
-            <div className="col-md-8">
+          <div className="row m-margin-x-0">
+            <div className="col-md-8 m-padding-x-0">
               <h4 style={{fontWeight:'bold',marginBottom:'24px'}}>Please choose three different meeting points</h4>
               <hr/>
               <MapWithASearchBox handleAddition={this.handleAddition}/>
             </div>
 
-            <div className="col-md-4 create-point-wrapper">
+            <div className="col-md-4 m-padding-x-0 create-point-wrapper">
               <h4 style={{fontWeight:'bold'}}>Your Created Point</h4>
               <hr/>
               {
                 this.state.meetingPoints.map((p, key) => (
                   <div key={key}>
-                    <div className="row">
+                    <div className="row m-margin-x-0">
                       <div className="number-of-meetpoint col-xs-2">
                         { key + 1 }
                       </div>

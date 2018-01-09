@@ -62,13 +62,13 @@ class MeetingPoints extends Component {
     return (
       <div className="row">
         <div className="row">
-          <div className="col-md-8" style={{paddingLeft:'15px',paddingRight:'15px'}}>
+          <div className="col-md-8 m-padding-x-0" style={{paddingLeft:'15px',paddingRight:'15px'}}>
             <h4>Please choose three different meeting points</h4>
             <hr/>
             <MapWithASearchBox handleAddition={this.handleAddition}/>
           </div>
 
-          <div className="col-md-4 list-of-meeting-points" style={{paddingLeft:'15px',paddingRight:'15px'}}>
+          <div className="col-md-4 m-padding-x-0 list-of-meeting-points" style={{paddingLeft:'15px',paddingRight:'15px'}}>
             <h4>Your Created Point</h4>
             <hr/>
             {

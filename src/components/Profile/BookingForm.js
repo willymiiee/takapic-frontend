@@ -152,15 +152,16 @@ class BookingForm extends Component {
         </p>
 
         <div ref="braintreewrapper"/>
-
-        <button
-          type="submit"
-          className="button radius-8 key-color"
-          disabled={isSubmitting}
-          style={{width:'100%', marginTop:'5px', padding:'11px'}}
-        >
-          { isSubmitting ? 'Please wait, Processing your payment...' : 'Submit Payment' }
-        </button>
+        <div className="m-fixed-btn-holder">
+          <button
+            type="submit"
+            className="button radius-8 key-color m-fixed-btn"
+            disabled={isSubmitting}
+            style={{width:'100%', marginTop:'5px', padding:'11px'}}
+          >
+            { isSubmitting ? 'Please wait, Processing your payment...' : 'Submit Payment' }
+          </button>
+        </div>
 
       </form>
     );

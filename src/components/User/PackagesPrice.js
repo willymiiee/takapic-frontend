@@ -151,7 +151,7 @@ class PackagesPrice extends Component {
     return (
       <div className="row">
         <div className="row">
-          <div className="col-sm-7 margin-top-15 margin-bottom-30">
+          <div className="col-sm-7 table-responsive m-padding-x-0 margin-top-15 margin-bottom-30">
             <Table striped bordered condensed hover>
               <thead>
               <tr>
@@ -187,7 +187,7 @@ class PackagesPrice extends Component {
               </tbody>
             </Table>
           </div>
-          <div className="col-sm-5 margin-top-15 margin-bottom-30">
+          <div className="col-sm-5 m-padding-x-0 margin-top-15 margin-bottom-30">
             <div className="card tips">
               <h3>About Pricing</h3>
               <p>

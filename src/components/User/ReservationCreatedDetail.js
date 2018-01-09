@@ -28,7 +28,7 @@ class ReservationCreatedDetail extends Component {
       messages: null,
       messageText: '',
       isSendingMessage: false,
-      chatShow: true
+      chatShow: false
     };
     this.minimize = this.minimize.bind(this);
     this.maxsimize = this.maxsimize.bind(this);
@@ -120,7 +120,6 @@ class ReservationCreatedDetail extends Component {
           <Page style={{whiteSpace: 'normal'}}>
             <UserAccountPanel>
               <h3>Reservation details</h3>
-
               <div className="messages-container margin-top-0">
                 <div className="messages-container-inner">
 

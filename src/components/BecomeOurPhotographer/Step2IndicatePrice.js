@@ -129,7 +129,7 @@ class Step2IndicatePrice extends Component {
           <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Please indicate your price for each package</h3>
 
           <div className="row">
-            <div className="col-sm-7 margin-top-15 margin-bottom-30">
+            <div className="col-sm-7 margin-top-15 margin-bottom-30 horizontal-scroll">
               <Table striped bordered condensed hover>
                 <thead>
                   <tr>
@@ -148,7 +148,7 @@ class Step2IndicatePrice extends Component {
                           <td style={{ verticalAlign: 'middle', textAlign: 'center' }}>{ item.packageName }</td>
                           <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>{ item.requirement }</td>
                           <td style={{ verticalAlign: 'middle' }}>
-                            <FormGroup style={{ marginBottom: 0 }}>
+                            <FormGroup style={{ marginBottom: 0, minWidth: '170px' }}>
                               <InputGroup>
                                 <FormControl
                                   type="number"
