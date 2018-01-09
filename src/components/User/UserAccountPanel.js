@@ -2,52 +2,59 @@ import React from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { NavLink } from 'react-router-dom';
-import { USER_PHOTOGRAPHER } from "../../services/userTypes";
 
 const UserAccountPanel = (props) => {
+  const menus = {
+    "photographer": [
+      {
+        title: 'Reservations',
+        path: '/me/reservations'
+      },
+      {
+        title: 'Profile Manager',
+        path: '/me/edit/photographer'
+      },
+      {
+        title: 'Photo Album',
+        path: '/me/album'
+      },
+      {
+        title: 'Cash Out',
+        path: '/me/cashout'
+      }
+    ],
+    "traveller": [
+      {
+        title: 'Reservations',
+        path: '/me/reservations'
+      },
+      {
+        title: 'Photo Album',
+        path: '/me/album'
+      }
+    ]
+  };
+
   const userType = get(props, 'user.userMetadata.userType', null);
+
   return (
     <div>
       <div className="padding-bottom-30"/>
       <div className="container">
         <nav className="user-account-panel-menubar">
-          <ul className="smooth-card padding-0 horizontal-scroll">
-            <li>
-              <NavLink
-                to="/me/reservations"
-                activeClassName="user-account-panel-menubar-item-active"
-              >
-                Reservations
-              </NavLink>
-            </li>
-
-            <li>
-              {
-                userType && (
+          <ul className="smooth-card padding-0">
+            {
+              userType && menus.hasOwnProperty(userType) && menus[userType].map((item, index) => (
+                <li key={index}>
                   <NavLink
-                    to={userType === USER_PHOTOGRAPHER ? '/me/edit/photographer' : '/me/reservations'}
+                    to={item.path}
+                    activeClassName="user-account-panel-menubar-item-active"
                   >
-                    Profile manager
+                    { item.title }
                   </NavLink>
-                )
-              }
-            </li>
-
-            <li>
-              <NavLink
-                to="/me/reservations"
-              >
-                Photo album
-              </NavLink>
-            </li>
-
-            <li>
-              <NavLink
-                to="/me/reservations"
-              >
-                Cash out
-              </NavLink>
-            </li>
+                </li>
+              ))
+            }
           </ul>
         </nav>
       </div>

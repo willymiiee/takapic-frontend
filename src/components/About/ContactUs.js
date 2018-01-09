@@ -5,6 +5,10 @@ import {
   FormGroup,
   FormControl
 } from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
+import { Formik } from 'formik';
+import Yup from 'yup';
+import axios from 'axios';
 
 import Page from '../Page';
 
@@ -13,41 +17,41 @@ class ContactUs extends Component{
     super();
     this.state = {
       options: [
-        'Booking booking a photographer',
+        'Booking a photographer',
         'Changing or canceling a booking',
         'Signing up/in issues',
         'Partnership',
         'Becoming a photographer',
         'Others'
       ],
-      selectedOption: ''
+      selectedOption: { label: '', value: '' }
     };
 
     this.cloudinaryInstance = cloudinary.Cloudinary.new({
       cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
       secure: true
     });
-
-    this.interval = null;
-  }
-
-  componentDidMount() {
-    let bgSlide = window.$('#bg-slide');
-    this.interval = setInterval(function() {
-      window.$('#bg-slide > img:first').appendTo(bgSlide);
-    }, 6000);
   }
 
   componentWillUnmount() {
     this.cloudinaryInstance = null;
-    clearInterval(this.interval);
   }
 
   selectChangeHandler = (value) => {
     this.setState({ selectedOption: value });
+    this.props.setFieldValue('topic', value.value);
   };
 
-  render(){
+  render() {
+    const {
+      values,
+      errors,
+      touched,
+      handleChange,
+      handleSubmit,
+      isSubmitting
+    } = this.props;
+
     return (
       <Page>
         <div
@@ -59,80 +63,115 @@ class ContactUs extends Component{
             paddingBottom: '80px'
           }}
         >
-          <div className="container" id="photographer-landing">
-            <h1 style={{
-              fontWeight: 'bold',
-              color: '#fff',
-              fontSize: '30px',
-              margin: '2vw 0 5px',
-              textAlign: 'center'
-            }}>
-              What would you like to tell us about?
-            </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="container" id="photographer-landing">
+              <h1 style={{
+                fontWeight: 'bold',
+                color: '#fff',
+                fontSize: '30px',
+                margin: '2vw 0 5px',
+                textAlign: 'center'
+              }}>
+                What would you like to tell us about?
+              </h1>
 
-            <div className="contact-us-select" style={{ marginTop: '90px', borderRadius:'0px'}}>
-              <Select
-                clearable={false}
-                options={this.state.options.map(item => ({
-                  label: item,
-                  value: item,
-                }))}
-                value={this.state.selectedOption.value}
-                onChange={this.selectChangeHandler}
-              />
+              <div className="contact-us-select" style={{ marginTop: '90px', borderRadius:'0px'}}>
+                <Select
+                  name="topic"
+                  clearable={false}
+                  options={this.state.options.map(item => ({
+                    label: item,
+                    value: item,
+                  }))}
+                  value={this.state.selectedOption.value}
+                  onChange={this.selectChangeHandler}
+                />
+                { errors.topic && touched.topic && <label className="control-label">{ errors.topic }</label> }
+              </div>
+
+              <div className="row contact-us-input">
+                <div className="col-xs-12">
+                  <FormGroup>
+                    <FormControl
+                      type="text"
+                      name="consumerName"
+                      value={values.senderName}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      placeholder="Your Name"
+                    />
+                    { errors.consumerName && touched.consumerName && <label className="control-label">{ errors.consumerName }</label> }
+                  </FormGroup>
+                </div>
+
+                <div className="col-xs-12">
+                  <FormGroup>
+                    <FormControl
+                      type="email"
+                      name="consumerEmail"
+                      value={values.senderEmail}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      placeholder="Email"
+                    />
+                    { errors.consumerEmail && touched.consumerEmail && <label className="control-label">{ errors.consumerEmail }</label> }
+                  </FormGroup>
+                </div>
+
+                <div className="col-xs-12">
+                  <FormGroup>
+                    <textarea
+                      name="description"
+                      value={values.description}
+                      onChange={handleChange}
+                      placeholder="Write your comment here.."
+                    />
+                    { errors.description && touched.description && <label className="control-label">{ errors.description }</label> }
+                  </FormGroup>
+                </div>
+
+                <div style={{marginBottom:'20px'}} className="col-xs-12">
+                  <button
+                    type="submit"
+                    className="button button-white"
+                    style={{width:'100%'}}
+                  >
+                    { isSubmitting ? 'Submitting. Please wait...' : 'Submit' }
+                  </button>
+                </div>
+              </div>
             </div>
-
-            <div className="row contact-us-input">
-              <div className="col-xs-12">
-                <FormGroup>
-                  <FormControl
-                    type="text"
-                    placeholder="Your Name"
-                  />
-                </FormGroup>
-              </div>
-
-              <div className="col-sm-6">
-                <FormGroup>
-                  <FormControl
-                    type="email"
-                    placeholder="Email"
-                  />
-                </FormGroup>
-              </div>
-
-              <div className="col-sm-6">
-                <FormGroup>
-                  <FormControl
-                    type="email"
-                    placeholder="Confirm Email"
-                  />
-                </FormGroup>
-              </div>
-
-              <div className="col-xs-12">
-                <FormGroup>
-                  <textarea
-                    name="selfDescription"
-                    placeholder="Write your comment here.."
-                  />
-                </FormGroup>
-              </div>
-
-              <div style={{marginBottom:'20px'}} className="col-xs-12">
-                <button
-                  type="submit"
-                  className="button button-white"
-                  style={{width:'100%'}}
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
       </Page>
     );
   }
 }
-export default ContactUs;
+
+const ContactUsFormik = Formik({
+  mapPropsToValues: (props) => ({
+    topic: '',
+    consumerName: '',
+    consumerEmail: '',
+    description: ''
+  }),
+  validationSchema: Yup.object().shape({
+    topic: Yup.string().required('Please choose a topic to talk about'),
+    consumerName: Yup.string().required('Please input your name'),
+    consumerEmail: Yup.string().email().required('Please input your valid and frequently used email address'),
+    description: Yup.string().required('Please tell / ask us, what would you like to tell / ask us about?')
+  }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    axios
+      .post(process.env.REACT_APP_API_HOSTNAME + '/api/email-service/contact-takapic', values)
+      .then((response) => {
+        setSubmitting(false);
+        props.history.push('/contact-us-success');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+})(ContactUs);
+
+export default withRouter(ContactUsFormik);

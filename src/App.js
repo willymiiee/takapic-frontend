@@ -46,6 +46,9 @@ import Packages from "./components/About/Packages";
 import ContactUs from "./components/About/ContactUs";
 import HowItWorks from "./components/About/HowItWorks";
 import ReservationsList from './components/User/ReservationsList';
+import PhotoAlbum from './components/User/PhotoAlbum';
+import CashOut from './components/User/CashOut';
+import ContactUsSuccess from './components/About/ContactUsSuccess';
 
 history.listen((location, action) => {
   if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
@@ -84,6 +87,8 @@ const App = (props) => (
         <PrivateRoute path="/me/reservations/:reservationid/:photographerId" component={ReservationCreatedDetail} />
 
         <PrivateRoute path="/me/reservations" component={ReservationsList} />
+        <PrivateRoute path="/me/album" component={PhotoAlbum}/>
+        <PrivateRoute path="/me/cashout" component={CashOut}/>
         <Route path="/search" component={withGATracker(Search)} />
         <Route path="/traveller-registration" component={withGATracker(TravellerRegistration)} />
         <Route
@@ -189,6 +194,10 @@ const App = (props) => (
         <Route
           path="/how-it-works"
           component={withGATracker(HowItWorks)}
+        />
+        <Route
+          path="/contact-us-success"
+          component={ContactUsSuccess}
         />
         <Route path="*" component={NotFoundPage} />
       </Switch>
