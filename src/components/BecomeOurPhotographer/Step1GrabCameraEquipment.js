@@ -72,7 +72,7 @@ class Step1GrabCameraEquipment extends Component {
         <div className="container become-photographer-step3" id="photographer-landing">
           <div className="row">
             <div className="col-md-10 col-md-offset-1">
-              <div className="card radius-0">
+              <div className="card radius-0 m-padding-16">
                 <div className="steps steps-3">
                   <div/>
                   <div/>
@@ -83,7 +83,7 @@ class Step1GrabCameraEquipment extends Component {
 
                 <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>What camera equipment do you have?</h3>
 
-                <div style={{marginBottom: '70px'}}>
+                <div style={{marginBottom: '30px'}}>
                   Body
                   <Creatable
                     multi={true}
@@ -93,7 +93,7 @@ class Step1GrabCameraEquipment extends Component {
                   />
                 </div>
 
-                <div style={{marginBottom: '70px'}}>
+                <div style={{marginBottom: '30px'}}>
                   Lens
                   <Creatable
                     multi={true}

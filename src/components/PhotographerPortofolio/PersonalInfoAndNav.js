@@ -28,6 +28,18 @@ const PersonalInfoAndNav = props => {
 
       <hr/>
 
+      <div className="photographer-portofolio-others" style={{marginTop: '20px'}}>
+        <Link
+          to={`/photographer/${uid}`}
+          className="button key-color radius-5"
+          style={{width: '100%', textAlign: 'center'}}
+        >
+          Contact
+        </Link>
+      </div>
+
+      <hr style={{marginTop:'15px'}}/>
+
       <div className="a-block">
         <NavLink
           to={`/photographer-portofolio/${uid}/gallery`}
@@ -44,16 +56,6 @@ const PersonalInfoAndNav = props => {
         >
           About Me
         </NavLink>
-      </div>
-
-      <div className="photographer-portofolio-others" style={{marginTop: '20px'}}>
-        <Link
-          to={`/photographer/${uid}`}
-          className="button button-white"
-          style={{width: '100%', textAlign: 'center'}}
-        >
-          Contact
-        </Link>
       </div>
     </div>
   );

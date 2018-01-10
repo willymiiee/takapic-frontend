@@ -43,8 +43,18 @@ class Step2IndicatePrice extends Component {
         }
       ],
       currency: null,
-      isUploading: false
+      isUploading: false,
+      modalShow: false
     };
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({modalShow: true});
+  }
+  closeModal() {
+    this.setState({modalShow: false});
   }
 
   componentWillMount() {
@@ -128,6 +138,8 @@ class Step2IndicatePrice extends Component {
 
           <h3 style={{fontWeight:'bold',marginBottom:'24px'}}>Please indicate your price for each package</h3>
 
+          <a className="m-link-modal" onClick={this.openModal}>Read Tips</a>
+
           <div className="row">
             <div className="col-sm-7 margin-top-15 margin-bottom-30 horizontal-scroll">
               <Table striped bordered condensed hover>
@@ -168,7 +180,7 @@ class Step2IndicatePrice extends Component {
               </Table>
             </div>
 
-            <div className="col-sm-5 margin-top-15 margin-bottom-30">
+            <div className={this.state.modalShow ? "col-sm-5 margin-top-15 margin-bottom-30 m-modal" : "col-sm-5 margin-top-15 margin-bottom-30 m-hide"}>
               <div className="card tips">
                 <h3>About Pricing</h3>
                 <p>
@@ -181,6 +193,7 @@ class Step2IndicatePrice extends Component {
                   You can change your prices anytime you like depending on your schedule or free time.
                 </p>
               </div>
+              <i className="fa fa-close" onClick={this.closeModal}></i>
             </div>
           </div>
 

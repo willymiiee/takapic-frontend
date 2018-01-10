@@ -1299,6 +1299,7 @@ button.u:hover {
 
 #photographer-portofolio-about .about-content li {
     font-size: 14px;
+    list-style-type: none;
 }
 
 .photographer-portofolio-about-heading-image-wrapper {
@@ -1402,42 +1403,26 @@ button.u:hover {
 }
 
 #photographer-portofolio-reviews > div > p {
-    line-height: 22px;
-    font-style: italic;
-    display: inline-block;
-    width: calc(100% - 90px);
-    vertical-align: top;
-    padding-left: 15px;
-    font-size: 18px;
+  line-height: 22px;
+  font-style: italic;
+  display: inline-block;
+  width: calc(100% - 90px);
+  vertical-align: top;
+  padding-left: 15px;
+  font-size: 18px;
 }
 
 .photographer-portofolio-nav-item {
-  color: #707070;
+  color: #a9a9a9;
   padding: 6px;
-  text-align: center;
-  border-radius: 50px;
-  border: solid 1px #eee;
-  margin-bottom: 16px;
+  text-align: left;
   transition: 0.2s;
+  border: none;
 }
 
-.photographer-portofolio-nav-item:hover {
-    background: #f4f4f4;
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    border-left: 3px solid #707070;
-    padding: 7px;
-    text-align: center;
-    transition: 0.4s;
-}
-
-.photographer-portofolio-active-nav-item {
-    background: #eee;
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    border-left: 3px solid #707070;
-    padding: 7px;
-    text-align: center;
+.photographer-portofolio-nav-item:hover, .photographer-portofolio-active-nav-item {
+  color: #383838;
+  font-weight: bold;
 }
 
 /*
@@ -4457,13 +4442,20 @@ figcaption.action-btn a .fa {
   right: 15px;
 }
 .how-it-works img {
-    width: 100%;
-    object-fit: cover;
+  width: 100%;
+  object-fit: cover;
 }
 .how-it-works-book {
-    text-align: center;
-    margin-top: 50px;
-    margin-bottom: 50px;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.m-link-modal {
+  text-decoration: underline;
+  color: #196ba0;
+  display: none;
+  cursor: pointer;
 }
 
 @media (min-width: 768px){
@@ -4547,6 +4539,35 @@ figcaption.action-btn a .fa {
         position: relative;
         left: 0;
         right: 0;
+    }
+    .m-link-modal {
+        display: block;
+        text-align: right;
+    }
+    .m-modal {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 9999;
+      left: 0;
+      right: 0;
+      display: block;
+      background: rgba(0,0,0,0.75);
+      margin: 0 !important;
+      padding-top: 20vh;
+      transition: 0.3s;
+    }
+    .m-modal > div{
+      background: white;
+    }
+    .m-modal > i.fa-close {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: white;
+    }
+    .m-hide {
+      display: none !important;
     }
 }
 
@@ -4768,6 +4789,36 @@ figcaption.action-btn a .fa {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
+}
+
+.header-gallery h1{
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #383838;
+  margin-left: 5px;
+}
+.header-gallery .gallery-category span{
+  padding: 7px 20px;
+  border-radius: 5px;
+  border:2px solid #383838;
+  margin-right: 10px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+.header-gallery .gallery-category span.active{
+  background-color: #383838;
+  color: white;
+}
+.header-gallery .gallery-category span:hover{
+  background-color: rgba(112,112,112,0.2);
+  cursor: pointer;
+}
+.header-gallery .gallery-category span.active:hover{
+  background-color: #383838;
+  color: white;
+}
+.header-gallery .gallery-category {
+  margin-bottom: 10px;
 }
 
 @media (max-width: 767px) {
