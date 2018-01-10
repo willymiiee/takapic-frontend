@@ -87,21 +87,25 @@ class PortofolioGalleryyy extends Component {
               <div className="col-sm-3 margin-top-50">
                 <PersonalInfoAndNav photographerUserMetadata={photographerUserMetadata}/>
               </div>
-
-              {/**/}
               <div className="col-sm-9 margin-top-50">
+                <div className="header-gallery">
+                  <h1>Gallery</h1>
+                  <div className="gallery-category">
+                    <span className="active">All</span>
+                    <span>Night</span>
+                    <span>Nature</span>
+                  </div>
+                </div>
+                <hr style={{marginTop:'30px'}}/>
                 <div
                   id="photographer-portofolio-gallery"
-                  className="photographer-portofolio-container"
-                >
+                  className="photographer-portofolio-container">
                   <Gallery
                     images={galleries}
                     margin={4}
                   />
                 </div>
               </div>
-              {/**/}
-
             </div>
           </div>
         </Page>

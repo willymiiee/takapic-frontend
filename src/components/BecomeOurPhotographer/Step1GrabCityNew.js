@@ -200,7 +200,7 @@ class Step1GrabCityNew extends Component {
         <div className="container" id="photographer-landing">
           <div className="row">
             <div className="col-md-10 col-md-offset-1">
-              <div className="card radius-0">
+              <div className="card radius-0 m-padding-16">
                 <div className="steps steps-3">
                   <div className="active" />
                   <div />
