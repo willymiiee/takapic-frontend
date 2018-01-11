@@ -16,9 +16,9 @@ class Footer extends Component {
             <div className="col-sm-4 margin-bottom-30">
               <img
                 className="footer-logo"
-                src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882216/assets/CL_h_small.png"
+                src="https://res.cloudinary.com/debraf3cg/image/upload/v1515688718/assets/CL_h_small.png"
                 alt=""
-                style={{width:'120px',height:'auto'}}
+                style={{width:'130px',height:'auto'}}
               />
 
               <br />

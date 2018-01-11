@@ -21,12 +21,18 @@ class PhotographerRegistrationStep2 extends Component {
   fileSelectChangeHandler = (evt) => {
     evt.preventDefault();
     const fileObject = evt.target.files[0];
-    const fileReader = new FileReader();
+    if (fileObject && fileObject.size <= 5000000) {
+      const fileReader = new FileReader();
 
-    fileReader.onloadend = (evtReader) => {
-      this.setState({ imagePreview: evtReader.target.result, fileObject })
-    };
-    fileReader.readAsDataURL(fileObject);
+      fileReader.onloadend = (evtReader) => {
+        this.setState({ imagePreview: evtReader.target.result, fileObject });
+      };
+      fileReader.readAsDataURL(fileObject);
+
+    } else {
+      alert('Please upload less than 5MB photo');
+      this.setState({ imagePreview: null, fileObject: null });
+    }
   };
 
   uploadPhotoProfileHandler = (evt) => {
@@ -75,6 +81,9 @@ class PhotographerRegistrationStep2 extends Component {
         .catch((error) => {
           console.error('Catch error: ', error);
         });
+
+    } else {
+      alert('Please choose a photo profile.');
     }
   };
 
@@ -113,10 +122,10 @@ class PhotographerRegistrationStep2 extends Component {
                 <div className="browse-profile-btn radius-5">
                   <span>Browse</span>
                   <input
+                    type="file"
+                    accept="image/*"
                     className="input-file choose-file"
                     id="btn-choose-profile"
-                    type="file"
-                    name=""
                     onChange={this.fileSelectChangeHandler}
                   />
                 </div>

@@ -159,7 +159,7 @@ button.u:hover {
 }
 
 #nav-logo > img {
-    height: 25px;
+    height: 32px;
 }
 
 #nav-menu {
@@ -1782,7 +1782,7 @@ RESPONSIVE
     }
 
     #nav-logo > img {
-        width: 94px;
+        width: 124px;
         height: auto;
     }
 
