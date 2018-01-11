@@ -28,6 +28,7 @@ class Search extends Component {
         date: !date ? null : moment(date),
       },
       jancuk: null,
+      viewType: ''
     };
   }
 
@@ -47,7 +48,8 @@ class Search extends Component {
     this.setState({ search: { ...this.state.search, destination: !destination ? null : { label: destination } } });
   }
 
-  switchResultView = viewType => {
+  switchResultView = (viewType) => {
+    this.setState({ viewType: viewType });
     if (viewType === 'list') {
       window.$('#result-view-list').addClass('active');
       window.$('#result-view-grid').removeClass('active');
@@ -156,8 +158,7 @@ class Search extends Component {
                 </div>
 
                 <div className="search-box-submit">
-                  <button className="button radius-8 key-color"
-                          onClick={this.handleSearchSubmit}>
+                  <button className="button radius-8 key-color" onClick={this.handleSearchSubmit}>
                     <i className="fa fa-search"/>
                     <span>Search</span>
                   </button>
@@ -196,6 +197,7 @@ class Search extends Component {
                   <SearchResult
                     listings={this.props.photographerListings.results}
                     currenciesRates={this.props.currenciesRates}
+                    viewType={this.state.viewType}
                   />
                 )
                 : (
