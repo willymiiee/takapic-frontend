@@ -27,7 +27,8 @@ class PhotographerDetail extends Component {
   constructor() {
     super();
     this.state = {
-      showModal: false
+      showModal: false,
+      isMobile: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -35,6 +36,10 @@ class PhotographerDetail extends Component {
   }
 
   componentDidMount() {
+    if (window.innerWidth <= 480) {
+      this.setState({ isMobile: true });
+    }
+
     if (this.props.photographerServiceInformation.loading) {
       const { match: { params: { photographerId } } } = this.props;
       this.props.fetchPhotographerServiceInformation(photographerId);
@@ -133,7 +138,11 @@ class PhotographerDetail extends Component {
                     photosPortofolio.map((item, index) => (
                       <div key={`portofolio-photo-${index}`} style={{ textAlign: 'center' }}>
                         <img
-                          src={cloudinaryInstance.url(item.publicId, { width: 1280, crop: 'scale', quality: 'auto:best' })}
+                          src={
+                            this.state.isMobile
+                              ? cloudinaryInstance.url(item.publicId, { width: 360, crop: 'scale', quality: 'auto:best' })
+                              : cloudinaryInstance.url(item.publicId, { width: 1280, crop: 'scale', quality: 'auto:best' })
+                          }
                           className="img-photographer-detail"
                           style={{ display: 'inline-block' }}
                           alt="This is an alt text of the content"
@@ -153,17 +162,22 @@ class PhotographerDetail extends Component {
               Make Reservation
             </button>
 
-            <hr style={{marginTop:'50px', marginBottom:'50px'}} />
+            <hr style={{ marginTop:'50px', marginBottom:'50px' }} />
 
             <Modal id="reservation-modal" show={this.state.showModal}>
               <Modal.Body>
                 <div className="close-popup-button">
                   <i className="fa fa-times" onClick={this.closeModal} />
                 </div>
+
                 {
-                  packagesPrice && currenciesRates ? <PhotographerDetailReservationForm
-                    photographerServiceInformation={this.props.photographerServiceInformation}
-                  /> : null
+                  packagesPrice && currenciesRates
+                    ? (
+                      <PhotographerDetailReservationForm
+                        photographerServiceInformation={this.props.photographerServiceInformation}
+                      />
+                    )
+                    : null
                 }
               </Modal.Body>
             </Modal>

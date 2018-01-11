@@ -24,7 +24,7 @@ class SearchResult extends Component {
       <div id="result" className="search-result-page">
         {
           this.state.listings.map((item, index) => (
-            <SingleItem key={index} item={item} />
+            <SingleItem key={index} item={item} viewType={this.props.viewType} />
           ))
         }
       </div>
