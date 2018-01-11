@@ -134,7 +134,7 @@ class ReservationCreatedDetail extends Component {
                     }
                   </div>
                   <div className="message-content">
-                    <div className="header-message-content">
+                    <div className="header-message-content key-color">
                       <p className={this.state.chatShow ? "" : "pointer"} onClick={this.maxsimize}>Chat</p>
                       <i className={this.state.chatShow ? "fa fa-minus" : ""} aria-hidden="true" onClick={this.minimize}></i>
                     </div>
@@ -173,7 +173,7 @@ class ReservationCreatedDetail extends Component {
                       />
 
                       <button
-                        className="button"
+                        className="button key-color"
                         onClick={this.sendMessageHandler}
                       >
                         {this.state.isSendingMessage ? 'Sending..' : 'Send'}
