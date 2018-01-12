@@ -93,7 +93,8 @@ class PhotosPortofolio extends Component {
     });
 
     if (fileOutOfSize.length > 0) {
-      alert('Some photos will not be uploaded. Because there are one or more photos have more than 10MB size');
+      const filesStr = fileOutOfSize.join("\n");
+      alert("Some photos will not be uploaded. Because there are one or more photos have more than 10MB size\n---------------------------------\n" + filesStr);
     }
   };
 

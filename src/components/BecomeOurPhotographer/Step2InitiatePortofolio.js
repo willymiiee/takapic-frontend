@@ -22,6 +22,7 @@ class Step2IntiatePortofolio extends Component {
   selectImagesHandler = (evt) => {
     // const picaInstance = pica();
     const files = evt.target.files;
+    const fileOutOfSize = [];
 
     Object.keys(files).forEach((itemKey) => {
       // Experimental images upload strategy - keep it commented-out.
@@ -70,14 +71,23 @@ class Step2IntiatePortofolio extends Component {
 
       // Current used images upload strategy
       const fileItemObject = files[itemKey];
-      const fileReader = new FileReader();
+      if (fileItemObject.size <= 10000000) {
+        const fileReader = new FileReader();
 
-      fileReader.onloadend = (evtObj) => {
-        const imageItem = { imagePreview: evtObj.target.result, fileObject: fileItemObject };
-        this.setState({ images: [ ...this.state.images, imageItem ] });
-      };
-      fileReader.readAsDataURL(fileItemObject);
+        fileReader.onloadend = (evtObj) => {
+          const imageItem = {imagePreview: evtObj.target.result, fileObject: fileItemObject};
+          this.setState({images: [...this.state.images, imageItem]});
+        };
+        fileReader.readAsDataURL(fileItemObject);
+      } else {
+        fileOutOfSize.push(fileItemObject.name);
+      }
     });
+
+    if (fileOutOfSize.length > 0) {
+      const filesStr = fileOutOfSize.join("\n");
+      alert("Some photos will not be uploaded. Because there are one or more photos have more than 10MB size\n---------------------------------\n" + filesStr);
+    }
   };
 
   submitImagesHandler = (evt) => {
