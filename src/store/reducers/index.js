@@ -71,6 +71,15 @@ const tellThemThatWasSuccessOrFailed = (state = { whatsup: 'nothing' }, action) 
   return state;
 };
 
+const deletePhotosPortfolio = (state = { isDeleting: false }, action) => {
+  if (action.type === 'PROFILE_MANAGER_DELETE_PHOTOS_PORTFOLIO_START') {
+    return { ...state, isDeleting: true };
+  } else if (action.type === 'PROFILE_MANAGER_DELETE_PHOTOS_PORTFOLIO_SUCCESS') {
+    return { ...state, isDeleting: false };
+  }
+  return state;
+};
+
 const searchInformation = (state = {}, action) => {
   if (action.type === 'SEARCH_INFORMATION_SUBMIT_SEARCH_LOG') {
     return { ...state, ...action.payload };
@@ -99,6 +108,7 @@ const rootReducer = combineReducers({
   reservation,
   photographerListings,
   tellThemThatWasSuccessOrFailed,
+  deletePhotosPortfolio,
   searchInformation,
   reservations,
   locale: (state = 'en-US', action) =>

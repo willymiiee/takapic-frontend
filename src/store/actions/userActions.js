@@ -362,7 +362,9 @@ export const updateUserMetadataDefaultDisplayPicture = (reference, pictureUrl, p
 export const deletePortfolioPhotos = (uid, photosDeleted, imagesExisting) => {
   return (dispatch) => {
     if (photosDeleted.length > 0) {
+      dispatch({ type: 'PROFILE_MANAGER_DELETE_PHOTOS_PORTFOLIO_START' });
       const publicIdList = photosDeleted.map((item) => item.publicId);
+
       axios({
         method: 'DELETE',
         url: `${process.env.REACT_APP_API_HOSTNAME}/api/cloudinary-images/delete`,
@@ -375,7 +377,9 @@ export const deletePortfolioPhotos = (uid, photosDeleted, imagesExisting) => {
             .database()
             .ref('photographer_service_information')
             .child(uid)
-            .update({ photosPortofolio: imagesExisting })
+            .update({ photosPortofolio: imagesExisting });
+
+          dispatch({ type: 'PROFILE_MANAGER_DELETE_PHOTOS_PORTFOLIO_SUCCESS' });
         })
         .then(() => {
           dispatch(fetchPhotographerServiceInformation(uid));
