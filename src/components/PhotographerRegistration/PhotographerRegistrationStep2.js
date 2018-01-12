@@ -21,7 +21,7 @@ class PhotographerRegistrationStep2 extends Component {
   fileSelectChangeHandler = (evt) => {
     evt.preventDefault();
     const fileObject = evt.target.files[0];
-    if (fileObject && fileObject.size <= 5000000) {
+    if (fileObject && fileObject.size <= 10000000) {
       const fileReader = new FileReader();
 
       fileReader.onloadend = (evtReader) => {
@@ -30,7 +30,7 @@ class PhotographerRegistrationStep2 extends Component {
       fileReader.readAsDataURL(fileObject);
 
     } else {
-      alert('Please upload less than 5MB photo');
+      alert('Please upload less than 10MB photo');
       this.setState({ imagePreview: null, fileObject: null });
     }
   };

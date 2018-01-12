@@ -5,7 +5,6 @@ import isEqual from 'lodash/isEqual';
 import uuidv4 from "uuid/v4";
 import axios from "axios";
 import cloudinary from 'cloudinary-core';
-
 import {
   updatePhotographerServiceInfoPhotosPortofolio,
   updateUserMetadataDefaultDisplayPicture,
@@ -75,16 +74,27 @@ class PhotosPortofolio extends Component {
 
   selectImagesHandler = (evt) => {
     const files = evt.target.files;
+    const fileOutOfSize = [];
+
     Object.keys(files).forEach((itemKey) => {
       const fileItemObject = files[itemKey];
-      const fileReader = new FileReader();
+      if (fileItemObject.size <= 10000000) {
+        const fileReader = new FileReader();
 
-      fileReader.onloadend = (evtObj) => {
-        const imageItem = { imagePreview: evtObj.target.result, fileObject: fileItemObject };
-        this.setState({ imagesNewAdded: [ ...this.state.imagesNewAdded, imageItem ] });
-      };
-      fileReader.readAsDataURL(fileItemObject);
+        fileReader.onloadend = (evtObj) => {
+          const imageItem = {imagePreview: evtObj.target.result, fileObject: fileItemObject};
+          this.setState({imagesNewAdded: [...this.state.imagesNewAdded, imageItem]});
+        };
+        fileReader.readAsDataURL(fileItemObject);
+
+      } else {
+        fileOutOfSize.push(fileItemObject.name);
+      }
     });
+
+    if (fileOutOfSize.length > 0) {
+      alert('Some photos will not be uploaded. Because there are one or more photos have more than 10MB size');
+    }
   };
 
   submitImagesHandler = (evt) => {
@@ -153,7 +163,6 @@ class PhotosPortofolio extends Component {
       }
 
     } else if (this.state.imagesExistingDeleted.length > 0) {
-
       this.props.deletePortfolioPhotos(
         this.props.user.uid,
         this.state.imagesExistingDeleted,
@@ -309,11 +318,11 @@ class PhotosPortofolio extends Component {
 
               <div style={{marginTop:'40px'}}>
                 <input
+                  type="file"
                   accept="image/*"
+                  multiple
                   ref={ref => (this._uploadFile = ref)}
                   className="hidden"
-                  multiple
-                  type="file"
                   onChange={this.selectImagesHandler}
                 />
 
@@ -323,6 +332,10 @@ class PhotosPortofolio extends Component {
                 >
                   Browse to add images
                 </button>
+
+                <p style={{ color: 'red', fontSize: '12px' }}>
+                  Please upload less than 10MB photos.
+                </p>
               </div>
             </div>
           </div>
@@ -347,7 +360,7 @@ class PhotosPortofolio extends Component {
         <div className="row">
           <hr/>
           <Button onClick={this.submitImagesHandler} style={{float:'right'}} className="button">
-            { this.state.isUploading ? 'Processing... Please wait.' : 'Update' }
+            { this.state.isUploading || this.props.isDeletingPhotos ? 'Processing... Please wait.' : 'Update' }
           </Button>
         </div>
       </div>
@@ -356,7 +369,7 @@ class PhotosPortofolio extends Component {
 }
 
 export default connect(
-  null,
+  (state) => ({ isDeletingPhotos: state.deletePhotosPortfolio.isDeleting }),
   dispatch => ({
     deletePortfolioPhotos: (uid, photosDeleted, imagesExisting) =>
       dispatch(deletePortfolioPhotos(uid, photosDeleted, imagesExisting)),
