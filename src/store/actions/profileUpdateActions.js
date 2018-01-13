@@ -26,6 +26,7 @@ export const updateBasicInformationUser = (params) => {
     metadataRef
       .update({
         displayName: state.values.name,
+        phoneDialCode: state.values.phoneDialCode,
         phoneNumber: state.values.phoneNumber,
         country: state.location.country,
         countryName: state.location.countryName,

@@ -43,7 +43,7 @@ class PhotosPortofolio extends Component {
       }
     } = this.props;
 
-    if (photosPortofolio.length > 0) {
+    if (typeof photosPortofolio !== 'undefined' && photosPortofolio.length > 0) {
       this.setState({
         imagesExisting: photosPortofolio,
         defaultDisplayPictureUrl

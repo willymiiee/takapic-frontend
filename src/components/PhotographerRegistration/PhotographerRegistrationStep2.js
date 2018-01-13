@@ -18,6 +18,16 @@ class PhotographerRegistrationStep2 extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.user.userMetadata.firstLogin) {
+      database
+        .database()
+        .ref('user_metadata')
+        .child(this.props.user.uid)
+        .update({ firstLogin: false })
+    }
+  }
+
   fileSelectChangeHandler = (evt) => {
     evt.preventDefault();
     const fileObject = evt.target.files[0];
