@@ -22,7 +22,7 @@ class Header extends Component {
 
               {
                 !userMetadata
-                  ? <Link to="/sign-in">Sign in</Link>
+                  ? <Link to="/sign-in">Login</Link>
                   : null
               }
 
