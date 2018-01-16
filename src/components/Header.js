@@ -18,12 +18,14 @@ class Header extends Component {
             <div className="d-margin-top-6">
               {
                 userMetadata ? null : (<Link to="/welcome-photographer" className="key-color radius-5 clr-white d-margin-right-18">Become our photographer</Link>)
+
               }
 
               {
                 !userMetadata
                   ? <Link to="/sign-in">Login</Link>
                   : null
+
               }
 
               <Link to="/how-it-works">How it works</Link>
