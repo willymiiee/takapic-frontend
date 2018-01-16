@@ -258,6 +258,7 @@ class BasicInformation extends Component {
       location.continent = selectChoice.continent || "";
 
       values.currency = currency;
+      values.phoneDialCode = selectChoice.phoneDialCode;
 
       this.setState({location, values});
     }
@@ -419,20 +420,6 @@ class BasicInformation extends Component {
           />
         </FormGroup>
 
-        <FormGroup controlId="formHorizontalPhoneNumber">
-          Phone number
-          <InputGroup>
-            <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
-            <FormControl
-              type="text"
-              placeholder="Enter Your Phone Number"
-              value={values.phoneNumber}
-              onChange={this._handlePhoneNumberChange}
-              style={{height:'47px', paddingLeft:'10px', color:'#333'}}
-            />
-          </InputGroup>
-        </FormGroup>
-
         <FormGroup controlId="formHorizontalCountry">
           Country
           <Select
@@ -465,6 +452,20 @@ class BasicInformation extends Component {
             disabled={!location.country}
             filterOption={() => (true)}
           />
+        </FormGroup>
+
+        <FormGroup controlId="formHorizontalPhoneNumber">
+          Phone number
+          <InputGroup>
+            <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
+            <FormControl
+              type="text"
+              placeholder="Enter Your Phone Number"
+              value={values.phoneNumber}
+              onChange={this._handlePhoneNumberChange}
+              style={{height:'47px', paddingLeft:'10px', color:'#333'}}
+            />
+          </InputGroup>
         </FormGroup>
 
         <FormGroup controlId="formHorizontalLanguageSpoken">

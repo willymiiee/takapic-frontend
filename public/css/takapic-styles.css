@@ -1782,7 +1782,7 @@ RESPONSIVE
     }
 
     #nav-logo > img {
-        width: 94px;
+        width: 124px;
         height: auto;
     }
 
@@ -4831,6 +4831,7 @@ figcaption.action-btn a .fa {
 .header-gallery .gallery-category {
   margin-bottom: 10px;
 }
+
 #userInformation ul.nav-tabs li a {
   border: 1px solid #66676b;
   border-radius: 5px;

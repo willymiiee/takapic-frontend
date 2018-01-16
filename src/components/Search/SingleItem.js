@@ -33,6 +33,13 @@ class SingleItem extends Component {
       rating
     } = this.props.item;
 
+    let loadImageUrl = '';
+    if (this.props.viewType === 'list') {
+      loadImageUrl = this.cloudinaryInstance.url(defaultDisplayPicturePublicId, { width: 1280, crop: 'scale', quality: 'auto:best' });
+    } else {
+      loadImageUrl = this.cloudinaryInstance.url(defaultDisplayPicturePublicId, { width: 360, crop: 'scale', quality: 'auto:best' });
+    }
+
     return (
       <div onClick={() => this.toDetail(uid)}>
       
@@ -40,7 +47,7 @@ class SingleItem extends Component {
 
         <div className="photo">
           <img
-            src={this.cloudinaryInstance.url(defaultDisplayPicturePublicId, { width: 1280, crop: 'scale', quality: 'auto:best' })}
+            src={loadImageUrl}
             alt=""
           />
         </div>

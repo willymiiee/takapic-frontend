@@ -65,7 +65,8 @@ class User extends Component{
       countriesList.push({
         value: countryCode,
         label: countriesSource[key].name,
-        continent: countriesSource[key].continent
+        continent: countriesSource[key].continent,
+        phoneDialCode: countriesSource[key].phone_dial_code
       });
 
       currenciesObjects[countryCode] = countriesSource[key].currency_code;

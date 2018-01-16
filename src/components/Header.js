@@ -11,7 +11,7 @@ class Header extends Component {
       <div id="nav">
         <div className="container">
           <Link to="/" id="nav-logo">
-            <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882216/assets/CL_h_small.png" alt="" />
+            <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1515688718/assets/CL_h_small.png" alt="" />
           </Link>
           <div id="nav-menu">
             <i className="fa fa-bars" />

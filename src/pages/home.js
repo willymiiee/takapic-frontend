@@ -132,9 +132,9 @@ class Home extends Component {
     return (
       <Page>
         <div id="bg-slide">
-          <img src={this.cloudinaryInstance.url('assets/insung-yoon-259475', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
-          <img src={this.cloudinaryInstance.url('assets/hero_1', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
-          <img src={this.cloudinaryInstance.url('assets/hero_2', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
+          <img src={this.cloudinaryInstance.url('assets/hero1', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
+          <img src={this.cloudinaryInstance.url('assets/hero2', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
+          <img src={this.cloudinaryInstance.url('assets/hero3', { width: 1600, crop: 'scale', quality: 'auto:best' })} alt="This is an alt text"/>
         </div>
 
         <div className="container">
