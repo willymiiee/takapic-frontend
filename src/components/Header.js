@@ -15,9 +15,9 @@ class Header extends Component {
           </Link>
           <div id="nav-menu">
             <i className="fa fa-bars" />
-            <div>
+            <div className="d-margin-top-6">
               {
-                userMetadata ? null : (<Link to="/welcome-photographer">Become our photographer</Link>)
+                userMetadata ? null : (<Link to="/welcome-photographer" className="key-color radius-5 clr-white d-margin-right-18">Become our photographer</Link>)
               }
 
               <Link to="/how-it-works">How it works</Link>

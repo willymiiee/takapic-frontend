@@ -231,13 +231,13 @@ class Home extends Component {
             }
           </div>
 
-          <h1 className="title why-be-traveller" style={{marginTop:'60px',marginBottom:'35px', fontSize:'24px'}}>
+          <h1 className="title why-be-traveller" style={{marginTop:'90px',marginBottom:'60px', fontSize:'24px'}}>
             Why be a Takapic traveller?
           </h1>
 
           <div className="row icons-container" style={{ paddingBottom: '25px' }}>
             <div className="col-sm-4">
-              <div className="icon-box-2 with-line">
+              <div className="icon-box-2">
                 <i className="im im-icon-Map2"/>
                 <h3 style={{fontSize:'20px'}}>Travel like a local</h3>
                 <p style={{fontSize:'14px'}}>
@@ -248,7 +248,7 @@ class Home extends Component {
             </div>
 
             <div className="col-sm-4">
-              <div className="icon-box-2 with-line">
+              <div className="icon-box-2">
                 <i className="im im-icon-Camera-5"/>
                 <h3 style={{fontSize:'20px'}}>Capture your precious moments</h3>
                 <p style={{fontSize:'14px'}}>

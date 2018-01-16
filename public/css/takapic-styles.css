@@ -159,7 +159,7 @@ button.u:hover {
 }
 
 #nav-logo > img {
-    height: 32px;
+    height: 36px;
 }
 
 #nav-menu {
@@ -182,8 +182,8 @@ button.u:hover {
 
 #nav-menu > div > a {
     display: inline-block;
-    padding: 0 10px;
-    margin: 13px 0;
+    padding: 6px 13px;
+    margin: 2px 0;
 }
 
 #nav-menu > div > a:hover {
@@ -376,14 +376,14 @@ button.u:hover {
 }
 
 #landing-page-top > img {
-    width: 15%;
+    width: 13%;
 }
 
 #landing-page-top > h1 {
     font-weight: bold;
     color: #fff;
-    font-size: 30px;
-    margin: 2vw 0 5px;
+    font-size: 32px;
+    margin: 0vw 0 5px;
 }
 
 #landing-page-top > p {
@@ -3685,6 +3685,7 @@ PORTOFOLIO CONTENT SLIDER
     padding-right: 16px;
     text-transform: capitalize;
     font-size: 16px;
+    font-weight: bold;
 }
 
 .img-photographer-detail {
@@ -4462,6 +4463,12 @@ figcaption.action-btn a .fa {
     .how-it-works-hide {
         display: none;
     }
+    .d-margin-top-6 {
+        margin-top: 6px !important;
+    }
+    .d-margin-right-18 {
+        margin-right: 18px !important;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 991px){
@@ -4595,6 +4602,9 @@ figcaption.action-btn a .fa {
 }
 .key-color{
     background-color: #3AECCB !important;
+}
+.clr-white {
+    color: white !important;
 }
 
 .button.key-color:hover{
