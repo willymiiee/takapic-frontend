@@ -58,7 +58,7 @@ class ScheduleNotAvailable extends Component {
     return (
       <div className="row">
         <div className="row">
-          <div className="col-sm-7 margin-top-15 margin-bottom-30">
+          <div className="col-sm-7 margin-top-15 margin-bottom-30"  style={{paddingRight:'15px', paddingLeft:'0'}}>
             <div id="schedule" className="card tips">
               <DayPicker
                 selectedDays={this.state.selectedDays}
@@ -85,7 +85,7 @@ class ScheduleNotAvailable extends Component {
             </div>
           </div>
 
-          <div className="col-sm-5 margin-top-15 margin-bottom-30">
+          <div className="col-sm-5 margin-top-15 margin-bottom-30 padding-0">
             <div className="card tips" style={{height: '380px'}}>
               <h3>About setting your schedule</h3>
               <p>

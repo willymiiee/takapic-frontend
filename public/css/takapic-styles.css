@@ -4589,6 +4589,7 @@ figcaption.action-btn a .fa {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+    padding-bottom: 10px;
 }
 .radius-8 {
     -webkit-border-radius: 8px !important;
@@ -4830,16 +4831,62 @@ figcaption.action-btn a .fa {
 .header-gallery .gallery-category {
   margin-bottom: 10px;
 }
+#userInformation ul.nav-tabs li a {
+  border: 1px solid #66676b;
+  border-radius: 5px;
+}
+#userInformation ul.nav-tabs li.active a {
+  background-color: #66676b;
+  color: white;
+}
+#userInformation .nav-tabs>li {
+  float: unset;
+  display: inline-block;
+  margin-right: 6px;
+}
+#userInformation .nav-tabs {
+  border-bottom: none;
+}
+
+#userInformation .tab-content {
+  padding: 28px 0px;
+}
+
+#userInformation .tab-content .row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+.new-version-browse-profile{
+  position: absolute;
+  top: 20px;
+  left: 100px;
+  border:none;
+}
+.new-version-browse-profile .fa-pencil {
+  color: white;
+  border-radius: 50px;
+  padding: 15px;
+  width: 46px;
+  height: 47px;
+}
+.new-version-browse-profile span {
+  display: none;
+}
+.new-version-browse-profile .input-profile-name {
+  display: none;
+}
+.new-version-browse-profile .browse-profile-btn {
+  background: none;
+}
+.new-version-browse-profile .browse-profile-btn:hover .fa-pencil {
+  background-color: #34d4b6 !important;
+}
 
 @media (max-width: 767px) {
   .m-horizontal-scroll {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-  }
-  .nav-tabs>li {
-    float: unset;
-    display: inline-block;
   }
   .tab-content {
     padding-left: 6px;
