@@ -350,12 +350,12 @@ class BasicInformation extends Component {
             <div
               id="filedrag-photo"
               className="center-block img-responsive">
-              <div className="ph" style={{ position: 'relative', margin: '0 auto' }}>
+              <div className="ph" style={{ position: 'relative'}}>
                 {
                   values.photoProfileUrl && (
                     <img
                       src={values.photoProfileUrl}
-                      className="center-block img-circle img-profile"
+                      className="img-circle img-profile"
                       alt="This is alt text"
                     />
                   )
@@ -380,9 +380,10 @@ class BasicInformation extends Component {
               </div>
             </div>
           </div>
-          <div className="browse-profile-holder" style={{marginTop: '30px', display:'flex'}}>
+          <div className="browse-profile-holder new-version-browse-profile" style={{marginTop: '30px', display:'flex'}}>
             <div className="browse-profile-btn">
               <span>Browse</span>
+              <i className="fa fa-pencil key-color" aria-hidden="true"></i>
               <input
                 className="input-file choose-file"
                 id="btn-choose-profile"
