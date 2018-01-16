@@ -64,3 +64,4 @@ export default connect(
     logout: () => dispatch(loggingOut()),
   })
 )(Header);
+
