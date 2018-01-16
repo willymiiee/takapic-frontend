@@ -219,7 +219,7 @@ class PhotosPortofolio extends Component {
     return (
       <div className="row">
         <div className="row">
-          <div className="col-sm-7 m-padding-x-0 margin-top-15 margin-bottom-30">
+          <div className="col-sm-7 margin-top-15 margin-bottom-30" style={{paddingRight:'15px', paddingLeft:'0'}}>
             <div>
               <div id="photo-preview">
                 {
@@ -341,7 +341,7 @@ class PhotosPortofolio extends Component {
             </div>
           </div>
 
-          <div className="col-sm-5 m-padding-x-0 margin-top-15 margin-bottom-30">
+          <div className="col-sm-5 padding-0 margin-top-15 margin-bottom-30">
             <div className="card tips">
               <h3>Why it's important to upload your nice photos</h3>
               <p>

@@ -68,7 +68,7 @@ class MeetingPoints extends Component {
             <MapWithASearchBox handleAddition={this.handleAddition}/>
           </div>
 
-          <div className="col-md-4 m-padding-x-0 list-of-meeting-points" style={{paddingLeft:'15px',paddingRight:'15px'}}>
+          <div className="col-md-4 m-padding-x-0 list-of-meeting-points">
             <h4>Your Created Point</h4>
             <hr/>
             {
