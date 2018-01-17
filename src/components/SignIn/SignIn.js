@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import Yup from 'yup';
 import { loggingIn, userSignupByFacebook, userSignupByGoogle } from '../../store/actions/userActions';
@@ -109,7 +110,19 @@ const SignIn = props => {
                         <label style={{color: 'red'}}>{errors.password}</label>}
 
                         <span className="lost_password">
-                          <a href="/">Lost Your Password?</a>
+                          Wanna book a photographer?
+                          &nbsp;
+                          <Link to="/traveller-registration" className="radius-5" style={{
+                            display: 'inline-block',
+                            padding: '8px',
+                            backgroundColor: '#3AECCB',
+                            color: '#000000',
+                            textDecoration: 'underline'
+                          }}>
+                            Sign Up
+                          </Link>
+                          &nbsp;
+                          now!
                         </span>
                       </p>
 

@@ -20,20 +20,22 @@ class Header extends Component {
                 userMetadata ? null : (<Link to="/welcome-photographer" className="key-color radius-5 clr-white d-margin-right-18">Become our photographer</Link>)
               }
 
+              {
+                !userMetadata
+                  ? <Link to="/sign-in">Sign in</Link>
+                  : null
+              }
+
               <Link to="/how-it-works">How it works</Link>
 
               {
                 userMetadata
                   ? (
                     <Link to={ userMetadata.userType === 'photographer' ? '/me/edit/photographer' : '/me/reservations' }>
-                      [ {userMetadata.displayName} ]
+                      [ { userMetadata.userType === 'photographer' ? 'Profile setting / manage' : 'Reservations' } ]
                     </Link>
                   )
-                  : <Link to="/sign-in">Sign in</Link>
-              }
-
-              {
-                !userMetadata ? <Link to="/traveller-registration">Sign up</Link> : null
+                  : null
               }
 
               {
