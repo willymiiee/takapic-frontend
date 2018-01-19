@@ -5119,3 +5119,24 @@ figcaption.action-btn a .fa {
     margin-top: 140px;
   }
 }
+
+.my-my-tile {
+  margin: 2px;
+  user-select: none;
+  position: relative;
+  float: left;
+  background: rgb(238, 238, 238);
+  padding: 0px;
+}
+
+.my-my-tile-viewport {
+  height: 180px;
+  overflow: hidden;
+}
+
+.my-my-img-item {
+  width: 271px;
+  height: 180px;
+  margin-left: 0px;
+  margin-top: 0px;
+}

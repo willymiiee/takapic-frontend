@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import axios from "axios/index";
+import axios from 'axios';
 import history from '../../services/history';
 import {
   database,
@@ -66,6 +66,18 @@ const createUserMetadata = async (uid, email, userType, displayName) => {
   }
 };
 
+const notifyToSlack = (text) => {
+  const fixText = `[${process.env.REACT_APP_MY_NODE_ENV}] ${text}`;
+  axios
+    .post(`${process.env.REACT_APP_API_HOSTNAME}/api/slack-integration/notify-userbase-status`, { text: fixText })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 export const userSignupByEmailPassword = (
   email,
   password,
@@ -119,6 +131,13 @@ export const userSignupByEmailPassword = (
           payload: { status: 'OK', message: 'User created', uid: result.uid },
         });
 
+        return true;
+      })
+      .then(() => {
+        notifyToSlack('New user registered via Email - Name: ' + displayName + ', Email: ' + email + ', Type: ' + userType);
+        return true;
+      })
+      .then(() => {
         history.push('/photographer-registration/s1-checkmail');
       })
       .catch(function(error) {
@@ -144,6 +163,13 @@ export const userSignupByFacebook = userType => {
 
         createUserMetadata(result.user.uid, email, userType, displayName)
           .then(() => {
+            if (userType === USER_PHOTOGRAPHER) {
+              initialiazePhotographerProfileData(result.user.uid);
+            }
+            console.log('Create user metadata 1st then()');
+            return true;
+          })
+          .then(() => {
             const payload = {
               uid: result.user.uid,
               email: result.user.providerData[0].email,
@@ -154,9 +180,26 @@ export const userSignupByFacebook = userType => {
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+            console.log('Create user metadata 2nd then()');
+            return true;
           })
           .then(() => {
-            fetchUserMetadata(result.user.uid, dispatch);
+            fetchUserMetadata(result.user.uid, dispatch)
+              .then((data) => {
+                const dataC = data;
+                console.log('fetchUserMetadata 1st then() - include notifyToSlack()');
+                notifyToSlack('New user registered via Facebook - Name: ' + data.displayName + ', Email: ' + data.email + ', Type: ' + userType);
+                return dataC;
+              })
+              .then((data) => {
+                console.log('fetchUserMetadata 2nd then()');
+                if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
+                  history.push('/photographer-registration/s2');
+                } else {
+                  history.push('/');
+                }
+              });
+            console.log('Create user metadata 3rd then()');
           })
           .catch(error => {
             console.log(error);
@@ -186,9 +229,15 @@ export const userSignupByGoogle = userType => {
 
         createUserMetadata(uid, email, userType, displayName)
           .then(() => {
+            if (userType === USER_PHOTOGRAPHER) {
+              initialiazePhotographerProfileData(uid);
+            }
+            return true;
+          })
+          .then(() => {
             const payload = {
               uid,
-              email: '-',
+              email: email,
               emailVerified: true,
               displayName,
               photoURL: result.user.photoURL,
@@ -196,9 +245,22 @@ export const userSignupByGoogle = userType => {
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+            return true;
           })
           .then(() => {
-            fetchUserMetadata(uid, dispatch);
+            fetchUserMetadata(uid, dispatch)
+              .then((data) => {
+                const dataC = data;
+                notifyToSlack('New user registered via Google - Name: ' + displayName + ', Email: ' + email + ', Type: ' + userType);
+                return dataC;
+              })
+              .then((data) => {
+                if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
+                  history.push('/photographer-registration/s2');
+                } else {
+                  history.push('/');
+                }
+              })
           })
           .catch(error => {
             console.log(error);
@@ -214,24 +276,17 @@ export const userSignupByGoogle = userType => {
   };
 };
 
-const fetchUserMetadata = (uid, dispatch) => {
-  database.database()
-    .ref('user_metadata')
-    .child(uid)
-    .once('value')
-    .then(snapshot => {
-      const data = snapshot.val();
-      dispatch({
-        type: 'USER_AUTH_LOGIN_SUCCESS_FETCH_USER_METADATA',
-        payload: data,
-      });
+const fetchUserMetadata = async (uid, dispatch) => {
+  const child = database.database().ref('user_metadata').child(uid);
+  const retrieveResult = await child.once('value');
+  const data = await retrieveResult.val();
 
-      if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
-        history.push('/photographer-registration/s2');
-      } else {
-        history.push('/');
-      }
-    });
+  dispatch({
+    type: 'USER_AUTH_LOGIN_SUCCESS_FETCH_USER_METADATA',
+    payload: data,
+  });
+
+  return data;
 };
 
 export const loggingIn = (email, password) => {
@@ -263,7 +318,14 @@ export const loggingIn = (email, password) => {
               });
             } else {
               dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-              fetchUserMetadata(user.uid, dispatch);
+              fetchUserMetadata(user.uid, dispatch)
+                .then((data) => {
+                  if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
+                    history.push('/photographer-registration/s2');
+                  } else {
+                    history.push('/');
+                  }
+                });
             }
           }
         });
