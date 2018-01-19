@@ -33,7 +33,7 @@ const SignIn = props => {
               <div className="panel-body">
                 <div className="mfp-content">
                   <div className="small-dialog-header">
-                    <h3>Sign In</h3>
+                    <h3>Login</h3>
                   </div>
 
                   <div className="social-media-login-sign-in row">
@@ -46,7 +46,7 @@ const SignIn = props => {
                           src="https://res.cloudinary.com/debraf3cg/image/upload/v1514882562/assets/fb-art.png"
                           alt="Sign in with Facebook"
                         />
-                        Sign in with Facebook
+                        Login with Facebook
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -58,7 +58,7 @@ const SignIn = props => {
                           src="https://res.cloudinary.com/debraf3cg/image/upload/v1515164506/assets/google.png"
                           alt="Sign in with Google"
                         />
-                        Sign in with Google
+                        Login with Google
                       </div>
                     </div>
                   </div>
