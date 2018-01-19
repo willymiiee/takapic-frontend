@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import cloudinary from 'cloudinary-core';
-import Gallery from 'react-grid-gallery';
+import Gallery from '../../react-grid-gallery/Gallery';
 import {
   fetchPhotographerServiceInformation,
   resetPhotographerServiceInformationData

@@ -9,8 +9,8 @@ import { generateReservationNumber } from "../../helpers/helpers";
 import{ RESERVATION_UNPAID, USER_TRAVELLER } from "../../services/userTypes";
 
 const StartServicePrice = props => {
-  const { loading, packagesPrice } = props;
-  if (!loading && packagesPrice) {
+  const { packagesPrice } = props;
+  if (packagesPrice) {
     // eslint-disable-next-line
     const prices = packagesPrice.map(item => parseInt(item.price));
     const minPrice = prices.reduce((a, b) => Math.min(a, b));

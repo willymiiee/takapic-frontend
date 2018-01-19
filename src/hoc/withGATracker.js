@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import GoogleAnalytics from 'react-ga';
+import fbpx from '../fbpixel';
 
+fbpx.init();
 GoogleAnalytics.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
 
 const withGATracker = (WrappedComponent, options = {}) => {
@@ -10,6 +12,7 @@ const withGATracker = (WrappedComponent, options = {}) => {
       ...options
     });
     GoogleAnalytics.pageview(page);
+    fbpx.pageTrack();
   };
 
   const HoC = class extends Component {

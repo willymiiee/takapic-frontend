@@ -5823,13 +5823,7 @@ react-google-maps@^8.3.5:
     scriptjs "^2.5.8"
     warning "^3.0.0"
 
-react-grid-gallery@^0.4.7:
-  version "0.4.7"
-  resolved "https://registry.yarnpkg.com/react-grid-gallery/-/react-grid-gallery-0.4.7.tgz#b21dcf3c655a65c093dc3e1816cbc9cacee0373d"
-  dependencies:
-    react-images "^0.5.6"
-
-react-images@^0.5.6:
+react-images@^0.5.14:
   version "0.5.14"
   resolved "https://registry.yarnpkg.com/react-images/-/react-images-0.5.14.tgz#02410a3fa63a4eddfde19a26bb8e3dc758d2d44a"
   dependencies:

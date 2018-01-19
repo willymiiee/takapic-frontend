@@ -26,7 +26,7 @@
     "react-dom-factories": "^1.0.2",
     "react-ga": "^2.4.0",
     "react-google-maps": "^8.3.5",
-    "react-grid-gallery": "^0.4.7",
+    "react-images": "^0.5.14",
     "react-intl-universal": "^1.2.1",
     "react-rating-float": "^1.1.9",
     "react-redux": "^5.0.5",
