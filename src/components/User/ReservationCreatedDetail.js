@@ -13,7 +13,7 @@ import {
   fetchReservationAction,
   resetEmptyReservationData
 } from "../../store/actions/reservationActions";
-import { RESERVATION_REQUESTED } from "../../services/userTypes";
+import { RESERVATION_REQUESTED, RESERVATION_COMPLETED } from "../../services/userTypes";
 
 import './ReservationCreatedDetail.css';
 import Page from '../Page';
@@ -77,6 +77,7 @@ class ReservationCreatedDetail extends Component {
   messageTextChangeHandler = (evt) => {
     this.setState({ messageText: evt.target.value });
   };
+
   sendMessageHandler = () => {
     if (this.state.messageText !== '') {
       this.setState({ isSendingMessage: true });
@@ -107,6 +108,19 @@ class ReservationCreatedDetail extends Component {
     }
   };
 
+  setReservationToComplete = (evt) => {
+    evt.preventDefault();
+    const reservationid = this.props.match.params.reservationid;
+    database
+      .database()
+      .ref('reservations')
+      .child(reservationid)
+      .update({ status: RESERVATION_COMPLETED })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
     if (size(this.props.reservation) > 0) {
       if (this.props.reservation.status === RESERVATION_REQUESTED) {
@@ -119,7 +133,13 @@ class ReservationCreatedDetail extends Component {
         return (
           <Page style={{whiteSpace: 'normal'}}>
             <UserAccountPanel>
-              <h3>Reservation details</h3>
+              <div>
+                <h3>Reservation details</h3>
+                <div>
+                  <button type="button" onClick={this.setReservationToComplete}>Complete</button>
+                </div>
+              </div>
+
               <div className="messages-container margin-top-0">
                 <div className="messages-container-inner">
 

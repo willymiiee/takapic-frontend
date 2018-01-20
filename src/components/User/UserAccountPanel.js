@@ -16,7 +16,7 @@ const UserAccountPanel = (props) => {
       },
       {
         title: 'Photo Album',
-        path: '/me/album'
+        path: '/me/albums'
       },
       {
         title: 'Cash Out',
@@ -30,7 +30,7 @@ const UserAccountPanel = (props) => {
       },
       {
         title: 'Photo Album',
-        path: '/me/album'
+        path: '/me/albums'
       }
     ]
   };

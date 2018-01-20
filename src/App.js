@@ -47,6 +47,7 @@ import ContactUs from "./components/About/ContactUs";
 import HowItWorks from "./components/About/HowItWorks";
 import ReservationsList from './components/User/ReservationsList';
 import PhotoAlbum from './components/User/PhotoAlbum';
+import PhotoAlbumDetail from './components/User/PhotoAlbumDetail';
 import CashOut from './components/User/CashOut';
 import ContactUsSuccess from './components/About/ContactUsSuccess';
 
@@ -87,7 +88,8 @@ const App = (props) => (
         <PrivateRoute path="/me/reservations/:reservationid/:photographerId" component={ReservationCreatedDetail} />
 
         <PrivateRoute path="/me/reservations" component={ReservationsList} />
-        <PrivateRoute path="/me/album" component={PhotoAlbum}/>
+        <PrivateRoute path="/me/albums/:reservationId" component={PhotoAlbumDetail}/>
+        <PrivateRoute path="/me/albums" component={PhotoAlbum}/>
         <PrivateRoute path="/me/cashout" component={CashOut}/>
         <Route path="/search" component={withGATracker(Search)} />
         <Route path="/traveller-registration" component={withGATracker(TravellerRegistration)} />
