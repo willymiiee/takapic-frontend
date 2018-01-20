@@ -109,7 +109,7 @@ const SignIn = props => {
                         {errors.password && touched.password &&
                         <label style={{color: 'red'}}>{errors.password}</label>}
 
-                        <span className="lost_password" style={{ fontWeight: 'bold' }}>
+                        <span className="lost_password">
                           Wanna book a photographer?
                           &nbsp;
                           <Link to="/traveller-registration" className="radius-5" style={{
