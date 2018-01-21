@@ -301,46 +301,78 @@ export const loggingIn = (email, password) => {
       payload: { loggingIn: true },
     });
 
-    const firebaseAuth = database.auth();
-    firebaseAuth
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        firebaseAuth.onAuthStateChanged(user => {
-          if (user) {
-            const payload = {
-              uid: user.uid,
-              email: user.email,
-              emailVerified: user.emailVerified,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-              refreshToken: user.refreshToken
-            };
+    // Checking wether the email is registered as google or facebook
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/auth/accountType/?email=${email}`)
+      .then((response) => {
+        const providers = response.data.data.map((item) => item.providerId);
 
-            if (!user.emailVerified) {
+        if (providers.includes('password')) {
+          const firebaseAuth = database.auth();
+          firebaseAuth
+            .signInWithEmailAndPassword(email, password)
+            .then(() => {
+              firebaseAuth.onAuthStateChanged(user => {
+                if (user) {
+                  const payload = {
+                    uid: user.uid,
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    refreshToken: user.refreshToken
+                  };
+
+                  if (!user.emailVerified) {
+                    dispatch({
+                      type: 'USER_AUTH_LOGIN_ERROR',
+                      payload: { message: 'User not verified.' },
+                    });
+
+                  } else {
+                    dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+
+                    fetchUserMetadata(user.uid, dispatch)
+                      .then((data) => {
+                        if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
+                          history.push('/photographer-registration/s2');
+                        } else {
+                          history.push('/');
+                        }
+                      });
+                  }
+                }
+              });
+
+            })
+            .catch(error => {
               dispatch({
                 type: 'USER_AUTH_LOGIN_ERROR',
-                payload: { message: 'User not verified.' },
+                payload: error,
               });
-            } else {
-              dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-              fetchUserMetadata(user.uid, dispatch)
-                .then((data) => {
-                  if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
-                    history.push('/photographer-registration/s2');
-                  } else {
-                    history.push('/');
-                  }
-                });
-            }
-          }
-        });
+            });
+
+        } else {
+          const provider = response.data.data[0].providerId;
+          const mapInfo = {
+            "google.com": "Google",
+            "facebook.com": "Facebook"
+          };
+          const message = `Your account is registered using ${mapInfo[provider]}. Then you must click "Login with ${mapInfo[provider]}" button.`;
+
+          dispatch({
+            type: 'USER_AUTH_LOGIN_ERROR',
+            payload: { message }
+          });
+        }
+
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch({
           type: 'USER_AUTH_LOGIN_ERROR',
-          payload: error,
+          payload: { message: error.response.data.message },
         });
-    });
+      });
   };
 };
 
