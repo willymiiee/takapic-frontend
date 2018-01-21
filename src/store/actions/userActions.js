@@ -13,28 +13,44 @@ import {
 import { USER_PHOTOGRAPHER } from '../../services/userTypes';
 
 const initialiazePhotographerProfileData = uid => {
-  const initialProfileData = {
-    serviceReviews: {
-      rating: {
-        label: 'Rating',
-        value: 3
-      },
-      impressions: [
-        { label: 'Friendly', value: 0.5 },
-        { label: 'Skillful', value: 0.5 },
-        { label: 'Creative', value: 0.5 }
-      ]
-    }
-  };
+  const db = database.database();
 
-  database
-    .database()
-    .ref('photographer_service_information')
+  db
+    .ref('user_metadata')
     .child(uid)
-    .set(initialProfileData);
+    .once('value')
+    .then((snapshot) => {
+      const vals = snapshot.val();
+      if (vals === null) {
+        const initialProfileData = {
+          serviceReviews: {
+            rating: {
+              label: 'Rating',
+              value: 3
+            },
+            impressions: [
+              { label: 'Friendly', value: 0.5 },
+              { label: 'Skillful', value: 0.5 },
+              { label: 'Creative', value: 0.5 }
+            ]
+          }
+        };
+
+        db
+          .ref('photographer_service_information')
+          .child(uid)
+          .set(initialProfileData)
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-const createUserMetadata = async (uid, email, userType, displayName) => {
+const createUserMetadata = async (accountProvider, uid, email, userType, displayName) => {
   try {
     const db = database.database();
     const child = db.ref('user_metadata').child(uid);
@@ -59,6 +75,7 @@ const createUserMetadata = async (uid, email, userType, displayName) => {
       }
 
       await child.set(metaData);
+      notifyToSlack(`New user registered via ${accountProvider} - Name: ${displayName}, Email: ${email}, Type: ${userType}`);
       return true;
     }
   } catch (error) {
@@ -104,25 +121,20 @@ export const userSignupByEmailPassword = (
             console.log(error);
           });
 
-        createUserMetadata(result.uid, email, userType, displayName)
+        createUserMetadata('Email', result.uid, email, userType, displayName)
           .then(() => {
             if (userType === USER_PHOTOGRAPHER) {
               initialiazePhotographerProfileData(result.uid);
             }
-
             // Logout Implicitly
             database.auth()
               .signOut()
-              .then(() => {
-                console.log('Logout implicitly');
-              })
               .catch(error => {
-                console.log('Error logging out', error);
+                console.log(error);
               });
             // End Logout
-
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
 
@@ -131,10 +143,6 @@ export const userSignupByEmailPassword = (
           payload: { status: 'OK', message: 'User created', uid: result.uid },
         });
 
-        return true;
-      })
-      .then(() => {
-        notifyToSlack('New user registered via Email - Name: ' + displayName + ', Email: ' + email + ', Type: ' + userType);
         return true;
       })
       .then(() => {
@@ -161,12 +169,11 @@ export const userSignupByFacebook = userType => {
         const email = result.additionalUserInfo.profile.email;
         const displayName = result.additionalUserInfo.profile.name;
 
-        createUserMetadata(result.user.uid, email, userType, displayName)
+        createUserMetadata('Facebook', result.user.uid, email, userType, displayName)
           .then(() => {
             if (userType === USER_PHOTOGRAPHER) {
               initialiazePhotographerProfileData(result.user.uid);
             }
-            console.log('Create user metadata 1st then()');
             return true;
           })
           .then(() => {
@@ -180,26 +187,22 @@ export const userSignupByFacebook = userType => {
             };
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-            console.log('Create user metadata 2nd then()');
             return true;
+
           })
           .then(() => {
             fetchUserMetadata(result.user.uid, dispatch)
               .then((data) => {
-                const dataC = data;
-                console.log('fetchUserMetadata 1st then() - include notifyToSlack()');
-                notifyToSlack('New user registered via Facebook - Name: ' + data.displayName + ', Email: ' + data.email + ', Type: ' + userType);
-                return dataC;
-              })
-              .then((data) => {
-                console.log('fetchUserMetadata 2nd then()');
                 if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
                   history.push('/photographer-registration/s2');
                 } else {
                   history.push('/');
                 }
+              })
+              .catch((error) => {
+                console.log(error);
               });
-            console.log('Create user metadata 3rd then()');
+
           })
           .catch(error => {
             console.log(error);
@@ -227,12 +230,13 @@ export const userSignupByGoogle = userType => {
         const email = result.user.email;
         const displayName = result.user.displayName;
 
-        createUserMetadata(uid, email, userType, displayName)
+        createUserMetadata('Google', uid, email, userType, displayName)
           .then(() => {
             if (userType === USER_PHOTOGRAPHER) {
               initialiazePhotographerProfileData(uid);
             }
             return true;
+
           })
           .then(() => {
             const payload = {
@@ -246,14 +250,10 @@ export const userSignupByGoogle = userType => {
 
             dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
             return true;
+
           })
           .then(() => {
             fetchUserMetadata(uid, dispatch)
-              .then((data) => {
-                const dataC = data;
-                notifyToSlack('New user registered via Google - Name: ' + displayName + ', Email: ' + email + ', Type: ' + userType);
-                return dataC;
-              })
               .then((data) => {
                 if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
                   history.push('/photographer-registration/s2');
@@ -261,10 +261,15 @@ export const userSignupByGoogle = userType => {
                   history.push('/');
                 }
               })
+              .catch((error) => {
+                console.log(error);
+              });
+
           })
           .catch(error => {
             console.log(error);
           });
+
       })
       .catch(error => {
         console.log(error);
@@ -296,46 +301,78 @@ export const loggingIn = (email, password) => {
       payload: { loggingIn: true },
     });
 
-    const firebaseAuth = database.auth();
-    firebaseAuth
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        firebaseAuth.onAuthStateChanged(user => {
-          if (user) {
-            const payload = {
-              uid: user.uid,
-              email: user.email,
-              emailVerified: user.emailVerified,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-              refreshToken: user.refreshToken
-            };
+    // Checking wether the email is registered as google or facebook
+    axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/auth/accountType/?email=${email}`)
+      .then((response) => {
+        const providers = response.data.data.map((item) => item.providerId);
 
-            if (!user.emailVerified) {
+        if (providers.includes('password')) {
+          const firebaseAuth = database.auth();
+          firebaseAuth
+            .signInWithEmailAndPassword(email, password)
+            .then(() => {
+              firebaseAuth.onAuthStateChanged(user => {
+                if (user) {
+                  const payload = {
+                    uid: user.uid,
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    refreshToken: user.refreshToken
+                  };
+
+                  if (!user.emailVerified) {
+                    dispatch({
+                      type: 'USER_AUTH_LOGIN_ERROR',
+                      payload: { message: 'User not verified.' },
+                    });
+
+                  } else {
+                    dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
+
+                    fetchUserMetadata(user.uid, dispatch)
+                      .then((data) => {
+                        if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
+                          history.push('/photographer-registration/s2');
+                        } else {
+                          history.push('/');
+                        }
+                      });
+                  }
+                }
+              });
+
+            })
+            .catch(error => {
               dispatch({
                 type: 'USER_AUTH_LOGIN_ERROR',
-                payload: { message: 'User not verified.' },
+                payload: error,
               });
-            } else {
-              dispatch({ type: 'USER_AUTH_LOGIN_SUCCESS', payload });
-              fetchUserMetadata(user.uid, dispatch)
-                .then((data) => {
-                  if (data.userType === USER_PHOTOGRAPHER && data.firstLogin) {
-                    history.push('/photographer-registration/s2');
-                  } else {
-                    history.push('/');
-                  }
-                });
-            }
-          }
-        });
+            });
+
+        } else {
+          const provider = response.data.data[0].providerId;
+          const mapInfo = {
+            "google.com": "Google",
+            "facebook.com": "Facebook"
+          };
+          const message = `Your account is registered using ${mapInfo[provider]}. Then you must click "Login with ${mapInfo[provider]}" button.`;
+
+          dispatch({
+            type: 'USER_AUTH_LOGIN_ERROR',
+            payload: { message }
+          });
+        }
+
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch({
           type: 'USER_AUTH_LOGIN_ERROR',
-          payload: error,
+          payload: { message: error.response.data.message },
         });
-    });
+      });
   };
 };
 
