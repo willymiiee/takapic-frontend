@@ -58,22 +58,22 @@ class PhotoAlbumDetailConsumer extends Component {
     return (
       <Page style={{ whiteSpace:'normal' }}>
         <UserAccountPanel>
-          <div>
+          <div className="photo-album-list-header">
             <h3 className="margin-top-0">Photo Album</h3>
           </div>
 
           <hr/>
-          <div>
-            <p>{ this.state.images.length }</p>
-          </div>
+          <p className="photo-album-length"><span>{ this.state.images.length }</span></p>
 
           {
             this.state.images.length > 0
               ? (
-                <Gallery
-                  images={images}
-                  enableImageSelection={false}
-                />
+                <div className="photo-album-gallery traveller">
+                  <Gallery
+                    images={images}
+                    enableImageSelection={false}
+                  />
+                </div>
               )
               : (
                 <p>No photos available.</p>

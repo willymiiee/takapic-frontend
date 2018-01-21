@@ -266,7 +266,7 @@ class PhotoAlbumDetailPhotographer extends Component {
     return (
       <Page style={{ whiteSpace:'normal' }}>
         <UserAccountPanel>
-          <div>
+          <div className="photo-album-list-header">
             <h3 className="margin-top-0">Photo Album</h3>
             <div className="upload-controls">
               <input
@@ -277,30 +277,29 @@ class PhotoAlbumDetailPhotographer extends Component {
                 onChange={this.browseImagesHandler}
                 className="hidden"
               />
-
               <button className="btn" onClick={() => this.checkUncheckAll(true)}>
                 Select all
               </button>
               &nbsp;
-              <button className="btn" onClick={() => this._uploadFile.click()}>
+              <button className="btn btn-upload" onClick={() => this._uploadFile.click()}>
                 Upload
               </button>
               &nbsp;
-              <button className="btn" onClick={this.submitImagesHandler}>
+              <button className="btn btn-submit" onClick={this.submitImagesHandler}>
                 { this.state.isUploading ? 'Uploading, Please wait...' : 'Submit' }
               </button>
             </div>
           </div>
 
           <hr/>
-          <div>
-            <p>{ this.state.images.length }</p>
-          </div>
+          <p className="photo-album-length"><span>{ this.state.images.length }</span></p>
 
-          <Gallery
-            images={images}
-            onSelectImage={this.selectedImagesHandler}
-          />
+          <div className="photo-album-gallery photographer">
+            <Gallery
+              images={images}
+              onSelectImage={this.selectedImagesHandler}
+            />
+          </div>
 
           <div style={{ clear: 'both' }}/>
 
@@ -338,18 +337,18 @@ class PhotoAlbumDetailPhotographer extends Component {
 
           {
             this.state.imagesSelectedCount > 0 ? (
-              <div>
-                <div>
-                  { this.state.imagesSelectedCount } selected file
+              <div className="photo-album-gallery-select-control row">
+                <div className="col-xs-12 col-sm-4">
+                  <i className="fa fa-circle c-key-color" style={{marginRight:'10px'}} aria-hidden="true"></i>{ this.state.imagesSelectedCount } selected file
                 </div>
 
-                <div>
-                  <button type="button" className="btn" onClick={this.deleteSelectedImages}>
+                <div className="col-xs-12 col-sm-4">
+                  <button type="button" className="btn btn-delete" onClick={this.deleteSelectedImages}>
                     { this.state.isDeleting ? 'Deleting images, Please wait...' : 'Delete selected files' }
                   </button>
                 </div>
 
-                <div>
+                <div className="col-xs-12 col-sm-4">
                   <p style={{ cursor: 'pointer' }} onClick={() => this.checkUncheckAll(false)}>
                     Unselect all
                   </p>
