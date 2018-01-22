@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { database } from "../../services/firebase";
@@ -62,6 +62,25 @@ class ReservationsList extends Component {
     this.props.emptyFetchedReservations();
   }
 
+  detailHandler = (status, reservationId, photographerId) => {
+    if (status !== RESERVATION_UNPAID) {
+      this.props.history.push(`/me/reservations/${reservationId}/${photographerId}`);
+    } else {
+      this.props.history.push(`/booking/${photographerId}/${reservationId}`);
+    }
+  };
+
+  reservationStatusColor = (status) => {
+    const colors = {
+      "UNPAID": "c-red",
+      "ACCEPTED": "c-green",
+      "PAID": "c-green",
+      "COMPLETED": "c-green"
+    };
+
+    return colors[status];
+  };
+
   render() {
     const {
       user: { userMetadata: { userType } },
@@ -76,25 +95,23 @@ class ReservationsList extends Component {
     return (
       <Page style={{whiteSpace:'normal'}}>
         <UserAccountPanel>
-          <h3 className="margin-top-0">Your reservations list</h3>
-          <hr/>
-          <div className="table-responsive">
-            <table className="basic-table table table-list-reservation">
+          <h3 style={{marginBottom:'45px', marginTop:'20px', paddingLeft:'10px'}}>Reservations List</h3>
+          <div className="table-responsive no-border">
+            <table className="table table-list-reservation">
               <tbody>
                 <tr>
-                  <th>#</th>
+                  <th>No</th>
                   <th>Code</th>
                   <th>Date</th>
                   { userType === USER_PHOTOGRAPHER ? null : <th>Destination</th> }
                   { userType === USER_PHOTOGRAPHER ? <th>Customer</th> : <th>Photographer</th> }
                   <th>Price</th>
                   <th>Status</th>
-                  <th>&nbsp;</th>
                 </tr>
 
                 {
                   isFetched && reservationsList && reservationsListFiltered.map((item, index) => (
-                    <tr key={index}>
+                    <tr className="row-hover" key={index} onClick={() => this.detailHandler(item.status, item.reservationId, item.photographerId)}>
                       <td>{ index + 1 }</td>
                       <td>{ item.reservationId }</td>
                       <td>{ moment(item.startDateTime).format('MMMM Do YYYY') }</td>
@@ -105,22 +122,7 @@ class ReservationsList extends Component {
                         : <td>{ item.uidMapping[item.photographerId].displayName }</td>
                       }
                       <td>USD { item.total }</td>
-                      <td>{ item.status }</td>
-                      <td>
-                        {
-                          item.status !== RESERVATION_UNPAID
-                            ? (
-                              <Link to={`/me/reservations/${item.reservationId}/${item.photographerId}`} style={{ textDecoration: 'underline' }}>
-                                View detail
-                              </Link>
-                            )
-                            : (
-                              <Link to={`/booking/${item.photographerId}/${item.reservationId}/`} style={{ textDecoration: 'underline' }}>
-                                Process payment
-                              </Link>
-                            )
-                        }
-                      </td>
+                      <td className={this.reservationStatusColor(item.status)}>{ item.status }</td>
                     </tr>
                   ))
                 }
@@ -134,7 +136,7 @@ class ReservationsList extends Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
     user: state.userAuth,
     reservations: state.reservations
@@ -143,4 +145,4 @@ export default connect(
     fetchReservationsList: (userUID, userType) => dispatch(fetchReservationsList(userUID, userType)),
     emptyFetchedReservations: () => dispatch(emptyFetchedReservations())
   })
-)(ReservationsList);
+)(ReservationsList));

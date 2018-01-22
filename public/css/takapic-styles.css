@@ -3124,13 +3124,13 @@ p.l-h-22 {
     margin-top: 0 !important;
 }
 .margin-top-40{
-    margin-top: 40 !important;
+    margin-top: 40px !important;
 }
 .margin-top-70{
-    margin-top: 70 !important;
+    margin-top: 70px !important;
 }
 .margin-bottom-15{
-    margin-top: 15 !important;
+    margin-top: 15px !important;
 }
 .radius-16 {
     border-radius: 16px !important;
@@ -3510,24 +3510,6 @@ PHASE 1 BOP - New Photographer Account Register
     padding: 3px;
     border-radius: 50%;
 }
-
-
-/*@media (min-width: 992px) {*/
-/*.input-place-location-name{*/
-/*width:34% !important;*/
-/*top: 10px !important;*/
-/*left: 113px !important;*/
-/*}*/
-/*.input-place-location-note{*/
-/*width:30% !important;*/
-/*top: 10px !important;*/
-/*left: 48% !important;*/
-/*}*/
-/*.btn-place-location{*/
-/*top: 10px !important;*/
-/*left: 80% !important;*/
-/*}*/
-/*}*/
 
 
 /*I try to fix unproperly click single select dropdown*/
@@ -4386,7 +4368,9 @@ figcaption.action-btn a .fa {
     -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
     box-shadow: 0 0px 0px rgba(0,0,0,0);
 }
-
+.no-border {
+    border:0px !important;
+}
 .contact-us-input input, .contact-us-input textarea{
     background-color: rgba(255,255,255,0.85);
     border: 1px solid #eee;
@@ -4763,9 +4747,26 @@ figcaption.action-btn a .fa {
 }
 
 .table-list-reservation > tbody > tr > td {
-    font-size: 14px;
+  font-size: 14px;
+  padding: 20px;
+  padding-left: 10px;
+  border-bottom: 1px solid #dddddd;
+  border-top: 0px;
 }
 
+.table-list-reservation > tbody > tr > th {
+  border-top: 0px;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 26px;
+  padding-left: 10px;
+  padding-right: 20px;
+  color: #333;
+  font-size: 16px;
+}
+.table-list-reservation .row-hover:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.04);
+}
 .user-account-panel-menubar ul li a {
     padding: 14px;
     color: #000000;
@@ -4908,15 +4909,7 @@ figcaption.action-btn a .fa {
     #userInformation-pane-5 td .form-group {
         min-width: 220px;
     }
-    /*.m-fixed-btn {
-      z-index: 9;
-      bottom: 6px;
-      right: 16px;
-      left: 16px;
-      top: unset !important;
-      position: fixed !important;
-      width: calc(100% - 32px) !important;
-    }*/
+
     .m-fixed-btn-holder {
         z-index: 9;
         bottom: 0;
@@ -5136,8 +5129,199 @@ figcaption.action-btn a .fa {
 }
 
 .my-my-img-item {
-    width: 271px;
-    height: 180px;
-    margin-left: 0px;
-    margin-top: 0px;
+  width: 271px;
+  height: 180px;
+  margin-left: 0px;
+  margin-top: 0px;
+}
+.photo-album-list-header p {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.photo-album-list-header {
+  position: relative;
+  margin-bottom: 50px;
+  margin-top: 25px;
+}
+.photo-album-list {
+  margin-bottom: 40px;
+}
+.albums-item-default-picture{
+  height: 180px;
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+.photo-album-list .albums-item{
+  border: 1px solid #dbdbdb;
+}
+.photo-album-list .albums-item img{
+  width: 100%;
+}
+.photo-album-list .albums-item-information {
+  padding: 16px 16px 10px 16px;
+}
+.photo-album-list .albums-item-information p {
+  margin-bottom: 0px;
+}
+.photo-album-list .albums-item-information .album-owner {
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+}
+.photo-album-list .albums-item-information .album-owner:hover{
+  text-decoration: underline;
+}
+.photo-album-list .albums-item-information .album-destination {
+  font-size: 13px;
+}
+.photo-album-list .albums-item-information .album-date {
+  margin-top: 20px;
+  font-size: 11px;
+  color: #c6c6c6;
+}
+.photo-album-list .albums-item-information .album-status {
+  position: absolute;
+  right: 40px;
+  bottom: 11px;
+  font-size: 13px;
+}
+.c-black {
+  color: black;
+}
+.c-red {
+    color: red;
+}
+.c-green {
+    color: green;
+}
+.c-key-color {
+  color: #3AECCB;
+}
+.photo-album-list-header .upload-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.photo-album-list-header .upload-controls .btn {
+  margin-left: 10px;
+  padding: 8px 20px;
+  background-color: transparent;
+}
+.photo-album-list-header .upload-controls .btn-submit {
+  border-radius: 5px;
+  background-color: #66676b;
+  color: white;
+}
+.photo-album-list-header .upload-controls .btn-upload {
+  border-radius: 5px;
+  border: 1px solid #3AECCB;
+  color: #34d4b6;
+  background:transparent;
+}
+.photo-album-length {
+  position: relative;
+  top: -32px;
+  text-align: center;
+}
+.photo-album-length span {
+  background-color: #66676b;
+  color: white;
+  padding: 7px 20px;
+  border-radius: 10px;
+}
+
+/*For Gallery porpose*/
+.photo-album-gallery .tile-viewport {
+    width: auto !important;
+    margin: 0 !important;
+    height: 180px !important;
+}
+.photo-album-gallery .tile-viewport img {
+    margin-left: 0 !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+    height: 180px !important;
+}
+.photo-album-gallery .tile-overlay {
+  /*background: linear-gradient(rgba(0,0,0,0.26), transparent 56px, transparent) !important;*/
+}
+.photo-album-gallery.photographer .tile-icon-bar > div {
+  visibility: visible !important;
+}
+.tile-icon-bar {
+  z-index: 9;
+}
+.photo-album-gallery-select-control {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 35px 10px 20px 10px;
+  background-color: #66676b;
+  color: white;
+  text-align: center;
+  z-index: 9;
+}
+.photo-album-gallery-select-control .btn-delete {
+  background-color: #FF4040;
+  color: white;
+}
+.photo-album-gallery-select-control .btn-delete:hover {
+  background-color: #ff5353;
+  color: white;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .photo-album-gallery .tile {
+    width: 49% !important;
+  }
+}
+@media (max-width: 767px) {
+  .photo-album-gallery .tile {
+    width: 100% !important;
+  }
+  .photo-album-list-header .upload-controls  {
+    top: 40px;
+  }
+  .photo-album-list-header {
+    margin-bottom: 90px;
+  }
+}
+@media (min-width: 992px) {
+  .photo-album-gallery .tile {
+    width: 32% !important;
+  }
+}
+@media (min-width: 768px){
+  .become-photographer {
+    background-color: #3AECCB !important;
+    -webkit-border-radius:5px !important;
+    -moz-border-radius:5px !important;
+    border-radius:5px !important;
+    color: white;
+  } 
+}
+@media (max-width: 767px){
+  .become-photographer {
+    color: #3AECCB;
+  } 
+}
+.preview-img-hover {
+  color: white;
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  font-weight: 100;
+  width: 100%;
+  top: 80px;
+  left: 38%;
+  cursor: pointer;
+  font-size: 14px;
+}
+.one-line {
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

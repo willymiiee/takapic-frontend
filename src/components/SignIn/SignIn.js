@@ -116,8 +116,8 @@ const SignIn = props => {
                             display: 'inline-block',
                             padding: '8px',
                             backgroundColor: '#3AECCB',
-                            color: '#000000',
-                            textDecoration: 'underline'
+                            textDecoration: 'none',
+                            color: 'white',
                           }}>
                             Sign Up
                           </Link>
