@@ -124,7 +124,7 @@ class PhotoAlbum extends Component {
                             to={`/me/albums/${album.reservationId}`}>
                             { albumOwnerName.charAt(0).toUpperCase() + albumOwnerName.slice(1) }
                           </Link>
-                          <p className="album-destination">{ album.destination }</p>
+                          <p className="album-destination one-line">{ album.destination }</p>
                           <p className="album-date">{ albumDate }</p>
                           <p className={ album.hasOwnProperty('defaultAlbumPhotoPublicId') ? 'album-status c-black' : 'album-status c-key-color' }>
                             { album.hasOwnProperty('defaultAlbumPhotoPublicId') ? 'Delivered' : 'Waiting' }

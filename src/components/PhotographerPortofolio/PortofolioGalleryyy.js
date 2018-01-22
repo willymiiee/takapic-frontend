@@ -92,8 +92,6 @@ class PortofolioGalleryyy extends Component {
                   <h1>Gallery</h1>
                   <div className="gallery-category">
                     <span className="active">All</span>
-                    <span>Night</span>
-                    <span>Nature</span>
                   </div>
                 </div>
                 <hr style={{marginTop:'30px'}}/>
@@ -102,6 +100,7 @@ class PortofolioGalleryyy extends Component {
                   className="photographer-portofolio-container">
                   <Gallery
                     images={galleries}
+                    enableImageSelection={false}
                     margin={4}
                   />
                 </div>
