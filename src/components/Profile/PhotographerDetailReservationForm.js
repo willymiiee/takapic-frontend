@@ -9,15 +9,15 @@ import { generateReservationNumber } from "../../helpers/helpers";
 import{ RESERVATION_UNPAID, USER_TRAVELLER } from "../../services/userTypes";
 
 const StartServicePrice = props => {
-  const { packagesPrice } = props;
-  if (packagesPrice) {
+  const { currency, currenciesRates, priceStartFrom } = props;
+  if (priceStartFrom) {
     // eslint-disable-next-line
-    const prices = packagesPrice.map(item => parseInt(item.price));
-    const minPrice = prices.reduce((a, b) => Math.min(a, b));
+    const USDRates = currenciesRates['USD' + currency];
+    const convertedPrice = Math.round(priceStartFrom / USDRates);
 
     return (
       <h4>
-        From <strong>USD { minPrice }</strong>
+        From <strong>USD { convertedPrice }</strong>
       </h4>
     );
   }
@@ -276,7 +276,11 @@ class PhotographerDetailReservationForm extends Component {
 
   render() {
     const {
-      photographerServiceInformation: { loading }
+      photographerServiceInformation: {
+        data: { userMetadata: { currency, priceStartFrom } },
+        loading
+      },
+      currenciesRates
     } = this.props;
 
     const {
@@ -286,13 +290,18 @@ class PhotographerDetailReservationForm extends Component {
 
     const packageSelected = packagesPriceProcessed.filter(item => item.id === packageId)[0];
     const userType = get(this.props.user, 'userMetadata.userType', null);
+    const priceStartFix = typeof priceStartFrom === 'undefined' ? null : priceStartFrom;
 
     return (
       <div>
         <div id="photographer-reservation-bg" />
         <div className="card" id="photographer-reservation">
           <h3>Reservation form</h3>
-          <StartServicePrice packagesPrice={packagesPriceProcessed}/>
+          <StartServicePrice
+            currency={currency}
+            currenciesRates={currenciesRates}
+            priceStartFrom={priceStartFix}
+          />
 
           <div id="reservation-starting-time">
             <input
