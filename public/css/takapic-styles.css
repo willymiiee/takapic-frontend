@@ -4386,7 +4386,9 @@ figcaption.action-btn a .fa {
     -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
     box-shadow: 0 0px 0px rgba(0,0,0,0);
 }
-
+.no-border {
+    border:0px !important;
+}
 .contact-us-input input, .contact-us-input textarea{
     background-color: rgba(255,255,255,0.85);
     border: 1px solid #eee;
@@ -4764,8 +4766,25 @@ figcaption.action-btn a .fa {
 
 .table-list-reservation > tbody > tr > td {
   font-size: 14px;
+  padding: 20px;
+  padding-left: 10px;
+  border-bottom: 1px solid #dddddd;
+  border-top: 0px;
 }
 
+.table-list-reservation > tbody > tr > th {
+  border-top: 0px;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 26px;
+  padding-left: 10px;
+  padding-right: 20px;
+  color: #333;
+  font-size: 16px;
+}
+.table-list-reservation .row-hover:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.04);
+}
 .user-account-panel-menubar ul li a {
   padding: 14px;
   color: #000000;
@@ -5158,9 +5177,13 @@ figcaption.action-btn a .fa {
   height: 180px;
   width: 100%;
   object-fit: cover;
+  overflow: hidden;
 }
 .photo-album-list .albums-item{
   border: 1px solid #dbdbdb;
+}
+.photo-album-list .albums-item img{
+  width: 100%;
 }
 .photo-album-list .albums-item-information {
   padding: 16px 16px 10px 16px;
@@ -5193,6 +5216,12 @@ figcaption.action-btn a .fa {
 .c-black {
   color: black;
 }
+.c-red {
+    color: red;
+}
+.c-green {
+    color: green;
+}
 .c-key-color {
   color: #3AECCB;
 }
@@ -5204,6 +5233,7 @@ figcaption.action-btn a .fa {
 .photo-album-list-header .upload-controls .btn {
   margin-left: 10px;
   padding: 8px 20px;
+  background-color: transparent;
 }
 .photo-album-list-header .upload-controls .btn-submit {
   border-radius: 5px;
@@ -5214,6 +5244,7 @@ figcaption.action-btn a .fa {
   border-radius: 5px;
   border: 1px solid #3AECCB;
   color: #34d4b6;
+  background:transparent;
 }
 .photo-album-length {
   position: relative;
@@ -5245,6 +5276,9 @@ figcaption.action-btn a .fa {
 .photo-album-gallery.photographer .tile-icon-bar > div {
   visibility: visible !important;
 }
+.tile-icon-bar {
+  z-index: 9;
+}
 .photo-album-gallery-select-control {
   position: fixed;
   right: 0;
@@ -5264,12 +5298,12 @@ figcaption.action-btn a .fa {
   background-color: #ff5353;
   color: white;
 }
-@media (min-width: 710px) and (max-width: 991px) {
+@media (min-width: 768px) and (max-width: 991px) {
   .photo-album-gallery .tile {
     width: 49% !important;
   }
 }
-@media (max-width: 709px) {
+@media (max-width: 767px) {
   .photo-album-gallery .tile {
     width: 100% !important;
   }
@@ -5284,4 +5318,36 @@ figcaption.action-btn a .fa {
   .photo-album-gallery .tile {
     width: 32% !important;
   }
+}
+@media (min-width: 768px){
+  .become-photographer {
+    background-color: #3AECCB !important;
+    -webkit-border-radius:5px !important;
+    -moz-border-radius:5px !important;
+    border-radius:5px !important;
+    color: white;
+  } 
+}
+@media (max-width: 767px){
+  .become-photographer {
+    color: #3AECCB;
+  } 
+}
+.preview-img-hover {
+  color: white;
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  font-weight: 100;
+  width: 100%;
+  top: 80px;
+  left: 38%;
+  cursor: pointer;
+  font-size: 14px;
+}
+.one-line {
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

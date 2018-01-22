@@ -116,7 +116,6 @@ const SignIn = props => {
                             display: 'inline-block',
                             padding: '8px',
                             backgroundColor: '#3AECCB',
-                            color: '#000000',
                             textDecoration: 'none',
                             color: 'white',
                           }}>

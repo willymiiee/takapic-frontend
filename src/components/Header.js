@@ -17,16 +17,22 @@ class Header extends Component {
             <i className="fa fa-bars" />
             <div className="d-margin-top-6">
               {
-                userMetadata ? null : (<Link to="/welcome-photographer" className="key-color radius-5 clr-white d-margin-right-18">Become our photographer</Link>)
+                userMetadata ? null : (<Link to="/welcome-photographer" className="become-photographer d-margin-right-18">Join as photographer</Link>)
+              }
+
+              <Link to="/how-it-works">How it works</Link>
+
+              {
+                !userMetadata
+                  ? <Link to="/traveller-registration">Sign Up</Link>
+                  : null
               }
 
               {
                 !userMetadata
-                  ? <Link to="/sign-in">Login</Link>
+                  ? <Link to="/sign-in">Log In</Link>
                   : null
               }
-
-              <Link to="/how-it-works">How it works</Link>
 
               {
                 userMetadata
