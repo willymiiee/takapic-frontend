@@ -90,7 +90,7 @@ class PhotoAlbum extends Component {
     return (
       <Page style={{ whiteSpace:'normal' }}>
         <UserAccountPanel>
-          <div>
+          <div className="photo-album-list-header">
             <h3 className="margin-top-0">Photo Album</h3>
             {
               this.state.albums.length > 0
@@ -99,7 +99,7 @@ class PhotoAlbum extends Component {
             }
           </div>
 
-          <div className="user-dashboard-albums-list">
+          <div className="photo-album-list row">
             {
               !this.state.isDownloading && this.state.albums.length > 0
                 ? this.state.albums.map((album, index) => {
@@ -107,21 +107,29 @@ class PhotoAlbum extends Component {
                   const albumDate = moment(album.startDateTime).format('MMMM Do YYYY');
 
                   return (
-                    <div key={index} className="albums-item">
-                      <div className="albums-item-default-picture">
-                        <Link to={`/me/albums/${album.reservationId}`}>
-                          <img
-                            src={this.cloudinaryInstance.url(album.hasOwnProperty('defaultAlbumPhotoPublicId') ? album.defaultAlbumPhotoPublicId : 'assets/empty-album_q14ui1', { width: 320, crop: 'scale', quality: 'auto:best' })}
-                            alt=""
-                          />
-                        </Link>
-                      </div>
+                    <div className="col-xs-12 col-sm-6 col-md-4">
+                      <div key={index} className="albums-item">
+                        <div className="albums-item-default-picture">
+                          <Link to={`/me/albums/${album.reservationId}`}>
+                            <img
+                              src={this.cloudinaryInstance.url(album.hasOwnProperty('defaultAlbumPhotoPublicId') ? album.defaultAlbumPhotoPublicId : 'assets/empty-album_q14ui1', { width: 320, crop: 'scale', quality: 'auto:best' })}
+                              alt=""
+                            />
+                          </Link>
+                        </div>
 
-                      <div className="albums-item-information">
-                        <p>{ albumOwnerName.charAt(0).toUpperCase() + albumOwnerName.slice(1) }</p>
-                        <p>Destination: { album.destination }</p>
-                        <p>{ albumDate }</p>
-                        <p>{ album.hasOwnProperty('defaultAlbumPhotoPublicId') ? 'Delivered' : 'Waiting' }</p>
+                        <div className="albums-item-information">
+                          <Link 
+                            className="album-owner"
+                            to={`/me/albums/${album.reservationId}`}>
+                            { albumOwnerName.charAt(0).toUpperCase() + albumOwnerName.slice(1) }
+                          </Link>
+                          <p className="album-destination">{ album.destination }</p>
+                          <p className="album-date">{ albumDate }</p>
+                          <p className={ album.hasOwnProperty('defaultAlbumPhotoPublicId') ? 'album-status c-black' : 'album-status c-key-color' }>
+                            { album.hasOwnProperty('defaultAlbumPhotoPublicId') ? 'Delivered' : 'Waiting' }
+                          </p>
+                        </div>
                       </div>
                     </div>
                   )

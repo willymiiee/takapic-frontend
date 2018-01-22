@@ -117,7 +117,8 @@ const SignIn = props => {
                             padding: '8px',
                             backgroundColor: '#3AECCB',
                             color: '#000000',
-                            textDecoration: 'underline'
+                            textDecoration: 'none',
+                            color: 'white',
                           }}>
                             Sign Up
                           </Link>
