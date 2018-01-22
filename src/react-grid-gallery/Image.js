@@ -142,7 +142,7 @@ class Image extends Component {
             key={"tile-icon-bar-"+this.props.index}
             style={{
                 pointerEvents: "none",
-                opacity: 1,
+                opacity: this.state.hover || this.props.item.isSelected ? 1 : 0,
                 position: "absolute",
                 height: "36px",
                 width: "100%"}}>
@@ -174,10 +174,8 @@ class Image extends Component {
                 position: "absolute",
                 height: "100%",
                 width: "100%",
-                background: (this.state.hover
-                             && !this.props.item.isSelected
-                             && this.props.isSelectable) ?
-                    'linear-gradient(to bottom,rgba(0,0,0,0.26),transparent 56px,transparent)' : 'none'}}>
+                background: ((this.state.hover && !this.props.item.isSelected) || this.props.item.isSelected) ?
+                    'rgba(0,0,0,0.26)' : 'none'}}>
                 </div>
 
                 <div className="tile-viewport"
@@ -185,6 +183,7 @@ class Image extends Component {
             key={"tile-viewport-"+this.props.index}
             onClick={this.props.onClick ?
                      (e) => this.props.onClick.call(this, this.props.index, e) : null}>
+                <div className={this.state.hover ? "preview-img-hover" : "preview-img-hover hide"}>Preview</div>
                 <img
                   alt="This is it"
             key={"img-"+this.props.index}

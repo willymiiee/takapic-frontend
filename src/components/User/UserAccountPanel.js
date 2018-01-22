@@ -60,7 +60,7 @@ const UserAccountPanel = (props) => {
       </div>
 
       <div className="container">
-        <div className="feature-container smooth-card radius-0 m-padding-16">
+        <div className="feature-container smooth-card radius-0 m-padding-16" style={{paddingBottom:'50px'}}>
           { props.children }
         </div>
       </div>
