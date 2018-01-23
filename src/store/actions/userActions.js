@@ -16,7 +16,7 @@ const initialiazePhotographerProfileData = uid => {
   const db = database.database();
 
   db
-    .ref('user_metadata')
+    .ref('photographer_service_information')
     .child(uid)
     .once('value')
     .then((snapshot) => {
