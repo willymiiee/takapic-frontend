@@ -5325,3 +5325,9 @@ figcaption.action-btn a .fa {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.cashout-container input {
+  height: auto;
+  max-width: none;
+  width: auto;
+}
