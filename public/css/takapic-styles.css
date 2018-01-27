@@ -4906,6 +4906,9 @@ figcaption.action-btn a .fa {
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
+    .m-margin-bottom-50 {
+      margin-bottom: 50px !important;
+    }
     #userInformation-pane-5 td .form-group {
         min-width: 220px;
     }
@@ -5243,6 +5246,7 @@ figcaption.action-btn a .fa {
     width: 100% !important;
     margin-top: 0 !important;
     height: 180px !important;
+    object-fit: cover;
 }
 .photo-album-gallery .tile-overlay {
   /*background: linear-gradient(rgba(0,0,0,0.26), transparent 56px, transparent) !important;*/
@@ -5276,6 +5280,9 @@ figcaption.action-btn a .fa {
   .photo-album-gallery .tile {
     width: 49% !important;
   }
+  .photo-album-gallery.w46 .tile {
+    width: 46% !important;
+  }
 }
 @media (max-width: 767px) {
   .photo-album-gallery .tile {
@@ -5286,6 +5293,17 @@ figcaption.action-btn a .fa {
   }
   .photo-album-list-header {
     margin-bottom: 90px;
+  }
+  .become-photographer {
+    color: #3AECCB;
+  } 
+}
+@media (min-width: 481px) and (max-width: 767px) {
+  .photo-album-gallery .tile {
+    width: 49% !important;
+  }
+  .photo-album-gallery.w46 .tile {
+    width: 46% !important;
   }
 }
 @media (min-width: 992px) {
@@ -5300,11 +5318,6 @@ figcaption.action-btn a .fa {
     -moz-border-radius:5px !important;
     border-radius:5px !important;
     color: white;
-  } 
-}
-@media (max-width: 767px){
-  .become-photographer {
-    color: #3AECCB;
   } 
 }
 .preview-img-hover {
@@ -5330,4 +5343,85 @@ figcaption.action-btn a .fa {
   height: auto;
   max-width: none;
   width: auto;
+  background-color: #eee;
+  color: #9b9b9b;
+  line-height: 34px;
+  font-size: 14px;
+  border-radius: 2px;
+  margin-bottom: 0;
 }
+.w-100 {
+  width: 100% !important;
+}
+.p-left-0{
+  padding-left: 0;
+}
+.cashout-container {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 40px;
+  position: relative;
+}
+.payment-type-input-info-wrapper .form-group {
+  margin-bottom: 0px;
+}
+.cashout-amount{
+  box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.11);
+  padding: 16px;
+  color: #383838;
+  position: relative;
+  border-bottom: 5px solid #3AECCB;
+}
+.cashout-amount .label-am {
+  font-weight: bold;
+  margin-bottom: 29px;
+}
+.cashout-amount .value {
+  display: inline;
+  font-size: 38px;
+  font-weight: bold;
+}
+.cashout-amount .currency {
+  display: inline;
+  font-weight: bold;
+  position: absolute;
+  right: 16px;
+}
+.cashout-information {
+  color: #383838;
+}
+.cashout-btn {
+  background-color: #3AECCB;
+  border-radius: 5px;
+  padding: 10px 16px;
+  color: white;
+  display: block;
+  width: 100%;
+}
+.cashout-btn:hover {
+  background-color: #34d4b6;
+  color: white;
+}
+.payment-type-input-info-wrapper {
+  margin-top: 20px;
+}
+.c-bold {
+  font-weight: bold;
+}
+.cashout-input {
+  line-height: 34px;
+  font-size: 15px;
+}
+@media (min-width: 768px) {
+  .cashout-information {
+    padding: 0 20px 0 30px;
+  }
+  .cashout-btn-holder{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
