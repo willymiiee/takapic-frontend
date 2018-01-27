@@ -104,6 +104,7 @@ class Step2IntiatePortofolio extends Component {
       images.forEach((item, index) => {
         const formData = new FormData();
         formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTOS_PORTFOLIO_PRESET);
+        formData.append('tags', `portfolio-${this.props.user.uid}`);
         formData.append('file', item.fileObject);
 
         const uploadConfig = {

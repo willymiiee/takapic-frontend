@@ -15,7 +15,6 @@ import Page from '../Page';
 import BookingForm from './BookingForm';
 import MeetingPointMap from './MeetingPointMap';
 import Animator from '../common/Animator';
-import axios from "axios/index";
 
 class PhotographerBooking extends Component {
   constructor() {
@@ -32,7 +31,7 @@ class PhotographerBooking extends Component {
         childrens: 0,
         infants: 0
       },
-      snapToken: null
+      braintreeInstanceObject: null
     };
   }
 
@@ -57,16 +56,11 @@ class PhotographerBooking extends Component {
       const meetingPointsFromStore = get(this.props, 'reservation.meetingPoints');
       this.setState({ meetingPoints: meetingPointsFromStore });
     }
-
-    axios
-      .get('http://localhost/php-services/index.php')
-      .then((response) => {
-        this.setState({ snapToken: response.data.snapToken });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
+
+  setBraintreeInstanceObject = (object) => {
+    this.setState({ braintreeInstanceObject: object });
+  };
 
   meetingPointChangeHandler = value => {
     const {
@@ -155,8 +149,9 @@ class PhotographerBooking extends Component {
                   meetingPointChangeHandler={this.meetingPointChangeHandler}
                   reservationPaymentAction={this.props.reservationPaymentAction}
                   goToReservationDetail={this.goToReservationDetail}
+                  braintreeInstanceObject={this.state.braintreeInstanceObject}
+                  setBraintreeInstanceObject={this.setBraintreeInstanceObject}
                   travellerDisplayName={this.props.user.userMetadata.displayName}
-                  snapToken={this.state.snapToken}
                 />
               </Col>
               <Col sm={6} lg={5}>
