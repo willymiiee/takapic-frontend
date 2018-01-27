@@ -97,7 +97,7 @@ class PortofolioGalleryyy extends Component {
                 <hr style={{marginTop:'30px'}}/>
                 <div
                   id="photographer-portofolio-gallery"
-                  className="photographer-portofolio-container">
+                  className="photographer-portofolio-container photo-album-gallery w46">
                   <Gallery
                     images={galleries}
                     enableImageSelection={false}

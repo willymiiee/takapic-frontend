@@ -19,75 +19,70 @@ class CashOut extends Component {
     return (
       <Page style={{whiteSpace:'normal'}}>
         <UserAccountPanel>
-          <h3 className="margin-top-0">Cash Out</h3>
-
-          <div className="cashout-container">
-            <div className="amount-wrapper">
-              <p>Amount</p>
-              <div className="money-amount-currency-wrapper">
-                <p>302</p>
-                <p>USD</p>
-              </div>
-            </div>
-
-            <div className="money-receiving-information-wrapper">
-              <div className="payment-type-wrapper">
-                <label className="radio-inline">
-                  <input
-                    type="radio"
-                    name="paymentTypes"
-                    value="paypal"
-                    checked={this.state.paymentType === 'paypal'}
-                    onChange={this.selectPaymentTypeHandler}/> Paypal
-                </label>
-
-                <label className="radio-inline">
-                  <input
-                    type="radio"
-                    name="paymentTypes"
-                    value="bank"
-                    checked={this.state.paymentType === 'bank'}
-                    onChange={this.selectPaymentTypeHandler}/> Bank Account
-                </label>
+          <h3 className="margin-top-0" style={{marginTop:'20px'}}><strong>Cash Out</strong></h3>
+          <form>
+            <div className="row cashout-container">
+              <div className="col-sm-4 cashout-amount m-margin-bottom-50">
+                <p className="label-am">Amount</p>
+                <p className="value">302</p>
+                <p className="currency">USD</p>
               </div>
 
-              <div className="payment-type-input-info-wrapper">
-                <form>
+              <div className="col-sm-6 cashout-information m-margin-bottom-50">
+                <div className="payment-type-wrapper">
+                  <label className="radio-inline">
+                    <input
+                      type="radio"
+                      name="paymentTypes"
+                      value="paypal"
+                      checked={this.state.paymentType === 'paypal'}
+                      onChange={this.selectPaymentTypeHandler}/> Paypal
+                  </label>
+                  <label className="radio-inline" style={{marginLeft:'30px'}}>
+                    <input
+                      type="radio"
+                      name="paymentTypes"
+                      value="bank"
+                      checked={this.state.paymentType === 'bank'}
+                      onChange={this.selectPaymentTypeHandler}/> Bank Account
+                  </label>
+                </div>
+
+                <div className="payment-type-input-info-wrapper">
                   {
                     this.state.paymentType && this.state.paymentType === 'paypal'
                       ? (
                         <div className="type-paypal-account-wrapper">
                           <div className="type-paypal-account-input">
                             <div className="form-group">
-                              <label>Paypal Email Account</label>
-                              <input type="text" className="form-control"/>
+                              <label className="c-bold">Paypal Email Account</label>
+                              <input type="text" className="form-control cashout-input w-100"/>
                             </div>
                           </div>
                         </div>
                       )
                       : (
                         <div className="type-bank-account-wrapper">
-                          <div className="type-bank-account-input">
-                            <div className="form-group">
-                              <label>Bank Name</label>
-                              <input type="text" className="form-control"/>
+                          <div className="row type-bank-account-input">
+                            <div className="col-xs-5 form-group">
+                              <label className="c-bold">Bank Name</label>
+                              <input type="text" className="form-control cashout-input w-100"/>
                             </div>
-                            <div className="form-group">
-                              <label>Account Number</label>
-                              <input type="text" className="form-control"/>
+                            <div className="col-xs-7 form-group p-left-0">
+                              <label className="c-bold">Account Number</label>
+                              <input type="text" className="form-control cashout-input w-100"/>
                             </div>
                           </div>
                         </div>
                       )
                   }
-
-                  <div>
-                    <button type="button" className="btn btn-default">Submit</button>
-                  </div>
-                </form>
+                </div>
+              </div>
+              <div className="col-sm-2 cashout-btn-holder m-margin-bottom-50">
+                <button type="button" className="btn cashout-btn">Cash Out</button>
               </div>
             </div>
-          </div>
+          </form>
         </UserAccountPanel>
       </Page>
     )
