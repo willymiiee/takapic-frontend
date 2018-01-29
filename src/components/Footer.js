@@ -55,7 +55,7 @@ class Footer extends Component {
               <div className="row">
               <ul className="footer-links col-sm-6">
                 <li className="no-before">
-                  <Link to="/blog"><a className="blog-icon">B</a>Blog</Link>
+                  <Link to="/blog"><span className="blog-icon">B</span>Blog</Link>
                 </li>
                 <li>
                   <Link to="/about-us">About Us</Link>
