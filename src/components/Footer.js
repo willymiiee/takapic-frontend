@@ -52,7 +52,11 @@ class Footer extends Component {
 
             <div className="col-sm-5 col-sm-offset-1 margin-bottom-30">
               <h4>Takapic</h4>
-              <ul className="footer-links">
+              <div className="row">
+              <ul className="footer-links col-sm-6">
+                <li className="no-before">
+                  <Link to="/blog"><a className="blog-icon">B</a>Blog</Link>
+                </li>
                 <li>
                   <Link to="/about-us">About Us</Link>
                 </li>
@@ -62,6 +66,8 @@ class Footer extends Component {
                 <li>
                   <Link to="/packages">Packages</Link>
                 </li>
+              </ul>
+              <ul className="footer-links col-sm-6">
                 <li>
                   <Link to="/photographer-faq">Photographer FAQs</Link>
                 </li>
@@ -75,6 +81,7 @@ class Footer extends Component {
                   <Link to="/contact-us">Contact Us</Link>
                 </li>
               </ul>
+              </div>
             </div>
 
             <div className="col-sm-2">
