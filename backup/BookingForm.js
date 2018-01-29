@@ -1,16 +1,40 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import get from "lodash/get";
 import { Formik } from "formik";
 import Select from 'react-select';
 import { Panel } from 'react-bootstrap';
+import dropin from 'braintree-web-drop-in';
 import firebase from "firebase";
 import Yup from 'yup';
-import axios from 'axios';
 import { JsonToUrlEncoded } from "../../helpers/helpers";
 import { database } from "../../services/firebase";
 import { RESERVATION_REQUESTED } from "../../services/userTypes";
 
 class BookingForm extends Component {
+  componentDidMount() {
+    const {
+      setBraintreeInstanceObject,
+      reservation: { total }
+    } = this.props;
+
+    dropin.create({
+      authorization: process.env.REACT_APP_BT_TOKENIZATION_KEY,
+      paypal: {
+        flow: 'checkout',
+        amount: total,
+        currency: 'USD'
+      },
+      container: ReactDOM.findDOMNode(this.refs.braintreewrapper)
+    }, (createError, instance) => {
+      if (createError) {
+        console.error('dropin.create Error: ', createError);
+        return;
+      }
+      setBraintreeInstanceObject(instance);
+    });
+  }
+
   render() {
     const {
       errors,
@@ -163,8 +187,111 @@ const BookingFormFormik = Formik({
     messageToPhotographer: Yup.string().required('Please write a message for photographer'),
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log(props.snapToken);
-    window.snap.pay(props.snapToken);
+    const { braintreeInstanceObject } = props;
+
+    if (braintreeInstanceObject) {
+      braintreeInstanceObject.requestPaymentMethod((error, payload) => {
+        if (error) {
+          console.error('braintreeInstanceObject.requestPaymentMethod Error: ', error);
+          setSubmitting(false);
+          alert(error.message);
+          return;
+        }
+
+        if (payload) {
+          const {
+            reservation: { total, reservationId }
+          } = props;
+
+          const dataSubmit = {
+            paymentMethodNonce: payload.nonce,
+            paymentType: payload.type,
+            orderId: reservationId,
+            amount: total.toString() + '.00',
+            travellerDisplayName: props.travellerDisplayName
+          };
+
+          fetch(`${process.env.REACT_APP_API_HOSTNAME}/api/payment/create`, {
+            method: 'POST',
+            headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
+            body: JsonToUrlEncoded(dataSubmit)
+          })
+            .then((response => {
+              return response.json();
+            }))
+            .then((data) => {
+              if (data.success) {
+                const paymentDetail = {
+                  method: payload.type,
+                  trxId: data.transaction.id,
+                  status: data.transaction.status,
+                  created: data.transaction.createdAt,
+                  updated: data.transaction.updatedAt
+                };
+
+                if (payload.type === 'PayPalAccount') {
+                  paymentDetail.paymentId = data.transaction.paypalAccount.paymentId;
+                  paymentDetail.authorizationId = data.transaction.paypalAccount.authorizationId;
+                  paymentDetail.payerId = data.transaction.paypalAccount.payerId;
+                  paymentDetail.payerFirstName = data.transaction.paypalAccount.payerFirstName;
+                  paymentDetail.payerLastName = data.transaction.paypalAccount.payerLastName;
+                } else {
+                  paymentDetail.cardholderName = data.transaction.creditCard.cardholderName
+                }
+
+                const dataReservation = {
+                  status: RESERVATION_REQUESTED,
+                  meetingPoints: {
+                    type: 'defined',
+                    id: values.meetingPointSelectedValue,
+                    detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
+                  },
+                  payment: paymentDetail,
+                  passengers: {
+                    adults: values.numberOfAdults,
+                    childrens: values.numberOfChildren,
+                    infants: values.numberOfInfants
+                  }
+                };
+
+                props.reservationPaymentAction(props.reservation.reservationId, dataReservation);
+
+                const newData = database
+                  .database()
+                  .ref('reservation_messages')
+                  .child(props.reservation.reservationId)
+                  .push();
+
+                newData.set({
+                  created: firebase.database.ServerValue.TIMESTAMP,
+                  sender: props.reservation.travellerId,
+                  receiver: props.reservation.photographerId,
+                  message: values.messageToPhotographer
+                });
+
+                props.goToReservationDetail(props.reservation.reservationId, props.reservation.photographerId);
+
+              } else {
+                let errorMessage = 'Payment failed. Please contact and report to us.';
+                if (data.verification.status === 'processor_declined') {
+                  errorMessage = 'Credit card not verified / declined';
+                } else if (data.verification.status === 'failed') {
+                  errorMessage = 'Processor Network Unavailable';
+                }
+                alert(errorMessage);
+              }
+            })
+            .then(() => {
+              setSubmitting(false);
+            })
+            .catch((error) => {
+              console.error('Catch error', error);
+            });
+        } else {
+          alert('Please select a payment method to complete the payment');
+        }
+      });
+    }
   }
 })(BookingForm);
 

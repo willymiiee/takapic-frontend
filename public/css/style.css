@@ -276,14 +276,6 @@ header.fullwidth .container {
 }
 
 /*  Links  */
-#footer ul.footer-links {
-  margin: 0 0 15px 0;
-  padding: 0;
-  width: 50%;
-  box-sizing: border-box;
-  display: inline-block;
-  float: left;
-}
 
 #footer .footer-links li {
   position: relative;

@@ -24,13 +24,24 @@ class PhotosPortofolio extends Component {
       imagesNewAdded: [],
       uploadedImagesList: [],
       defaultDisplayPictureUrl: null,
-      isUploading: false
+      isUploading: false,
+      modalShow: false
     };
 
     this.cloudinaryInstance = cloudinary.Cloudinary.new({
       cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
       secure: true
     });
+
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({modalShow: true});
+  }
+  closeModal() {
+    this.setState({modalShow: false});
   }
 
   componentDidMount() {
@@ -112,6 +123,7 @@ class PhotosPortofolio extends Component {
       images.forEach((item, index) => {
         const formData = new FormData();
         formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTOS_PORTFOLIO_PRESET);
+        formData.append('tags', `portfolio-${this.props.user.uid}`);
         formData.append('file', item.fileObject);
 
         const uploadConfig = {
@@ -219,7 +231,7 @@ class PhotosPortofolio extends Component {
     return (
       <div className="row">
         <div className="row">
-          <div className="col-sm-7 margin-top-15 margin-bottom-30" style={{paddingRight:'15px', paddingLeft:'0'}}>
+          <div className="col-sm-7 margin-top-15 margin-bottom-30 nm-pd-rght-15" style={{paddingRight:'0', paddingLeft:'0'}}>
             <div>
               <div id="photo-preview">
                 {
@@ -316,33 +328,11 @@ class PhotosPortofolio extends Component {
                   ))
                 }
               </div>
-
-              <div style={{marginTop:'40px'}}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  ref={ref => (this._uploadFile = ref)}
-                  className="hidden"
-                  onChange={this.selectImagesHandler}
-                />
-
-                <button
-                  className="button"
-                  onClick={() => this._uploadFile.click()}
-                >
-                  Browse to add images
-                </button>
-
-                <p style={{ color: 'red', fontSize: '12px' }}>
-                  Please upload less than 10MB photos.
-                </p>
-              </div>
             </div>
           </div>
 
-          <div className="col-sm-5 padding-0 margin-top-15 margin-bottom-30">
-            <div className="card tips">
+          <div className={this.state.modalShow ? "col-sm-5 padding-0 margin-top-15 margin-bottom-30 bg-m-popup": "col-sm-5 padding-0 margin-top-15 margin-bottom-30"}>
+            <div className={this.state.modalShow ? "card tips": "card tips m-hide"} >
               <h3>Why it's important to upload your nice photos</h3>
               <p>
                 Customers will frequent your page and view your photos so this is your best chance to give them
@@ -355,12 +345,41 @@ class PhotosPortofolio extends Component {
                 You can update / change your photos anytime you want.
               </p>
             </div>
+            <i className={this.state.modalShow ? "fa fa-close m-close-tool-tips": "fa fa-close hide"} onClick={this.closeModal}></i>
           </div>
+        </div>
+        <div style={{marginTop:'40px', position:'relative'}}>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            ref={ref => (this._uploadFile = ref)}
+            className="hidden"
+            onChange={this.selectImagesHandler}
+          />
+
+          <p className="tool-tips nm-hide" onClick={this.openModal}>
+            <i className="fa fa-info-circle" aria-hidden="true"></i> Tips
+          </p>
+          <button
+            className="button new-browse-image"
+            onClick={() => this._uploadFile.click()}
+          >
+            Tap here to add your portfolio
+          </button>
+
+          <p className="max-upload-size">
+            Please upload less than 10MB photos
+          </p>
+          <img
+            className="browse-img"
+            src="/images/browse-img.png"
+            alt=""
+          />
         </div>
 
         <div className="row">
-          <hr/>
-          <Button onClick={this.submitImagesHandler} style={{float:'right'}} className="button">
+          <Button onClick={this.submitImagesHandler} className="button key-button-square width-full">
             { this.state.isUploading || this.props.isDeletingPhotos ? 'Processing... Please wait.' : 'Update' }
           </Button>
         </div>

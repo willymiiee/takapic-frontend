@@ -135,7 +135,7 @@ class PhotoAlbum extends Component {
                   )
                 })
                 : (
-                  <div>
+                  <div style={{ marginLeft: '16px' }}>
                     {
                       this.state.isDownloading
                         ? (

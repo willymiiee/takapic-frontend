@@ -60,7 +60,7 @@ class SingleItem extends Component {
             />
           </div>
 
-          <h4>{ name }</h4>
+          <h4 className="ellipsis160">{ name }</h4>
 
         </div>
         <div className="ratings">
