@@ -39,7 +39,7 @@ const UserAccountPanel = (props) => {
 
   return (
     <div>
-      <div className="padding-bottom-30"/>
+      <div className="nm-pd-btm-30"/>
       <div className="container">
         <nav className="user-account-panel-menubar">
           <ul className="smooth-card padding-0 m-horizontal-scroll">
@@ -60,7 +60,7 @@ const UserAccountPanel = (props) => {
       </div>
 
       <div className="container">
-        <div className="feature-container smooth-card radius-0 m-padding-16" style={{paddingBottom:'50px'}}>
+        <div className="m-noshadow feature-container smooth-card radius-0 m-padding-0" style={{paddingBottom:'50px'}}>
           { props.children }
         </div>
       </div>
