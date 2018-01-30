@@ -590,7 +590,7 @@ button.u:hover {
 #result:not(.list-view) > div:hover > .photographer > h4 {
     display: block;
     font-size: 18px;
-    margin: 0;
+    margin: 0 auto;
 }
 
 #result:not(.list-view) > div:hover > .ratings {
@@ -5459,7 +5459,6 @@ figcaption.action-btn a .fa {
   max-width: 165px;
   overflow: hidden;
   white-space: nowrap;
-  margin: 0 auto !important;
 }
 .float-right {
   float: right;

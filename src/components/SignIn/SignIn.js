@@ -108,22 +108,6 @@ const SignIn = props => {
                         </label>
                         {errors.password && touched.password &&
                         <label style={{color: 'red'}}>{errors.password}</label>}
-
-                        <span className="lost_password">
-                          Wanna book a photographer?
-                          &nbsp;
-                          <Link to="/traveller-registration" className="radius-5" style={{
-                            display: 'inline-block',
-                            padding: '8px',
-                            backgroundColor: '#3AECCB',
-                            textDecoration: 'none',
-                            color: 'white',
-                          }}>
-                            Sign Up
-                          </Link>
-                          &nbsp;
-                          now!
-                        </span>
                       </p>
 
                       <div className="form-row">
