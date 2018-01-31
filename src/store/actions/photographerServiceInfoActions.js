@@ -35,8 +35,9 @@ export const resetPhotographerServiceInformationData = () => {
 
 export const fetchPhotographerListings = searchInfo => {
   return dispatch => {
-    let { destination, date } = queryString.parse(searchInfo);
-    const queryParams = `filter[destination]=${destination}&filter[date]=${date}`;
+    let { destination, date, page } = queryString.parse(searchInfo);
+    const pageFix = typeof page === 'undefined' ? 0 : page - 1;
+    const queryParams = `filter[destination]=${destination}&filter[date]=${date}&filter[page]=${pageFix}`;
 
     dispatch({ type: 'FETCH_PHOTOGRAPHERS_LISTING_START' });
 
@@ -45,7 +46,7 @@ export const fetchPhotographerListings = searchInfo => {
       .then(response => {
         dispatch({
           type: 'FETCH_PHOTOGRAPHERS_LISTING_SUCCESS',
-          payload: response.data.data
+          payload: response.data
         });
       })
       .catch(error => {

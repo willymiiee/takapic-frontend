@@ -5572,3 +5572,7 @@ figcaption.action-btn a .fa {
   }
 }
 
+#react-paginate li a {
+    cursor: pointer;
+}
+

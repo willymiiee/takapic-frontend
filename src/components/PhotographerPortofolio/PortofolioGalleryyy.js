@@ -36,6 +36,12 @@ class PortofolioGalleryyy extends Component {
     this.fetchPhotographerInformation();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.photographerServiceInformation.loading && !prevProps.photographerServiceInformation.loading) {
+      this.fetchPhotographerInformation();
+    }
+  }
+
   componentWillUnmount() {
     this.cloudinaryInstance = null;
     this.props.resetPhotographerServiceInformationData();

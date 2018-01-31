@@ -5,6 +5,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
+import ReactPaginate from 'react-paginate';
 
 import {
   fetchPhotographerListings,
@@ -20,15 +21,20 @@ import Animator from '../common/Animator';
 class Search extends Component {
   constructor(props) {
     super(props);
+
     const searchQs = queryString.parse(this.props.location.search);
-    const { destination, date } = searchQs;
+    const { destination, date, page } = searchQs;
+    const pageFix = typeof page === 'undefined' ? 0 : page - 1;
+
     this.state = {
       search: {
         destination: !destination ? null : { label: destination },
         date: !date ? null : moment(date),
+        page: pageFix
       },
       jancuk: null,
-      viewType: ''
+      viewType: '',
+      selectedPage: pageFix
     };
   }
 
@@ -68,6 +74,8 @@ class Search extends Component {
 
     let { destination, date } = this.state.search;
     let destinationValStr = this.state.jancuk;
+    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+
     if (!destinationValStr) {
       if (destination) {
         destinationValStr = destination.label;
@@ -76,12 +84,38 @@ class Search extends Component {
       }
     }
 
-    const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
     this.props.searchInformationLog(destinationValStr, dateValStr);
 
     this.props.history.push({
       pathname: '/search/',
       search: 'destination=' + destinationValStr + '&date=' + dateValStr
+    });
+  };
+
+  handlePaginationNavigate = (data) => {
+    const page = data.selected;
+    const newState = {
+      selectedPage: page,
+      search: { ...this.state.search, page }
+    };
+
+    this.setState(newState, () => {
+      let { destination, date } = this.state.search;
+      let destinationValStr = this.state.jancuk;
+      const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+
+      if (!destinationValStr) {
+        if (destination) {
+          destinationValStr = destination.label;
+        } else {
+          destinationValStr = '';
+        }
+      }
+
+      this.props.history.push({
+        pathname: '/search/',
+        search: `destination=${destinationValStr}&date=${dateValStr}&page=${page + 1}`
+      });
     });
   };
 
@@ -167,15 +201,6 @@ class Search extends Component {
             
             </div>
 
-            {/*<div id="result-filter">
-              <div>
-                <div>
-                  Price Range<div className="hidden">: $14 USD - $15 USD+</div>
-                  <i className="fa fa-caret-down margin-left-5" />
-                </div>
-              </div>
-            </div>*/}
-
             <div id="result-view">
               <i
                 id="result-view-grid"
@@ -194,11 +219,27 @@ class Search extends Component {
             {
               this.props.photographerListings.results.length > 0
                 ? (
-                  <SearchResult
-                    listings={this.props.photographerListings.results}
-                    currenciesRates={this.props.currenciesRates}
-                    viewType={this.state.viewType}
-                  />
+                  <div>
+                    <SearchResult
+                      listings={this.props.photographerListings.results}
+                      currenciesRates={this.props.currenciesRates}
+                      viewType={this.state.viewType}
+                    />
+                    <div id="react-paginate">
+                      <ReactPaginate
+                        pageCount={this.props.photographerListings.totalAvailablePages}
+                        initialPage={this.state.search.page}
+                        forcePage={this.state.selectedPage}
+                        onPageChange={this.handlePaginationNavigate}
+                        disableInitialCallback={true}
+                        pageRangeDisplayed={5}
+                        marginPagesDisplayed={2}
+                        containerClassName={"pagination"}
+                        subContainerClassName={"pages pagination"}
+                        activeClassName={"active"}
+                      />
+                    </div>
+                  </div>
                 )
                 : (
                   <p className="no-photographer-found">
