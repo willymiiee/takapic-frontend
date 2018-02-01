@@ -25,6 +25,12 @@ class PortofolioAbout extends Component {
     this.fetchPhotographerInformation();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.photographerServiceInformation.loading && !prevProps.photographerServiceInformation.loading) {
+      this.fetchPhotographerInformation();
+    }
+  }
+
   componentWillUnmount() {
     this.props.resetPhotographerServiceInformationData();
   }
