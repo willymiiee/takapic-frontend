@@ -32,6 +32,7 @@ export const reservationInitializeAction = (reservationNumber, information) => {
     const db = database.database();
     const reservationRefChild = db.ref('/reservations').child(reservationNumber);
     information.created = firebase.database.ServerValue.TIMESTAMP;
+    information.albumDelivered = 'N';
     reservationRefChild.set(information);
 
     dispatch({

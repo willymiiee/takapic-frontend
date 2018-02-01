@@ -4,6 +4,7 @@ import { ProgressBar } from 'react-bootstrap';
 import cloudinary from 'cloudinary-core';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import { database } from "../../services/firebase";
 
 import Page from '../Page';
@@ -52,18 +53,76 @@ class PhotoAlbumDetailPhotographer extends Component {
     this.cloudinaryInstance = null;
   }
 
-  browseImagesHandler = (evt) => {
+  browseAndUploadImagesHandler = (evt) => {
     const files = evt.target.files;
     const fileOutOfSize = [];
 
-    Object.keys(files).forEach((itemKey) => {
+    let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
+    urlUploadRequest += '/image/upload';
+
+    Object.keys(files).forEach((itemKey, itemIndex) => {
       const fileItemObject = files[itemKey];
+
       if (fileItemObject.size <= 10000000) {
         const fileReader = new FileReader();
 
         fileReader.onloadend = (evtObj) => {
-          const imageItem = {imagePreview: evtObj.target.result, fileObject: fileItemObject};
-          this.setState({ imagesUpload: [ ...this.state.imagesUpload, imageItem ] });
+          const imageItem = { imagePreview: evtObj.target.result };
+          this.setState(
+            { imagesUpload: [ ...this.state.imagesUpload, imageItem ] },
+            () => {
+              const formData = new FormData();
+              formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_ALBUMS_PRESET);
+              formData.append('tags', `album-${this.state.reservationId}`);
+              formData.append('file', fileItemObject);
+
+              const uploadConfig = {
+                onUploadProgress: (progressEvent) => {
+                  const images = this.state.imagesUpload;
+                  images[itemIndex].percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+                  this.setState({ imagesUpload: images });
+                }
+              };
+
+              axios
+                .post(urlUploadRequest, formData, uploadConfig)
+                .then((response) => {
+                  const newItem = {
+                    id: uuidv4(),
+                    publicId: response.data.public_id,
+                    imageFormat: response.data.format,
+                    url: response.data.secure_url,
+                    width: response.data.width,
+                    height: response.data.height,
+                    sizebytes: response.data.bytes,
+                    isSelected: false
+                  };
+
+                  this.setState(
+                    { uploadedImagesList: [ ...this.state.uploadedImagesList, newItem ] },
+                    () => {
+                      const newImages = [
+                        ...this.state.images,
+                        ...this.state.uploadedImagesList
+                      ];
+
+                      this.saveUploadedImages(newImages);
+                    }
+                  );
+                })
+                .then(() => {
+                  this.setState({
+                    images: [ ...this.state.images, ...this.state.uploadedImagesList ],
+                    imagesUpload: [],
+                    uploadedImagesList: [],
+                    isUploading: false
+                  });
+                })
+                .catch((error) => {
+                  console.error('Catch error: ', error);
+                })
+            }
+          );
         };
         fileReader.readAsDataURL(fileItemObject);
 
@@ -74,7 +133,7 @@ class PhotoAlbumDetailPhotographer extends Component {
 
     if (fileOutOfSize.length > 0) {
       const filesStr = fileOutOfSize.join("\n");
-      alert("Some photos will not be uploaded. Because there are one or more photos have more than 10MB size\n---------------------------------\n" + filesStr);
+      alert("Some photos was not uploaded. Because there are one or more photos have more than 10MB size\n---------------------------------\n" + filesStr);
     }
   };
 
@@ -96,77 +155,20 @@ class PhotoAlbumDetailPhotographer extends Component {
 
   submitImagesHandler = (evt) => {
     evt.preventDefault();
-    let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
-    urlUploadRequest += '/image/upload';
-
-    if (this.state.imagesUpload.length > 0) {
-      let uploads = [];
-      const images = this.state.imagesUpload;
-
-      this.setState({ isUploading: true });
-
-      images.forEach((item, index) => {
-        const formData = new FormData();
-        formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_ALBUMS_PRESET);
-        formData.append('tags', `album-${this.state.reservationId}`);
-        formData.append('file', item.fileObject);
-
-        const uploadConfig = {
-          onUploadProgress: (progressEvent) => {
-            images[index].percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-            this.setState({ imagesUpload: images });
-          }
-        };
-
-        uploads.push(
-          axios
-            .post(urlUploadRequest, formData, uploadConfig)
-            .then((response) => {
-              const newItem = {
-                id: uuidv4(),
-                publicId: response.data.public_id,
-                imageFormat: response.data.format,
-                url: response.data.secure_url,
-                width: response.data.width,
-                height: response.data.height,
-                sizebytes: response.data.bytes,
-                isSelected: false
-              };
-
-              this.setState({ uploadedImagesList: [ ...this.state.uploadedImagesList, newItem ] });
-            })
-            .catch((error) => {
-              console.error('Catch error: ', error);
-            })
-        );
+    this.setState({ isUploading: true });
+    database
+      .database()
+      .ref('reservations')
+      .child(this.state.reservationId)
+      .update({ albumDelivered: 'Y' })
+      .then(() => {
+        this.setState({ isUploading: false }, () => {
+          this.props.history.push('/me/albums');
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-
-      if (images.length > 0) {
-        if (uploads.length > 0) {
-          Promise.all(uploads)
-            .then(() => {
-              const newImages = [
-                ...this.state.images,
-                ...this.state.uploadedImagesList
-              ];
-
-              this.saveUploadedImages(newImages);
-              return true;
-            })
-            .then(() => {
-              this.setState({
-                images: [ ...this.state.images, ...this.state.uploadedImagesList ],
-                imagesUpload: [],
-                uploadedImagesList: [],
-                isUploading: false
-              });
-            });
-        }
-      }
-
-    } else {
-      alert('There are no images to be upload');
-    }
   };
 
   saveUploadedImages(newImages) {
@@ -240,6 +242,18 @@ class PhotoAlbumDetailPhotographer extends Component {
                     console.log(error);
                   });
               }
+              return true;
+            })
+            .then(() => {
+              if (!newImages) {
+                db
+                  .ref('reservations')
+                  .child(this.state.reservationId)
+                  .update({ albumDelivered: 'N' })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }
             })
             .catch((error) => {
               console.log(error);
@@ -274,7 +288,7 @@ class PhotoAlbumDetailPhotographer extends Component {
                 accept="image/*"
                 multiple
                 ref={ref => (this._uploadFile = ref)}
-                onChange={this.browseImagesHandler}
+                onChange={this.browseAndUploadImagesHandler}
                 className="hidden"
               />
               <button className="btn" onClick={() => this.checkUncheckAll(true)}>
@@ -363,4 +377,4 @@ class PhotoAlbumDetailPhotographer extends Component {
   }
 }
 
-export default PhotoAlbumDetailPhotographer;
+export default withRouter(PhotoAlbumDetailPhotographer);
