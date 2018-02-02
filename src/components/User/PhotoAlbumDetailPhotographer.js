@@ -21,7 +21,8 @@ class PhotoAlbumDetailPhotographer extends Component {
       reservationId: '',
       isUploading: false,
       isDownloading: false,
-      isDeleting:false
+      isDeleting:false,
+      isSubmitting: false
     };
 
     this.cloudinaryInstance = cloudinary.Cloudinary.new({
@@ -53,88 +54,55 @@ class PhotoAlbumDetailPhotographer extends Component {
     this.cloudinaryInstance = null;
   }
 
-  browseAndUploadImagesHandler = (evt) => {
-    const files = evt.target.files;
-    const fileOutOfSize = [];
+  browseImagesHandlerProvide = (files) => {
+    return new Promise((resolve) => {
+      const fileOutOfSize = [];
+      let pending = 0;
 
-    let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
-    urlUploadRequest += '/image/upload';
+      Object.keys(files).forEach((key) => {
+        const file = files[key];
+        if (file.size <= 10000000) {
+          const fr = new FileReader();
+          fr.onloadend = (event) => {
+            const imageItem = {
+              imagePreview: event.target.result,
+              fileObject: file,
+              percentCompleted: 0
+            };
 
-    Object.keys(files).forEach((itemKey, itemIndex) => {
-      const fileItemObject = files[itemKey];
+            this.setState({ imagesUpload: [ ...this.state.imagesUpload, imageItem ] });
+            --pending;
 
-      if (fileItemObject.size <= 10000000) {
-        const fileReader = new FileReader();
-
-        fileReader.onloadend = (evtObj) => {
-          const imageItem = { imagePreview: evtObj.target.result };
-          this.setState(
-            { imagesUpload: [ ...this.state.imagesUpload, imageItem ] },
-            () => {
-              const formData = new FormData();
-              formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_ALBUMS_PRESET);
-              formData.append('tags', `album-${this.state.reservationId}`);
-              formData.append('file', fileItemObject);
-
-              const uploadConfig = {
-                onUploadProgress: (progressEvent) => {
-                  const images = this.state.imagesUpload;
-                  images[itemIndex].percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-                  this.setState({ imagesUpload: images });
-                }
-              };
-
-              axios
-                .post(urlUploadRequest, formData, uploadConfig)
-                .then((response) => {
-                  const newItem = {
-                    id: uuidv4(),
-                    publicId: response.data.public_id,
-                    imageFormat: response.data.format,
-                    url: response.data.secure_url,
-                    width: response.data.width,
-                    height: response.data.height,
-                    sizebytes: response.data.bytes,
-                    isSelected: false
-                  };
-
-                  this.setState(
-                    { uploadedImagesList: [ ...this.state.uploadedImagesList, newItem ] },
-                    () => {
-                      const newImages = [
-                        ...this.state.images,
-                        ...this.state.uploadedImagesList
-                      ];
-
-                      this.saveUploadedImages(newImages);
-                    }
-                  );
-                })
-                .then(() => {
-                  this.setState({
-                    images: [ ...this.state.images, ...this.state.uploadedImagesList ],
-                    imagesUpload: [],
-                    uploadedImagesList: [],
-                    isUploading: false
-                  });
-                })
-                .catch((error) => {
-                  console.error('Catch error: ', error);
-                })
+            if (pending === 0) {
+              resolve(true);
             }
-          );
-        };
-        fileReader.readAsDataURL(fileItemObject);
+          };
+          fr.readAsDataURL(file);
+          ++pending;
 
-      } else {
-        fileOutOfSize.push(fileItemObject.name);
+        } else {
+          fileOutOfSize.push(file.name);
+        }
+      });
+
+      if (fileOutOfSize.length > 0) {
+        const filesStr = fileOutOfSize.join("\n");
+        const messageErr = "Some photos will not be uploaded. Because there are one or more photos have more than 10MB size\n---------------------------------\n" + filesStr;
+        alert(messageErr);
       }
     });
+  };
 
-    if (fileOutOfSize.length > 0) {
-      const filesStr = fileOutOfSize.join("\n");
-      alert("Some photos was not uploaded. Because there are one or more photos have more than 10MB size\n---------------------------------\n" + filesStr);
-    }
+  browseImagesHandlerConsume = (evt) => {
+    this.setState({ isUploading: true });
+    this.browseImagesHandlerProvide(evt.target.files)
+      .then(() => {
+        this.uploadImages();
+      })
+      .catch((error) => {
+        this.setState({ isUploading: false });
+        alert(error.message);
+      });
   };
 
   selectedImagesHandler = (indexSelected, image) => {
@@ -155,21 +123,101 @@ class PhotoAlbumDetailPhotographer extends Component {
 
   submitImagesHandler = (evt) => {
     evt.preventDefault();
-    this.setState({ isUploading: true });
+    this.setState({ isSubmitting: true });
+
     database
       .database()
       .ref('reservations')
       .child(this.state.reservationId)
       .update({ albumDelivered: 'Y' })
       .then(() => {
-        this.setState({ isUploading: false }, () => {
+        this.setState({ isSubmitting: false }, () => {
           this.props.history.push('/me/albums');
         });
       })
       .catch((error) => {
+        this.setState({ isSubmitting: true });
         console.log(error);
       });
   };
+
+  uploadImages() {
+    let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
+    urlUploadRequest += '/image/upload';
+
+    if (this.state.imagesUpload.length > 0) {
+      let uploads = [];
+      const images = this.state.imagesUpload;
+
+      this.setState({ isUploading: true });
+
+      images.forEach((item, index) => {
+        const formData = new FormData();
+        formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_ALBUMS_PRESET);
+        formData.append('tags', `album-${this.state.reservationId}`);
+        formData.append('file', item.fileObject);
+
+        const uploadConfig = {
+          onUploadProgress: (progressEvent) => {
+            images[index].percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+            this.setState({ imagesUpload: images });
+          }
+        };
+
+        uploads.push(
+          axios
+            .post(urlUploadRequest, formData, uploadConfig)
+            .then((response) => {
+              const newItem = {
+                id: uuidv4(),
+                publicId: response.data.public_id,
+                imageFormat: response.data.format,
+                url: response.data.secure_url,
+                width: response.data.width,
+                height: response.data.height,
+                sizebytes: response.data.bytes,
+                isSelected: false
+              };
+
+              this.setState({ uploadedImagesList: [ ...this.state.uploadedImagesList, newItem ] });
+            })
+            .catch((error) => {
+              console.error('Catch error: ', error);
+            })
+        );
+      });
+
+      if (images.length > 0) {
+        if (uploads.length > 0) {
+          Promise.all(uploads)
+            .then(() => {
+              const newImages = [
+                ...this.state.images,
+                ...this.state.uploadedImagesList
+              ];
+
+              this.saveUploadedImages(newImages);
+              return true;
+            })
+            .then(() => {
+              this.setState({
+                images: [ ...this.state.images, ...this.state.uploadedImagesList ],
+                imagesUpload: [],
+                uploadedImagesList: [],
+                isUploading: false
+              });
+            })
+            .catch((error) => {
+              this.setState({ isUploading: false });
+              console.log(error);
+            });
+        }
+      }
+
+    } else {
+      alert('There are no images to be upload');
+    }
+  }
 
   saveUploadedImages(newImages) {
     const db = database.database();
@@ -242,18 +290,6 @@ class PhotoAlbumDetailPhotographer extends Component {
                     console.log(error);
                   });
               }
-              return true;
-            })
-            .then(() => {
-              if (!newImages) {
-                db
-                  .ref('reservations')
-                  .child(this.state.reservationId)
-                  .update({ albumDelivered: 'N' })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
             })
             .catch((error) => {
               console.log(error);
@@ -288,19 +324,19 @@ class PhotoAlbumDetailPhotographer extends Component {
                 accept="image/*"
                 multiple
                 ref={ref => (this._uploadFile = ref)}
-                onChange={this.browseAndUploadImagesHandler}
+                onChange={this.browseImagesHandlerConsume}
                 className="hidden"
               />
               <button className="btn" onClick={() => this.checkUncheckAll(true)}>
                 Select all
               </button>
               &nbsp;
-              <button className="btn btn-upload" onClick={() => this._uploadFile.click()}>
-                Upload
+              <button className="btn btn-upload" onClick={() => !this.state.isUploading ? this._uploadFile.click() : null}>
+                { this.state.isUploading ? 'Uploading, Please wait...' : 'Upload' }
               </button>
               &nbsp;
-              <button className="btn btn-submit" onClick={this.submitImagesHandler}>
-                { this.state.isUploading ? 'Uploading, Please wait...' : 'Submit' }
+              <button className="btn btn-submit" onClick={(evt) => !this.state.isSubmitting ? this.submitImagesHandler(evt) : null}>
+                { this.state.isSubmitting ? 'Submitting, Please wait...' : 'Submit' }
               </button>
             </div>
           </div>
@@ -314,8 +350,6 @@ class PhotoAlbumDetailPhotographer extends Component {
               onSelectImage={this.selectedImagesHandler}
             />
           </div>
-
-          <div style={{ clear: 'both' }}/>
 
           {
             !this.state.isDownloading && this.state.imagesUpload
@@ -353,11 +387,12 @@ class PhotoAlbumDetailPhotographer extends Component {
             this.state.imagesSelectedCount > 0 ? (
               <div className="photo-album-gallery-select-control row">
                 <div className="col-xs-12 col-sm-4">
-                  <i className="fa fa-circle c-key-color" style={{marginRight:'10px'}} aria-hidden="true"></i>{ this.state.imagesSelectedCount } selected file
+                  <i className="fa fa-circle c-key-color" style={{marginRight:'10px'}} aria-hidden="true"/>
+                  { this.state.imagesSelectedCount } selected file
                 </div>
 
                 <div className="col-xs-12 col-sm-4">
-                  <button type="button" className="btn btn-delete" onClick={this.deleteSelectedImages}>
+                  <button type="button" className="btn btn-delete" onClick={() => !this.state.isDeleting ? this.deleteSelectedImages() : null}>
                     { this.state.isDeleting ? 'Deleting images, Please wait...' : 'Delete selected files' }
                   </button>
                 </div>
