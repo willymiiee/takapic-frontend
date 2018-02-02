@@ -9,16 +9,268 @@ import {
   InputGroup,
   ProgressBar
 } from "react-bootstrap";
-import size from 'lodash/size';
-import isEqual from 'lodash/isEqual';
 import axios from "axios/index";
 import firebase from "firebase";
 import sha1 from 'js-sha1';
+import { Formik } from 'formik';
 
-import store from '../../store';
-import { updateBasicInformation } from '../../store/actions/profileUpdateActions';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { database } from "../../services/firebase";
+
+const BasicInformationForm = (props) => {
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    setFieldValue,
+    languages,
+    photoProfileUrl,
+    countries,
+    currencies,
+    newPhotoProfile: {
+      fileName: newPhotoProfileFileName,
+      preview: newPhotoProfilePreview,
+      uploadedPercentage
+    },
+    browsePhotoProfile,
+    uploadSigned
+  } = props;
+
+  const city = values.locationAdmLevel2 ? { value: values.locationAdmLevel2, label: values.locationAdmLevel2 } : null;
+
+  const _selectLanguagesHandle = (value) => {
+    setFieldValue('languagesSelected', value.map(item => item.value));
+  };
+
+  const _selectCountryHandle = (selectChoice) => {
+    if (selectChoice) {
+      setFieldValue('country', selectChoice.value);
+      setFieldValue('countryName', selectChoice.label);
+      setFieldValue('continent', selectChoice.continent || '');
+      setFieldValue('currency', currencies[selectChoice.value]);
+      setFieldValue('phoneDialCode', selectChoice.phoneDialCode);
+    }
+  };
+
+  const _selectCityHandle = (selectChoice) => {
+    if (selectChoice) {
+      setFieldValue('locationAdmLevel1', selectChoice.adm1);
+      setFieldValue('locationAdmLevel2', selectChoice.value);
+    }
+  };
+
+  const _getCities = (input) => {
+    if (!input) {
+      return Promise.resolve({ options: [] });
+    }
+
+    let urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
+    urlApi += `?countryCode=${values.country}`;
+    urlApi += `&continent=${values.continent}`;
+    urlApi += `&kwd=${input}`;
+
+    return fetch(urlApi)
+      .then(response => response.json())
+      .then(results => {
+        return { options: results.data };
+      });
+  };
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <FormGroup>
+        <div id="profile-dragarea">
+          <div
+            id="filedrag-photo"
+            className="center-block img-responsive">
+            <div className="ph" style={{ position: 'relative'}}>
+              {
+                newPhotoProfilePreview
+                  ? (
+                    <img
+                      src={newPhotoProfilePreview}
+                      className="img-circle img-profile"
+                      alt="This is alt text"
+                    />
+                  )
+                  : (
+                    <img
+                      src={photoProfileUrl}
+                      className="img-circle img-profile"
+                      alt="This is alt text"
+                    />
+                  )
+              }
+
+              {
+                uploadedPercentage > 0 && uploadedPercentage <= 100 && !uploadSigned
+                  ? (
+                    <ProgressBar
+                      striped
+                      bsStyle="success"
+                      now={uploadedPercentage}
+                      style={{
+                        margin: '0 auto',
+                        marginTop: '10px',
+                        width: '100%'
+                      }}
+                    />
+                  )
+                  : null
+              }
+            </div>
+          </div>
+        </div>
+
+        <div className="browse-profile-holder new-version-browse-profile" style={{marginTop: '30px', display:'flex'}}>
+          <div className="browse-profile-btn">
+            <span>Browse</span>
+            <i className="fa fa-pencil key-color" aria-hidden="true"/>
+            <input
+              className="input-file choose-file"
+              id="btn-choose-profile"
+              type="file"
+              name=""
+              onChange={browsePhotoProfile}
+            />
+          </div>
+
+          <div className="input-profile-name">
+            { newPhotoProfileFileName || 'Choose file' }
+          </div>
+        </div>
+      </FormGroup>
+
+      <hr/>
+
+      <FormGroup controlId="formHorizontalName">
+        Name
+        <FormControl
+          name="displayName"
+          value={values.displayName}
+          type="text"
+          placeholder="Enter Your Name"
+          onChange={handleChange}
+          style={{marginTop:'7px', paddingLeft:'10px', color:'#333'}}
+        />
+      </FormGroup>
+
+      <FormGroup>
+        Self Description
+        <textarea
+          name="selfDescription"
+          value={values.selfDescription}
+          onChange={handleChange}
+          placeholder="Enter Your Self Description"
+          style={{padding:'16px 10px',marginTop:'7px', color:'#333'}}
+        />
+      </FormGroup>
+
+      <FormGroup controlId="formHorizontalCountry">
+        Country
+        <Select
+          name="country"
+          value={values.country}
+          options={countries}
+          clearable={false}
+          onChange={_selectCountryHandle}
+          style={{marginTop:'7px'}}
+        />
+      </FormGroup>
+
+      <FormGroup controlId="formHorizontalCity">
+        City
+        <Select.Async
+          multi={false}
+          value={city}
+          onChange={_selectCityHandle}
+          valueKey="value"
+          labelKey="label"
+          loadOptions={_getCities}
+          placeholder={values.country ? "Search and choose your city" : "Please select a country first"}
+          disabled={!values.country}
+          filterOption={() => (true)}
+          style={{marginTop:'7px'}}
+        />
+      </FormGroup>
+
+      <FormGroup controlId="formHorizontalPhoneNumber">
+        Phone number
+        <InputGroup>
+          <InputGroup.Addon style={{ fontSize: '17px' }}>
+            { values.phoneDialCode }
+          </InputGroup.Addon>
+
+          <FormControl
+            name="phoneNumber"
+            value={values.phoneNumber}
+            type="text"
+            placeholder="Enter Your Phone Number"
+            onChange={handleChange}
+            style={{height:'47px', paddingLeft:'10px', color:'#333'}}
+          />
+        </InputGroup>
+      </FormGroup>
+
+      <FormGroup controlId="formHorizontalLanguageSpoken">
+        Language Spoken
+        <Select
+          className="line-height-minimum"
+          style={{marginTop:'7px'}}
+          placeholder="Select your language"
+          options={languages.map(item => ({
+            label: item,
+            value: item,
+            style: {
+              margin: "5px 0px 5px 5px"
+            }
+          }))}
+          multi={true}
+          value={values.languagesSelected}
+          onChange={_selectLanguagesHandle}
+        />
+      </FormGroup>
+
+      <hr/>
+
+      <Button type="submit" style={{float: 'right'}} className="button">
+        Update
+      </Button>
+    </Form>
+  );
+};
+
+const BasicInformationFormik = Formik({
+  mapPropsToValues: (props) => {
+    const {
+      photographerServiceInformation: {
+        data: {
+          userMetadata: { displayName, phoneDialCode, currency, phoneNumber },
+          location: { country, locationAdmLevel1, locationAdmLevel2, countryName },
+          selfDescription,
+          languages: languagesSelected
+        }
+      }
+    } = props;
+
+    return {
+      displayName,
+      selfDescription,
+      phoneNumber,
+      languagesSelected,
+      country,
+      countryName,
+      continent: '',
+      phoneDialCode,
+      currency,
+      locationAdmLevel1,
+      locationAdmLevel2
+    };
+  },
+  handleSubmit: (values, { props, setSubmitting }) => {
+    console.log(values);
+  }
+})(BasicInformationForm);
 
 class BasicInformation extends Component {
   constructor() {
@@ -60,109 +312,34 @@ class BasicInformation extends Component {
         "Gujarati",
         "Persian"
       ],
-      location: {
-        country: "",
-        countryName: "",
-        continent: "",
-        locationAdmLevel1: "",
-        locationAdmLevel2: "",
-        locationMerge: "",
+      newPhotoProfile: {
+        fileName: null,
+        preview: null,
+        uploadedPercentage: 0
       },
-      cityOptions: [],
-      selected: {
-        languages: [],
-      },
-      values: {
-        photoProfileUrl: "",
-        fileImage: false,
-        name: "",
-        selfDescription: "",
-        phoneDialCode: "",
-        phoneNumber: "",
-        city: {
-          label: "",
-          value: ""
-        },
-        currency: "",
-      },
-      photoProfileUploadPercentage: 0,
-      uploadSigned: false
+      photoProfileUrl: null,
+      uploadSigned:false
     };
   }
 
   componentWillMount() {
-    this.setLocalState(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps, this.props)) {
-      this.setLocalState(nextProps);
-      window.scrollTo(0, 0);
-    }
-  }
-
-  setLocalState(props) {
-    const { photographerServiceInformation: { data } } = props;
-
-    if (size(data) < 3) {
-      const { photographerServiceInformation: { data: { userMetadata } } } = props;
-      const { values } = this.state;
-
-      values.photoProfileUrl = userMetadata.photoProfileUrl || "";
-      values.name = userMetadata.displayName || "";
-      values.phoneNumber = userMetadata.phoneNumber || "";
-
-      this.setState({ values });
-
-    } else {
-      const {
-        photographerServiceInformation,
-        photographerServiceInformation: {
-          data: { userMetadata, selfDescription }
-        },
-        state: { currencies }
-      } = props;
-
-      const { location, selected, values } = this.state;
-
-      if (photographerServiceInformation && userMetadata) {
-        const currency = currencies[photographerServiceInformation.data.location.country];
-
-        location.country = photographerServiceInformation.data.location.country || "";
-        location.countryName = photographerServiceInformation.data.location.countryName || "";
-        location.locationAdmLevel1 = photographerServiceInformation.data.location.locationAdmLevel1 || "";
-        location.locationAdmLevel2 = photographerServiceInformation.data.location.locationAdmLevel2 || "";
-        location.locationMerge = photographerServiceInformation.data.location.locationMerge;
-
-        values.photoProfileUrl = userMetadata.photoProfileUrl || "";
-        values.name = userMetadata.displayName || "";
-        values.selfDescription = selfDescription || "";
-        values.phoneDialCode = userMetadata.phoneDialCode;
-        values.phoneNumber = userMetadata.phoneNumber || "";
-        values.city.label = location.locationAdmLevel2 || "";
-        values.city.value = location.locationAdmLevel2 || "";
-        values.currency = currency;
-
-        selected.languages = photographerServiceInformation.data.languages || [];
-
-        this.setState({
-          location,
-          values,
-          selected
-        });
+    const {
+      photographerServiceInformation: {
+        data: {
+          userMetadata: { photoProfileUrl }
+        }
       }
-    }
+    } = this.props;
+    this.setState({ photoProfileUrl });
   }
 
-  browsePhotoProfile = event => {
+  browsePhotoProfile = (event) => {
     event.preventDefault();
-    this.imageSelectedAction(event.target.files[0]);
+    this.uploadSelectedImage(event.target.files[0]);
   };
 
-  imageSelectedAction = fileObject => {
-    let { values } = this.state;
+  uploadSelectedImage = (fileObject) => {
     let fileReader = new FileReader();
-
     let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
     urlUploadRequest += '/image/upload';
 
@@ -173,8 +350,13 @@ class BasicInformation extends Component {
     signature += process.env.REACT_APP_CLOUDINARY_API_SECRET;
 
     fileReader.onloadend = (evt) => {
-      values.photoProfileUrl = evt.target.result;
-      this.setState({ values });
+      this.setState({
+        newPhotoProfile: {
+          ...this.state.newPhotoProfile,
+          fileName: fileObject.name,
+          preview: evt.target.result
+        }
+      });
 
       const formData = new FormData();
       formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PHOTO_PROFILE_PRESET);
@@ -187,7 +369,12 @@ class BasicInformation extends Component {
       const uploadConfig = {
         onUploadProgress: (progressEvent) => {
           const percentageComplete = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-          this.setState({ photoProfileUploadPercentage: percentageComplete });
+          this.setState({
+            newPhotoProfile: {
+              ...this.state.newPhotoProfile,
+              uploadedPercentage: percentageComplete
+            }
+          });
         }
       };
 
@@ -210,287 +397,32 @@ class BasicInformation extends Component {
 
           return response.data.secure_url;
         })
-        .then((photoProfileUrl) => {
-          values.photoProfileUrl = photoProfileUrl;
-          this.setState({ values, uploadSigned: true, photoProfileUploadPercentage: 0  });
+        .then((ppUrl) => {
+          this.setState({
+            photoProfileUrl: ppUrl,
+            uploadSigned: true,
+            newPhotoProfile: {
+              ...this.state.newPhotoProfile,
+              uploadedPercentage: 0
+            }
+          });
         })
         .catch((error) => {
-          console.error('Catch error: ', error);
+          console.error(error);
         });
     };
     fileReader.readAsDataURL(fileObject);
   };
 
-  _handleNameChange = event => {
-    const {values} = this.state;
-    values.name = event.target.value;
-    this.setState({values});
-  };
-
-  _handleSelfDescriptionChange = event => {
-    const {values} = this.state;
-    values.selfDescription = event.target.value;
-    this.setState({values});
-  };
-
-  _handlePhoneNumberChange = event => {
-    const re = /^[0-9\b]+$/;
-    if (event.target.value === '' || re.test(event.target.value)) {
-      const { values } = this.state;
-      values.phoneNumber = event.target.value;
-      this.setState({ values });
-    }
-  };
-
-  _handleSelectCountry = selectChoice => {
-    const {location, values} = this.state;
-    const {state: {currencies}} = this.props;
-
-    if (selectChoice) {
-      const currency = currencies[selectChoice.value];
-
-      if (selectChoice.value !== location.country) {
-        this._resetCity();
-      }
-
-      location.country = selectChoice.value;
-      location.countryName = selectChoice.label;
-      location.continent = selectChoice.continent || "";
-
-      values.currency = currency;
-      values.phoneDialCode = selectChoice.phoneDialCode;
-
-      this.setState({location, values});
-    }
-  };
-
-  _resetCity = () => {
-    const {location, values} = this.state;
-
-    location.locationAdmLevel1 = "";
-    location.locationAdmLevel2 = "";
-    location.locationMerge = "";
-
-    values.city.label = "";
-    values.city.value = "";
-
-    values.currency = "";
-
-    this.setState({
-      cityOptions: [],
-      location,
-      values,
-    });
-  };
-
-  _getCities = input => {
-    if (!input) {
-      return Promise.resolve({options: []});
-    }
-
-    const urlApi = `${process.env.REACT_APP_API_HOSTNAME}/api/cities/`;
-    return fetch(
-      `${urlApi}?countryCode=${this.state.location.country}&continent=${this.state.location
-        .continent}&kwd=${input}`
-    )
-      .then(response => response.json())
-      .then(results => {
-        return {options: results.data};
-      });
-  };
-
-  _handleSelectCity = selectChoice => {
-    if (selectChoice) {
-      const {location, values} = this.state;
-
-      values.city.label = selectChoice.value;
-      values.city.value = selectChoice.value;
-
-      location.locationAdmLevel1 = selectChoice.adm1;
-      location.locationAdmLevel2 = selectChoice.value;
-      location.locationMerge = location.locationAdmLevel2 + ', ' + location.locationAdmLevel1 + ', ' + location.countryName;
-
-      this.setState({
-        location, values
-      });
-    }
-  };
-
-  _handleSelectLanguages = value => {
-    const {selected} = this.state;
-    selected.languages = value.map(item => item.value);
-    this.setState({selected});
-  };
-
-  handleUpdate = event => {
-    event.preventDefault();
-    const {
-      photographerServiceInformation: {
-        data: { userMetadata: { uid } }
-      }
-    } = this.props;
-
-    const params = { state: this.state, uid };
-    store.dispatch({ type: "PROFILE_MANAGER_UPDATING_START" });
-    this.props.updateBasicInformation(params)
-      .then(() => {
-        this.props.fetchPhotographerServiceInformation(uid);
-        store.dispatch({ type: "PROFILE_MANAGER_UPDATING_SUCCESS" });
-      });
-  };
-
   render() {
-    const { state } = this.props;
-    const { languages, location, selected, values } = this.state;
-
     return (
-      <Form>
-        <FormGroup>
-          <div id="profile-dragarea">
-            <div
-              id="filedrag-photo"
-              className="center-block img-responsive">
-              <div className="ph" style={{ position: 'relative'}}>
-                {
-                  values.photoProfileUrl && (
-                    <img
-                      src={values.photoProfileUrl}
-                      className="img-circle img-profile"
-                      alt="This is alt text"
-                    />
-                  )
-                }
-
-                {
-                  this.state.photoProfileUploadPercentage > 0 && this.state.photoProfileUploadPercentage <= 100 && !this.state.uploadSigned
-                    ? (
-                      <ProgressBar
-                        striped
-                        bsStyle="success"
-                        now={this.state.photoProfileUploadPercentage}
-                        style={{
-                          margin: '0 auto',
-                          marginTop: '10px',
-                          width: '100%'
-                        }}
-                      />
-                    )
-                    : null
-                }
-              </div>
-            </div>
-          </div>
-          <div className="browse-profile-holder new-version-browse-profile" style={{marginTop: '30px', display:'flex'}}>
-            <div className="browse-profile-btn">
-              <span>Browse</span>
-              <i className="fa fa-pencil key-color" aria-hidden="true"></i>
-              <input
-                className="input-file choose-file"
-                id="btn-choose-profile"
-                type="file"
-                name=""
-                onChange={this.browsePhotoProfile}
-              />
-            </div>
-            <div className="input-profile-name">
-              {values.fileImage ? values.fileImage.name : 'Choose file'}
-            </div>
-          </div>
-        </FormGroup>
-        <hr/>
-        <FormGroup controlId="formHorizontalName">
-            Name
-            <FormControl
-              style={{marginTop:'7px', paddingLeft:'10px', color:'#333'}}
-              type="text"
-              placeholder="Enter Your Name"
-              value={values.name}
-              onChange={this._handleNameChange}
-            />
-        </FormGroup>
-
-        <FormGroup>
-          Self Description
-          <textarea
-            name="selfDescription"
-            style={{padding:'16px 10px',marginTop:'7px', color:'#333'}}
-            placeholder="Enter Your Self Description"
-            value={values.selfDescription}
-            onChange={this._handleSelfDescriptionChange}
-          />
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalCountry">
-          Country
-          <Select
-            style={{marginTop:'7px'}}
-            name="country"
-            value={location.country}
-            options={state.countries}
-            clearable={false}
-            onChange={this._handleSelectCountry}
-          />
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalCity">
-          City
-          <Select.Async
-            style={{marginTop:'7px'}}
-            multi={false}
-            value={values.city}
-            onChange={this._handleSelectCity}
-            valueKey="value"
-            labelKey="label"
-            loadOptions={this._getCities}
-            placeholder={
-              location.country ? (
-                "Search and choose your city"
-              ) : (
-                "Please select a country first"
-              )
-            }
-            disabled={!location.country}
-            filterOption={() => (true)}
-          />
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalPhoneNumber">
-          Phone number
-          <InputGroup>
-            <InputGroup.Addon style={{ fontSize: '17px' }}>{ values.phoneDialCode }</InputGroup.Addon>
-            <FormControl
-              type="text"
-              placeholder="Enter Your Phone Number"
-              value={values.phoneNumber}
-              onChange={this._handlePhoneNumberChange}
-              style={{height:'47px', paddingLeft:'10px', color:'#333'}}
-            />
-          </InputGroup>
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalLanguageSpoken">
-          Language Spoken
-          <Select
-            className="line-height-minimum"
-            style={{marginTop:'7px'}}
-            placeholder="Select your language"
-            options={languages.map(item => ({
-              label: item,
-              value: item,
-              style: {
-                margin: "5px 0px 5px 5px"
-              }
-            }))}
-            multi={true}
-            value={selected.languages}
-            onChange={this._handleSelectLanguages}
-          />
-        </FormGroup>
-        <hr/>
-        <Button type="button" onClick={this.handleUpdate} style={{float: 'right'}} className="button">
-          { this.props.profile.loading ? 'Updating... Please wait.' : 'Update' }
-        </Button>
-      </Form>
+      <BasicInformationFormik
+        { ...this.state }
+        photographerServiceInformation={this.props.photographerServiceInformation}
+        countries={this.props.countries}
+        currencies={this.props.currencies}
+        browsePhotoProfile={this.browsePhotoProfile}
+      />
     );
   }
 }
@@ -498,7 +430,6 @@ class BasicInformation extends Component {
 export default connect(
   null,
   dispatch => ({
-    updateBasicInformation: (paramsObject) => dispatch(updateBasicInformation(paramsObject)),
     fetchPhotographerServiceInformation: (uid) => dispatch(fetchPhotographerServiceInformation(uid))
   })
 )(BasicInformation);
