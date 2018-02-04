@@ -3,12 +3,12 @@ import get from "lodash/get";
 import { Formik } from "formik";
 import Select from 'react-select';
 import { Panel } from 'react-bootstrap';
-import firebase from "firebase";
+// import firebase from "firebase";
 import Yup from 'yup';
-import axios from 'axios';
+/*import axios from 'axios';
 import { JsonToUrlEncoded } from "../../helpers/helpers";
 import { database } from "../../services/firebase";
-import { RESERVATION_REQUESTED } from "../../services/userTypes";
+import { RESERVATION_REQUESTED } from "../../services/userTypes";*/
 
 class BookingForm extends Component {
   render() {

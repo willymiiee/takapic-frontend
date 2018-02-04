@@ -9,13 +9,69 @@ import {
   InputGroup,
   ProgressBar
 } from "react-bootstrap";
-import axios from "axios/index";
+import axios from "axios";
 import firebase from "firebase";
 import sha1 from 'js-sha1';
 import { Formik } from 'formik';
 
-import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { database } from "../../services/firebase";
+import { tellThemThatWasSuccessOrFailed } from "../../store/actions/photographerServiceInfoActions";
+
+const updateBasicInformationAction = (data, uid) => {
+  return (dispatch) => {
+    const locationMerge = [data.locationAdmLevel2, data.locationAdmLevel1]
+      .filter((item) => item)
+      .join(', ')
+      .concat(', ' + data.countryName);
+
+    const db = database.database();
+
+    return db
+      .ref('user_metadata')
+      .child(uid)
+      .update({
+        displayName: data.displayName,
+        phoneDialCode: data.phoneDialCode,
+        phoneNumber: data.phoneNumber,
+        country: data.country,
+        countryName: data.countryName,
+        currency: data.currency,
+        locationAdmLevel1: data.locationAdmLevel1 || '-',
+        locationAdmLevel2: data.locationAdmLevel2,
+        locationMerge,
+        updated: firebase.database.ServerValue.TIMESTAMP
+      })
+      .then(() => {
+        return db
+          .ref('photographer_service_information')
+          .child(uid)
+          .update({
+            selfDescription: data.selfDescription,
+            languages: data.languagesSelected,
+            location: {
+              country: data.country,
+              countryName: data.countryName,
+              locationAdmLevel1: data.locationAdmLevel1 || '-',
+              locationAdmLevel2: data.locationAdmLevel2,
+              locationMerge
+            },
+            updated: firebase.database.ServerValue.TIMESTAMP
+          })
+          .then(() => {
+            dispatch(tellThemThatWasSuccessOrFailed('success'));
+            window.scrollTo(0, 0);
+          })
+          .catch((error) => {
+            dispatch(tellThemThatWasSuccessOrFailed('error'));
+            window.scrollTo(0, 0);
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
 
 const BasicInformationForm = (props) => {
   const {
@@ -32,11 +88,14 @@ const BasicInformationForm = (props) => {
       preview: newPhotoProfilePreview,
       uploadedPercentage
     },
-    browsePhotoProfile,
-    uploadSigned
+    browseAndUploadSelectedPhoto,
+    uploadSigned,
+    isSubmitting
   } = props;
 
-  const city = values.locationAdmLevel2 ? { value: values.locationAdmLevel2, label: values.locationAdmLevel2 } : null;
+  const city = values.locationAdmLevel2
+    ? { value: values.locationAdmLevel2, label: values.locationAdmLevel2 }
+    : null;
 
   const _selectLanguagesHandle = (value) => {
     setFieldValue('languagesSelected', value.map(item => item.value));
@@ -54,7 +113,7 @@ const BasicInformationForm = (props) => {
 
   const _selectCityHandle = (selectChoice) => {
     if (selectChoice) {
-      setFieldValue('locationAdmLevel1', selectChoice.adm1);
+      setFieldValue('locationAdmLevel1', selectChoice.adm1 || null);
       setFieldValue('locationAdmLevel2', selectChoice.value);
     }
   };
@@ -131,7 +190,7 @@ const BasicInformationForm = (props) => {
               id="btn-choose-profile"
               type="file"
               name=""
-              onChange={browsePhotoProfile}
+              onChange={browseAndUploadSelectedPhoto}
             />
           </div>
 
@@ -234,7 +293,7 @@ const BasicInformationForm = (props) => {
       <hr/>
 
       <Button type="submit" style={{float: 'right'}} className="button">
-        Update
+        { isSubmitting ? 'Updating, Please wait...' : 'Update' }
       </Button>
     </Form>
   );
@@ -268,7 +327,11 @@ const BasicInformationFormik = Formik({
     };
   },
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log(values);
+    props
+      .updateBasicInformationAction(values, props.uid)
+      .then(() => {
+        setSubmitting(false);
+      });
   }
 })(BasicInformationForm);
 
@@ -325,20 +388,14 @@ class BasicInformation extends Component {
   componentWillMount() {
     const {
       photographerServiceInformation: {
-        data: {
-          userMetadata: { photoProfileUrl }
-        }
+        data: { userMetadata: { photoProfileUrl } }
       }
     } = this.props;
     this.setState({ photoProfileUrl });
   }
 
-  browsePhotoProfile = (event) => {
-    event.preventDefault();
-    this.uploadSelectedImage(event.target.files[0]);
-  };
-
-  uploadSelectedImage = (fileObject) => {
+  browseAndUploadSelectedPhoto = (event) => {
+    const fileObject = event.target.files[0];
     let fileReader = new FileReader();
     let urlUploadRequest = process.env.REACT_APP_CLOUDINARY_API_BASE_URL;
     urlUploadRequest += '/image/upload';
@@ -418,10 +475,12 @@ class BasicInformation extends Component {
     return (
       <BasicInformationFormik
         { ...this.state }
+        uid={this.props.user.uid}
         photographerServiceInformation={this.props.photographerServiceInformation}
         countries={this.props.countries}
         currencies={this.props.currencies}
-        browsePhotoProfile={this.browsePhotoProfile}
+        browseAndUploadSelectedPhoto={this.browseAndUploadSelectedPhoto}
+        updateBasicInformationAction={this.props.updateBasicInformationAction}
       />
     );
   }
@@ -430,6 +489,6 @@ class BasicInformation extends Component {
 export default connect(
   null,
   dispatch => ({
-    fetchPhotographerServiceInformation: (uid) => dispatch(fetchPhotographerServiceInformation(uid))
+    updateBasicInformationAction: (data, uid) => dispatch(updateBasicInformationAction(data, uid))
   })
 )(BasicInformation);
