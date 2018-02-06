@@ -13,7 +13,7 @@ import {
   fetchReservationAction,
   resetEmptyReservationData
 } from "../../store/actions/reservationActions";
-import { RESERVATION_REQUESTED, RESERVATION_COMPLETED } from "../../services/userTypes";
+import { RESERVATION_COMPLETED, RESERVATION_PAID, USER_PHOTOGRAPHER } from "../../services/userTypes";
 
 import './ReservationCreatedDetail.css';
 import Page from '../Page';
@@ -51,7 +51,7 @@ class ReservationCreatedDetail extends Component {
   }
 
   componentWillUnmount() {
-    this.turnOffFetchMessagesListen(this.props.match.params.reservationid);
+    ReservationCreatedDetail.turnOffFetchMessagesListen(this.props.match.params.reservationid);
     this.props.resetPhotographerServiceInformationData();
     this.props.resetEmptyReservationData();
   }
@@ -66,7 +66,7 @@ class ReservationCreatedDetail extends Component {
       });
   }
 
-  turnOffFetchMessagesListen(reservationNumber) {
+  static turnOffFetchMessagesListen(reservationNumber) {
     database
       .database()
       .ref('reservation_messages')
@@ -123,10 +123,10 @@ class ReservationCreatedDetail extends Component {
 
   render() {
     if (size(this.props.reservation) > 0) {
-      if (this.props.reservation.status === RESERVATION_REQUESTED) {
+      if (this.props.reservation.status === RESERVATION_PAID || this.props.reservation.status === RESERVATION_COMPLETED) {
         const {
-          reservation: {uidMapping},
-          user: {uid}
+          reservation: { uidMapping },
+          user: { uid, userMetadata: { userType } }
         } = this.props;
         const defaultImg = 'https://res.cloudinary.com/debraf3cg/image/upload/v1515151388/assets/default-profile.png';
 
@@ -135,9 +135,15 @@ class ReservationCreatedDetail extends Component {
             <UserAccountPanel>
               <div>
                 <h3>Reservation details</h3>
-                <div>
-                  <button type="button" onClick={this.setReservationToComplete}>Complete</button>
-                </div>
+                {
+                  this.props.reservation.status !== RESERVATION_COMPLETED && userType === USER_PHOTOGRAPHER
+                    ? (
+                      <div>
+                        <button type="button" onClick={this.setReservationToComplete}>Complete</button>
+                      </div>
+                    )
+                    : null
+                }
               </div>
 
               <div className="messages-container margin-top-0">
