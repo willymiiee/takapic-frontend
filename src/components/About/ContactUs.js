@@ -57,7 +57,7 @@ class ContactUs extends Component{
         <div
           className="background-cover"
           style={{
-            backgroundImage: `url(${this.cloudinaryInstance.url('assets/hero_1', { width: 1600, crop: 'scale', quality: 'auto:best' })})`,
+            backgroundImage: `url(${this.cloudinaryInstance.url('assets/hero2', { width: 1600, crop: 'scale', quality: 'auto:best' })})`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center',
             paddingBottom: '80px'
