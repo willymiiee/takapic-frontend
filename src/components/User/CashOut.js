@@ -24,7 +24,7 @@ class CashOut extends Component {
   }
 
   componentDidMount() {
-    this.fetchCashOut();
+    this.fetchCashOutRequests();
     this.fetchCurrentBalances();
   }
 
@@ -46,7 +46,7 @@ class CashOut extends Component {
       });
   }
 
-  fetchCashOut() {
+  fetchCashOutRequests() {
     database
       .database()
       .ref('cashout')
@@ -65,87 +65,138 @@ class CashOut extends Component {
       });
   }
 
+  checkRequiredInformation() {
+    if (this.state.paymentType === 'paypal') {
+      return this.state.paypalEmail !== '' && this.state.amountTaken > 0;
+    } else if (this.state.paymentType === 'bank') {
+      return this.state.bankName !== '' && this.state.bankAccountNumber !== '' && this.state.amountTaken > 0;
+    }
+  }
+
+  createCashoutRequest() {
+    return new Promise((resolve, reject) => {
+      if (this.checkRequiredInformation()) {
+        const {
+          user: {
+            uid,
+            userMetadata: { displayName }
+          }
+        } = this.props;
+
+        const newData = database
+          .database()
+          .ref('cashout')
+          .push();
+
+        newData
+          .set({
+            created: firebase.database.ServerValue.TIMESTAMP,
+            updated: firebase.database.ServerValue.TIMESTAMP,
+            status: 'REQUESTED',
+            paymentType: this.state.paymentType,
+            amount: this.state.amountTaken,
+            paypalEmail: this.state.paypalEmail || '-',
+            bankName: this.state.bankName || '-',
+            bankAccountNumber: this.state.bankAccountNumber || '',
+            photographerDisplayName: displayName,
+            photographerId: uid
+          })
+          .then(() => resolve(true))
+          .catch((error) => reject(error));
+
+      } else {
+        reject(new Error('Please complete all information required'));
+      }
+    });
+  }
+
+  updateBalances() {
+    return new Promise((resolve, reject) => {
+      database
+        .database()
+        .ref('user_metadata')
+        .child(this.props.user.uid)
+        .update({
+          balances: this.state.currentBalances - this.state.amountTaken
+        })
+        .then(() => resolve(true))
+        .catch((error) => reject(error));
+    });
+  }
+
+  sendNotificationEmail() {
+    return new Promise((resolve, reject) => {
+      const {
+        user: {
+          uid,
+          email,
+          userMetadata: { displayName }
+        }
+      } = this.props;
+
+      const date = moment().format('MMMM Do YYYY HH:mm A');
+
+      const data = {
+        REQUESTER: displayName,
+        UID: uid,
+        EMAIL: email,
+        AMOUNT: this.state.amountTaken,
+        PAYMENT_TYPE: this.state.paymentType,
+        PAYPAL_EMAIL: this.state.paypalEmail,
+        BANK_NAME: this.state.bankName,
+        BANK_ACCOUNT_NUMBER: this.state.bankAccountNumber,
+        CREATED: date
+      };
+
+      axios
+        .post(process.env.REACT_APP_API_HOSTNAME + '/api/email-service/cashout-request', data)
+        .then(() => resolve(true))
+        .catch((error) => reject(error));
+    });
+  }
+
   submitCashOutRequestHandler = () => {
     this.setState({ isUploading: true });
 
-    const {
-      user: {
-        uid,
-        email,
-        userMetadata: {
-          displayName
-        }
-      }
-    } = this.props;
-    const date = moment().format('MMMM Do YYYY HH:mm A');
-
-    const newData = database
-      .database()
-      .ref('cashout')
-      .push();
-
-    newData
-      .set({
-        created: firebase.database.ServerValue.TIMESTAMP,
-        updated: firebase.database.ServerValue.TIMESTAMP,
-        status: 'REQUESTED',
-        paymentType: this.state.paymentType,
-        amount: this.state.amountTaken,
-        paypalEmail: this.state.paypalEmail || '-',
-        bankName: this.state.bankName || '-',
-        bankAccountNumber: this.state.bankAccountNumber || '',
-        photographerDisplayName: displayName,
-        photographerId: uid
-      })
+    this.createCashoutRequest()
       .then(() => {
-        database
-          .database()
-          .ref('user_metadata')
-          .child(uid)
-          .update({
-            balances: this.state.currentBalances - this.state.amountTaken
-          })
+        this.updateBalances()
           .then(() => {
-            const data = {
-              REQUESTER: displayName,
-              UID: uid,
-              EMAIL: email,
-              AMOUNT: this.state.amountTaken,
-              PAYMENT_TYPE: this.state.paymentType,
-              PAYPAL_EMAIL: this.state.paypalEmail,
-              BANK_NAME: this.state.bankName,
-              BANK_ACCOUNT_NUMBER: this.state.bankAccountNumber,
-              CREATED: date
-            };
+            this.sendNotificationEmail()
+              .then(() => {
+                this.setState({
+                  isUploading: false,
+                  paypalEmail: '',
+                  bankName: '',
+                  bankAccountNumber: ''
+                });
 
-            return axios
-              .post(process.env.REACT_APP_API_HOSTNAME + '/api/email-service/cashout-request', data)
+                this.fetchCurrentBalances();
+                this.fetchCashOutRequests();
+              })
               .catch((error) => {
                 console.error(error);
               });
           })
-          .then(() => {
-            this.fetchCurrentBalances();
-          })
           .catch((error) => {
             console.error(error);
           });
-
-        return true;
-      })
-      .then(() => {
-        this.fetchCashOut();
-        this.setState({ isUploading: false });
       })
       .catch((error) => {
-        console.error(error);
+        this.setState({
+          isUploading: false,
+          paypalEmail: '',
+          bankName: '',
+          bankAccountNumber: ''
+        });
+
+        alert(error.message);
       });
   };
 
   selectPaymentTypeHandler = (evt) => {
     this.setState({
       paymentType: evt.target.value,
-      amountTaken: 0,
       paypalEmail: '',
       bankName: '',
       bankAccountNumber: ''
@@ -153,7 +204,14 @@ class CashOut extends Component {
   };
 
   amountTakenChangeHandler = (evt) => {
-    this.setState({ amountTaken: evt.target.value });
+    const val = evt.target.value;
+    if (val <= this.state.currentBalances) {
+      if (val !== 0) {
+        this.setState({ amountTaken: evt.target.value });
+      }
+    } else {
+      alert(`Maximum cash out is ${this.state.currentBalances}`);
+    }
   };
 
   paypalEmailChangeHandler = (evt) => {
@@ -172,17 +230,22 @@ class CashOut extends Component {
     return (
       <Page style={{whiteSpace:'normal'}}>
         <UserAccountPanel>
-          <h3 className="margin-top-0" style={{marginTop:'20px'}}><strong>Cash Out</strong></h3>
+          <h3 className="margin-top-0" style={{marginTop:'20px'}}>
+            <strong>Cash Out</strong>
+          </h3>
+
           <form>
             <div className="row cashout-container">
               <div className="col-sm-4 cashout-amount m-margin-bottom-50">
                 <p className="label-am">Amount</p>
+
                 <input
                   type="text"
                   value={this.state.amountTaken}
                   onChange={this.amountTakenChangeHandler}
                   className="value"
                 />
+
                 <p className="currency">USD</p>
               </div>
 
