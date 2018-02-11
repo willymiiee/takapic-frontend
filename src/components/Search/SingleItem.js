@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import cloudinary from 'cloudinary-core';
+import LazyLoad from 'react-lazyload';
+
+import LazyLoadPlaceholder from '../LazyLoadPlaceholder';
 
 class SingleItem extends Component {
   constructor() {
@@ -41,48 +44,49 @@ class SingleItem extends Component {
     }
 
     return (
-      <div onClick={() => this.toDetail(uid)}>
-      
-        <div className="bg-caption"/>
+      <LazyLoad
+        throttle={1000}
+        height={300}
+        placeholder={<LazyLoadPlaceholder/>}
+      >
+        <div onClick={() => this.toDetail(uid)}>
 
-        <div className="photo">
-          <img
-            src={loadImageUrl}
-            alt=""
-          />
-        </div>
+          <div className="bg-caption"/>
 
-        <div className="photographer">
-          <div>
-            <img
-              src={photoProfileUrl}
-              alt=""
+          <div className="photo">
+            <img src={loadImageUrl} alt=""/>
+          </div>
+
+          <div className="photographer">
+            <div>
+              <img src={photoProfileUrl} alt=""/>
+            </div>
+
+            <h4 className="ellipsis160">{ name }</h4>
+          </div>
+
+          <div className="ratings">
+            <StarRatingComponent
+              name="rating"
+              value={rating}
+              starCount={5}
+              editing={false}
+              starColor="#ffff66"
+              emptyStarColor="#ffff66"
+              renderStarIcon={(index, value) => {
+                return (
+                  <i className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />
+                );
+              }}
+              renderStarIconHalf={() => <i className="fa fa-star-half-full" />}
             />
           </div>
 
-          <h4 className="ellipsis160">{ name }</h4>
-
+          <div className="price">
+            from <strong>USD { priceStartFrom }</strong>
+          </div>
         </div>
-        <div className="ratings">
-          <StarRatingComponent
-            name="rating"
-            value={rating}
-            starCount={5}
-            editing={false}
-            starColor="#ffff66"
-            emptyStarColor="#ffff66"
-            renderStarIcon={(index, value) => {
-              return (
-                <i className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />
-              );
-            }}
-            renderStarIconHalf={() => <i className="fa fa-star-half-full" />}
-          />
-        </div>
-        <div className="price">
-          from <strong>USD { priceStartFrom }</strong>
-        </div>
-      </div>
+      </LazyLoad>
     );
   }
 }
