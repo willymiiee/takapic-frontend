@@ -230,7 +230,7 @@ class CashOut extends Component {
     return (
       <Page style={{whiteSpace:'normal'}}>
         <UserAccountPanel>
-          <h3 className="margin-top-0" style={{marginTop:'20px'}}>
+          <h3 className="" style={{marginTop:'20px'}}>
             <strong>Cash Out</strong>
           </h3>
 
