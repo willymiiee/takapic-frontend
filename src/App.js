@@ -4,7 +4,7 @@ import history from 'services/history';
 import store from "./store";
 import {
   resetPhotographerServiceInformationData,
-  fetchPhotographerListings
+  // fetchPhotographerListings
 } from "./store/actions/photographerServiceInfoActions";
 import withGATracker from './hoc/withGATracker';
 
@@ -54,8 +54,8 @@ import ContactUsSuccess from './components/About/ContactUsSuccess';
 history.listen((location, action) => {
   if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
     store.dispatch(resetPhotographerServiceInformationData());
-  } else if (location.pathname.includes('/search')) {
-    store.dispatch(fetchPhotographerListings(location.search));
+  // } else if (location.pathname.includes('/search')) {
+    // store.dispatch(fetchPhotographerListings(location.search));
   }
 });
 

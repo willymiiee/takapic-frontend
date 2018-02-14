@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Lightbox from 'react-images';
 import Image from './Image.js';
-import LazyLoad from 'react-lazyload';
-import LazyLoadPlaceholder from '../components/LazyLoadPlaceholder';
 
 class Gallery extends Component {
     constructor (props) {
@@ -239,26 +237,18 @@ class Gallery extends Component {
     render () {
         var images = this.state.thumbnails.map((item, idx) => {
           return (
-            <LazyLoad
-              key={"Image-"+idx+"-"+item.src}
-              debounce={1000}
-              offset={[-200, 0]}
+            <Image
+              item={item}
+              index={idx}
+              margin={this.props.margin}
               height={this.props.rowHeight}
-              placeholder={<LazyLoadPlaceholder/>}
-            >
-              <Image
-                item={item}
-                index={idx}
-                margin={this.props.margin}
-                height={this.props.rowHeight}
-                isSelectable={this.props.enableImageSelection}
-                onClick={this.getOnClickThumbnailFn()}
-                onSelectImage={this.onSelectImage}
-                tagStyle={this.props.tagStyle}
-                tileViewportStyle={this.props.tileViewportStyle}
-                thumbnailStyle={this.props.thumbnailStyle}
-                />
-            </LazyLoad>
+              isSelectable={this.props.enableImageSelection}
+              onClick={this.getOnClickThumbnailFn()}
+              onSelectImage={this.onSelectImage}
+              tagStyle={this.props.tagStyle}
+              tileViewportStyle={this.props.tileViewportStyle}
+              thumbnailStyle={this.props.thumbnailStyle}
+              />
           );
         });
 
