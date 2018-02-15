@@ -5416,18 +5416,24 @@ figcaption.action-btn a .fa {
 }
 .cashout-amount .label-am {
   font-weight: bold;
-  margin-bottom: 29px;
+  margin-bottom: 17px;
 }
 .cashout-amount .value {
   display: inline;
   font-size: 38px;
   font-weight: bold;
+  width: 100%;
+  padding-left: 0;
+  background: white;
+  border: none !important;
 }
 .cashout-amount .currency {
   display: inline;
   font-weight: bold;
   position: absolute;
   right: 16px;
+  font-size: 21px;
+  margin-top: 10px;
 }
 .cashout-information {
   color: #383838;
