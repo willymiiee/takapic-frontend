@@ -118,10 +118,10 @@ class User extends Component{
               <Tabs id="userInformation" defaultActiveKey={activeTab} animation={false} onSelect={(activeTab) => this.handleSelectedTab(activeTab)}>
                 <Tab eventKey={1} title="Basic Information">
                   <BasicInformation
-                    photographerServiceInformation={photographerServiceInformation}
-                    state={this.state}
-                    profile={this.props.profile}
                     user={this.props.user}
+                    photographerServiceInformation={this.props.photographerServiceInformation}
+                    countries={this.state.countries}
+                    currencies={this.state.currencies}
                   />
                 </Tab>
 

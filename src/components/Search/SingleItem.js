@@ -42,27 +42,21 @@ class SingleItem extends Component {
 
     return (
       <div onClick={() => this.toDetail(uid)}>
-      
+
         <div className="bg-caption"/>
 
         <div className="photo">
-          <img
-            src={loadImageUrl}
-            alt=""
-          />
+          <img src={loadImageUrl} alt=""/>
         </div>
 
         <div className="photographer">
           <div>
-            <img
-              src={photoProfileUrl}
-              alt=""
-            />
+            <img src={photoProfileUrl} alt=""/>
           </div>
 
           <h4 className="ellipsis160">{ name }</h4>
-
         </div>
+
         <div className="ratings">
           <StarRatingComponent
             name="rating"
@@ -79,6 +73,7 @@ class SingleItem extends Component {
             renderStarIconHalf={() => <i className="fa fa-star-half-full" />}
           />
         </div>
+
         <div className="price">
           from <strong>USD { priceStartFrom }</strong>
         </div>

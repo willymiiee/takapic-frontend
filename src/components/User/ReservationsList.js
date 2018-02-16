@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { database } from "../../services/firebase";
-import {USER_PHOTOGRAPHER, RESERVATION_UNPAID } from "../../services/userTypes";
+import { USER_PHOTOGRAPHER, RESERVATION_PAID } from "../../services/userTypes";
 
 import Page from '../Page';
 import UserAccountPanel from './UserAccountPanel';
@@ -63,7 +63,7 @@ class ReservationsList extends Component {
   }
 
   detailHandler = (status, reservationId, photographerId) => {
-    if (status !== RESERVATION_UNPAID) {
+    if (status === RESERVATION_PAID) {
       this.props.history.push(`/me/reservations/${reservationId}/${photographerId}`);
     } else {
       this.props.history.push(`/booking/${photographerId}/${reservationId}`);

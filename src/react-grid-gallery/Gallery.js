@@ -236,19 +236,22 @@ class Gallery extends Component {
 
     render () {
         var images = this.state.thumbnails.map((item, idx) => {
-            return <Image
-            key={"Image-"+idx+"-"+item.src}
-            item={item}
-            index={idx}
-            margin={this.props.margin}
-            height={this.props.rowHeight}
-            isSelectable={this.props.enableImageSelection}
-            onClick={this.getOnClickThumbnailFn()}
-            onSelectImage={this.onSelectImage}
-            tagStyle={this.props.tagStyle}
-            tileViewportStyle={this.props.tileViewportStyle}
-            thumbnailStyle={this.props.thumbnailStyle}
-                />;});
+          return (
+            <Image
+              item={item}
+              index={idx}
+              margin={this.props.margin}
+              height={this.props.rowHeight}
+              isSelectable={this.props.enableImageSelection}
+              onClick={this.getOnClickThumbnailFn()}
+              onSelectImage={this.onSelectImage}
+              tagStyle={this.props.tagStyle}
+              tileViewportStyle={this.props.tileViewportStyle}
+              thumbnailStyle={this.props.thumbnailStyle}
+              />
+          );
+        });
+
         var resizeIframeStyles = {
             height: 0,
             margin: 0,

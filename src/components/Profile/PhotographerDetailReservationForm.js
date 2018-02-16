@@ -8,22 +8,6 @@ import { searchInformationLog } from "../../store/actions/userActions";
 import { generateReservationNumber } from "../../helpers/helpers";
 import{ RESERVATION_UNPAID, USER_TRAVELLER } from "../../services/userTypes";
 
-const StartServicePrice = props => {
-  const { currency, currenciesRates, priceStartFrom } = props;
-  if (priceStartFrom) {
-    // eslint-disable-next-line
-    const USDRates = currenciesRates['USD' + currency];
-    const convertedPrice = Math.round(priceStartFrom / USDRates);
-
-    return (
-      <h4>
-        From <strong>USD { convertedPrice }</strong>
-      </h4>
-    );
-  }
-  return null;
-};
-
 class PhotographerDetailReservationForm extends Component {
   constructor() {
     super();
@@ -214,28 +198,18 @@ class PhotographerDetailReservationForm extends Component {
   componentWillMount() {
     const {
       photographerServiceInformation: {
-        data: {
-          packagesPrice,
-          userMetadata: { currency }
-        }
-      },
-      currenciesRates
+        data: { packagesPrice }
+      }
     } = this.props;
 
-    const packagesPriceConvertPrice = packagesPrice.map(item => {
-      const USDRates = currenciesRates['USD' + currency];
-      const convertedPrice = Math.round(item.price / USDRates);
-      return { ...item, price: convertedPrice };
-    });
-
     const { reservation: { credit, serviceFee, package: { value: packageId } } } = this.state;
-    const firstPackagePick = packagesPriceConvertPrice.filter(item => item.id === packageId)[0];
+    const firstPackagePick = packagesPrice.filter(item => item.id === packageId)[0];
     // eslint-disable-next-line
     let calcTotal = Math.round(parseInt(firstPackagePick.price) + firstPackagePick.price * serviceFee);
     calcTotal = calcTotal - credit;
 
     this.setState({
-      packagesPrice: packagesPriceConvertPrice,
+      packagesPrice: packagesPrice,
       reservation: {
         ...this.state.reservation,
         photographerFee: firstPackagePick.price,
@@ -277,18 +251,17 @@ class PhotographerDetailReservationForm extends Component {
   render() {
     const {
       photographerServiceInformation: {
-        data: { userMetadata: { currency, priceStartFrom } },
+        data: { userMetadata: { priceStartFrom } },
         loading
-      },
-      currenciesRates
+      }
     } = this.props;
 
     const {
-      packagesPrice: packagesPriceProcessed,
+      packagesPrice,
       reservation: { package: { value: packageId } },
     } = this.state;
 
-    const packageSelected = packagesPriceProcessed.filter(item => item.id === packageId)[0];
+    const packageSelected = packagesPrice.filter(item => item.id === packageId)[0];
     const userType = get(this.props.user, 'userMetadata.userType', null);
     const priceStartFix = typeof priceStartFrom === 'undefined' ? null : priceStartFrom;
 
@@ -297,11 +270,10 @@ class PhotographerDetailReservationForm extends Component {
         <div id="photographer-reservation-bg" />
         <div className="card" id="photographer-reservation">
           <h3>Reservation form</h3>
-          <StartServicePrice
-            currency={currency}
-            currenciesRates={currenciesRates}
-            priceStartFrom={priceStartFix}
-          />
+
+          <h4>
+            From <strong>USD { priceStartFix }</strong>
+          </h4>
 
           <div id="reservation-starting-time">
             <input
@@ -328,7 +300,7 @@ class PhotographerDetailReservationForm extends Component {
               style={{ display: this.state.reservation.package.opened ? 'block' : 'none' }}
             >
               {
-                !loading && packagesPriceProcessed.map((data, index) => (
+                !loading && packagesPrice.map((data, index) => (
                   <i
                     className={ packageId === data.id ? ('active') : ('') }
                     onClick={event => this.choosePackage(event, data.id)}

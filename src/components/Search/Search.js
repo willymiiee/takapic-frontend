@@ -5,18 +5,14 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
-import ReactPaginate from 'react-paginate';
-
-import {
-  fetchPhotographerListings,
-  resetListings
-} from "../../store/actions/photographerServiceInfoActions";
+import ReactScrollPaginator from 'react-scroll-paginator';
 import { searchInformationLog } from "../../store/actions/userActions";
 import { reactSelectNewOptionCreator } from "../../helpers/helpers";
 
 import Page from '../Page';
-import SearchResult from './SearchResult';
 import Animator from '../common/Animator';
+import SingleItem from './SingleItem';
+import LazyLoadPlaceholder from '../LazyLoadPlaceholder';
 
 class Search extends Component {
   constructor(props) {
@@ -27,32 +23,54 @@ class Search extends Component {
     const pageFix = typeof page === 'undefined' ? 0 : page - 1;
 
     this.state = {
+      listings: [],
+      totalListings: 100,
       search: {
         destination: !destination ? null : { label: destination },
         date: !date ? null : moment(date),
         page: pageFix
       },
       jancuk: null,
-      viewType: '',
-      selectedPage: pageFix
+      viewType: ''
     };
+
+    this.currentPage = 0;
   }
 
-  componentWillUnmount() {
-    this.props.resetListings();
-  }
-
-  componentDidMount() {
-    if (!this.props.photographerListings.isFetching && !this.props.photographerListings.isFetched) {
-      this.props.fetchPhotographerListings(this.props.location.search);
-    }
-  }
-
-  componentWillReceiveProps() {
-    const searchQs = queryString.parse(this.props.location.search);
+  componentWillReceiveProps(props) {
+    const searchQs = queryString.parse(props.location.search);
     const { destination } = searchQs;
-    this.setState({ search: { ...this.state.search, destination: !destination ? null : { label: destination } } });
+    this.setState({
+      search: { ...this.state.search, destination: !destination ? null : { label: destination } }
+    });
   }
+
+  fetchPhotographerListings(destination, date, page) {
+    const queryParams = `filter[destination]=${destination}&filter[date]=${date}&filter[page]=${page}`;
+    return axios
+      .get(`${process.env.REACT_APP_API_HOSTNAME}/api/photographers/?${queryParams}`)
+      .then(response => {
+        if (response.data.data.length > 0) {
+          this.setState({
+            listings: this.state.listings.concat(response.data.data),
+            totalListings: response.data.metaInfo.nbHits
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  actionHandler = () => {
+    this.currentPage += 1;
+    const { destination, date } = queryString.parse(this.props.location.search);
+    return this.fetchPhotographerListings(destination, date, this.currentPage - 1);
+  };
+
+  renderChild = (row, index) => {
+    return <SingleItem key={index} item={row} viewType={this.state.viewType}/>
+  };
 
   switchResultView = (viewType) => {
     this.setState({ viewType: viewType });
@@ -69,54 +87,21 @@ class Search extends Component {
     }
   };
 
-  handleSearchSubmit = (e) => {
-    e.preventDefault();
-
-    let { destination, date } = this.state.search;
-    let destinationValStr = this.state.jancuk;
+  handleSearchSubmit = () => {
+    const { destination, date } = this.state.search;
     const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
+    let destinationValStr = this.state.jancuk;
 
     if (!destinationValStr) {
-      if (destination) {
-        destinationValStr = destination.label;
-      } else {
-        destinationValStr = '';
-      }
+      destinationValStr = destination ? destination.label : '';
     }
-
-    this.props.searchInformationLog(destinationValStr, dateValStr);
 
     this.props.history.push({
       pathname: '/search/',
       search: 'destination=' + destinationValStr + '&date=' + dateValStr
     });
-  };
 
-  handlePaginationNavigate = (data) => {
-    const page = data.selected;
-    const newState = {
-      selectedPage: page,
-      search: { ...this.state.search, page }
-    };
-
-    this.setState(newState, () => {
-      let { destination, date } = this.state.search;
-      let destinationValStr = this.state.jancuk;
-      const dateValStr = !date ? '' : date.format('YYYY-MM-DD');
-
-      if (!destinationValStr) {
-        if (destination) {
-          destinationValStr = destination.label;
-        } else {
-          destinationValStr = '';
-        }
-      }
-
-      this.props.history.push({
-        pathname: '/search/',
-        search: `destination=${destinationValStr}&date=${dateValStr}&page=${page + 1}`
-      });
-    });
+    window.location.reload(true);
   };
 
   handleSearchDestinationChange = value => {
@@ -150,12 +135,16 @@ class Search extends Component {
   }
 
   render() {
-    if (!this.props.photographerListings.isFetching && this.props.photographerListings.isFetched) {
-      return (
+    const totalListings = this.state.totalListings;
+    return (
+      <div>
+        {
+          this.state.listings.length === 0 && <Animator/>
+        }
         <Page>
           <div className="container">
             <div id="landing-page-top" className="srp">
-              
+
               <div className="search-box-custom-again" id="search-box-home" style={{ marginTop: '120px'}}>
                 <div className="search-box-destination">
                   <div style={{display:'flex'}}>
@@ -198,7 +187,7 @@ class Search extends Component {
                   </button>
                 </div>
               </div>
-            
+
             </div>
 
             <div id="result-view">
@@ -216,54 +205,28 @@ class Search extends Component {
               />
             </div>
 
-            {
-              this.props.photographerListings.results.length > 0
-                ? (
-                  <div>
-                    <SearchResult
-                      listings={this.props.photographerListings.results}
-                      currenciesRates={this.props.currenciesRates}
-                      viewType={this.state.viewType}
-                    />
-                    <div id="react-paginate">
-                      <ReactPaginate
-                        pageCount={this.props.photographerListings.totalAvailablePages}
-                        initialPage={this.state.search.page}
-                        forcePage={this.state.selectedPage}
-                        onPageChange={this.handlePaginationNavigate}
-                        disableInitialCallback={true}
-                        pageRangeDisplayed={5}
-                        marginPagesDisplayed={2}
-                        containerClassName={"pagination"}
-                        subContainerClassName={"pages pagination"}
-                        activeClassName={"active"}
-                      />
-                    </div>
-                  </div>
-                )
-                : (
-                  <p className="no-photographer-found">
-                    No photographer found. Will be available soon
-                  </p>
-                )
-            }
+            <ReactScrollPaginator
+              ref="wassup"
+              action={this.actionHandler}
+              rows={this.state.listings}
+              count={totalListings}
+              renderContainer={({ children }) => <div id="result" className="search-result-page">{children}</div>}
+              progressComponent={<LazyLoadPlaceholder/>}
+            >
+              { this.renderChild }
+            </ReactScrollPaginator>
           </div>
         </Page>
-      );
-    }
-
-    return <Animator/>;
+      </div>
+    );
   }
 }
 
 export default connect(
   state => ({
-    photographerListings: state.photographerListings,
     currenciesRates: state.currenciesRates
   }),
   dispatch => ({
-    fetchPhotographerListings: searchInfo => dispatch(fetchPhotographerListings(searchInfo)),
-    resetListings: () => dispatch(resetListings()),
     searchInformationLog: (strLocation, strDatetime) => dispatch(searchInformationLog(strLocation, strDatetime))
   })
 )(Search);

@@ -3,12 +3,11 @@ import get from "lodash/get";
 import { Formik } from "formik";
 import Select from 'react-select';
 import { Panel } from 'react-bootstrap';
-import firebase from "firebase";
 import Yup from 'yup';
-import axios from 'axios';
-import { JsonToUrlEncoded } from "../../helpers/helpers";
+import firebase from 'firebase';
+import { withRouter } from 'react-router-dom';
 import { database } from "../../services/firebase";
-import { RESERVATION_REQUESTED } from "../../services/userTypes";
+import { RESERVATION_PAID } from "../../services/userTypes";
 
 class BookingForm extends Component {
   render() {
@@ -163,9 +162,48 @@ const BookingFormFormik = Formik({
     messageToPhotographer: Yup.string().required('Please write a message for photographer'),
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log(props.snapToken);
-    window.snap.pay(props.snapToken);
+    // console.log(props.snapToken);
+    // window.snap.pay(props.snapToken);
+
+    const dataReservation = {
+      status: RESERVATION_PAID,
+      meetingPoints: {
+        type: 'defined',
+        id: values.meetingPointSelectedValue,
+        detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
+      },
+      passengers: {
+        adults: values.numberOfAdults,
+        childrens: values.numberOfChildren,
+        infants: values.numberOfInfants
+      }
+    };
+
+    database
+      .database()
+      .ref('reservations')
+      .child(props.reservation.reservationId)
+      .update(dataReservation)
+      .then(() => {
+        const newData = database
+          .database()
+          .ref('reservation_messages')
+          .child(props.reservation.reservationId)
+          .push();
+
+        newData.set({
+          created: firebase.database.ServerValue.TIMESTAMP,
+          sender: props.reservation.travellerId,
+          receiver: props.reservation.photographerId,
+          message: values.messageToPhotographer
+        }).then(() => {
+          props.history.push(`/me/reservations/${props.reservation.reservationId}/${props.reservation.photographerId}`);
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 })(BookingForm);
 
-export default BookingFormFormik;
+export default withRouter(BookingFormFormik);

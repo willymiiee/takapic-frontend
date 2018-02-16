@@ -6,65 +6,6 @@ import {
   tellThemThatWasSuccessOrFailed
 } from './photographerServiceInfoActions'
 
-export const updateBasicInformation = (params) => {
-  return dispatch => {
-    const tasks = [];
-    tasks.push(dispatch(updateBasicInformationUser(params)));
-    tasks.push(dispatch(updateBasicInformationPhotographer(params)));
-    tasks.push(dispatch(setActiveTab(1)));
-    return Promise.all(tasks);
-  }
-};
-
-export const updateBasicInformationUser = (params) => {
-  return (dispatch) => {
-    const { uid, state } = params;
-    const db = database.database();
-    const ref = db.ref("/user_metadata");
-    const metadataRef = ref.child(uid);
-
-    metadataRef
-      .update({
-        displayName: state.values.name,
-        phoneDialCode: state.values.phoneDialCode,
-        phoneNumber: state.values.phoneNumber,
-        country: state.location.country,
-        countryName: state.location.countryName,
-        currency: state.values.currency,
-        locationAdmLevel1: state.location.locationAdmLevel1,
-        locationAdmLevel2: state.location.locationAdmLevel2,
-        locationMerge: state.location.locationMerge,
-        updated: firebase.database.ServerValue.TIMESTAMP
-      });
-  };
-};
-
-export const updateBasicInformationPhotographer = (params) => {
-  return (dispatch) => {
-    const { uid, state } = params;
-    const db = database.database();
-    const ref = db.ref("photographer_service_information");
-    const metadataRef = ref.child(uid);
-
-    metadataRef
-      .update({
-        selfDescription: state.values.selfDescription,
-        languages: state.selected.languages,
-        location: state.location,
-        updated: firebase.database.ServerValue.TIMESTAMP
-      })
-      .then(() => {
-        dispatch(fetchPhotographerServiceInformation(params.uid));
-      })
-      .then(() => {
-        dispatch(tellThemThatWasSuccessOrFailed('success'));
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
-};
-
 export const updateCameraEquipment = (params) => {
   return dispatch => {
     dispatch({ type: "PROFILE_MANAGER_UPDATING_START" });
