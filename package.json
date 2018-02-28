@@ -14,7 +14,6 @@
     "js-sha1": "^0.6.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "prettier": "^1.6.1",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.0",
     "react": "^15.6.1",
@@ -47,7 +46,10 @@
   },
   "devDependencies": {
     "chokidar-cli": "^1.2.0",
+    "express": "^4.16.2",
+    "geoip-lite": "^1.2.1",
     "husky": "^0.14.3",
+    "ip": "^1.1.5",
     "lint-staged": "^4.1.3",
     "react-scripts": "1.0.13"
   },

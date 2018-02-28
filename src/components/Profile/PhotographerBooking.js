@@ -61,7 +61,7 @@ class PhotographerBooking extends Component {
     axios
       .get('http://localhost/php-services/index.php')
       .then((response) => {
-        this.setState({ snapToken: response.data.snapToken });
+        this.setState({ snapToken: response.data.getSnapToken });
       })
       .catch((error) => {
         console.log(error);

@@ -51,11 +51,9 @@ import PhotoAlbumDetail from './components/User/PhotoAlbumDetail';
 import CashOut from './components/User/CashOut';
 import ContactUsSuccess from './components/About/ContactUsSuccess';
 
-history.listen((location, action) => {
+history.listen((location) => {
   if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
     store.dispatch(resetPhotographerServiceInformationData());
-  // } else if (location.pathname.includes('/search')) {
-    // store.dispatch(fetchPhotographerListings(location.search));
   }
 });
 
