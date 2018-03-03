@@ -152,13 +152,19 @@ class ReservationCreatedDetail extends Component {
                   <div className="messages-inbox">
                     {
                       size(this.props.reservation) > 0 &&
-                      !this.props.photographerServiceInformation.loading &&
-                      <ReservationDetailInfo
-                        reservation={this.props.reservation}
-                        photographerServiceInformation={this.props.photographerServiceInformation}
-                      />
+                      !this.props.photographerServiceInformation.loading
+                        ? (
+                          <ReservationDetailInfo
+                            reservation={this.props.reservation}
+                            photographerServiceInformation={this.props.photographerServiceInformation}
+                          />
+                        )
+                        : (
+                          <p style={{ margin: '0 auto', fontWeight: 'bold' }}>Please wait...</p>
+                        )
                     }
                   </div>
+
                   <div className="message-content">
                     <div className="header-message-content key-color">
                       <p className={this.state.chatShow ? "" : "pointer"} onClick={this.maxsimize}>Chat</p>

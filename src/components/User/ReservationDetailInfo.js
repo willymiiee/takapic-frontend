@@ -2,6 +2,7 @@ import React from 'react';
 import moment from "moment/moment";
 
 import MeetingPointMap from '../Profile/MeetingPointMap';
+import { SERVICE_FEE } from "../../services/userTypes";
 
 const ReservationDetailInfo = (props) => {
   const {
@@ -20,9 +21,6 @@ const ReservationDetailInfo = (props) => {
       },
       reservationId,
       created,
-      serviceFee,
-      total,
-      photographerFee,
       credit,
       passengers: { adults, childrens, infants }
     },
@@ -38,11 +36,16 @@ const ReservationDetailInfo = (props) => {
     }
   } = props;
 
+  const currency = window.TAKAPIC_USE_CURRENCY;
+  const reservation = props.reservation;
+  const nf = new Intl.NumberFormat();
   const packageSelected = packagesPrice.filter(item => item.id === packageId)[0];
   // eslint-disable-next-line
   const hours = parseInt(packageSelected.packageName.replace(/hours?/i, '').trim());
   const startDateAndTimeDisplay = moment(startDateTime).format('MMMM Do YYYY HH:mm a');
   const toEndTime = moment(startDateTime).add(hours, 'h').format('HH:mm a');
+  // eslint-disable-next-line
+  const serviceFee = parseInt(reservation['photographerFee' + currency]) * SERVICE_FEE;
 
   return (
     <div className="reservation-detail-wrapper">
@@ -118,20 +121,20 @@ const ReservationDetailInfo = (props) => {
         <h4 className="has-dot">Payment</h4>
         <div className="has-border">
           <p style={{marginBottom:'10px'}}>
-            Photographer Fee <span className="pull-right">USD { photographerFee }</span>
+            Photographer Fee <span className="pull-right">{`${currency} ${nf.format(reservation['photographerFee' + currency])}`}</span>
           </p>
 
           <p style={{marginBottom:'10px'}}>
-            Service Fee <span className="pull-right">USD { serviceFee }</span>
+            Service Fee <span className="pull-right">{`${currency} ${nf.format(serviceFee)}`}</span>
           </p>
           <p style={{marginBottom:'0px'}}>
-            Credit <span className="pull-right">USD { credit }</span>
+            Credit <span className="pull-right">{`${currency} ${nf.format(credit)}`}</span>
           </p>
         </div>
         <hr/>
         <p className="like-btn grey-color">
           <strong>
-            Total <span className="pull-right">USD { total }</span>
+            Total <span className="pull-right">{`${currency} ${nf.format(reservation['totalPrice' + currency])}`}</span>
           </strong>
         </p>
       </div>

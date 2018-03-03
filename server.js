@@ -8,7 +8,7 @@ const app = express();
 const port = 8686;
 const dir = path.resolve('build');
 
-app.use(express.static(dir));
+app.use(express.static(dir, { index: false }));
 
 app.get('*', function (req, resp) {
   let currency = 'IDR';
@@ -17,15 +17,16 @@ app.get('*', function (req, resp) {
 
   if (ipAddr !== '::1' && ipAddr !== '127.0.0.1' && isPrivateIpAddr === false) {
     const geo = geoip.lookup(ipAddr);
-    console.log(geo);
     if (geo.country !== 'ID') {
       currency = 'USD';
     }
   }
 
-  fs.writeFile(dir + '/js/currency.js', "window.TAKAPIC_USE_CURRENCY = \"" + currency + "\";\n", function (error) {
+  fs.readFile(dir + '/index.html', 'utf8', function (error, data) {
     if (error) throw error;
-    resp.sendFile(dir + '/index.html');
+    const rgxpatt = /window\.TAKAPIC_USE_CURRENCY="IDR"/gi;
+    const strHtml = data.replace(rgxpatt, 'window.TAKAPIC_USE_CURRENCY = "' + currency + '";');
+    resp.send(strHtml);
   });
 });
 

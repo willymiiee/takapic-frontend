@@ -27,12 +27,14 @@ class SingleItem extends Component {
     const {
       displayName: name,
       photoProfileUrl,
-      priceStartFrom,
+      priceStartFromIDR,
+      priceStartFromUSD,
       uid,
       defaultDisplayPicturePublicId,
       rating
     } = this.props.item;
 
+    const nf = new Intl.NumberFormat();
     let loadImageUrl = '';
     if (this.props.viewType === 'list') {
       loadImageUrl = this.cloudinaryInstance.url(defaultDisplayPicturePublicId, { width: 1280, crop: 'scale', quality: 'auto:best' });
@@ -75,7 +77,15 @@ class SingleItem extends Component {
         </div>
 
         <div className="price">
-          from <strong>USD { priceStartFrom }</strong>
+          from
+          <strong>
+            &nbsp;{ window.TAKAPIC_USE_CURRENCY }&nbsp;
+            {
+              window.TAKAPIC_USE_CURRENCY === 'IDR'
+                ? nf.format(priceStartFromIDR)
+                : nf.format(priceStartFromUSD)
+            }
+          </strong>
         </div>
       </div>
     );

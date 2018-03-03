@@ -1,1 +1,0 @@
-window.TAKAPIC_USE_CURRENCY = 'IDR';

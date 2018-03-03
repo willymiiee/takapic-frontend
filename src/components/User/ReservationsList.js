@@ -87,6 +87,9 @@ class ReservationsList extends Component {
       reservations: { isFetched, data: reservationsList }
     } = this.props;
 
+    const currency = window.TAKAPIC_USE_CURRENCY;
+    const nf = new Intl.NumberFormat();
+
     return (
       <Page style={{whiteSpace:'normal'}}>
         <UserAccountPanel>
@@ -105,21 +108,25 @@ class ReservationsList extends Component {
                 </tr>
 
                 {
-                  isFetched && reservationsList && reservationsList.map((item, index) => (
-                    <tr className="row-hover" key={index} onClick={() => this.detailHandler(item.status, item.reservationId, item.photographerId)}>
-                      <td>{ index + 1 }</td>
-                      <td>{ item.reservationId }</td>
-                      <td>{ moment(item.startDateTime).format('MMMM Do YYYY') }</td>
-                      { userType === USER_PHOTOGRAPHER ? null : <td>{ item.destination }</td> }
+                  isFetched && reservationsList
+                    ? reservationsList.map((item, index) => (
+                      <tr className="row-hover" key={index} onClick={() => this.detailHandler(item.status, item.reservationId, item.photographerId)}>
+                        <td>{ index + 1 }</td>
+                        <td>{ item.reservationId }</td>
+                        <td>{ moment(item.startDateTime).format('MMMM Do YYYY') }</td>
+                        { userType === USER_PHOTOGRAPHER ? null : <td>{ item.destination }</td> }
 
-                      { userType === USER_PHOTOGRAPHER
-                        ? <td>{ item.uidMapping[item.travellerId].displayName }</td>
-                        : <td>{ item.uidMapping[item.photographerId].displayName }</td>
-                      }
-                      <td>USD { item.total }</td>
-                      <td className={this.reservationStatusColor(item.status)}>{ item.status }</td>
-                    </tr>
-                  ))
+                        { userType === USER_PHOTOGRAPHER
+                          ? <td>{ item.uidMapping[item.travellerId].displayName }</td>
+                          : <td>{ item.uidMapping[item.photographerId].displayName }</td>
+                        }
+                        <td>{`${currency} ${nf.format(item['totalPrice' + currency])}`}</td>
+                        <td className={this.reservationStatusColor(item.status)}>{ item.status }</td>
+                      </tr>
+                    ))
+                    : (
+                      <tr><td colSpan={6}>Please wait...</td></tr>
+                    )
                 }
 
               </tbody>

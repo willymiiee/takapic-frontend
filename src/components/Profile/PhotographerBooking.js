@@ -9,7 +9,7 @@ import ReactRating from 'react-rating-float';
 import { Col, Row } from 'react-bootstrap';
 import { fetchPhotographerServiceInformation } from "../../store/actions/photographerServiceInfoActions";
 import { fetchReservationAction, reservationPaymentAction } from "../../store/actions/reservationActions";
-import { RESERVATION_UNPAID } from "../../services/userTypes";
+import { RESERVATION_UNPAID, SERVICE_FEE } from "../../services/userTypes";
 
 import Page from '../Page';
 import BookingForm from './BookingForm';
@@ -114,14 +114,16 @@ class PhotographerBooking extends Component {
         reservation: {
           packageId,
           startDateTime,
-          photographerFee,
-          serviceFee,
-          credit,
-          total
+          credit
         }
       } = this.props;
 
+      const currency = window.TAKAPIC_USE_CURRENCY;
+      const nf = new Intl.NumberFormat();
       const packageSelected = packagesPrice.filter(item => item.id === packageId)[0];
+      const reservation = this.props.reservation;
+      // eslint-disable-next-line
+      const serviceFee = nf.format(parseInt(reservation['photographerFee' + currency]) * SERVICE_FEE);
 
       // eslint-disable-next-line
       const hours = parseInt(packageSelected.packageName.replace(/hours?/i, '').trim());
@@ -211,14 +213,14 @@ class PhotographerBooking extends Component {
                     
                     <h3 className="has-dot">Payment Summary</h3>
                     <div className="has-border" style={{color:'#222'}}>
-                        Photographer Fee <span className="pull-right">USD { photographerFee }</span> <br/>
-                        Service Fee <span className="pull-right">USD { serviceFee }</span> <br/>
-                        Credit <span className="pull-right">USD { credit }</span> 
+                        Photographer Fee <span className="pull-right">{`${currency} ${nf.format(reservation['photographerFee' + currency])}`}</span> <br/>
+                        Service Fee <span className="pull-right">{`${currency} ${serviceFee}`}</span> <br/>
+                        Credit <span className="pull-right">{`${currency} ${credit}`}</span>
                     </div>
                     <hr/>
                     <h3 className="has-dot radius-8" style={{padding: '16px', color: 'white', backgroundColor:'#9999'}}>
                       <strong>
-                        Total <span className="pull-right">USD { total }</span>
+                        Total <span className="pull-right">{`${currency} ${nf.format(reservation['totalPrice' + currency])}`}</span>
                       </strong>
                     </h3>
                   </div>

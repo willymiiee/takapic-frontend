@@ -6,7 +6,7 @@ import moment from 'moment';
 import { reservationInitializeAction } from "../../store/actions/reservationActions";
 import { searchInformationLog } from "../../store/actions/userActions";
 import { generateReservationNumber } from "../../helpers/helpers";
-import{ RESERVATION_UNPAID, USER_TRAVELLER } from "../../services/userTypes";
+import{ RESERVATION_UNPAID, USER_TRAVELLER, SERVICE_FEE } from "../../services/userTypes";
 
 class PhotographerDetailReservationForm extends Component {
   constructor() {
@@ -21,11 +21,67 @@ class PhotographerDetailReservationForm extends Component {
           opened: false,
         },
         photographerFee: 0,
-        serviceFee: 0.10,
+        photographerFeeIDR: 0,
+        photographerFeeUSD: 0,
+        serviceFee: SERVICE_FEE,
         credit: 0,
-        total: 0,
+        totalPrice: 0,
+        totalPriceIDR: 0,
+        totalPriceUSD: 0
       }
     };
+  }
+
+  componentWillMount() {
+    const {
+      photographerServiceInformation: { data: { packagesPrice } }
+    } = this.props;
+
+    const { reservation: { package: { value: packageId } } } = this.state;
+    const firstPackagePick = packagesPrice.filter(item => item.id === packageId)[0];
+
+    this.setState({
+      packagesPrice: packagesPrice,
+      reservation: {
+        ...this.state.reservation,
+        photographerFee: firstPackagePick.price,
+        photographerFeeIDR: firstPackagePick.priceIDR,
+        photographerFeeUSD: firstPackagePick.priceUSD,
+        totalPrice: this.calculateTotal(firstPackagePick.price),
+        totalPriceIDR: this.calculateTotal(firstPackagePick.priceIDR),
+        totalPriceUSD: this.calculateTotal(firstPackagePick.priceUSD)
+      }
+    });
+  }
+
+  componentDidMount() {
+    const {
+      photographerServiceInformation: {
+        data: { notAvailableDates }
+      }
+    } = this.props;
+
+    const notAvailableDatesFix = typeof notAvailableDates === 'undefined' ? [] : notAvailableDates;
+    const notAvailableDatesFormatted = notAvailableDatesFix
+      .map((item) => item.split('-'))
+      .map((item) => {
+        const d = new Date(item);
+        return [d.getFullYear(), d.getMonth(), d.getDate()];
+      });
+
+    const that = this;
+    window.$(function() {
+      window.$('.input-start-date-lalala').pickadate({
+        min: new Date(),
+        disable: notAvailableDatesFormatted,
+        onSet: that.selectedDateHandler
+      });
+
+      window.$('.input-start-time-lalala').pickatime({
+        format: 'HH:i A',
+        onSet: that.selectedTimeHandler
+      });
+    });
   }
 
   dismiss = _ => _;
@@ -79,9 +135,12 @@ class PhotographerDetailReservationForm extends Component {
             startingDate,
             startingTime,
             photographerFee,
-            serviceFee,
+            photographerFeeIDR,
+            photographerFeeUSD,
+            totalPrice,
+            totalPriceIDR,
+            totalPriceUSD,
             credit,
-            total,
             package: {value: packageId}
           }
         } = this.state;
@@ -96,9 +155,12 @@ class PhotographerDetailReservationForm extends Component {
           packageId,
           startDateTime: startingDate + ' ' + startingTime,
           photographerFee,
-          serviceFee: Math.round(photographerFee * serviceFee),
+          photographerFeeIDR,
+          photographerFeeUSD,
+          totalPrice,
+          totalPriceIDR,
+          totalPriceUSD,
           credit,
-          total,
           status: RESERVATION_UNPAID,
           destination: locationDestinationFix
         };
@@ -128,11 +190,9 @@ class PhotographerDetailReservationForm extends Component {
     }
   };
 
-  calculateTotal(packageId) {
-    const { packagesPrice, reservation: { credit, serviceFee } } = this.state;
-    const packageSelected = packagesPrice.filter(item => item.id === packageId)[0];
-    // eslint-disable-next-line
-    let calculate = Math.round(parseInt(packageSelected.price) + packageSelected.price * serviceFee);
+  calculateTotal(price) {
+    const { reservation: { credit, serviceFee } } = this.state;
+    let calculate = Math.round(price + (price * serviceFee));
     calculate = calculate - credit;
     return calculate;
   }
@@ -140,7 +200,6 @@ class PhotographerDetailReservationForm extends Component {
   choosePackage = (event, value) => {
     event.stopPropagation();
     const packageSelected = this.state.packagesPrice.filter(item => item.id === value)[0];
-    const total = this.calculateTotal(value);
     const newCopyData = {
       ...this.state,
       reservation: {
@@ -150,7 +209,14 @@ class PhotographerDetailReservationForm extends Component {
           opened: false
         },
         photographerFee: packageSelected.price,
-        total
+        photographerFeeIDR: packageSelected.priceIDR,
+        photographerFeeUSD: packageSelected.priceUSD,
+        // eslint-disable-next-line
+        totalPrice: this.calculateTotal(parseInt(packageSelected.price)),
+        // eslint-disable-next-line
+        totalPriceIDR: this.calculateTotal(parseInt(packageSelected.priceIDR)),
+        // eslint-disable-next-line
+        totalPriceUSD: this.calculateTotal(parseInt(packageSelected.priceUSD))
       }
     };
     this.setState(newCopyData);
@@ -195,59 +261,6 @@ class PhotographerDetailReservationForm extends Component {
     this.setState(newCopyData);
   };
 
-  componentWillMount() {
-    const {
-      photographerServiceInformation: {
-        data: { packagesPrice }
-      }
-    } = this.props;
-
-    const { reservation: { credit, serviceFee, package: { value: packageId } } } = this.state;
-    const firstPackagePick = packagesPrice.filter(item => item.id === packageId)[0];
-    // eslint-disable-next-line
-    let calcTotal = Math.round(parseInt(firstPackagePick.price) + firstPackagePick.price * serviceFee);
-    calcTotal = calcTotal - credit;
-
-    this.setState({
-      packagesPrice: packagesPrice,
-      reservation: {
-        ...this.state.reservation,
-        photographerFee: firstPackagePick.price,
-        total: calcTotal
-      }
-    });
-  }
-
-  componentDidMount() {
-    const {
-      photographerServiceInformation: {
-        data: { notAvailableDates }
-      }
-    } = this.props;
-
-    const notAvailableDatesFix = typeof notAvailableDates === 'undefined' ? [] : notAvailableDates;
-    const notAvailableDatesFormatted = notAvailableDatesFix
-      .map((item) => item.split('-'))
-      .map((item) => {
-        const d = new Date(item);
-        return [d.getFullYear(), d.getMonth(), d.getDate()];
-      });
-
-    const that = this;
-    window.$(function() {
-      window.$('.input-start-date-lalala').pickadate({
-        min: new Date(),
-        disable: notAvailableDatesFormatted,
-        onSet: that.selectedDateHandler
-      });
-
-      window.$('.input-start-time-lalala').pickatime({
-        format: 'HH:i A',
-        onSet: that.selectedTimeHandler
-      });
-    });
-  }
-
   render() {
     const {
       photographerServiceInformation: {
@@ -261,9 +274,14 @@ class PhotographerDetailReservationForm extends Component {
       reservation: { package: { value: packageId } },
     } = this.state;
 
+    const currency = window.TAKAPIC_USE_CURRENCY;
+    const nf = new Intl.NumberFormat();
     const packageSelected = packagesPrice.filter(item => item.id === packageId)[0];
+    const pricePackageSelected = packageSelected['price' + currency];
     const userType = get(this.props.user, 'userMetadata.userType', null);
-    const priceStartFix = typeof priceStartFrom === 'undefined' ? null : priceStartFrom;
+    const usrmd = this.props.photographerServiceInformation.data.userMetadata;
+    let priceStartFix = typeof priceStartFrom === 'undefined' ? null : usrmd['priceStartFrom' + currency];
+    priceStartFix = nf.format(priceStartFix);
 
     return (
       <div>
@@ -272,7 +290,7 @@ class PhotographerDetailReservationForm extends Component {
           <h3>Reservation form</h3>
 
           <h4>
-            From <strong>USD { priceStartFix }</strong>
+            From <strong>{`${currency} ${priceStartFix}`}</strong>
           </h4>
 
           <div id="reservation-starting-time">
@@ -329,7 +347,7 @@ class PhotographerDetailReservationForm extends Component {
 
               {
                 !loading && packageSelected
-                  ? <i>USD { packageSelected.price }</i>
+                  ? <i>{`${currency} ${nf.format(pricePackageSelected)}`}</i>
                   : null
               }
             </div>
@@ -338,19 +356,19 @@ class PhotographerDetailReservationForm extends Component {
               Service fee
               {
                 !loading && packageSelected
-                  ? <i>USD { Math.round(packageSelected.price * this.state.reservation.serviceFee) }</i>
+                  ? <i>{`${currency} ${nf.format(Math.round(pricePackageSelected * this.state.reservation.serviceFee))}`}</i>
                   : null
               }
             </div>
 
             <div>
-              Credit <i>USD { this.state.reservation.credit }</i>
+              Credit <i>{`${currency} ${this.state.reservation.credit}`}</i>
             </div>
           </div>
 
           <div id="photographer-reservation-calc-total">
             <span>
-              Total <span className="float-right">USD { this.calculateTotal(packageId) }</span>
+              Total <span className="float-right">{`${currency} ${nf.format(this.calculateTotal(pricePackageSelected))}`}</span>
             </span>
           </div>
 
