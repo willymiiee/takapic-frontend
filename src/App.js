@@ -50,6 +50,7 @@ import PhotoAlbum from './components/User/PhotoAlbum';
 import PhotoAlbumDetail from './components/User/PhotoAlbumDetail';
 import CashOut from './components/User/CashOut';
 import ContactUsSuccess from './components/About/ContactUsSuccess';
+import PaymentSuccess from './components/User/PaymentSuccess';
 
 history.listen((location) => {
   if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
@@ -89,6 +90,8 @@ const App = (props) => (
         <PrivateRoute path="/me/albums/:reservationId" component={PhotoAlbumDetail}/>
         <PrivateRoute path="/me/albums" component={PhotoAlbum}/>
         <PrivateRoute path="/me/cashout" component={CashOut}/>
+        <PrivateRoute path="/me/payment/success" component={PaymentSuccess}/>
+
         <Route path="/search" component={withGATracker(Search)} />
         <Route path="/traveller-registration" component={withGATracker(TravellerRegistration)} />
         <Route

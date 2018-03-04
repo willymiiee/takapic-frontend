@@ -36,7 +36,7 @@ class PhotographerBooking extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const {
       photographerServiceInformation: { loading }
     } = this.props;
@@ -52,20 +52,29 @@ class PhotographerBooking extends Component {
     }
   }
 
-  componentDidMount() {
-    if (!isEmpty(this.props.reservation)) {
-      const meetingPointsFromStore = get(this.props, 'reservation.meetingPoints');
-      this.setState({ meetingPoints: meetingPointsFromStore });
-    }
+  componentWillReceiveProps() {
+    if (!isEmpty(this.props.reservation) && this.state.snapToken === null) {
+      const {
+        reservation: { reservationId, totalPriceIDR },
+        user: { userMetadata: { displayName, email } }
+      } = this.props;
 
-    axios
-      .get('http://localhost/php-services/index.php')
-      .then((response) => {
-        this.setState({ snapToken: response.data.getSnapToken });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      const postData = {
+        order_id: reservationId,
+        gross_amount: totalPriceIDR,
+        customer_name: displayName,
+        customer_email: email
+      };
+
+      axios
+        .post(process.env.REACT_APP_GET_PAYMENT_TOKEN_URL, postData)
+        .then((response) => {
+          this.setState({ snapToken: response.data.getSnapToken });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   meetingPointChangeHandler = value => {
