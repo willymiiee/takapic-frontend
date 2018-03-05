@@ -162,10 +162,10 @@ const BookingFormFormik = Formik({
     messageToPhotographer: Yup.string().required('Please write a message for photographer'),
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    window.snap.pay(props.snapToken, { enabledPayments: ['credit_card'] });
-    setSubmitting(false);
+    // window.snap.pay(props.snapToken, { enabledPayments: ['credit_card'] });
+    // setSubmitting(false);
 
-    /*const dataReservation = {
+    const dataReservation = {
       status: RESERVATION_PAID,
       meetingPoints: {
         type: 'defined',
@@ -202,7 +202,7 @@ const BookingFormFormik = Formik({
       })
       .catch((error) => {
         console.error(error);
-      });*/
+      });
   }
 })(BookingForm);
 
