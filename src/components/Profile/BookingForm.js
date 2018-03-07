@@ -8,7 +8,46 @@ import firebase from 'firebase';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import { database } from "../../services/firebase";
-import { RESERVATION_PAID } from "../../services/userTypes";
+
+const storeData = (values, props) => {
+  return new Promise((resolve, reject) => {
+    const dataReservation = {
+      meetingPoints: {
+        type: 'defined',
+        id: values.meetingPointSelectedValue,
+        detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
+      },
+      passengers: {
+        adults: values.numberOfAdults,
+        childrens: values.numberOfChildren,
+        infants: values.numberOfInfants
+      }
+    };
+
+    database
+      .database()
+      .ref('reservations')
+      .child(props.reservation.reservationId)
+      .update(dataReservation)
+      .then(() => {
+        const newData = database
+          .database()
+          .ref('reservation_messages')
+          .child(props.reservation.reservationId)
+          .push();
+
+        newData.set({
+          created: firebase.database.ServerValue.TIMESTAMP,
+          sender: props.reservation.travellerId,
+          receiver: props.reservation.photographerId,
+          message: values.messageToPhotographer
+        })
+          .then(() => resolve(true))
+          .catch((error) => reject(error));
+      })
+      .catch((error) => reject(error));
+  });
+};
 
 class BookingForm extends Component {
   render() {
@@ -163,54 +202,25 @@ const BookingFormFormik = Formik({
     messageToPhotographer: Yup.string().required('Please write a message for photographer'),
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
+    // https://mockup.takapic.com/me/payment/success?order_id=XVQIMIEZ&status_code=200&transaction_status=capture
     const queryParams = qs.parse(props.location.search) || null;
     if (queryParams) {
       if (queryParams.mode === 'bypasspg') {
-        const dataReservation = {
-          status: RESERVATION_PAID,
-          meetingPoints: {
-            type: 'defined',
-            id: values.meetingPointSelectedValue,
-            detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
-          },
-          passengers: {
-            adults: values.numberOfAdults,
-            childrens: values.numberOfChildren,
-            infants: values.numberOfInfants
-          }
-        };
-
-        database
-          .database()
-          .ref('reservations')
-          .child(props.reservation.reservationId)
-          .update(dataReservation)
-          .then(() => {
-            const newData = database
-              .database()
-              .ref('reservation_messages')
-              .child(props.reservation.reservationId)
-              .push();
-
-            newData.set({
-              created: firebase.database.ServerValue.TIMESTAMP,
-              sender: props.reservation.travellerId,
-              receiver: props.reservation.photographerId,
-              message: values.messageToPhotographer
-            }).then(() => {
-              props.history.push(`/me/reservations/${props.reservation.reservationId}/${props.reservation.photographerId}`);
-            })
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        storeData(values, props).then(() => {
+          setSubmitting(false);
+          props.history.push(`/me/reservations/${props.reservation.reservationId}/${props.reservation.photographerId}`);
+        });
 
       } else if (queryParams.mode === 'usepg') {
-        window.snap.pay(props.snapToken, { enabledPayments: ['credit_card'] });
-        setSubmitting(false);
+        storeData(values, props).then(() => {
+          window.snap.pay(props.snapToken, { enabledPayments: ['credit_card'] });
+        });
       }
+
+    } else {
+      setSubmitting(false);
     }
-    setSubmitting(false);
+
   }
 })(BookingForm);
 
