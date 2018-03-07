@@ -6,6 +6,7 @@ import { Panel } from 'react-bootstrap';
 import Yup from 'yup';
 import firebase from 'firebase';
 import { withRouter } from 'react-router-dom';
+import qs from 'query-string';
 import { database } from "../../services/firebase";
 import { RESERVATION_PAID } from "../../services/userTypes";
 
@@ -162,47 +163,54 @@ const BookingFormFormik = Formik({
     messageToPhotographer: Yup.string().required('Please write a message for photographer'),
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    // window.snap.pay(props.snapToken, { enabledPayments: ['credit_card'] });
-    // setSubmitting(false);
+    const queryParams = qs.parse(props.location.search) || null;
+    if (queryParams) {
+      if (queryParams.mode === 'bypasspg') {
+        const dataReservation = {
+          status: RESERVATION_PAID,
+          meetingPoints: {
+            type: 'defined',
+            id: values.meetingPointSelectedValue,
+            detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
+          },
+          passengers: {
+            adults: values.numberOfAdults,
+            childrens: values.numberOfChildren,
+            infants: values.numberOfInfants
+          }
+        };
 
-    const dataReservation = {
-      status: RESERVATION_PAID,
-      meetingPoints: {
-        type: 'defined',
-        id: values.meetingPointSelectedValue,
-        detail: props.meetingPoints.filter(item => item.id === values.meetingPointSelectedValue)[0]
-      },
-      passengers: {
-        adults: values.numberOfAdults,
-        childrens: values.numberOfChildren,
-        infants: values.numberOfInfants
-      }
-    };
-
-    database
-      .database()
-      .ref('reservations')
-      .child(props.reservation.reservationId)
-      .update(dataReservation)
-      .then(() => {
-        const newData = database
+        database
           .database()
-          .ref('reservation_messages')
+          .ref('reservations')
           .child(props.reservation.reservationId)
-          .push();
+          .update(dataReservation)
+          .then(() => {
+            const newData = database
+              .database()
+              .ref('reservation_messages')
+              .child(props.reservation.reservationId)
+              .push();
 
-        newData.set({
-          created: firebase.database.ServerValue.TIMESTAMP,
-          sender: props.reservation.travellerId,
-          receiver: props.reservation.photographerId,
-          message: values.messageToPhotographer
-        }).then(() => {
-          props.history.push(`/me/reservations/${props.reservation.reservationId}/${props.reservation.photographerId}`);
-        })
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+            newData.set({
+              created: firebase.database.ServerValue.TIMESTAMP,
+              sender: props.reservation.travellerId,
+              receiver: props.reservation.photographerId,
+              message: values.messageToPhotographer
+            }).then(() => {
+              props.history.push(`/me/reservations/${props.reservation.reservationId}/${props.reservation.photographerId}`);
+            })
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+      } else if (queryParams.mode === 'usepg') {
+        window.snap.pay(props.snapToken, { enabledPayments: ['credit_card'] });
+        setSubmitting(false);
+      }
+    }
+    setSubmitting(false);
   }
 })(BookingForm);
 
