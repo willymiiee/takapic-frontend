@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import get from "lodash/get";
+import size from 'lodash/size';
 import { Formik } from "formik";
 import Select from 'react-select';
 import { Panel } from 'react-bootstrap';
@@ -203,8 +204,10 @@ const BookingFormFormik = Formik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     // https://mockup.takapic.com/me/payment/success?order_id=XVQIMIEZ&status_code=200&transaction_status=capture
-    const queryParams = qs.parse(props.location.search) || null;
-    if (queryParams) {
+    const queryParams = qs.parse(props.location.search);
+    const szQp = size(queryParams);
+
+    if (szQp) {
       if (queryParams.mode === 'bypasspg') {
         storeData(values, props).then(() => {
           setSubmitting(false);
