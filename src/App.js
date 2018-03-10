@@ -52,6 +52,8 @@ import CashOut from './components/User/CashOut';
 import ContactUsSuccess from './components/About/ContactUsSuccess';
 import PaymentSuccess from './components/User/PaymentSuccess';
 import PaymentError from './components/User/PaymentError';
+import BlogHomepage from './components/Blog/BlogHomepage';
+import BlogDetail from './components/Blog/BlogDetail';
 
 history.listen((location) => {
   if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
@@ -203,6 +205,14 @@ const App = (props) => (
         <Route
           path="/contact-us-success"
           component={ContactUsSuccess}
+        />
+        <Route
+          path="/blog/:slug"
+          component={BlogDetail}
+        />
+        <Route
+          path="/blog"
+          component={BlogHomepage}
         />
         <Route path="*" component={NotFoundPage} />
       </Switch>
