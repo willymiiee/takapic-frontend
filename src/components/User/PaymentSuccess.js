@@ -29,6 +29,7 @@ class PaymentSuccess extends Component {
         .then(snaps => {
           const reservationData = snaps.val();
           const photographerName = reservationData.uidMapping[reservationData.photographerId].displayName;
+          const photographerEmail = reservationData.uidMapping[reservationData.photographerId].email;
 
           db
             .ref('reservations')
@@ -45,8 +46,8 @@ class PaymentSuccess extends Component {
 
               const messageData = {
                 receiverName: photographerName,
-                receiverEmail: "okaprinarjaya@gmail.com",
-                emailSubject: "Your client has been paying for the booking",
+                receiverEmail: photographerEmail,
+                emailSubject: "Your client has been successfuly create a payment",
                 emailContent: tableStr
               };
 

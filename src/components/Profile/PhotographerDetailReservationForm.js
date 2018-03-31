@@ -124,11 +124,12 @@ class PhotographerDetailReservationForm extends Component {
               userMetadata: {
                 uid: photographerId,
                 displayName: photographerName,
-                photoProfileUrl: photographerPhotoProfileUrl
+                photoProfileUrl: photographerPhotoProfileUrl,
+                email: photographerEmail
               }
             }
           },
-          user: { userMetadata: { displayName: travellerName } },
+          user: { userMetadata: { displayName: travellerName, email: travellerEmail } },
           reservationInitializeAction,
           searchInformationLog
         } = this.props;
@@ -171,11 +172,13 @@ class PhotographerDetailReservationForm extends Component {
         const uidMapping = {};
         uidMapping[photographerId] = {
           displayName: photographerName,
+          email: photographerEmail,
           photoProfileUrl: photographerPhotoProfileUrl
         };
 
         uidMapping[travellerId] = {
           displayName: travellerName,
+          email: travellerEmail,
           photoProfileUrl: '-'
         };
 
@@ -195,7 +198,7 @@ class PhotographerDetailReservationForm extends Component {
 
         const messageData = {
           receiverName: photographerName,
-          receiverEmail: "okaprinarjaya@gmail.com",
+          receiverEmail: photographerEmail,
           emailSubject: "New Booking for you created!",
           emailContent: tableStr
         };

@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import { connect } from 'react-redux';
 import size from 'lodash/size';
 import moment from 'moment';
+import axios from "axios";
 import { database } from "../../services/firebase";
 import {
   fetchPhotographerServiceInformation,
@@ -13,7 +14,8 @@ import {
   fetchReservationAction,
   resetEmptyReservationData
 } from "../../store/actions/reservationActions";
-import { RESERVATION_COMPLETED, RESERVATION_PAID, USER_PHOTOGRAPHER } from "../../services/userTypes";
+import { emailNotificationEndpoint } from "../../helpers/helpers";
+import { RESERVATION_COMPLETED, RESERVATION_PAID, RESERVATION_ACCEPTED, USER_PHOTOGRAPHER } from "../../services/userTypes";
 
 import './ReservationCreatedDetail.css';
 import Page from '../Page';
@@ -28,7 +30,8 @@ class ReservationCreatedDetail extends Component {
       messages: null,
       messageText: '',
       isSendingMessage: false,
-      chatShow: false
+      chatShow: false,
+      isAcceptingBooking: false
     };
     this.minimize = this.minimize.bind(this);
     this.maxsimize = this.maxsimize.bind(this);
@@ -121,9 +124,47 @@ class ReservationCreatedDetail extends Component {
       });
   };
 
+  setAcceptBooking = (evt) => {
+    evt.preventDefault();
+    this.setState({ isAcceptingBooking: true });
+    const reservationid = this.props.match.params.reservationid;
+    const { reservation: { uidMapping, travellerId, photographerId } } = this.props;
+    const travellerName = uidMapping[travellerId].displayName;
+    const photographerName = uidMapping[photographerId].displayName;
+
+    database
+      .database()
+      .ref('reservations')
+      .child(reservationid)
+      .update({ status: RESERVATION_ACCEPTED })
+      .then(() => {
+
+        // Start - Send notification email
+        const tableStr = "Congrats " + travellerName + ", " + photographerName + " " +
+          "has accepted your booking. You will receive his contact details soon and " +
+          "can start chatting on the arrangements on day of the photoshoot!";
+
+        const messageData = {
+          receiverName: travellerName,
+          receiverEmail: "okaprinarjaya@gmail.com",
+          emailSubject: "Photographer accepting the reservation",
+          emailContent: tableStr
+        };
+
+        axios.post(emailNotificationEndpoint(), messageData)
+          .then(() => {
+            this.setState({ isAcceptingBooking: false });
+          });
+        // End - Send notification email
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
     if (size(this.props.reservation) > 0) {
-      if (this.props.reservation.status === RESERVATION_PAID || this.props.reservation.status === RESERVATION_COMPLETED) {
+      if ([RESERVATION_PAID, RESERVATION_COMPLETED, RESERVATION_ACCEPTED].includes(this.props.reservation.status)) {
         const {
           reservation: { uidMapping },
           user: { uid, userMetadata: { userType } }
@@ -135,15 +176,23 @@ class ReservationCreatedDetail extends Component {
             <UserAccountPanel>
               <div>
                 <h3>Reservation details</h3>
-                {
-                  this.props.reservation.status !== RESERVATION_COMPLETED && userType === USER_PHOTOGRAPHER
-                    ? (
-                      <div>
-                        <button type="button" onClick={this.setReservationToComplete}>Complete</button>
-                      </div>
-                    )
-                    : null
-                }
+                <div style={{ marginBottom: '10px' }}>
+                  {
+                    this.props.reservation.status !== RESERVATION_COMPLETED && userType === USER_PHOTOGRAPHER
+                      ? <button type="button" onClick={this.setReservationToComplete} style={{ marginRight: '15px' }}>Complete</button>
+                      : null
+                  }
+
+                  {
+                    this.props.reservation.status !== RESERVATION_ACCEPTED && userType === USER_PHOTOGRAPHER
+                      ? (
+                        <button type="button" onClick={this.setAcceptBooking}>
+                          {this.state.isAcceptingBooking ? 'Accepting Booking, Please wait...' : 'Accept this Booking'}
+                        </button>
+                      )
+                      : null
+                  }
+                </div>
               </div>
 
               <div className="messages-container margin-top-0">

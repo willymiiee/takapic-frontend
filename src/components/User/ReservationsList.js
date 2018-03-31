@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { database } from "../../services/firebase";
-import { USER_PHOTOGRAPHER, RESERVATION_PAID } from "../../services/userTypes";
+import { USER_PHOTOGRAPHER, RESERVATION_PAID, RESERVATION_ACCEPTED } from "../../services/userTypes";
 
 import Page from '../Page';
 import UserAccountPanel from './UserAccountPanel';
@@ -34,7 +34,7 @@ const fetchReservationsList = (userUID, userType) => {
         const vals = snapshot.val();
         let reservationList = orderBy(vals, ['created'], ['desc']);
         if (userType === USER_PHOTOGRAPHER) {
-          reservationList = reservationList.filter(item => item.status === RESERVATION_PAID);
+          reservationList = reservationList.filter(item => [RESERVATION_PAID, RESERVATION_ACCEPTED].includes(item.status));
         }
 
         dispatch({
