@@ -216,7 +216,7 @@ const BookingFormFormik = Formik({
 
       } else if (queryParams.mode === 'usepg') {
         storeData(values, props).then(() => {
-          window.snap.pay(props.snapToken, { enabledPayments: ['credit_card'] });
+          window.snap.pay(props.snapToken, { enabledPayments: ['credit_card', 'permata_va'] });
         });
       }
 

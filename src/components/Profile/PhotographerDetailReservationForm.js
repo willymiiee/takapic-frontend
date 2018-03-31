@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import axios from 'axios';
 import { reservationInitializeAction } from "../../store/actions/reservationActions";
 import { searchInformationLog } from "../../store/actions/userActions";
-import { generateReservationNumber } from "../../helpers/helpers";
+import {emailNotificationEndpoint, generateReservationNumber} from "../../helpers/helpers";
 import{ RESERVATION_UNPAID, USER_TRAVELLER, SERVICE_FEE } from "../../services/userTypes";
 
 class PhotographerDetailReservationForm extends Component {
@@ -28,7 +29,8 @@ class PhotographerDetailReservationForm extends Component {
         totalPrice: 0,
         totalPriceIDR: 0,
         totalPriceUSD: 0
-      }
+      },
+      submitting: false
     };
   }
 
@@ -113,6 +115,9 @@ class PhotographerDetailReservationForm extends Component {
       if (!this.state.reservation.startingDate && !this.state.reservation.startingTime) {
         alert('Please choose starting date and starting time');
       } else {
+
+        this.setState({ submitting: true });
+
         const {
           photographerServiceInformation: {
             data: {
@@ -123,9 +128,7 @@ class PhotographerDetailReservationForm extends Component {
               }
             }
           },
-          user: {
-            userMetadata: { displayName: travellerName }
-          },
+          user: { userMetadata: { displayName: travellerName } },
           reservationInitializeAction,
           searchInformationLog
         } = this.props;
@@ -182,7 +185,29 @@ class PhotographerDetailReservationForm extends Component {
         searchInformationLog(locationDestinationFix, datetime);
         reservationInitializeAction(reservationId, information);
 
-        this.props.history.push(`/booking/${photographerId}/${reservationId}`);
+        // Start - Send notification email
+        const tableStr = "Congratulations! you have a new booking!<br />Please review and accept if you are ok" +
+          "<br /><br /><br />" +
+          "<table border='1'>" +
+          "<tr><td>Customer Name</td><td>Joerock loe coy</td></tr>" +
+          "<tr><td>Destination</td><td>Italia</td></tr>" +
+          "</table>";
+
+        const messageData = {
+          receiverName: photographerName,
+          receiverEmail: "okaprinarjaya@gmail.com",
+          emailSubject: "New Booking for you created!",
+          emailContent: tableStr
+        };
+
+        axios.post(emailNotificationEndpoint(), messageData)
+          .then(result => {
+            console.log(result);
+            this.setState({ submitting: false }, () => {
+              this.props.history.push(`/booking/${photographerId}/${reservationId}`);
+            });
+          });
+        // End - Send notification email
       }
 
     } else {
@@ -381,7 +406,7 @@ class PhotographerDetailReservationForm extends Component {
                     id="photographer-reservation-btn"
                     className="button radius-8 key-color"
                   >
-                    Reserve
+                    { this.state.submitting ? 'Submitting, Please wait...' : 'Reserve' }
                   </button>
                 )
                 : null

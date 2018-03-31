@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import qs from 'query-string';
+import axios from "axios";
 import { database } from "../../services/firebase";
+import { emailNotificationEndpoint } from "../../helpers/helpers";
 import { RESERVATION_PAID } from "../../services/userTypes";
 
 import Page from '../Page';
@@ -18,13 +20,46 @@ class PaymentSuccess extends Component {
 
   componentDidMount() {
     if (this.state.reservationId) {
-      database
-        .database()
+      const db = database.database();
+
+      db
         .ref('reservations')
         .child(this.state.reservationId)
-        .update({ status: RESERVATION_PAID })
-        .then(() => {
-          this.setState({ isFinishingPayment: false })
+        .once('value')
+        .then(snaps => {
+          const reservationData = snaps.val();
+          const photographerName = reservationData.uidMapping[reservationData.photographerId].displayName;
+
+          db
+            .ref('reservations')
+            .child(this.state.reservationId)
+            .update({ status: RESERVATION_PAID })
+            .then(() => {
+              // Start - Send notification email
+              const tableStr = "Congratulations! you have a new booking!<br />Please review and accept if you are ok" +
+                "<br /><br /><br />" +
+                "<table border='1'>" +
+                "<tr><td>Customer Name</td><td>Joerock loe coy</td></tr>" +
+                "<tr><td>Destination</td><td>Italia</td></tr>" +
+                "</table>";
+
+              const messageData = {
+                receiverName: photographerName,
+                receiverEmail: "okaprinarjaya@gmail.com",
+                emailSubject: "Your client has been paying for the booking",
+                emailContent: tableStr
+              };
+
+              axios.post(emailNotificationEndpoint(), messageData)
+                .then(() => {
+                  this.setState({ isFinishingPayment: false });
+                });
+              // End - Send notification email
+            });
+
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   }

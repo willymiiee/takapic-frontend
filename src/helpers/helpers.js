@@ -42,3 +42,5 @@ export const reactSelectNewOptionCreator = ({ label, labelKey, valueKey }) => {
   );
   return option;
 };
+
+export const emailNotificationEndpoint = () => `${process.env.REACT_APP_API_HOSTNAME}/api/email-service/email-notifications`;

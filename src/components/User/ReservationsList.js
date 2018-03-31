@@ -32,11 +32,14 @@ const fetchReservationsList = (userUID, userType) => {
       .once('value')
       .then((snapshot) => {
         const vals = snapshot.val();
-        const results = orderBy(vals, ['created'], ['desc']);
+        let reservationList = orderBy(vals, ['created'], ['desc']);
+        if (userType === USER_PHOTOGRAPHER) {
+          reservationList = reservationList.filter(item => item.status === RESERVATION_PAID);
+        }
 
         dispatch({
           type: 'FETCH_RESERVATIONS_SUCCESS',
-          payload: results
+          payload: reservationList
         });
       })
       .catch((error) => {
