@@ -5,7 +5,8 @@ import cloudinary from 'cloudinary-core';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import { database } from "../../services/firebase";
+import { database } from "../../services/firebase"
+import {emailNotificationEndpoint} from "../../helpers/helpers";
 
 import Page from '../Page';
 import UserAccountPanel from './UserAccountPanel';
@@ -123,21 +124,50 @@ class PhotoAlbumDetailPhotographer extends Component {
 
   submitImagesHandler = (evt) => {
     evt.preventDefault();
+    const db = database.database();
     this.setState({ isSubmitting: true });
 
-    database
-      .database()
+    db
       .ref('reservations')
       .child(this.state.reservationId)
-      .update({ albumDelivered: 'Y' })
-      .then(() => {
-        this.setState({ isSubmitting: false }, () => {
-          this.props.history.push('/me/albums');
-        });
-      })
-      .catch((error) => {
-        this.setState({ isSubmitting: true });
-        console.log(error);
+      .once('value')
+      .then(snaps => {
+        const reservation = snaps.val();
+        const { destination, travellerId, uidMapping } = reservation;
+
+        db
+          .ref('reservations')
+          .child(this.state.reservationId)
+          .update({ albumDelivered: 'Y' })
+          .then(() => {
+
+            // Start - Send notification email
+            const travellerName = uidMapping[travellerId].displayName;
+            const travellerEmail = uidMapping[travellerId].email;
+
+            const tableStr = `Dear ${travellerName}, the pictures from your photoshoot in 
+            ${destination} are now uploaded to your exclusive online photo gallery. 
+            Please login to your dashboard to view!`;
+
+            const messageData = {
+              receiverName: travellerName,
+              receiverEmail: travellerEmail,
+              emailSubject: "Your photographer delivering photos through photo album ",
+              emailContent: tableStr
+            };
+
+            axios.post(emailNotificationEndpoint(), messageData)
+              .then(() => {
+                this.setState({ isSubmitting: false }, () => {
+                  this.props.history.push('/me/albums');
+                });
+              });
+            // End - Send notification email
+          })
+          .catch((error) => {
+            this.setState({ isSubmitting: true });
+            console.log(error);
+          });
       });
   };
 

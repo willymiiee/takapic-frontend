@@ -131,6 +131,7 @@ class ReservationCreatedDetail extends Component {
     const { reservation: { uidMapping, travellerId, photographerId } } = this.props;
     const travellerName = uidMapping[travellerId].displayName;
     const photographerName = uidMapping[photographerId].displayName;
+    const travellerEmail = uidMapping[travellerId].email;
 
     database
       .database()
@@ -146,7 +147,7 @@ class ReservationCreatedDetail extends Component {
 
         const messageData = {
           receiverName: travellerName,
-          receiverEmail: "okaprinarjaya@gmail.com",
+          receiverEmail: travellerEmail,
           emailSubject: "Photographer accepting the reservation",
           emailContent: tableStr
         };
@@ -166,7 +167,7 @@ class ReservationCreatedDetail extends Component {
     if (size(this.props.reservation) > 0) {
       if ([RESERVATION_PAID, RESERVATION_COMPLETED, RESERVATION_ACCEPTED].includes(this.props.reservation.status)) {
         const {
-          reservation: { uidMapping },
+          reservation: { uidMapping,status: reservStatus },
           user: { uid, userMetadata: { userType } }
         } = this.props;
         const defaultImg = 'https://res.cloudinary.com/debraf3cg/image/upload/v1515151388/assets/default-profile.png';
@@ -184,7 +185,7 @@ class ReservationCreatedDetail extends Component {
                   }
 
                   {
-                    this.props.reservation.status !== RESERVATION_ACCEPTED && userType === USER_PHOTOGRAPHER
+                    ![RESERVATION_ACCEPTED, RESERVATION_COMPLETED].includes(reservStatus) && userType === USER_PHOTOGRAPHER
                       ? (
                         <button type="button" onClick={this.setAcceptBooking}>
                           {this.state.isAcceptingBooking ? 'Accepting Booking, Please wait...' : 'Accept this Booking'}
