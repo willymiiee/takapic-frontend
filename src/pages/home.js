@@ -200,21 +200,21 @@ class Home extends Component {
             <div className="col-xs-4">
               <Link to="/search/?destination=Bali,%20Indonesia&date=" className="poster">
                 <div className="text">BALI</div>
-                <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881230/assets/bali.jpg" alt="Featured destination - Bali"/>
+                <img src="https://res.cloudinary.com/dvdm9a68v/image/upload/q_40/v1524242190/assets/fd-bali-rsz.png" alt="Featured destination - Bali"/>
               </Link>
             </div>
 
             <div className="col-xs-4">
-              <Link to="/search/?destination=Seoul,%20South%20Korea&date=" className="poster">
-                <div className="text">SEOUL</div>
-                <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881230/assets/seoul.jpg" alt="Featured destination - Seoul"/>
+              <Link to="/search/?destination=Jakarta,%20Indonesia&date=" className="poster">
+                <div className="text">JAKARTA</div>
+                <img src="https://res.cloudinary.com/dvdm9a68v/image/upload/q_40/v1524242254/assets/fd-jakarta-rsz.png" alt="Featured destination - Seoul"/>
               </Link>
             </div>
 
             <div className="col-xs-4">
-              <Link to="/search/?destination=Paris,%20France&date=" className="poster">
-                <div className="text">PARIS</div>
-                <img src="https://res.cloudinary.com/debraf3cg/image/upload/v1514881230/assets/paris.jpg" alt="Featured destination - Paris"/>
+              <Link to="/search/?destination=Singapore&date=" className="poster">
+                <div className="text">SINGAPORE</div>
+                <img src="https://res.cloudinary.com/dvdm9a68v/image/upload/q_40/v1524242190/assets/fd-singapore-rsz.png" alt="Featured destination - Paris"/>
               </Link>
             </div>
           </div>
