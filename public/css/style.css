@@ -13945,3 +13945,156 @@ div.layout-style {
 .el-input-group--prepend .el-input__inner {
   margin: 0;
 }
+
+/*BLOG*/
+.blog-header {
+  max-height: 490px;
+}
+.blog-tab {
+  padding-top: 16px;
+  padding-left: 10px;
+}
+.blog-tab .tab-item {
+  height: 14px; width: 73px;  
+  color: #999999; 
+  font-family: "Hiragino Kaku Gothic ProN"; 
+  font-size: 14px;  
+  letter-spacing: -0.29px;  
+  line-height: 21px;
+  margin-right: 20px;
+  font-weight: 600;
+}
+.blog-tab .tab-item:hover {
+  color: #363232;
+  cursor: pointer;
+}
+.blog-body {
+  padding: 20px 34px;
+}
+.blog-tab .tab-item.active {
+  color: #363232;
+}
+.blog-item {
+  padding: 25px 25px 5px;
+}
+.blog-item:hover {
+  /*border-radius: 5px;*/
+  border:0.5px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 1000;
+}
+.blog-item .topic {  
+  height: 14px; 
+  width: 63px; 
+  color: #979797; 
+  font-family: "helvetica"; 
+  font-size: 12px;  
+  letter-spacing: 0.65px; 
+  line-height: 14px;
+  margin: 30px auto 13px;
+}
+.blog-item .title {
+  height: 26px; 
+  width: 40px;  
+  color: #363232; 
+  font-family: "Futura";  
+  font-size: 20px;  
+  font-weight: 500; 
+  letter-spacing: -0.42px;  
+  line-height: 27px;
+  margin: 0px auto 8px;
+}
+.blog-item .subtitle {
+  height: 14px; 
+  width: 144px; 
+  color: #999999; 
+  font-family: "Hiragino Kaku Gothic ProN"; 
+  font-size: 14px;  
+  letter-spacing: -0.29px;  
+  line-height: 21px;
+  margin: 0px auto 20px;
+}
+.blog-body .bd-header {
+  position: relative;
+}
+.blog-body .bd-header .bd-title {
+  color: #363232; 
+  font-family: "Futura";  
+  font-size: 36px;  
+  letter-spacing: -0.75px;  
+  line-height: 43px;
+  margin: 30px auto 15px;
+  text-align: center;
+}
+.blog-body .bd-header .bd-subtitle {
+  color: #999999; 
+  font-family: "Hiragino Kaku Gothic ProN"; 
+  font-size: 18px;  
+  letter-spacing: -0.37px;  
+  line-height: 27px;
+  margin: 0px auto 20px;
+  text-align: center;
+}
+.blog-body .bd-header .bd-owner {
+  color: #999999; 
+  font-family: "Hiragino Kaku Gothic ProN"; 
+  font-size: 16px;  
+  letter-spacing: -0.33px;  
+  line-height: 24px;
+  margin: 0px auto 68px;
+  text-align: center;
+}
+.blog-body .bd-header .seen-detail{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.blog-body .bd-header .seen-detail i {
+  color: #999999; 
+}
+.blog-body .bd-header .seen-detail span {
+  color: #999999;
+  font-family: "Hiragino Kaku Gothic ProN";
+  font-size: 12px;
+  letter-spacing: -0.25px;
+  line-height: 18px;
+  margin-right: 19px;
+  margin-left: 4px;
+}
+.blog-body .bd-content p {
+  text-align: justify;
+  color: #999999; 
+  font-family: "Helvetica"; 
+  font-size: 16px;  
+  letter-spacing: -0.33px;  
+  line-height: 30px;
+  font-weight: 100;
+}
+.blog-body .bd-content p strong{
+  color: black;
+}
+.blog-body #findthisplace {
+  color: #4A4A4A; 
+  font-family: Futura;  
+  font-size: 24px;  
+  font-weight: 500; 
+  letter-spacing: -0.5px; 
+  line-height: 32px;  
+  text-align: center;
+  margin-bottom: 45px;
+  margin-top: 70px;
+}
+.blog-body .btn-check-it-out {
+  color: #50E3C2;
+  font-family: "Apple SD Gothic Neo";
+  font-size: 12px;
+  letter-spacing: -0.25px;
+  line-height: 30px;
+  padding: 5px 27px;
+  margin: 0 auto;
+  border: 2px solid #50e3c2;
+  font-weight: 500;
+  text-align: center;
+  display: block;
+  width: 150px;
+}
