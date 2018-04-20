@@ -53,6 +53,9 @@ import ContactUsSuccess from './components/About/ContactUsSuccess';
 import PaymentSuccess from './components/User/PaymentSuccess';
 import PaymentError from './components/User/PaymentError';
 import BlogHomepage from './components/Blog/BlogHomepage';
+import BlogDetailBelitung from './components/Blog/BlogDetailBelitung';
+import BlogDetailBali from './components/Blog/BlogDetailBali';
+import BlogDetailGili from './components/Blog/BlogDetailGili';
 import BlogDetail from './components/Blog/BlogDetail';
 
 history.listen((location) => {
@@ -207,8 +210,20 @@ const App = (props) => (
           component={ContactUsSuccess}
         />
         <Route
-          path="/blog/:slug"
+          path="/blog/example"
           component={BlogDetail}
+        />
+        <Route
+          path="/blog/belitung"
+          component={BlogDetailBelitung}
+        />
+        <Route
+          path="/blog/bali"
+          component={BlogDetailBali}
+        />
+        <Route
+          path="/blog/gili"
+          component={BlogDetailGili}
         />
         <Route
           path="/blog"
