@@ -13949,6 +13949,8 @@ div.layout-style {
 /*BLOG*/
 .blog-header {
   max-height: 490px;
+  width: 100%;
+  object-fit: cover;
 }
 .blog-tab {
   padding-top: 16px;
@@ -13985,17 +13987,18 @@ div.layout-style {
 }
 .blog-item .topic {  
   height: 14px; 
-  width: 63px; 
+  width: 100%; 
   color: #979797; 
   font-family: "helvetica"; 
   font-size: 12px;  
   letter-spacing: 0.65px; 
   line-height: 14px;
   margin: 30px auto 13px;
+  text-align: center;
 }
 .blog-item .title {
   height: 26px; 
-  width: 40px;  
+  width: 100%;  
   color: #363232; 
   font-family: "Futura";  
   font-size: 20px;  
@@ -14003,16 +14006,18 @@ div.layout-style {
   letter-spacing: -0.42px;  
   line-height: 27px;
   margin: 0px auto 8px;
+  text-align: center;
 }
 .blog-item .subtitle {
   height: 14px; 
-  width: 144px; 
+  width: 100%; 
   color: #999999; 
   font-family: "Hiragino Kaku Gothic ProN"; 
   font-size: 14px;  
   letter-spacing: -0.29px;  
   line-height: 21px;
   margin: 0px auto 20px;
+  text-align: center;
 }
 .blog-body .bd-header {
   position: relative;
@@ -14023,7 +14028,7 @@ div.layout-style {
   font-size: 36px;  
   letter-spacing: -0.75px;  
   line-height: 43px;
-  margin: 30px auto 15px;
+  margin: 50px auto 15px;
   text-align: center;
 }
 .blog-body .bd-header .bd-subtitle {
@@ -14098,3 +14103,52 @@ div.layout-style {
   display: block;
   width: 150px;
 }
+.bd-content .img-title {
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  font-size: 16px;
+}
+.bd-content .section-title {
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+.bd-content .img-source {
+  font-style: italic;
+  display: block;
+  font-size: 13px;
+  font-weight: 100;
+  color: #999999;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.bd-content .img-content {
+  max-width: 500px;
+  max-height: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .bd-content .img-content {
+    width: 100%;
+    object-fit: cover;
+  }
+  .blog-body .bd-header .seen-detail {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      left: 0;
+      text-align: center;
+  }
+}
+
+.blog-thumbnail {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
