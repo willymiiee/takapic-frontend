@@ -50,6 +50,11 @@ import PhotoAlbum from './components/User/PhotoAlbum';
 import PhotoAlbumDetail from './components/User/PhotoAlbumDetail';
 import CashOut from './components/User/CashOut';
 import ContactUsSuccess from './components/About/ContactUsSuccess';
+import BlogHomepage from './components/Blog/BlogHomepage';
+import BlogDetailBelitung from './components/Blog/BlogDetailBelitung';
+import BlogDetailBali from './components/Blog/BlogDetailBali';
+import BlogDetailGili from './components/Blog/BlogDetailGili';
+import BlogDetail from './components/Blog/BlogDetail';
 
 history.listen((location, action) => {
   if (location.pathname.includes('/photographer') || location.pathname.includes('/photographer-portofolio')) {
@@ -200,6 +205,26 @@ const App = (props) => (
         <Route
           path="/contact-us-success"
           component={ContactUsSuccess}
+        />
+        <Route
+          path="/blog/example"
+          component={BlogDetail}
+        />
+        <Route
+          path="/blog/belitung"
+          component={BlogDetailBelitung}
+        />
+        <Route
+          path="/blog/bali"
+          component={BlogDetailBali}
+        />
+        <Route
+          path="/blog/gili"
+          component={BlogDetailGili}
+        />
+        <Route
+          path="/blog"
+          component={BlogHomepage}
         />
         <Route path="*" component={NotFoundPage} />
       </Switch>
