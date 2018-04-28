@@ -11,7 +11,7 @@ const TravellerFaq = props => {
             <h2 style={{marginBottom:'30px', textAlign:'center'}}>Traveller FAQ</h2>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">How do I book my photo shoot?</h3>
-              <p className="content-faq">First search and select your photographer. Once you are on his profile using the booking widget to fill when you want the shoot and hit "Request to book" . This will take you to a secured page where you will enter additional information. Once complete, your booking will be sent to the photographer to accept or reject. Once he accepts, Takapic will link both parties up and you can discuss finer details with your photographer.</p>
+              <p className="content-faq">First search and select your photographer. Once you are on his profile using the booking widget to fill when you want the shoot and hit "Reserve" . This will take you to a secured page where you will enter additional information. Once complete, your booking will be sent to the photographer to accept or reject. Once he accepts, Takapic will link both parties up and you can discuss finer details with your photographer.</p>
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">Will I be able to contact or chat with my photographer?</h3>
@@ -27,9 +27,11 @@ const TravellerFaq = props => {
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">Do I get charged if the photographer cancels?</h3>
-              <p className="content-faq">No, you don't. If the photographer cancels the shoot for any reason you will be entirely reimbursed.
-                Do I get charged if the photographer does not accept my booking request?
-                No. When you send a request to book a photo shoot your card is not charged but simply authorized. If the photographer declines or fails to respond, we will cancel the transaction and you will not be charged.</p>
+              <p className="content-faq">No, you don't. If the photographer cancels the shoot for any reason you will be entirely reimbursed.</p>
+            </div>
+            <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
+              <h3 className="title-faq">Do I get charged if the photographer does not accept my booking request?</h3>
+              <p className="content-faq">No. When you send a request to book a photo shoot your card is not charged but simply authorized. If the photographer declines or fails to respond, we will cancel the transaction and you will not be charged.</p>
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">How do I modify the date & time of a booking?</h3>
@@ -57,10 +59,11 @@ const TravellerFaq = props => {
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">When does my card get charged?</h3>
-              <p className="content-faq">Your card will be authorized when you request to book and you will be charged when the photographer confirms.
-                How are Takapic photographers selected to be on the platform?
-                All of the photographers who join our platform are verified, screened and approved by our team. Each photographer also has reviews based on recommendations from previous clients to help make an informed decision. A Takapic photographer is typically a freelancer who is passionate about his work and has his own style.
-              </p>
+              <p className="content-faq">Your card will be authorized when you request to book and you will be charged when the photographer confirms. </p>
+            </div>
+            <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
+              <h3 className="title-faq">How are Takapic photographers selected to be on the platform?</h3>
+              <p className="content-faq">All of the photographers who join our platform are verified, screened and approved by our team. Each photographer also has reviews based on recommendations from previous clients to help make an informed decision. A Takapic photographer is typically a professional or freelancer who is passionate about his work and has his own style.</p>
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">Who can leave a review for the photographer?</h3>
@@ -115,16 +118,16 @@ const TravellerFaq = props => {
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">Can I book a Takapic photographer for my wedding?</h3>
-              <p className="content-faq">Currently, Takapic does not cover wedding day event services. However, we suggest you can consider a pre-wedding photoshoot at your travel destination city by selected Takapic photographers. Couples should feel free to dress in their wedding attire, but keep in mind that our photo shoots are limited to a private, candid shoots.</p>
+              <p className="content-faq">Currently, Takapic does not cover wedding day event services. However, we suggest you can consider a pre-wedding photoshoot at your travel destination city by selected Takapic photographers. Couples should feel free to dress in their wedding attire, but keep in mind that our photo shoots are limited to private, candid shoots.</p>
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">Takapic does not seem to have photographers in my desired destination. What are my options?  </h3>
               <p className="content-faq">
-                We are always looking for new destinations where travellers can enjoy the Takapic experience. Please contact us and we will see what we can do!
-                Once I pay for the photo shoot, are there any additional fees or charges I need to be aware of?
-
-                You are responsible for any admission fees or transportation fees during the photo shoot. This could include but is not limited to for example paid entry to museums or attractions, Uber, transportation etc.
-              </p>
+                We are always looking for new destinations where travellers can enjoy the Takapic experience. Please contact us and we will see what we can do!</p>
+            </div>
+            <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
+              <h3 className="title-faq">Once I pay for the photo shoot, are there any additional fees or charges I need to be aware of?</h3>
+              <p className="content-faq">You are responsible for any admission fees or transportation fees during the photo shoot. This could include but is not limited to for example paid entry to museums or attractions, Uber, transportation etc.</p>
             </div>
           </div>
         </div>
