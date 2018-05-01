@@ -65,7 +65,8 @@ const createUserMetadata = async (accountProvider, uid, email, userType, display
         firstLogin: true,
         displayName,
         phoneNumber: '-',
-        created: firebase.database.ServerValue.TIMESTAMP
+        created: firebase.database.ServerValue.TIMESTAMP,
+        enable: 1
       };
 
       if (userType === USER_PHOTOGRAPHER) {
