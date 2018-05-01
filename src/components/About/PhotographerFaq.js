@@ -51,8 +51,8 @@ const PhotographerFaq = props => {
             </div>
 
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
-              <h4 className="title-faq">As Takapic will be a middleman to connect traveler and photographer, How we filter the quality of photographers? How we manage a complaint between photographers and travelers?</h4>
-              <p className="content-faq">Photographers will sign up either using google + account, fb account or email. They will also have to provide their mobile number and our team will conduct checking to ensure it is an actual photographer. As photography styles can be subjective, we do not restrict only professional photographers from joining us. We encourage free-lance and even hobbyist photographers who have the passion and like interacting with people to sign up with us as well. Ultimately, it is the traveller who decides which photographer they are comfortable with based on budget, photo styles, ratings and reviews.</p>
+              <h4 className="title-faq">As Takapic will be a middleman to connect traveler and photographer, How do we filter the quality of photographers? How would we manage a complaint between photographers and travelers?</h4>
+              <p className="content-faq">Photographers will sign up either using Google + account, Facebook account or email. They will also have to provide their mobile number and our team will conduct checking to ensure it is an actual photographer. As photography styles can be subjective, we do not restrict only professional photographers from joining us. We encourage free-lance photographers who have the passion and like interacting with people to sign up with us as well. Ultimately, it is the traveller who decides which photographer they are comfortable with based on budget, photo styles, ratings and reviews.</p>
             </div>
 
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
@@ -80,8 +80,8 @@ const PhotographerFaq = props => {
               <p className="content-faq">We aim to be present and offer the service in every city. It is more economical and hassle free for the traveller to book a photographer in each city rather than have one photographer travel together with the traveller. This may also be awkward for both parties and intrude onto private time.</p>
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
-              <h4 className="title-faq">Is Takapic service completely free for me?  </h4>
-              <p className="content-faq">It is absolutely free to sign up and build your profile and portfolio on our platform. You will only get charged a transaction fee upon successful completed jobs for the traveller/customer. The transaction fee is 5% of your list price. So for example, if you list price is $100 in your local currency for 1 hour service and you complete a job for this, Takapic will take $5 and you will get $95 for the job. This transaction fee is to cater for exchange rate conversion, bank/credit card charges when you get paid back to your local currency.</p>
+              <h4 className="title-faq">Is Takapic service completely free for me?</h4>
+              <p className="content-faq">It is absolutely free to sign up and list your profile and portfolio on our platform. You will only get charged a transaction fee upon successful completed jobs for the traveller/customer. The transaction fee is 10% of your list price. So for example, if your list price is $100 in your local currency for 1 hour service, Takapic will take $10 and you will get $90 for the job. This transaction fee is to cater for exchange rate conversion, bank/credit card charges when you get paid back to your local currency.</p>
             </div>
             <div className="smooth-card radius-0" style={{padding:'16px 24px 16px 24px'}}>
               <h3 className="title-faq">Why is the price on my public photographer page higher than the one I listed and is in US dollars?</h3>
