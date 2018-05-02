@@ -73,6 +73,8 @@ const createUserMetadata = async (accountProvider, uid, email, userType, display
         metaData.rating = 3;
         metaData.priceStartFrom = 0;
         metaData.defaultDisplayPictureUrl = '-';
+        metaData.photoProfilePublicId = '-';
+        metaData.defaultDisplayPicturePublicId = '-';
       }
 
       await child.set(metaData);

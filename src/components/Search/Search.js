@@ -69,13 +69,7 @@ class Search extends Component {
   };
 
   renderChild = (row, index) => {
-    const criteriaMatch = row.hasOwnProperty('photoProfilePublicId') &&
-      row.hasOwnProperty('phoneNumber') &&
-      row.hasOwnProperty('defaultDisplayPicturePublicId');
-
-    if (criteriaMatch && row.enable) {
-      return <SingleItem key={index} item={row} viewType={this.state.viewType} />
-    }
+    return <SingleItem key={index} item={row} viewType={this.state.viewType} />
   };
 
   switchResultView = (viewType) => {
