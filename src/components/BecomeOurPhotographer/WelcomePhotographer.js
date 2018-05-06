@@ -73,7 +73,7 @@ const WelcomePhotographer = props => {
 
                     <h4 className="speech-sub-title">Earning and fees</h4>
                     <p>
-                      Listing your profile on Takapic is free! Takapic takes 5% service fee on each reservation.
+                      Listing your profile on Takapic is free! Takapic takes a service fee on each reservation.
                     </p>
 
                     <h4 className="speech-sub-title">What to charge</h4>
