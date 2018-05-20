@@ -165,7 +165,9 @@ class PhotosPortofolio extends Component {
                 ...this.state.imagesExisting,
                 ...this.state.uploadedImagesList
               ];
-              updatePhotographerServiceInfoPhotosPortofolio(this.props.user.uid, newImages, false);
+
+              const isInitPortfolios = this.state.imagesExisting.length < 1;
+              updatePhotographerServiceInfoPhotosPortofolio(this.props.user.uid, newImages, isInitPortfolios);
             })
             .then(() => {
               this.props.fetchPhotographerServiceInformation(this.props.user.uid);
