@@ -51,7 +51,7 @@ class PackagesPrice extends Component {
   setStatePackagePrice = (props) => {
     const { photographerServiceInformation: { data } } = props;
 
-    if (data.packagesPrice) {
+    if (data.packagesPrice.length > 0) {
       let packagesPrice = data.packagesPrice;
       this.setState({
         packagesPrice: packagesPrice

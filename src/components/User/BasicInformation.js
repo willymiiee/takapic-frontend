@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 import Select from "react-select";
 import {
   Form,
@@ -19,10 +20,13 @@ import { tellThemThatWasSuccessOrFailed } from "../../store/actions/photographer
 
 const updateBasicInformationAction = (data, uid) => {
   return (dispatch) => {
-    const locationMerge = [data.locationAdmLevel2, data.locationAdmLevel1]
+    const locationAdmLevel2 = get(data, 'locationAdmLevel2', '');
+    const locationAdmLevel1 = get(data, 'locationAdmLevel1', '');
+    const countryName = get(data, 'countryName', '');
+    const locationMerge = [locationAdmLevel2, locationAdmLevel1]
       .filter((item) => item)
       .join(', ')
-      .concat(', ' + data.countryName);
+      .concat(', ' + countryName);
 
     const db = database.database();
 
@@ -46,13 +50,13 @@ const updateBasicInformationAction = (data, uid) => {
           .ref('photographer_service_information')
           .child(uid)
           .update({
-            selfDescription: data.selfDescription,
-            languages: data.languagesSelected,
+            selfDescription: get(data, 'selfDescription', ''),
+            languages: get(data, 'languagesSelected', ''),
             location: {
-              country: data.country,
-              countryName: data.countryName,
-              locationAdmLevel1: data.locationAdmLevel1 || '-',
-              locationAdmLevel2: data.locationAdmLevel2,
+              country: get(data, 'country', '-'),
+              countryName: get(data, 'countryName', ''),
+              locationAdmLevel1: get(data, 'locationAdmLevel1', '-'),
+              locationAdmLevel2: get(data, 'locationAdmLevel2', ''),
               locationMerge
             },
             updated: firebase.database.ServerValue.TIMESTAMP
@@ -93,7 +97,7 @@ const BasicInformationForm = (props) => {
     isSubmitting
   } = props;
 
-  const city = values.locationAdmLevel2
+  const city = typeof values.locationAdmLevel2 !== 'undefined' && values.locationAdmLevel2
     ? { value: values.locationAdmLevel2, label: values.locationAdmLevel2 }
     : null;
 
@@ -135,6 +139,8 @@ const BasicInformationForm = (props) => {
       });
   };
 
+  const country = get(values, 'country', false);
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormGroup>
@@ -147,14 +153,14 @@ const BasicInformationForm = (props) => {
                 newPhotoProfilePreview
                   ? (
                     <img
-                      src={newPhotoProfilePreview}
+                      src={newPhotoProfilePreview || 'https://res.cloudinary.com/dvdm9a68v/image/upload/v1514886062/assets/CL_small_w.png'}
                       className="img-circle img-profile"
                       alt="This is alt text"
                     />
                   )
                   : (
                     <img
-                      src={photoProfileUrl}
+                      src={photoProfileUrl || 'https://res.cloudinary.com/dvdm9a68v/image/upload/v1514886062/assets/CL_small_w.png'}
                       className="img-circle img-profile"
                       alt="This is alt text"
                     />
@@ -206,7 +212,7 @@ const BasicInformationForm = (props) => {
         Name
         <FormControl
           name="displayName"
-          value={values.displayName}
+          value={get(values, 'displayName', '')}
           type="text"
           placeholder="Enter Your Name"
           onChange={handleChange}
@@ -218,7 +224,7 @@ const BasicInformationForm = (props) => {
         Self Description
         <textarea
           name="selfDescription"
-          value={values.selfDescription}
+          value={get(values, 'selfDescription', '')}
           onChange={handleChange}
           placeholder="Enter Your Self Description"
           style={{padding:'16px 10px',marginTop:'7px', color:'#333'}}
@@ -229,7 +235,7 @@ const BasicInformationForm = (props) => {
         Country
         <Select
           name="country"
-          value={values.country}
+          value={country}
           options={countries}
           clearable={false}
           onChange={_selectCountryHandle}
@@ -246,8 +252,8 @@ const BasicInformationForm = (props) => {
           valueKey="value"
           labelKey="label"
           loadOptions={_getCities}
-          placeholder={values.country ? "Search and choose your city" : "Please select a country first"}
-          disabled={!values.country}
+          placeholder={country ? "Search and choose your city" : "Please select a country first"}
+          disabled={!country}
           filterOption={() => (true)}
           style={{marginTop:'7px'}}
         />
@@ -262,7 +268,7 @@ const BasicInformationForm = (props) => {
 
           <FormControl
             name="phoneNumber"
-            value={values.phoneNumber}
+            value={get(values, 'phoneNumber', '')}
             type="text"
             placeholder="Enter Your Phone Number"
             onChange={handleChange}
@@ -285,7 +291,7 @@ const BasicInformationForm = (props) => {
             }
           }))}
           multi={true}
-          value={values.languagesSelected}
+          value={get(values, 'languagesSelected', '')}
           onChange={_selectLanguagesHandle}
         />
       </FormGroup>
@@ -305,12 +311,17 @@ const BasicInformationFormik = Formik({
       photographerServiceInformation: {
         data: {
           userMetadata: { displayName, phoneDialCode, currency, phoneNumber },
-          location: { country, locationAdmLevel1, locationAdmLevel2, countryName },
+          location,
           selfDescription,
           languages: languagesSelected
         }
       }
     } = props;
+
+    const country = get(location, 'country', '');
+    const locationAdmLevel1 = get(location, 'locationAdmLevel1', '');
+    const locationAdmLevel2 = get(location, 'locationAdmLevel2', '');
+    const countryName = get(location, 'countryName', '');
 
     return {
       displayName,
