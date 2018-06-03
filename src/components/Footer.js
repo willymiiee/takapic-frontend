@@ -66,6 +66,9 @@ class Footer extends Component {
                 <li>
                   <Link to="/packages">Packages</Link>
                 </li>
+                <li>
+                  <Link to="/term-conditions">Terms and Conditions</Link>
+                </li>
               </ul>
               <ul className="footer-links col-sm-6">
                 <li>

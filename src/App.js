@@ -43,6 +43,7 @@ import PrivacyPolicy from "./components/About/PrivacyPolicy";
 import TravellerFaq from "./components/About/TravellerFaq";
 import AboutUs from "./components/About/AboutUs";
 import Packages from "./components/About/Packages";
+import TermConditions from "./components/About/TermConditions";
 import ContactUs from "./components/About/ContactUs";
 import HowItWorks from "./components/About/HowItWorks";
 import ReservationsList from './components/User/ReservationsList';
@@ -192,6 +193,10 @@ const App = (props) => (
         <Route
           path="/packages"
           component={withGATracker(Packages)}
+        />
+        <Route
+          path="/term-conditions"
+          component={withGATracker(TermConditions)}
         />
         <Route
           path="/contact-us"
