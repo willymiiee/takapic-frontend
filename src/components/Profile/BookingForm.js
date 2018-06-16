@@ -207,7 +207,7 @@ const BookingFormFormik = Formik({
     const queryParams = qs.parse(props.location.search);
     const szQp = size(queryParams);
 
-    if (szQp) {
+    /*if (szQp) {
       if (queryParams.mode === 'bypasspg') {
         storeData(values, props).then(() => {
           setSubmitting(false);
@@ -222,7 +222,10 @@ const BookingFormFormik = Formik({
 
     } else {
       setSubmitting(false);
-    }
+    }*/
+    storeData(values, props).then(() => {
+      window.snap.pay(props.snapToken, { enabledPayments: ['credit_card', 'permata_va'] });
+    });
 
   }
 })(BookingForm);
