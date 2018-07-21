@@ -204,8 +204,8 @@ const BookingFormFormik = Formik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     // https://mockup.takapic.com/me/payment/success?order_id=XVQIMIEZ&status_code=200&transaction_status=capture
-    const queryParams = qs.parse(props.location.search);
-    const szQp = size(queryParams);
+    // const queryParams = qs.parse(props.location.search);
+    // const szQp = size(queryParams);
 
     /*if (szQp) {
       if (queryParams.mode === 'bypasspg') {
@@ -224,7 +224,8 @@ const BookingFormFormik = Formik({
       setSubmitting(false);
     }*/
     storeData(values, props).then(() => {
-      window.snap.pay(props.snapToken, { enabledPayments: ['credit_card', 'permata_va'] });
+      // window.snap.pay(props.snapToken, { enabledPayments: ['credit_card', 'permata_va'] });
+      window.snap.pay(props.snapToken);
     });
 
   }
