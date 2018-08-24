@@ -18,7 +18,7 @@ export const fetchPhotographerServiceInformation = (uid) => {
       .then(response => {
         dispatch({
           type: 'FETCH_PHOTOGRAPHER_SERVICE_INFORMATION_SUCCESS',
-          payload: response.data.data,
+          payload: response.data,
         });
       })
       .catch(error => {
